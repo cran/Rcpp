@@ -1,0 +1,44 @@
+2008-11-05  Dirk Eddelbuettel  <edd@debian.org>
+
+	* Release 0.6.0
+
+	* New maintainer
+
+	* src/Makefile{,.win}: New files, including functionality from both
+ 	  configure and RcppSrc/Makefile; we now build two libraries, one for
+	  use by the package which also runs the example, and one for users to
+	  link against
+	* src/Makevars.in: Removed
+	* src/Rcpp.{cpp,h}: moved in from ../RcppSrc
+
+	* src/Rcpp.{cpp,h}: Add new type RcppDatetime corresponding to
+  	  POSIXct in with full support for microsecond time resolution
+	  between R and C++
+
+	* man/*: Several new manual pages added
+
+	* configure{,.in,.win}: Removed as src/Makefile* can handle this more
+	  easily
+
+	* DESCRIPTION: Minor cleanup and reformatting, Date: now uses
+  	  svn:keyword Date property
+
+	* NAMESPACE: Renamed RcppTemplateVersion to RcppVersion,
+	  deleted RcppDemo
+
+	* demo/ directory removed as vignette("RcppAPI") is easier and more
+	  reliable to show vignette documentation
+
+	* R/zzz.R: RcppTemplateDemo() removed, vignette("RcppAPI") is easier
+	* man/RcppTemplateDemo.Rd removed as well
+
+	* R/RcppExample.R: reindented, rewritten to set default arguments
+
+	* R/RcppTemplateVersion.R: renamed to RcppVersion.R
+	* man/RcppTemplateVersion.Rd: renamed to RcppVersion.Rd
+
+	* RcppSrc/Rcpp.{cpp,h}: moved to src/ directory
+	* RcppSrc/Makefile{,.win}: removed
+
+	* inst/doc/RcppAPI.{Rnw,pdf}: Added footnote onto titlepage about how
+	  this document has not (yet) been updated along with the channges made
