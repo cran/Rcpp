@@ -1,8 +1,7 @@
 rm -f confdefs.h config.log config.status
-rm -f src/Makevars
-rm -f src/*.o src/*.so
+rm -f src/*.o src/*.so src/*.a
 rm -f RcppSrc/*.o RcppSrc/*.a inst/Rcpp-version.txt
-rm -f inst/lib/libRcpp.so inst/lib/Rcpp.h
+rm -f inst/lib/libRcpp.so inst/lib/Rcpp.h inst/lib/libRcpp.a 
 rm -f inst/doc/*.cpp inst/doc/*.hpp inst/doc/*.R 
 rm -f inst/doc/*.Rd inst/doc/*.aux inst/doc/*.log inst/doc/*.tex
 rm -rf inst/doc/auto

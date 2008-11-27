@@ -419,3 +419,44 @@ RcppExport SEXP RcppDateExample(SEXP dvsexp, SEXP dtvsexp) {
 
     return rl;
 }
+
+RcppExport SEXP RcppVectorExample(SEXP vector) {
+
+    SEXP rl=R_NilValue; // Use this when there is nothing to be returned.
+    char *exceptionMesg=NULL;
+
+    try {
+
+	// Get parameters in params.
+	RcppVector<int> vec(vector);
+	int n = vec.size();
+
+	Rprintf("\nIn C++, seeing a vector of length %d\n", n);
+
+	// create a C++ STL vector, and reserve appropriate size
+	std::vector<double> res(n);
+	
+	for (int i=0; i<n; i++) {
+	    res[i] = sqrt(vec(i));
+	}
+
+	// Build result set to be returned as a list to R.
+	RcppResultSet rs;
+
+	rs.add("result",  res);
+	rs.add("original", vec);
+
+	// Get the list to be returned to R.
+	rl = rs.getReturnList();
+	
+    } catch(std::exception& ex) {
+	exceptionMesg = copyMessageToR(ex.what());
+    } catch(...) {
+	exceptionMesg = copyMessageToR("unknown reason");
+    }
+    
+    if(exceptionMesg != NULL)
+	error(exceptionMesg);
+
+    return rl;
+}

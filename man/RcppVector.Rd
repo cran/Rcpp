@@ -2,6 +2,7 @@
 \alias{RcppVector}
 \alias{RcppMatrix}
 \alias{RcppStringVector}
+\alias{RcppVectorExample}
 \title{C++ classes for receiving \R object in C++}
 \description{
   \code{RcppVector}, \code{RcppMatrix} and \code{RcppStringVector} are
@@ -79,5 +80,15 @@
 }
 \author{Dominick Samperi wrote most of Rcpp during 2005 and 2006.  Dirk
   Eddelbuettel made some additions, and became maintainer in 2008.}
+\examples{
+# set up some value
+vector <- (seq(1,9))^2
+
+# call the underlying  C++ function
+result <- RcppVectorExample(vector)
+
+# inspect returned object
+result
+}
 \keyword{programming}
 \keyword{interface}

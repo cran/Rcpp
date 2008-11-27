@@ -91,11 +91,15 @@ print.RcppExample <- function(x,...) {
     cat('\nIn R, names defined in RcppExample return list:\n')
     cat('(Use result$name or result[[i]] to access)\n')
     namevec <- names(x)
-    for(i in 1:length(namevec))
-        cat(format(i, width=2), ': ',
-            format(namevec[i], width=12),
-            ifelse(is.atomic(x[[i]]) & length(x[[i]])==1, format(x[[i]]), "..."),
-            '\n')
+    for(i in 1:length(namevec)) {
+        cat(format(i, width=2), ': ', format(namevec[i], width=12))
+        if (is.atomic(x[[i]])) {
+            cat(format(x[[i]]))
+        } else {
+            cat(format("..."))
+        }
+        cat('\n')
+    }
 }
 
 RcppParamsExample <- function(params) {
@@ -140,6 +144,29 @@ RcppDateExample <- function(dv, dtv) {
     ## Make the call...
     val <- .Call("RcppDateExample",
                  dv, dtv,
+                 PACKAGE="Rcpp")
+
+    ## Define a class for the return value so we can control what gets
+    ## printed when a variable assigned this value is typed on a line by itself.
+    ## This has the effect of calling the function print.RcppExample(). The
+    ## function (defined below) simply prints the names of the fields that are
+    ## available. Access each field with val$name.
+    class(val) <- "RcppExample"
+
+    val
+}
+
+RcppVectorExample <- function(v) {
+
+    ## Check that params is properly set.
+    if (missing(v)) {
+        cat("\nIn R, setting default argument for v\n")
+        v <- seq(1,9)^2
+    }
+
+    ## Make the call...
+    val <- .Call("RcppVectorExample",
+                 v,
                  PACKAGE="Rcpp")
 
     ## Define a class for the return value so we can control what gets

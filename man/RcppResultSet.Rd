@@ -84,5 +84,18 @@
 }
 \author{Dominick Samperi wrote most of Rcpp during 2005 and 2006.  Dirk
   Eddelbuettel made some additions, and became maintainer in 2008.}
+\examples{
+
+# example from RcppDate
+# set up date and datetime vectors
+dvec <- Sys.Date() + -2:2
+dtvec <- Sys.time() + (-2:2)*0.5
+
+# call the underlying  C++ function
+result <- RcppDateExample(dvec, dtvec)
+
+# inspect returned object
+result
+}
 \keyword{programming}
 \keyword{interface}
