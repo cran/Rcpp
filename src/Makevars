@@ -1,0 +1,38 @@
+# -*- mode: Makefile; tab-width: 8 -*- 
+#
+# Makefile for Rcpp 
+#
+# Copyright (C) 2008    Dirk Eddelbuettel <edd@debian.org>
+# Copyright (C) 2008    Simon Urbanek <simon.urbanek@r-project.org>
+
+## $(SHLIB) is the usual default target that is built automatically from all source 
+## files in this directory. userLibrary is an additional target for the second library
+## that will be installed in ../inst/lib$(R_ARCH) and which users can link against.
+
+all: 		$(SHLIB) userLibrary 
+
+USERLIB	=	libRcpp$(DYLIB_EXT)
+USERLIBST =	libRcpp.a
+USERDIR =	../inst/lib
+
+userLibrary: 	$(USERLIB) $(USERLIBST)
+		-@if test ! -e $(USERDIR)$(R_ARCH); then mkdir -p $(USERDIR)$(R_ARCH); fi
+		cp $(USERLIB) $(USERDIR)$(R_ARCH)
+		rm $(USERLIB) 
+		cp Rcpp.h $(USERDIR)
+		cp $(USERLIBST) $(USERDIR)$(R_ARCH)
+
+$(USERLIB): 	Rcpp.o
+		$(SHLIB_CXXLD) -o $(USERLIB) $^ $(SHLIB_CXXLDFLAGS) $(ALL_LIBS)
+		$(SHLIB_CXXLD) -o $(USERLIB) $^ $(SHLIB_CXXLDFLAGS) $(ALL_LIBS)
+		@if test -e "/usr/bin/install_name_tool"; then /usr/bin/install_name_tool -id $(R_PACKAGE_DIR)/lib$(R_ARCH)/$(USERLIB) $(USERLIB); fi
+
+$(USERLIBST): 	Rcpp.o
+		$(AR) qc $(USERLIBST) Rcpp.o
+		@if test -n "$(RANLIB)"; then $(RANLIB) $(USERLIBST); fi
+
+.PHONY: 	all clean userLibrary 
+
+clean:
+		rm -f $(OBJECTS) $(SHLIB) $(USERLIB) $(USERLIBST)
+

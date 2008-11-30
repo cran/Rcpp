@@ -45,7 +45,7 @@
     \item STL vector types and vector<vector> types of int and double
     \item STL vector of strings
     \item internal Rcpp types RcppDate, RcppDateVector, RcppDatetime,
-  RcppDatetimeVector, RcppStringVector, RcppVector of int or doube,
+  RcppDatetimeVector, RcppStringVector, RcppVector of int or double,
   RcppMatrix of int or double, RcppFrame}
 }
 \section{Usage for package building}{
@@ -62,43 +62,34 @@
   via \code{-L} as well as the actual library. An example for Linux
   would be \code{-L/usr/local/lib/R/site-library/Rcpp/lib -lRcpp}.
 
-  But that still requires telling the dynamic linker about the library
-  locations -- whereas a link in, say, \code{/usr/local/lib} frees us
-  from the \code{-L} switch and the need to tell the dynamic linker.
-  Therefore, on Linux, I found it convenient to provide these files via
-  copies or links from the usual locations like
+  In order to make it more convenient to use \code{Rcpp}, functions
+  providing these arguments were added.  To use these, simply use a file
+  \code{src/Makevars} such as this (which was taken from the
+  \code{emdL1} package)
+
+  \preformatted{
+# compile flag providing header directory containing Rcpp.h
+PKG_CXXFLAGS=`Rscript -e 'cat(Rcpp:::RcppCxxFlags())'`
+
+# link flag providing libary as well as path to library, and optionally rpath
+PKG_LIBS=`Rscript -e 'cat(Rcpp:::RcppLdFlags())'`
+}
+
+  Alternatively, one can also encode the test for these variables using
+  the \code{GNU autoconf} system. The \code{RQuantLib} package
+  provides an example of that.
+
+  Lastly, on Linux, and during development, it can convenient to simply
+  provide these files via soft links (or copies) from the usual locations like
   \sQuote{/usr/local/include} and \sQuote{/usr/local/lib} which
   alleviates the need for explicit location flags like \sQuote{-I} or
   \sQuote{-L}. Remember to also run \code{ldconfig} after creating the
   link for the library.  Alternatively, you can hardcode the dynamic 
   library location using the \code{rpath} linker directive:
 
-  \preformatted{
-  # We need to know where libRcpp.so and Rcpp.h reside:
-  RCPP_DIR     = $(shell Rscript -e 'cat(system.file("lib", package="Rcpp"))')
-
-  # pass header file diretory to R
-  PKG_CPPFLAGS = -I$(RCPP_DIR)
-
-  # pass dynamic library to R, and strip
-  PKG_LIBS     = -L$(RCPP_DIR) -Wl,-rpath,$(RCPP_DIR) -lRcpp
-  } 
-
-  On  Windows, we simply include the static library with its full path
-  as in \code{C:/R/library/Rcpp/lib/Rcpp.a} (provided one uses
-  \code{R:/R/library} for add-on \R packages). This be automated in a file
-  \code{src/Makevars.win} provided \code{Rscript} is in the path:
-
-  \preformatted{
-  # We need to know where Rcpp.a and Rcpp.h reside:
-  RCPP_DIR     = $(shell Rscript -e 'cat(system.file("lib", package="Rcpp"))')
-
-  # pass header file diretory to R
-  PKG_CPPFLAGS = -I$(RCPP_DIR) -DBUILDING_DLL=1
-
-  # pass static library to R, and strip
-  PKG_LIBS     = $(RCPP_DIR)/Rcpp.a -s
-  }
+  Use on Windows is identical to the use in Linux. However only a static
+  library is provided. The two \code{\link{Rcpp}} functions detailed
+  above provide the relevant content.
 }
 \author{Dominick Samperi wrote most of Rcpp during 2005 and 2006.  Dirk
   Eddelbuettel made some additions, and became maintainer in 2008.}

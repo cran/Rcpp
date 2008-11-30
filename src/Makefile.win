@@ -20,7 +20,7 @@ PKGLDFLAGS 	= -s $(RLDFLAGS)
 ## we place it inside the inst/ directory so that it gets installed 
 ## use 'Rscript -e 'cat(system.file("lib", "Rcpp.a", package="Rcpp", "\n")'  to get location
 USERDIR		= ../inst/lib
-USERLIB		= $(USERDIR)/Rcpp.a
+USERLIB		= $(USERDIR)/libRcpp.a
 USEROBJ		= Rcpp.o
 
 CXXFLAGS 	= -I. $(RCPPFLAGS) -Wall -O2

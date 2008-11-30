@@ -23,17 +23,10 @@
 #define Rcpp_hpp
 
 #include <iostream>
-
-#ifdef USING_QUANTLIB
-#include <ql/quantlib.hpp>
-using namespace QuantLib;
-#else
 #include <sstream>
 #include <string>
 #include <list>
 #include <map>
-#endif
-
 #include <stdexcept>
 #include <vector>
 
@@ -42,15 +35,11 @@ using namespace std;
 #include <R.h>
 #include <Rinternals.h>
 
-#ifdef BUILDING_DLL
-#define RcppExport extern "C" __declspec(dllexport)
-#else
+// #ifdef BUILDING_DLL
+// #define RcppExport extern "C" __declspec(dllexport)
+// #else
 #define RcppExport extern "C"
-#endif
-
-#ifndef USING_QUANTLIB
-#define RCPP_DATE_OPS
-#endif
+// #endif
 
 char *copyMessageToR(const char* const mesg);
 
@@ -62,7 +51,8 @@ private:
     int jdn; // Julian day number
 
 public:
-    static const int Jan1970Offset;
+    static const int Jan1970Offset;	// offset between Jan 1, 1970 and Julian Day Number
+    static const int QLtoJan1970Offset;	// offset between Jan 1, 1970 and QuantLib BaseDate
     RcppDate() { month=1, day=1, year=1970; mdy2jdn(); }
     RcppDate(int Rjdn) { jdn = Rjdn+Jan1970Offset; jdn2mdy(); }
     RcppDate(int month_, int day_, int year_) : month(month_), 
@@ -79,7 +69,6 @@ public:
 
     // Minimal set of date operations.
 
-#ifdef RCPP_DATE_OPS
     // These operators tend to conflict with QuantLib's
     friend RcppDate operator+(const RcppDate &date, int offset);
     friend int      operator-(const RcppDate& date1, const RcppDate& date2);
@@ -88,14 +77,13 @@ public:
     friend bool     operator==(const RcppDate &date1, const RcppDate& date2);
     friend bool     operator>=(const RcppDate &date1, const RcppDate& date2);
     friend bool     operator<=(const RcppDate &date1, const RcppDate& date2);
-#endif
 
     friend std::ostream& operator<<(std::ostream& os, const RcppDate& date);
-#ifdef USING_QUANTLIB
-    // Conversions from/to a QuantLib Date.
-    RcppDate(Date dateQL);
-    operator Date() const;
-#endif
+// #ifdef USING_QUANTLIB
+//     // Conversions from/to a QuantLib Date.
+//     RcppDate(Date dateQL);
+//     operator Date() const;
+// #endif
 };
 
 class RcppDatetime {

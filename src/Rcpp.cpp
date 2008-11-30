@@ -1,4 +1,4 @@
-// -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; ; tab-width: 8 -*-
+// -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 8 -*-
 //
 // Rcpp.cpp: Part of the R/C++ interface class library, Version 5.0
 //
@@ -742,37 +742,11 @@ SEXP RcppResultSet::getReturnList() {
     return rl;
 }
 
-#ifdef USING_QUANTLIB
-
-// Conversion from QuantLib Date to RcppDate.
-RcppDate::RcppDate(Date dateQL) {
-    day = (int)dateQL.dayOfMonth();
-    month = (int)dateQL.month();
-    year  = (int)dateQL.year();
-    mdy2jdn();
-}
-
-// Conversion from RcppDate to QuantLib Date.
-RcppDate::operator Date() const {
-    Date d(day, (Month)month, year);
-    return d;
-}
-
-// Print a QuantLib Date.
-ostringstream& operator<<(ostringstream& os, const Date& d) {
-    os << d.month() << " " << d.weekday() << ", " << d.year();
-    return os;
-}
-
-#endif
-
 // Print an RcppDate.
 ostream& operator<<(ostream& os, const RcppDate& date) {
     os << date.getYear() << "-" << date.getMonth() << "-" << date.getDay();
     return os;
 }
-
-#ifdef RCPP_DATE_OPS
 
 // A few basic date operations.
 RcppDate operator+(const RcppDate& date, int offset) {
@@ -806,10 +780,11 @@ bool  operator==(const RcppDate &date1, const RcppDate& date2) {
     return date1.jdn == date2.jdn;
 }
 
-#endif
-
 // Offset used to convert from R date representation to Julian day number.
 const int RcppDate::Jan1970Offset = 2440588;
+
+// Offset used to convert between R / Unix date of Jan 1, 1970 and the QL base date
+const int RcppDate::QLtoJan1970Offset = 25569; 
 
 // The Julian day number (jdn) is the number of days since Monday,
 // Jan 1, 4713BC (year = -4712). Here 1BC is year 0, 2BC is year -1, etc.
