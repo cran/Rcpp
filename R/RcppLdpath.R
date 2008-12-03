@@ -19,7 +19,7 @@ RcppLdFlags <- function(static=FALSE) {
     if (.Platform$OS.type == "unix") {
         if (length(grep("^linux",R.version$os))) {
             if (static==FALSE) {		## on Linux with dyn. linking, use rpath too
-                flags <- paste("-lRcpp -Wl,-rpath,", rcppdir, sep="")
+                flags <- paste(flags, " -Wl,-rpath,", rcppdir, sep="")
             }
         }
     }

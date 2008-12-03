@@ -1,6 +1,12 @@
+2008-12-02  Dirk Eddelbuettel  <edd@debian.org>
+
+	* Release 0.6.2
+	
+	* R/RcppLdPath.R: Correct output for the default Linux case
+
 2008-11-30  Dirk Eddelbuettel  <edd@debian.org>
 
-	* Release 0.6.1 
+	* Release 0.6.1
 
 	* src/Makevars: Added, replacing src/Makefile: thanks to Simon for a
 	rewrite that provides OS X support
@@ -9,7 +15,7 @@
 
 	* src/Rcpp.{cpp,h}: Removed #ifdef statements related to QuantLib and
 	Date ops as we no longer need to split this off -- one build for all
-	uses; also added another date offset for the difference between the 
+	uses; also added another date offset for the difference between the
 	Unix epoch of Jan 1, 1970 and what certain spreadsheets use (which is
 	what QuantLib) follows.  With this change, Rcpp is completely
 	decoupled from QuantLib headers, yet can be used from QuantLib 0.2.10
@@ -20,7 +26,7 @@
 	directory path, and RcppLdFlags() to return arguments, including the
 	optional rpath settings on Linux
 
-	* R/RcppExample.R: Added new example 'RcppVectorExample()', extended 
+	* R/RcppExample.R: Added new example 'RcppVectorExample()', extended
 	  default print method for examples
 
 	* man/Rcpp-package.Rd: Expanded / updated documentation of package
