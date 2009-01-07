@@ -18,12 +18,11 @@ USERDIR =	../inst/lib
 userLibrary: 	$(USERLIB) $(USERLIBST)
 		-@if test ! -e $(USERDIR)$(R_ARCH); then mkdir -p $(USERDIR)$(R_ARCH); fi
 		cp $(USERLIB) $(USERDIR)$(R_ARCH)
-		rm $(USERLIB) 
 		cp Rcpp.h $(USERDIR)
 		cp $(USERLIBST) $(USERDIR)$(R_ARCH)
+		rm $(USERLIB) $(USERLIBST)
 
 $(USERLIB): 	Rcpp.o
-		$(SHLIB_CXXLD) -o $(USERLIB) $^ $(SHLIB_CXXLDFLAGS) $(ALL_LIBS)
 		$(SHLIB_CXXLD) -o $(USERLIB) $^ $(SHLIB_CXXLDFLAGS) $(ALL_LIBS)
 		@if test -e "/usr/bin/install_name_tool"; then /usr/bin/install_name_tool -id $(R_PACKAGE_DIR)/lib$(R_ARCH)/$(USERLIB) $(USERLIB); fi
 

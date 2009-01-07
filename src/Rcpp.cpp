@@ -411,6 +411,50 @@ template class RcppVector<double>;
 template class RcppMatrix<int>;
 template class RcppMatrix<double>;
 
+template <typename T>
+RcppVectorView<T>::RcppVectorView(SEXP vec) {
+    if (!isNumeric(vec) || isMatrix(vec) || isLogical(vec))
+	throw std::range_error("RcppVectorView: invalid numeric vector in constructor");
+    len = length(vec);
+    if (isInteger(vec)) v = (T *)(INTEGER(vec));
+    else if (isReal(vec)) v = (T *)(REAL(vec));
+}
+
+template class RcppVectorView<int>;
+template class RcppVectorView<double>;
+
+template <typename T>
+RcppMatrixView<T>::RcppMatrixView(SEXP mat) {
+    if (!isNumeric(mat) || !isMatrix(mat))
+	throw std::range_error("RcppMatrixView: invalid numeric matrix in constructor");
+    // Get matrix dimensions
+    SEXP dimAttr = getAttrib(mat, R_DimSymbol);
+    d1 = INTEGER(dimAttr)[0];
+    d2 = INTEGER(dimAttr)[1];
+    if (isInteger(mat)) a = (T *)(INTEGER(mat));
+    else if (isReal(mat)) a = (T *)(REAL(mat));
+}
+
+template class RcppMatrixView<int>;
+template class RcppMatrixView<double>;
+
+RcppStringVectorView::RcppStringVectorView(SEXP vec) {
+    int i;
+    if (isMatrix(vec) || isLogical(vec))
+	throw std::range_error("RcppStringVector: invalid numeric vector in constructor");
+    if (!isString(vec))
+	throw std::range_error("RcppStringVector: invalid string");
+    int len = length(vec);
+    if (len == 0)
+	throw std::range_error("RcppStringVector: null vector in constructor");
+    //v = new (char *)[len];
+    //for (i = 0; i < len; i++)
+    //	v[i] = string(CHAR(STRING_ELT(vec,i)));
+    length = len;
+    v = vec;
+}
+
+
 void RcppResultSet::add(string name, RcppDate& date) {
     SEXP value = PROTECT(allocVector(REALSXP, 1));
     numProtected++;

@@ -69,15 +69,15 @@
 
   \preformatted{
 # compile flag providing header directory containing Rcpp.h
-PKG_CXXFLAGS=`Rscript -e 'cat(Rcpp:::RcppCxxFlags())'`
+PKG_CXXFLAGS=`Rscript -e 'Rcpp:::CxxFlags()'`
 
 # link flag providing libary as well as path to library, and optionally rpath
-PKG_LIBS=`Rscript -e 'cat(Rcpp:::RcppLdFlags())'`
+PKG_LIBS=`Rscript -e 'Rcpp:::LdFlags()'`
 }
 
   Alternatively, one can also encode the test for these variables using
   the \code{GNU autoconf} system. The \code{RQuantLib} package
-  provides an example of that.
+  provides an example of that.  
 
   Lastly, on Linux, and during development, it can convenient to simply
   provide these files via soft links (or copies) from the usual locations like
