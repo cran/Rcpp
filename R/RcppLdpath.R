@@ -30,3 +30,8 @@ RcppLdFlags <- function(static=FALSE) {
 RcppCxxFlags <- function() {
     paste("-I", RcppLdPath(), sep="")
 }
+
+## Shorter names, and call cat() directly
+CxxFlags <- function() cat(RcppCxxFlags())
+LdFlags <- function() cat(RcppLdFlags())
+

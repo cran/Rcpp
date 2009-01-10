@@ -462,6 +462,64 @@ private:
     T **a;
 };
 
+
+
+
+template <typename T>
+class RcppVectorView {
+public:
+    RcppVectorView(SEXP vec);
+    inline int size() const { return len; }
+    inline T operator()(int i) const {
+	if (i < 0 || i >= len) {
+	    std::ostringstream oss;
+	    oss << "RcppVectorView: subscript out of range: " << i;
+	    throw std::range_error(oss.str());
+	}
+	return v[i];
+    }
+private:
+    int len;
+    T *v;
+};
+
+template <typename T>
+class RcppMatrixView {
+public:
+    RcppMatrixView(SEXP mat);
+    inline int dim1() const { return d1; }
+    inline int dim2() const { return d2; }
+    inline T operator()(int i, int j) const {
+	if (i < 0 || i >= d1 || j < 0 || j >= d2) {
+	    std::ostringstream oss;
+	    oss << "RcppMatrixView: subscripts out of range: " << i << ", " << j;
+	    throw std::range_error(oss.str());
+	}
+	return a[i + d1 * j];
+    }
+private:
+    int d1, d2;
+    T *a;
+};
+
+class RcppStringVectorView {
+public:
+    RcppStringVectorView(SEXP vec);
+    inline const char *operator()(int i) {
+	if (i < 0 || i >= length) {
+	    std::ostringstream oss;
+	    oss << "RcppStringVector: subscript out of range: " << i;
+	    throw std::range_error(oss.str());
+	}
+	return CHAR(STRING_ELT(v,i));
+    }
+    int size() { return length; }
+private:
+    SEXP v;
+    int length;
+};
+
+
 class RcppFunction {
 public:
     RcppFunction(SEXP fn) : fn(fn) { 

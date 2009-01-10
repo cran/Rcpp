@@ -1,0 +1,48 @@
+This is the Debian GNU/Linux r-cran-rcpp package of Rcpp, an
+R / C++ interface package. Rcpp was written by Dominick Samperi
+and Dirk Eddelbuettel.
+
+This package was created by Dirk Eddelbuettel <edd@debian.org>.
+The sources were downloaded from the main CRAN site
+	http://cran.r-project.org/src/contrib/
+and are also available from all CRAN mirrors as e.g.
+	http://cran.us.r-project.org/src/contrib/
+as well the R-Forge SVN host at 
+	http://r-forge.r-project.org/projects/rcpp/
+via
+   	svn://svn.r-forge.r-project.org/svnroot/rcpp
+
+
+The package was renamed from its upstream name 'Rcpp' to
+'r-cran-rcpp' to fit the pattern of CRAN (and non-CRAN) packages for
+R.
+
+Copyright (C) 2005 - 2006 Dominick Sameri
+Copyright (C) 2008        Dirk Eddelbuettel
+
+Portions Copyright (C) 2008 Simon Urbanek
+
+License: LGPL-2.1
+
+On a Debian GNU/Linux system, the LGPL license (version 2.1) is included
+in the file /usr/share/common-licenses/LGPL-2.1.
+
+For reference, the upstream DESCRIPTION file is included below:
+
+   Package: Rcpp
+   Title: Rcpp R/C++ interface library and package template
+   Version: 0.6.2
+   Date: $Date: 2008-12-02 21:43:07 -0600 (Tue, 02 Dec 2008) $
+   Author: Dominick Samperi and Dirk Eddelbuettel
+   Maintainer: Dirk Eddelbuettel <edd@debian.org>
+   Description: R/C++ interface class library and package template. 
+    The Rcpp library maps data types betweeen R and C++, 
+    and includes support for R types real, integer, character, 
+    vector, matrix, Date, datetime (i.e. POSIXct) data frame, 
+    and function. It supports calling R functions from C++. 
+    See the package documentation file doc/RcppAPI.pdf for more 
+    information, including details on building binary R packages 
+    for Windows.
+   Depends: R (>= 2.0.0)
+   SystemRequirements: None
+   License: LGPL (>= 2.1)

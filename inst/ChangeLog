@@ -1,12 +1,29 @@
+2009-01-09  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION: Release 0.6.3
+
+	* R/RcppLdpath.R: Also defined shorter functions CxxFlags() and
+	  LdFlags() which cat() the longer forms RcppCxxFlags() and
+	  RcppLdFlags() to further simplify use via litter or Rscript in
+	  Makefile or Makevars
+
+	* man/Rcpp-package.Rd: Mention short form CxxFlags() and LdFlags()
+
+	* src/Makevars: Applied another build correction for OS X suggested 
+	  by Simon Urbanek
+
+	* src/Rcpp.{cpp,h}: Added 'view-only' classes RcppVectorView,
+	  RcppMatrixView and RcppStringVectorView contributed by David Reiss
+
 2008-12-02  Dirk Eddelbuettel  <edd@debian.org>
 
-	* Release 0.6.2
-	
+	* DESCRIPTION: Release 0.6.2
+
 	* R/RcppLdPath.R: Correct output for the default Linux case
 
 2008-11-30  Dirk Eddelbuettel  <edd@debian.org>
 
-	* Release 0.6.1
+	* DESCRIPTION: Release 0.6.1
 
 	* src/Makevars: Added, replacing src/Makefile: thanks to Simon for a
 	rewrite that provides OS X support

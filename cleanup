@@ -1,10 +1,12 @@
-rm -f confdefs.h config.log config.status
-rm -f src/*.o src/*.so src/*.a
-rm -f RcppSrc/*.o RcppSrc/*.a inst/Rcpp-version.txt
-rm -f inst/lib/libRcpp.so inst/lib/Rcpp.h inst/lib/libRcpp.a 
-rm -f inst/doc/*.cpp inst/doc/*.hpp inst/doc/*.R 
-rm -f inst/doc/*.Rd inst/doc/*.aux inst/doc/*.log inst/doc/*.tex
-rm -rf inst/doc/auto
-rm -rf autom4te.cache
+
+rm -f confdefs.h config.log config.status \
+	src/*.o src/*.so src/*.a \
+	RcppSrc/*.o RcppSrc/*.a inst/Rcpp-version.txt \
+	inst/lib/libRcpp.so inst/lib/Rcpp.h inst/lib/libRcpp.a \
+	inst/doc/*.cpp inst/doc/*.hpp inst/doc/*.R \
+	inst/doc/*.Rd inst/doc/*.aux inst/doc/*.log inst/doc/*.tex \
+	inst/doc/auto \
+	autom4te.cache
+test -d inst/lib && rmdir inst/lib
 find . -name \*~ -exec rm {} \;
 find . -name \*.flc -exec rm {} \;

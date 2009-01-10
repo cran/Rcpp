@@ -1,0 +1,17 @@
+Source: rcpp
+Section: math
+Priority: optional
+Maintainer: Dirk Eddelbuettel <edd@debian.org>
+Build-Depends: debhelper (>= 5.0.0), r-base-dev (>= 2.8.0), cdbs
+Standards-Version: 3.8.0
+Homepage: http://dirk.eddelbuettel.com/code/rcpp.html
+
+Package: r-cran-rcpp
+Architecture: any
+Depends: ${shlibs:Depends}, r-base-core (>= 2.8.0)
+Description: GNU R / C++ interface classes and examples
+ The Rcpp package map data types betweeen R and C++, 
+ and includes support for R types real, integer, character, 
+ vector, matrix, Date, datetime (i.e. POSIXct) data frame, 
+ and function. It supports calling R functions from C++. 
+
