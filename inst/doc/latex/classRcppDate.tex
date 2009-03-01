@@ -1,0 +1,364 @@
+\hypertarget{classRcppDate}{
+\section{RcppDate Class Reference}
+\label{classRcppDate}\index{RcppDate@{RcppDate}}
+}
+{\tt \#include $<$Rcpp.h$>$}
+
+\subsection*{Public Member Functions}
+\begin{CompactItemize}
+\item 
+\hyperlink{classRcppDate_4f0f6ae9e9e284fd058d615bcd78d6f9}{RcppDate} ()
+\item 
+\hyperlink{classRcppDate_21adf306ddf84cf792f888d220bb9a3f}{RcppDate} (int Rjdn)
+\item 
+\hyperlink{classRcppDate_8b96145664d63ec84267870787025fa4}{RcppDate} (int month\_\-, int day\_\-, int year\_\-)
+\item 
+int \hyperlink{classRcppDate_16ca2d57a2c4047b027c8b8b0db5184f}{getMonth} () const 
+\item 
+int \hyperlink{classRcppDate_20efbcdddceac536425407b3169fff5a}{getDay} () const 
+\item 
+int \hyperlink{classRcppDate_79a7696fbce7b448ab545ce35c40811b}{getYear} () const 
+\item 
+int \hyperlink{classRcppDate_71332de00640903fe99ce13a37fd9f67}{getJDN} () const 
+\end{CompactItemize}
+\subsection*{Static Public Attributes}
+\begin{CompactItemize}
+\item 
+static const int \hyperlink{classRcppDate_44b0643ab19489a0fb9700d25f504902}{Jan1970Offset} = 2440588
+\item 
+static const int \hyperlink{classRcppDate_06b285d4a04c5225a067e76d4fbfd2d4}{QLtoJan1970Offset} = 25569
+\end{CompactItemize}
+\subsection*{Private Member Functions}
+\begin{CompactItemize}
+\item 
+void \hyperlink{classRcppDate_aaa626a51e3b2eb4978caf5dcdf9df70}{mdy2jdn} ()
+\item 
+void \hyperlink{classRcppDate_ca9e6ccbf5bf76e9bba92f2a3083c135}{jdn2mdy} ()
+\end{CompactItemize}
+\subsection*{Private Attributes}
+\begin{CompactItemize}
+\item 
+int \hyperlink{classRcppDate_00bf3ece7320d63aee4f6b6df82b4f63}{month}
+\item 
+int \hyperlink{classRcppDate_9e6aec176d9432829a304550eadd4205}{day}
+\item 
+int \hyperlink{classRcppDate_8881f654ebf42cdf71fdcfce402f0cad}{year}
+\item 
+int \hyperlink{classRcppDate_b883f696379dd06e39c6c9b3502a2164}{jdn}
+\end{CompactItemize}
+\subsection*{Friends}
+\begin{CompactItemize}
+\item 
+\hyperlink{classRcppDate}{RcppDate} \hyperlink{classRcppDate_dd881a27c2b8e36897a59bca1d04585f}{operator+} (const \hyperlink{classRcppDate}{RcppDate} \&date, int offset)
+\item 
+int \hyperlink{classRcppDate_49241820910c75948937f70f76c0849d}{operator-} (const \hyperlink{classRcppDate}{RcppDate} \&date1, const \hyperlink{classRcppDate}{RcppDate} \&date2)
+\item 
+bool \hyperlink{classRcppDate_f852d3a1ad52776201f385be5ea18c71}{operator$<$} (const \hyperlink{classRcppDate}{RcppDate} \&date1, const \hyperlink{classRcppDate}{RcppDate} \&date2)
+\item 
+bool \hyperlink{classRcppDate_80164a177c098301c1d509fdab702567}{operator$>$} (const \hyperlink{classRcppDate}{RcppDate} \&date1, const \hyperlink{classRcppDate}{RcppDate} \&date2)
+\item 
+bool \hyperlink{classRcppDate_d6c1518c6eb9480665f532dbcc6dd2d5}{operator==} (const \hyperlink{classRcppDate}{RcppDate} \&date1, const \hyperlink{classRcppDate}{RcppDate} \&date2)
+\item 
+bool \hyperlink{classRcppDate_f7a217e1f5d4a91e2d86fc4da858a6c2}{operator$>$=} (const \hyperlink{classRcppDate}{RcppDate} \&date1, const \hyperlink{classRcppDate}{RcppDate} \&date2)
+\item 
+bool \hyperlink{classRcppDate_594132f5ef49b4f477d32289ced4df83}{operator$<$=} (const \hyperlink{classRcppDate}{RcppDate} \&date1, const \hyperlink{classRcppDate}{RcppDate} \&date2)
+\item 
+std::ostream \& \hyperlink{classRcppDate_62c075d47528a48e5fb57c1855c4d71c}{operator$<$$<$} (std::ostream \&os, const \hyperlink{classRcppDate}{RcppDate} \&date)
+\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 47 of file Rcpp.h.
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classRcppDate_4f0f6ae9e9e284fd058d615bcd78d6f9}{
+\index{RcppDate@{RcppDate}!RcppDate@{RcppDate}}
+\index{RcppDate@{RcppDate}!RcppDate@{RcppDate}}
+\subsubsection[RcppDate]{\setlength{\rightskip}{0pt plus 5cm}RcppDate::RcppDate ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classRcppDate_4f0f6ae9e9e284fd058d615bcd78d6f9}
+
+
+
+
+Definition at line 57 of file Rcpp.h.
+
+References day, mdy2jdn(), month, and year.
+
+Here is the call graph for this function:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=145pt]{classRcppDate_4f0f6ae9e9e284fd058d615bcd78d6f9_cgraph}
+\end{center}
+\end{figure}
+\hypertarget{classRcppDate_21adf306ddf84cf792f888d220bb9a3f}{
+\index{RcppDate@{RcppDate}!RcppDate@{RcppDate}}
+\index{RcppDate@{RcppDate}!RcppDate@{RcppDate}}
+\subsubsection[RcppDate]{\setlength{\rightskip}{0pt plus 5cm}RcppDate::RcppDate (int {\em Rjdn})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classRcppDate_21adf306ddf84cf792f888d220bb9a3f}
+
+
+
+
+Definition at line 58 of file Rcpp.h.
+
+References Jan1970Offset, jdn, and jdn2mdy().
+
+Here is the call graph for this function:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=145pt]{classRcppDate_21adf306ddf84cf792f888d220bb9a3f_cgraph}
+\end{center}
+\end{figure}
+\hypertarget{classRcppDate_8b96145664d63ec84267870787025fa4}{
+\index{RcppDate@{RcppDate}!RcppDate@{RcppDate}}
+\index{RcppDate@{RcppDate}!RcppDate@{RcppDate}}
+\subsubsection[RcppDate]{\setlength{\rightskip}{0pt plus 5cm}RcppDate::RcppDate (int {\em month\_\-}, \/  int {\em day\_\-}, \/  int {\em year\_\-})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classRcppDate_8b96145664d63ec84267870787025fa4}
+
+
+
+
+Definition at line 59 of file Rcpp.h.
+
+References mdy2jdn().
+
+Here is the call graph for this function:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=145pt]{classRcppDate_8b96145664d63ec84267870787025fa4_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classRcppDate_aaa626a51e3b2eb4978caf5dcdf9df70}{
+\index{RcppDate@{RcppDate}!mdy2jdn@{mdy2jdn}}
+\index{mdy2jdn@{mdy2jdn}!RcppDate@{RcppDate}}
+\subsubsection[mdy2jdn]{\setlength{\rightskip}{0pt plus 5cm}void RcppDate::mdy2jdn ()\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\label{classRcppDate_aaa626a51e3b2eb4978caf5dcdf9df70}
+
+
+
+
+Definition at line 846 of file Rcpp.cpp.
+
+References day, jdn, month, and year.
+
+Referenced by RcppDate().\hypertarget{classRcppDate_ca9e6ccbf5bf76e9bba92f2a3083c135}{
+\index{RcppDate@{RcppDate}!jdn2mdy@{jdn2mdy}}
+\index{jdn2mdy@{jdn2mdy}!RcppDate@{RcppDate}}
+\subsubsection[jdn2mdy]{\setlength{\rightskip}{0pt plus 5cm}void RcppDate::jdn2mdy ()\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\label{classRcppDate_ca9e6ccbf5bf76e9bba92f2a3083c135}
+
+
+
+
+Definition at line 856 of file Rcpp.cpp.
+
+References day, jdn, month, and year.
+
+Referenced by operator+(), and RcppDate().\hypertarget{classRcppDate_16ca2d57a2c4047b027c8b8b0db5184f}{
+\index{RcppDate@{RcppDate}!getMonth@{getMonth}}
+\index{getMonth@{getMonth}!RcppDate@{RcppDate}}
+\subsubsection[getMonth]{\setlength{\rightskip}{0pt plus 5cm}int RcppDate::getMonth () const\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classRcppDate_16ca2d57a2c4047b027c8b8b0db5184f}
+
+
+
+
+Definition at line 66 of file Rcpp.h.
+
+References month.
+
+Referenced by operator$<$$<$(), Rcpp\_\-Example(), and RcppParamsExample().\hypertarget{classRcppDate_20efbcdddceac536425407b3169fff5a}{
+\index{RcppDate@{RcppDate}!getDay@{getDay}}
+\index{getDay@{getDay}!RcppDate@{RcppDate}}
+\subsubsection[getDay]{\setlength{\rightskip}{0pt plus 5cm}int RcppDate::getDay () const\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classRcppDate_20efbcdddceac536425407b3169fff5a}
+
+
+
+
+Definition at line 67 of file Rcpp.h.
+
+References day.
+
+Referenced by operator$<$$<$(), Rcpp\_\-Example(), and RcppParamsExample().\hypertarget{classRcppDate_79a7696fbce7b448ab545ce35c40811b}{
+\index{RcppDate@{RcppDate}!getYear@{getYear}}
+\index{getYear@{getYear}!RcppDate@{RcppDate}}
+\subsubsection[getYear]{\setlength{\rightskip}{0pt plus 5cm}int RcppDate::getYear () const\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classRcppDate_79a7696fbce7b448ab545ce35c40811b}
+
+
+
+
+Definition at line 68 of file Rcpp.h.
+
+References year.
+
+Referenced by operator$<$$<$(), Rcpp\_\-Example(), and RcppParamsExample().\hypertarget{classRcppDate_71332de00640903fe99ce13a37fd9f67}{
+\index{RcppDate@{RcppDate}!getJDN@{getJDN}}
+\index{getJDN@{getJDN}!RcppDate@{RcppDate}}
+\subsubsection[getJDN]{\setlength{\rightskip}{0pt plus 5cm}int RcppDate::getJDN () const\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classRcppDate_71332de00640903fe99ce13a37fd9f67}
+
+
+
+
+Definition at line 69 of file Rcpp.h.
+
+References jdn.
+
+Referenced by RcppResultSet::add(), RcppFunction::appendToRList(), and ColDatum::getDateRCode().
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{classRcppDate_dd881a27c2b8e36897a59bca1d04585f}{
+\index{RcppDate@{RcppDate}!operator+@{operator+}}
+\index{operator+@{operator+}!RcppDate@{RcppDate}}
+\subsubsection[operator+]{\setlength{\rightskip}{0pt plus 5cm}{\bf RcppDate} operator+ (const {\bf RcppDate} \& {\em date}, \/  int {\em offset})\hspace{0.3cm}{\tt  \mbox{[}friend\mbox{]}}}}
+\label{classRcppDate_dd881a27c2b8e36897a59bca1d04585f}
+
+
+
+
+Definition at line 796 of file Rcpp.cpp.\hypertarget{classRcppDate_49241820910c75948937f70f76c0849d}{
+\index{RcppDate@{RcppDate}!operator-@{operator-}}
+\index{operator-@{operator-}!RcppDate@{RcppDate}}
+\subsubsection[operator-]{\setlength{\rightskip}{0pt plus 5cm}int operator- (const {\bf RcppDate} \& {\em date1}, \/  const {\bf RcppDate} \& {\em date2})\hspace{0.3cm}{\tt  \mbox{[}friend\mbox{]}}}}
+\label{classRcppDate_49241820910c75948937f70f76c0849d}
+
+
+
+
+Definition at line 803 of file Rcpp.cpp.\hypertarget{classRcppDate_f852d3a1ad52776201f385be5ea18c71}{
+\index{RcppDate@{RcppDate}!operator$<$@{operator$<$}}
+\index{operator$<$@{operator$<$}!RcppDate@{RcppDate}}
+\subsubsection[operator$<$]{\setlength{\rightskip}{0pt plus 5cm}bool operator$<$ (const {\bf RcppDate} \& {\em date1}, \/  const {\bf RcppDate} \& {\em date2})\hspace{0.3cm}{\tt  \mbox{[}friend\mbox{]}}}}
+\label{classRcppDate_f852d3a1ad52776201f385be5ea18c71}
+
+
+
+
+Definition at line 807 of file Rcpp.cpp.\hypertarget{classRcppDate_80164a177c098301c1d509fdab702567}{
+\index{RcppDate@{RcppDate}!operator$>$@{operator$>$}}
+\index{operator$>$@{operator$>$}!RcppDate@{RcppDate}}
+\subsubsection[operator$>$]{\setlength{\rightskip}{0pt plus 5cm}bool operator$>$ (const {\bf RcppDate} \& {\em date1}, \/  const {\bf RcppDate} \& {\em date2})\hspace{0.3cm}{\tt  \mbox{[}friend\mbox{]}}}}
+\label{classRcppDate_80164a177c098301c1d509fdab702567}
+
+
+
+
+Definition at line 811 of file Rcpp.cpp.\hypertarget{classRcppDate_d6c1518c6eb9480665f532dbcc6dd2d5}{
+\index{RcppDate@{RcppDate}!operator==@{operator==}}
+\index{operator==@{operator==}!RcppDate@{RcppDate}}
+\subsubsection[operator==]{\setlength{\rightskip}{0pt plus 5cm}bool operator== (const {\bf RcppDate} \& {\em date1}, \/  const {\bf RcppDate} \& {\em date2})\hspace{0.3cm}{\tt  \mbox{[}friend\mbox{]}}}}
+\label{classRcppDate_d6c1518c6eb9480665f532dbcc6dd2d5}
+
+
+
+
+Definition at line 823 of file Rcpp.cpp.\hypertarget{classRcppDate_f7a217e1f5d4a91e2d86fc4da858a6c2}{
+\index{RcppDate@{RcppDate}!operator$>$=@{operator$>$=}}
+\index{operator$>$=@{operator$>$=}!RcppDate@{RcppDate}}
+\subsubsection[operator$>$=]{\setlength{\rightskip}{0pt plus 5cm}bool operator$>$= (const {\bf RcppDate} \& {\em date1}, \/  const {\bf RcppDate} \& {\em date2})\hspace{0.3cm}{\tt  \mbox{[}friend\mbox{]}}}}
+\label{classRcppDate_f7a217e1f5d4a91e2d86fc4da858a6c2}
+
+
+
+
+Definition at line 815 of file Rcpp.cpp.\hypertarget{classRcppDate_594132f5ef49b4f477d32289ced4df83}{
+\index{RcppDate@{RcppDate}!operator$<$=@{operator$<$=}}
+\index{operator$<$=@{operator$<$=}!RcppDate@{RcppDate}}
+\subsubsection[operator$<$=]{\setlength{\rightskip}{0pt plus 5cm}bool operator$<$= (const {\bf RcppDate} \& {\em date1}, \/  const {\bf RcppDate} \& {\em date2})\hspace{0.3cm}{\tt  \mbox{[}friend\mbox{]}}}}
+\label{classRcppDate_594132f5ef49b4f477d32289ced4df83}
+
+
+
+
+Definition at line 819 of file Rcpp.cpp.\hypertarget{classRcppDate_62c075d47528a48e5fb57c1855c4d71c}{
+\index{RcppDate@{RcppDate}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!RcppDate@{RcppDate}}
+\subsubsection[operator$<$$<$]{\setlength{\rightskip}{0pt plus 5cm}std::ostream\& operator$<$$<$ (std::ostream \& {\em os}, \/  const {\bf RcppDate} \& {\em date})\hspace{0.3cm}{\tt  \mbox{[}friend\mbox{]}}}}
+\label{classRcppDate_62c075d47528a48e5fb57c1855c4d71c}
+
+
+
+
+Definition at line 790 of file Rcpp.cpp.
+
+\subsection{Member Data Documentation}
+\hypertarget{classRcppDate_00bf3ece7320d63aee4f6b6df82b4f63}{
+\index{RcppDate@{RcppDate}!month@{month}}
+\index{month@{month}!RcppDate@{RcppDate}}
+\subsubsection[month]{\setlength{\rightskip}{0pt plus 5cm}int {\bf RcppDate::month}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\label{classRcppDate_00bf3ece7320d63aee4f6b6df82b4f63}
+
+
+
+
+Definition at line 51 of file Rcpp.h.
+
+Referenced by getMonth(), jdn2mdy(), mdy2jdn(), operator+(), and RcppDate().\hypertarget{classRcppDate_9e6aec176d9432829a304550eadd4205}{
+\index{RcppDate@{RcppDate}!day@{day}}
+\index{day@{day}!RcppDate@{RcppDate}}
+\subsubsection[day]{\setlength{\rightskip}{0pt plus 5cm}int {\bf RcppDate::day}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\label{classRcppDate_9e6aec176d9432829a304550eadd4205}
+
+
+
+
+Definition at line 51 of file Rcpp.h.
+
+Referenced by getDay(), jdn2mdy(), mdy2jdn(), operator+(), and RcppDate().\hypertarget{classRcppDate_8881f654ebf42cdf71fdcfce402f0cad}{
+\index{RcppDate@{RcppDate}!year@{year}}
+\index{year@{year}!RcppDate@{RcppDate}}
+\subsubsection[year]{\setlength{\rightskip}{0pt plus 5cm}int {\bf RcppDate::year}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\label{classRcppDate_8881f654ebf42cdf71fdcfce402f0cad}
+
+
+
+
+Definition at line 51 of file Rcpp.h.
+
+Referenced by getYear(), jdn2mdy(), mdy2jdn(), operator+(), and RcppDate().\hypertarget{classRcppDate_b883f696379dd06e39c6c9b3502a2164}{
+\index{RcppDate@{RcppDate}!jdn@{jdn}}
+\index{jdn@{jdn}!RcppDate@{RcppDate}}
+\subsubsection[jdn]{\setlength{\rightskip}{0pt plus 5cm}int {\bf RcppDate::jdn}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\label{classRcppDate_b883f696379dd06e39c6c9b3502a2164}
+
+
+
+
+Definition at line 52 of file Rcpp.h.
+
+Referenced by getJDN(), jdn2mdy(), mdy2jdn(), operator+(), operator-(), operator$<$(), operator$<$=(), operator==(), operator$>$(), operator$>$=(), and RcppDate().\hypertarget{classRcppDate_44b0643ab19489a0fb9700d25f504902}{
+\index{RcppDate@{RcppDate}!Jan1970Offset@{Jan1970Offset}}
+\index{Jan1970Offset@{Jan1970Offset}!RcppDate@{RcppDate}}
+\subsubsection[Jan1970Offset]{\setlength{\rightskip}{0pt plus 5cm}const int {\bf RcppDate::Jan1970Offset} = 2440588\hspace{0.3cm}{\tt  \mbox{[}static\mbox{]}}}}
+\label{classRcppDate_44b0643ab19489a0fb9700d25f504902}
+
+
+
+
+Definition at line 55 of file Rcpp.h.
+
+Referenced by RcppResultSet::add(), RcppFunction::appendToRList(), ColDatum::getDateRCode(), and RcppDate().\hypertarget{classRcppDate_06b285d4a04c5225a067e76d4fbfd2d4}{
+\index{RcppDate@{RcppDate}!QLtoJan1970Offset@{QLtoJan1970Offset}}
+\index{QLtoJan1970Offset@{QLtoJan1970Offset}!RcppDate@{RcppDate}}
+\subsubsection[QLtoJan1970Offset]{\setlength{\rightskip}{0pt plus 5cm}const int {\bf RcppDate::QLtoJan1970Offset} = 25569\hspace{0.3cm}{\tt  \mbox{[}static\mbox{]}}}}
+\label{classRcppDate_06b285d4a04c5225a067e76d4fbfd2d4}
+
+
+
+
+Definition at line 56 of file Rcpp.h.
+
+The documentation for this class was generated from the following files:\begin{CompactItemize}
+\item 
+src/\hyperlink{Rcpp_8h}{Rcpp.h}\item 
+src/\hyperlink{Rcpp_8cpp}{Rcpp.cpp}\end{CompactItemize}

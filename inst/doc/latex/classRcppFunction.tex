@@ -1,0 +1,316 @@
+\hypertarget{classRcppFunction}{
+\section{RcppFunction Class Reference}
+\label{classRcppFunction}\index{RcppFunction@{RcppFunction}}
+}
+{\tt \#include $<$Rcpp.h$>$}
+
+Inheritance diagram for RcppFunction:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=111pt]{classRcppFunction__inherit__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{CompactItemize}
+\item 
+\hyperlink{classRcppFunction_6fc6fca8d052170d86240c784f54261a}{RcppFunction} (SEXP \hyperlink{classRcppFunction_a6b5966224b8b7d158be6cdfc3612063}{fn})
+\item 
+\hyperlink{classRcppFunction_e155cf5dd33cb110e9a89a59c7bff6e9}{$\sim$RcppFunction} ()
+\item 
+SEXP \hyperlink{classRcppFunction_0cc9d29ab7db552494dddefaa78e6578}{listCall} ()
+\item 
+SEXP \hyperlink{classRcppFunction_c57c514c761609892ff553434e134446}{vectorCall} ()
+\item 
+void \hyperlink{classRcppFunction_482df5aa5e2a98d52c9a79cf3ab31c67}{setRVector} (std::vector$<$ double $>$ \&v)
+\item 
+void \hyperlink{classRcppFunction_f3dbcf8dcfbdfc49ef566b5efd0ad978}{setRListSize} (int size)
+\item 
+void \hyperlink{classRcppFunction_0df1a8ff093e21a2a7c6fc80d6645c7e}{appendToRList} (std::string name, double value)
+\item 
+void \hyperlink{classRcppFunction_fce449ac5d89b32e0e0b9f584278a672}{appendToRList} (std::string name, int value)
+\item 
+void \hyperlink{classRcppFunction_861ba7ae5c09acf31a034472b5a47728}{appendToRList} (std::string name, std::string value)
+\item 
+void \hyperlink{classRcppFunction_9aab0b3accb81d90fb813acf3bf4c49d}{appendToRList} (std::string name, \hyperlink{classRcppDate}{RcppDate} \&date)
+\item 
+void \hyperlink{classRcppFunction_0be4ab064287c2d3a5c3b883a1707d70}{appendToRList} (std::string name, \hyperlink{classRcppDatetime}{RcppDatetime} \&datetime)
+\item 
+void \hyperlink{classRcppFunction_689c914636f0f0e86b90da4425c6e6a3}{clearProtectionStack} ()
+\end{CompactItemize}
+\subsection*{Private Attributes}
+\begin{CompactItemize}
+\item 
+SEXP \hyperlink{classRcppFunction_a6b5966224b8b7d158be6cdfc3612063}{fn}
+\item 
+SEXP \hyperlink{classRcppFunction_3b8a2c8441c9791f9fe5bd5273bbceec}{listArg}
+\item 
+SEXP \hyperlink{classRcppFunction_0492c128c0f72cda44e679265b36b50e}{vectorArg}
+\item 
+int \hyperlink{classRcppFunction_c3a42478ffd123f430ba3e09099db6f8}{listSize}
+\item 
+int \hyperlink{classRcppFunction_ce513a92e96b36883b709b5352ea5663}{currListPosn}
+\item 
+int \hyperlink{classRcppFunction_dc777e7d1628ccc4f531a8375f30f385}{numProtected}
+\item 
+std::vector$<$ std::string $>$ \hyperlink{classRcppFunction_bf9e86df5e1a290a5f321e6051f0d2b2}{names}
+\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 524 of file Rcpp.h.
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classRcppFunction_6fc6fca8d052170d86240c784f54261a}{
+\index{RcppFunction@{RcppFunction}!RcppFunction@{RcppFunction}}
+\index{RcppFunction@{RcppFunction}!RcppFunction@{RcppFunction}}
+\subsubsection[RcppFunction]{\setlength{\rightskip}{0pt plus 5cm}RcppFunction::RcppFunction (SEXP {\em fn})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classRcppFunction_6fc6fca8d052170d86240c784f54261a}
+
+
+
+
+Definition at line 526 of file Rcpp.h.
+
+References currListPosn, listArg, listSize, numProtected, and vectorArg.\hypertarget{classRcppFunction_e155cf5dd33cb110e9a89a59c7bff6e9}{
+\index{RcppFunction@{RcppFunction}!$\sim$RcppFunction@{$\sim$RcppFunction}}
+\index{$\sim$RcppFunction@{$\sim$RcppFunction}!RcppFunction@{RcppFunction}}
+\subsubsection[$\sim$RcppFunction]{\setlength{\rightskip}{0pt plus 5cm}RcppFunction::$\sim$RcppFunction ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classRcppFunction_e155cf5dd33cb110e9a89a59c7bff6e9}
+
+
+
+
+Definition at line 534 of file Rcpp.h.
+
+References numProtected.
+
+\subsection{Member Function Documentation}
+\hypertarget{classRcppFunction_0cc9d29ab7db552494dddefaa78e6578}{
+\index{RcppFunction@{RcppFunction}!listCall@{listCall}}
+\index{listCall@{listCall}!RcppFunction@{RcppFunction}}
+\subsubsection[listCall]{\setlength{\rightskip}{0pt plus 5cm}SEXP RcppFunction::listCall ()}}
+\label{classRcppFunction_0cc9d29ab7db552494dddefaa78e6578}
+
+
+
+
+Definition at line 877 of file Rcpp.cpp.
+
+References currListPosn, fn, listArg, listSize, names, and numProtected.
+
+Referenced by MyRListFunc::addOne().\hypertarget{classRcppFunction_c57c514c761609892ff553434e134446}{
+\index{RcppFunction@{RcppFunction}!vectorCall@{vectorCall}}
+\index{vectorCall@{vectorCall}!RcppFunction@{RcppFunction}}
+\subsubsection[vectorCall]{\setlength{\rightskip}{0pt plus 5cm}SEXP RcppFunction::vectorCall ()}}
+\label{classRcppFunction_c57c514c761609892ff553434e134446}
+
+
+
+
+Definition at line 897 of file Rcpp.cpp.
+
+References fn, numProtected, and vectorArg.
+
+Referenced by MyRVectorFunc::getSum().\hypertarget{classRcppFunction_482df5aa5e2a98d52c9a79cf3ab31c67}{
+\index{RcppFunction@{RcppFunction}!setRVector@{setRVector}}
+\index{setRVector@{setRVector}!RcppFunction@{RcppFunction}}
+\subsubsection[setRVector]{\setlength{\rightskip}{0pt plus 5cm}void RcppFunction::setRVector (std::vector$<$ double $>$ \& {\em v})}}
+\label{classRcppFunction_482df5aa5e2a98d52c9a79cf3ab31c67}
+
+
+
+
+Definition at line 909 of file Rcpp.cpp.
+
+References numProtected, and vectorArg.
+
+Referenced by MyRVectorFunc::getSum().\hypertarget{classRcppFunction_f3dbcf8dcfbdfc49ef566b5efd0ad978}{
+\index{RcppFunction@{RcppFunction}!setRListSize@{setRListSize}}
+\index{setRListSize@{setRListSize}!RcppFunction@{RcppFunction}}
+\subsubsection[setRListSize]{\setlength{\rightskip}{0pt plus 5cm}void RcppFunction::setRListSize (int {\em size})}}
+\label{classRcppFunction_f3dbcf8dcfbdfc49ef566b5efd0ad978}
+
+
+
+
+Definition at line 916 of file Rcpp.cpp.
+
+References listArg, listSize, and numProtected.
+
+Referenced by MyRListFunc::addOne().\hypertarget{classRcppFunction_0df1a8ff093e21a2a7c6fc80d6645c7e}{
+\index{RcppFunction@{RcppFunction}!appendToRList@{appendToRList}}
+\index{appendToRList@{appendToRList}!RcppFunction@{RcppFunction}}
+\subsubsection[appendToRList]{\setlength{\rightskip}{0pt plus 5cm}void RcppFunction::appendToRList (std::string {\em name}, \/  double {\em value})}}
+\label{classRcppFunction_0df1a8ff093e21a2a7c6fc80d6645c7e}
+
+
+
+
+Definition at line 922 of file Rcpp.cpp.
+
+References currListPosn, listArg, listSize, names, and numProtected.
+
+Referenced by MyRListFunc::addOne().\hypertarget{classRcppFunction_fce449ac5d89b32e0e0b9f584278a672}{
+\index{RcppFunction@{RcppFunction}!appendToRList@{appendToRList}}
+\index{appendToRList@{appendToRList}!RcppFunction@{RcppFunction}}
+\subsubsection[appendToRList]{\setlength{\rightskip}{0pt plus 5cm}void RcppFunction::appendToRList (std::string {\em name}, \/  int {\em value})}}
+\label{classRcppFunction_fce449ac5d89b32e0e0b9f584278a672}
+
+
+
+
+Definition at line 932 of file Rcpp.cpp.
+
+References currListPosn, listArg, listSize, names, and numProtected.\hypertarget{classRcppFunction_861ba7ae5c09acf31a034472b5a47728}{
+\index{RcppFunction@{RcppFunction}!appendToRList@{appendToRList}}
+\index{appendToRList@{appendToRList}!RcppFunction@{RcppFunction}}
+\subsubsection[appendToRList]{\setlength{\rightskip}{0pt plus 5cm}void RcppFunction::appendToRList (std::string {\em name}, \/  std::string {\em value})}}
+\label{classRcppFunction_861ba7ae5c09acf31a034472b5a47728}
+
+
+
+
+Definition at line 942 of file Rcpp.cpp.
+
+References currListPosn, listArg, listSize, names, and numProtected.\hypertarget{classRcppFunction_9aab0b3accb81d90fb813acf3bf4c49d}{
+\index{RcppFunction@{RcppFunction}!appendToRList@{appendToRList}}
+\index{appendToRList@{appendToRList}!RcppFunction@{RcppFunction}}
+\subsubsection[appendToRList]{\setlength{\rightskip}{0pt plus 5cm}void RcppFunction::appendToRList (std::string {\em name}, \/  {\bf RcppDate} \& {\em date})}}
+\label{classRcppFunction_9aab0b3accb81d90fb813acf3bf4c49d}
+
+
+
+
+Definition at line 952 of file Rcpp.cpp.
+
+References currListPosn, RcppDate::getJDN(), RcppDate::Jan1970Offset, listArg, listSize, names, and numProtected.
+
+Here is the call graph for this function:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=163pt]{classRcppFunction_9aab0b3accb81d90fb813acf3bf4c49d_cgraph}
+\end{center}
+\end{figure}
+\hypertarget{classRcppFunction_0be4ab064287c2d3a5c3b883a1707d70}{
+\index{RcppFunction@{RcppFunction}!appendToRList@{appendToRList}}
+\index{appendToRList@{appendToRList}!RcppFunction@{RcppFunction}}
+\subsubsection[appendToRList]{\setlength{\rightskip}{0pt plus 5cm}void RcppFunction::appendToRList (std::string {\em name}, \/  {\bf RcppDatetime} \& {\em datetime})}}
+\label{classRcppFunction_0be4ab064287c2d3a5c3b883a1707d70}
+
+
+
+
+Definition at line 966 of file Rcpp.cpp.
+
+References currListPosn, RcppDatetime::getFractionalTimestamp(), listArg, listSize, names, and numProtected.
+
+Here is the call graph for this function:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=209pt]{classRcppFunction_0be4ab064287c2d3a5c3b883a1707d70_cgraph}
+\end{center}
+\end{figure}
+\hypertarget{classRcppFunction_689c914636f0f0e86b90da4425c6e6a3}{
+\index{RcppFunction@{RcppFunction}!clearProtectionStack@{clearProtectionStack}}
+\index{clearProtectionStack@{clearProtectionStack}!RcppFunction@{RcppFunction}}
+\subsubsection[clearProtectionStack]{\setlength{\rightskip}{0pt plus 5cm}void RcppFunction::clearProtectionStack ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classRcppFunction_689c914636f0f0e86b90da4425c6e6a3}
+
+
+
+
+Definition at line 546 of file Rcpp.h.
+
+References numProtected.
+
+Referenced by MyRListFunc::addOne(), and MyRVectorFunc::getSum().
+
+\subsection{Member Data Documentation}
+\hypertarget{classRcppFunction_a6b5966224b8b7d158be6cdfc3612063}{
+\index{RcppFunction@{RcppFunction}!fn@{fn}}
+\index{fn@{fn}!RcppFunction@{RcppFunction}}
+\subsubsection[fn]{\setlength{\rightskip}{0pt plus 5cm}SEXP {\bf RcppFunction::fn}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\label{classRcppFunction_a6b5966224b8b7d158be6cdfc3612063}
+
+
+
+
+Definition at line 552 of file Rcpp.h.
+
+Referenced by listCall(), and vectorCall().\hypertarget{classRcppFunction_3b8a2c8441c9791f9fe5bd5273bbceec}{
+\index{RcppFunction@{RcppFunction}!listArg@{listArg}}
+\index{listArg@{listArg}!RcppFunction@{RcppFunction}}
+\subsubsection[listArg]{\setlength{\rightskip}{0pt plus 5cm}SEXP {\bf RcppFunction::listArg}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\label{classRcppFunction_3b8a2c8441c9791f9fe5bd5273bbceec}
+
+
+
+
+Definition at line 552 of file Rcpp.h.
+
+Referenced by appendToRList(), listCall(), RcppFunction(), and setRListSize().\hypertarget{classRcppFunction_0492c128c0f72cda44e679265b36b50e}{
+\index{RcppFunction@{RcppFunction}!vectorArg@{vectorArg}}
+\index{vectorArg@{vectorArg}!RcppFunction@{RcppFunction}}
+\subsubsection[vectorArg]{\setlength{\rightskip}{0pt plus 5cm}SEXP {\bf RcppFunction::vectorArg}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\label{classRcppFunction_0492c128c0f72cda44e679265b36b50e}
+
+
+
+
+Definition at line 552 of file Rcpp.h.
+
+Referenced by RcppFunction(), setRVector(), and vectorCall().\hypertarget{classRcppFunction_c3a42478ffd123f430ba3e09099db6f8}{
+\index{RcppFunction@{RcppFunction}!listSize@{listSize}}
+\index{listSize@{listSize}!RcppFunction@{RcppFunction}}
+\subsubsection[listSize]{\setlength{\rightskip}{0pt plus 5cm}int {\bf RcppFunction::listSize}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\label{classRcppFunction_c3a42478ffd123f430ba3e09099db6f8}
+
+
+
+
+Definition at line 553 of file Rcpp.h.
+
+Referenced by appendToRList(), listCall(), RcppFunction(), and setRListSize().\hypertarget{classRcppFunction_ce513a92e96b36883b709b5352ea5663}{
+\index{RcppFunction@{RcppFunction}!currListPosn@{currListPosn}}
+\index{currListPosn@{currListPosn}!RcppFunction@{RcppFunction}}
+\subsubsection[currListPosn]{\setlength{\rightskip}{0pt plus 5cm}int {\bf RcppFunction::currListPosn}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\label{classRcppFunction_ce513a92e96b36883b709b5352ea5663}
+
+
+
+
+Definition at line 553 of file Rcpp.h.
+
+Referenced by appendToRList(), listCall(), and RcppFunction().\hypertarget{classRcppFunction_dc777e7d1628ccc4f531a8375f30f385}{
+\index{RcppFunction@{RcppFunction}!numProtected@{numProtected}}
+\index{numProtected@{numProtected}!RcppFunction@{RcppFunction}}
+\subsubsection[numProtected]{\setlength{\rightskip}{0pt plus 5cm}int {\bf RcppFunction::numProtected}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\label{classRcppFunction_dc777e7d1628ccc4f531a8375f30f385}
+
+
+
+
+Definition at line 553 of file Rcpp.h.
+
+Referenced by appendToRList(), clearProtectionStack(), listCall(), RcppFunction(), setRListSize(), setRVector(), vectorCall(), and $\sim$RcppFunction().\hypertarget{classRcppFunction_bf9e86df5e1a290a5f321e6051f0d2b2}{
+\index{RcppFunction@{RcppFunction}!names@{names}}
+\index{names@{names}!RcppFunction@{RcppFunction}}
+\subsubsection[names]{\setlength{\rightskip}{0pt plus 5cm}std::vector$<$std::string$>$ {\bf RcppFunction::names}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\label{classRcppFunction_bf9e86df5e1a290a5f321e6051f0d2b2}
+
+
+
+
+Definition at line 554 of file Rcpp.h.
+
+Referenced by appendToRList(), and listCall().
+
+The documentation for this class was generated from the following files:\begin{CompactItemize}
+\item 
+src/\hyperlink{Rcpp_8h}{Rcpp.h}\item 
+src/\hyperlink{Rcpp_8cpp}{Rcpp.cpp}\end{CompactItemize}

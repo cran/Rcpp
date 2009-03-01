@@ -1,0 +1,132 @@
+\hypertarget{classRcppMatrixView}{
+\section{RcppMatrixView$<$ T $>$ Class Template Reference}
+\label{classRcppMatrixView}\index{RcppMatrixView@{RcppMatrixView}}
+}
+{\tt \#include $<$Rcpp.h$>$}
+
+Collaboration diagram for RcppMatrixView$<$ T $>$:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=77pt]{classRcppMatrixView__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{CompactItemize}
+\item 
+\hyperlink{classRcppMatrixView_c3489c6a24c2975f3ea7103ada50e328}{RcppMatrixView} (SEXP mat)
+\item 
+int \hyperlink{classRcppMatrixView_72d1d7fcdc4b1cc6dd877b1df2f9f5e6}{dim1} () const 
+\item 
+int \hyperlink{classRcppMatrixView_ebb7f65646ce780c897dc39f31899439}{dim2} () const 
+\item 
+T \hyperlink{classRcppMatrixView_d135a7e855eee55b078807766aff9e96}{operator()} (int i, int j) const 
+\end{CompactItemize}
+\subsection*{Private Attributes}
+\begin{CompactItemize}
+\item 
+int \hyperlink{classRcppMatrixView_d492401691ef709f6d2ef7dc1dcc2134}{d1}
+\item 
+int \hyperlink{classRcppMatrixView_37b5f5806957eeb0b688d6a157a2a264}{d2}
+\item 
+T $\ast$ \hyperlink{classRcppMatrixView_d38481118f63a84a132e8f2265de5bdd}{a}
+\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$ class RcppMatrixView$<$ T $>$}
+
+
+
+Definition at line 488 of file Rcpp.h.
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classRcppMatrixView_c3489c6a24c2975f3ea7103ada50e328}{
+\index{RcppMatrixView@{RcppMatrixView}!RcppMatrixView@{RcppMatrixView}}
+\index{RcppMatrixView@{RcppMatrixView}!RcppMatrixView@{RcppMatrixView}}
+\subsubsection[RcppMatrixView]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf RcppMatrixView}$<$ T $>$::{\bf RcppMatrixView} (SEXP {\em mat})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classRcppMatrixView_c3489c6a24c2975f3ea7103ada50e328}
+
+
+
+
+Definition at line 427 of file Rcpp.cpp.
+
+References RcppMatrixView$<$ T $>$::a, RcppMatrixView$<$ T $>$::d1, and RcppMatrixView$<$ T $>$::d2.
+
+\subsection{Member Function Documentation}
+\hypertarget{classRcppMatrixView_72d1d7fcdc4b1cc6dd877b1df2f9f5e6}{
+\index{RcppMatrixView@{RcppMatrixView}!dim1@{dim1}}
+\index{dim1@{dim1}!RcppMatrixView@{RcppMatrixView}}
+\subsubsection[dim1]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ int {\bf RcppMatrixView}$<$ T $>$::dim1 () const\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classRcppMatrixView_72d1d7fcdc4b1cc6dd877b1df2f9f5e6}
+
+
+
+
+Definition at line 491 of file Rcpp.h.
+
+References RcppMatrixView$<$ T $>$::d1.\hypertarget{classRcppMatrixView_ebb7f65646ce780c897dc39f31899439}{
+\index{RcppMatrixView@{RcppMatrixView}!dim2@{dim2}}
+\index{dim2@{dim2}!RcppMatrixView@{RcppMatrixView}}
+\subsubsection[dim2]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ int {\bf RcppMatrixView}$<$ T $>$::dim2 () const\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classRcppMatrixView_ebb7f65646ce780c897dc39f31899439}
+
+
+
+
+Definition at line 492 of file Rcpp.h.
+
+References RcppMatrixView$<$ T $>$::d2.\hypertarget{classRcppMatrixView_d135a7e855eee55b078807766aff9e96}{
+\index{RcppMatrixView@{RcppMatrixView}!operator()@{operator()}}
+\index{operator()@{operator()}!RcppMatrixView@{RcppMatrixView}}
+\subsubsection[operator()]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ T {\bf RcppMatrixView}$<$ T $>$::operator() (int {\em i}, \/  int {\em j}) const\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classRcppMatrixView_d135a7e855eee55b078807766aff9e96}
+
+
+
+
+Definition at line 493 of file Rcpp.h.
+
+References RcppMatrixView$<$ T $>$::a, RcppMatrixView$<$ T $>$::d1, and RcppMatrixView$<$ T $>$::d2.
+
+\subsection{Member Data Documentation}
+\hypertarget{classRcppMatrixView_d492401691ef709f6d2ef7dc1dcc2134}{
+\index{RcppMatrixView@{RcppMatrixView}!d1@{d1}}
+\index{d1@{d1}!RcppMatrixView@{RcppMatrixView}}
+\subsubsection[d1]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ int {\bf RcppMatrixView}$<$ T $>$::{\bf d1}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\label{classRcppMatrixView_d492401691ef709f6d2ef7dc1dcc2134}
+
+
+
+
+Definition at line 502 of file Rcpp.h.
+
+Referenced by RcppMatrixView$<$ T $>$::dim1(), RcppMatrixView$<$ T $>$::operator()(), and RcppMatrixView$<$ T $>$::RcppMatrixView().\hypertarget{classRcppMatrixView_37b5f5806957eeb0b688d6a157a2a264}{
+\index{RcppMatrixView@{RcppMatrixView}!d2@{d2}}
+\index{d2@{d2}!RcppMatrixView@{RcppMatrixView}}
+\subsubsection[d2]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ int {\bf RcppMatrixView}$<$ T $>$::{\bf d2}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\label{classRcppMatrixView_37b5f5806957eeb0b688d6a157a2a264}
+
+
+
+
+Definition at line 502 of file Rcpp.h.
+
+Referenced by RcppMatrixView$<$ T $>$::dim2(), RcppMatrixView$<$ T $>$::operator()(), and RcppMatrixView$<$ T $>$::RcppMatrixView().\hypertarget{classRcppMatrixView_d38481118f63a84a132e8f2265de5bdd}{
+\index{RcppMatrixView@{RcppMatrixView}!a@{a}}
+\index{a@{a}!RcppMatrixView@{RcppMatrixView}}
+\subsubsection[a]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ T$\ast$ {\bf RcppMatrixView}$<$ T $>$::{\bf a}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\label{classRcppMatrixView_d38481118f63a84a132e8f2265de5bdd}
+
+
+
+
+Definition at line 503 of file Rcpp.h.
+
+Referenced by RcppMatrixView$<$ T $>$::operator()(), and RcppMatrixView$<$ T $>$::RcppMatrixView().
+
+The documentation for this class was generated from the following files:\begin{CompactItemize}
+\item 
+src/\hyperlink{Rcpp_8h}{Rcpp.h}\item 
+src/\hyperlink{Rcpp_8cpp}{Rcpp.cpp}\end{CompactItemize}

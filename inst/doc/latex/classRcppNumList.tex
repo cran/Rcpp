@@ -1,0 +1,126 @@
+\hypertarget{classRcppNumList}{
+\section{RcppNumList Class Reference}
+\label{classRcppNumList}\index{RcppNumList@{RcppNumList}}
+}
+{\tt \#include $<$Rcpp.h$>$}
+
+\subsection*{Public Member Functions}
+\begin{CompactItemize}
+\item 
+\hyperlink{classRcppNumList_4a8a321d0dc84b6d4be988005fa74fcd}{RcppNumList} (SEXP theList)
+\item 
+std::string \hyperlink{classRcppNumList_246d8e534d97fbe798b8567bbfa93ca7}{getName} (int i)
+\item 
+double \hyperlink{classRcppNumList_2e83950933ddc73ad64ed800f6f5e23b}{getValue} (int i)
+\item 
+int \hyperlink{classRcppNumList_18dc0660cc827bcf17d9738cb5874db7}{size} ()
+\end{CompactItemize}
+\subsection*{Private Attributes}
+\begin{CompactItemize}
+\item 
+int \hyperlink{classRcppNumList_c4cb5c784f7105f0f28ae48d02deb3a1}{len}
+\item 
+SEXP \hyperlink{classRcppNumList_7464927aafe555a0c4a104247dba7185}{namedList}
+\item 
+SEXP \hyperlink{classRcppNumList_a669b28cba0c95531a3c92910a60ecb0}{names}
+\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 318 of file Rcpp.h.
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classRcppNumList_4a8a321d0dc84b6d4be988005fa74fcd}{
+\index{RcppNumList@{RcppNumList}!RcppNumList@{RcppNumList}}
+\index{RcppNumList@{RcppNumList}!RcppNumList@{RcppNumList}}
+\subsubsection[RcppNumList]{\setlength{\rightskip}{0pt plus 5cm}RcppNumList::RcppNumList (SEXP {\em theList})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classRcppNumList_4a8a321d0dc84b6d4be988005fa74fcd}
+
+
+
+
+Definition at line 320 of file Rcpp.h.
+
+References len, namedList, and names.
+
+\subsection{Member Function Documentation}
+\hypertarget{classRcppNumList_246d8e534d97fbe798b8567bbfa93ca7}{
+\index{RcppNumList@{RcppNumList}!getName@{getName}}
+\index{getName@{getName}!RcppNumList@{RcppNumList}}
+\subsubsection[getName]{\setlength{\rightskip}{0pt plus 5cm}std::string RcppNumList::getName (int {\em i})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classRcppNumList_246d8e534d97fbe798b8567bbfa93ca7}
+
+
+
+
+Definition at line 327 of file Rcpp.h.
+
+References len, and names.
+
+Referenced by Rcpp\_\-Example().\hypertarget{classRcppNumList_2e83950933ddc73ad64ed800f6f5e23b}{
+\index{RcppNumList@{RcppNumList}!getValue@{getValue}}
+\index{getValue@{getValue}!RcppNumList@{RcppNumList}}
+\subsubsection[getValue]{\setlength{\rightskip}{0pt plus 5cm}double RcppNumList::getValue (int {\em i})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classRcppNumList_2e83950933ddc73ad64ed800f6f5e23b}
+
+
+
+
+Definition at line 335 of file Rcpp.h.
+
+References len, and namedList.
+
+Referenced by Rcpp\_\-Example().\hypertarget{classRcppNumList_18dc0660cc827bcf17d9738cb5874db7}{
+\index{RcppNumList@{RcppNumList}!size@{size}}
+\index{size@{size}!RcppNumList@{RcppNumList}}
+\subsubsection[size]{\setlength{\rightskip}{0pt plus 5cm}int RcppNumList::size ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classRcppNumList_18dc0660cc827bcf17d9738cb5874db7}
+
+
+
+
+Definition at line 350 of file Rcpp.h.
+
+References len.
+
+\subsection{Member Data Documentation}
+\hypertarget{classRcppNumList_c4cb5c784f7105f0f28ae48d02deb3a1}{
+\index{RcppNumList@{RcppNumList}!len@{len}}
+\index{len@{len}!RcppNumList@{RcppNumList}}
+\subsubsection[len]{\setlength{\rightskip}{0pt plus 5cm}int {\bf RcppNumList::len}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\label{classRcppNumList_c4cb5c784f7105f0f28ae48d02deb3a1}
+
+
+
+
+Definition at line 352 of file Rcpp.h.
+
+Referenced by getName(), getValue(), RcppNumList(), and size().\hypertarget{classRcppNumList_7464927aafe555a0c4a104247dba7185}{
+\index{RcppNumList@{RcppNumList}!namedList@{namedList}}
+\index{namedList@{namedList}!RcppNumList@{RcppNumList}}
+\subsubsection[namedList]{\setlength{\rightskip}{0pt plus 5cm}SEXP {\bf RcppNumList::namedList}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\label{classRcppNumList_7464927aafe555a0c4a104247dba7185}
+
+
+
+
+Definition at line 353 of file Rcpp.h.
+
+Referenced by getValue(), and RcppNumList().\hypertarget{classRcppNumList_a669b28cba0c95531a3c92910a60ecb0}{
+\index{RcppNumList@{RcppNumList}!names@{names}}
+\index{names@{names}!RcppNumList@{RcppNumList}}
+\subsubsection[names]{\setlength{\rightskip}{0pt plus 5cm}SEXP {\bf RcppNumList::names}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\label{classRcppNumList_a669b28cba0c95531a3c92910a60ecb0}
+
+
+
+
+Definition at line 354 of file Rcpp.h.
+
+Referenced by getName(), and RcppNumList().
+
+The documentation for this class was generated from the following file:\begin{CompactItemize}
+\item 
+src/\hyperlink{Rcpp_8h}{Rcpp.h}\end{CompactItemize}

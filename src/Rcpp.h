@@ -1,9 +1,9 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 8 -*-
 //
-// Rcpp.h: Part of the R/C++ interface class library, Version 5.0
+// Rcpp.h: R/C++ interface class library
 //
-// Copyright (C) 2005-2006 Dominick Samperi
-// Copyright (C) 2008      Dirk Eddelbuettel
+// Copyright (C) 2005 - 2006 Dominick Samperi
+// Copyright (C) 2008 - 2009 Dirk Eddelbuettel
 //
 // This library is free software; you can redistribute it and/or modify it 
 // under the terms of the GNU Lesser General Public License as published by 
@@ -30,7 +30,8 @@
 #include <stdexcept>
 #include <vector>
 
-using namespace std;
+// include R headers, but set R_NO_REMAP and access everything via Rf_ prefixes
+#define R_NO_REMAP
 
 #include <R.h>
 #include <Rinternals.h>
@@ -95,7 +96,7 @@ private:
     void parseTime() {
 	time_t tt;
 	tt = floor(m_d);			// time_t is the number of seconds, so ignore the fractional microseconds
-	m_us = round( (m_d - tt) * 1e6);	// fractional (micro)seconds is difference between (fractional) m_d and m_tt
+	m_us = round( (m_d - tt) * 1.0e6);	// fractional (micro)seconds is difference between (fractional) m_d and m_tt
 	m_tm = *localtime(&tt);			// parse time type into time structure 
 	m_parsed = true;			// and note that we parsed the time type
 	//printf("Time is %s %20u %8u\n", ctime(&m_tt), (unsigned int) m_tt, m_us);
@@ -150,14 +151,14 @@ class RcppParams {
 public:
     RcppParams(SEXP params);
     void   checkNames(char *inputNames[], int len);
-    double getDoubleValue(string name);
-    int    getIntValue(string name);
-    string getStringValue(string name);
-    bool   getBoolValue(string name);
-    RcppDate getDateValue(string name);
-    RcppDatetime getDatetimeValue(string name);
+    double getDoubleValue(std::string name);
+    int    getIntValue(std::string name);
+    std::string getStringValue(std::string name);
+    bool   getBoolValue(std::string name);
+    RcppDate getDateValue(std::string name);
+    RcppDatetime getDatetimeValue(std::string name);
 private:
-    map<string, int> pmap;
+    std::map<std::string, int> pmap;
     SEXP _params;
 };
 
@@ -192,7 +193,7 @@ public:
 	numLevels = datum.numLevels;
 	d = datum.d;
 	if (type == COLTYPE_FACTOR) {
-	    levelNames = new string[numLevels];
+	    levelNames = new std::string[numLevels];
 	    for (int i = 0; i < numLevels; i++)
 		levelNames[i] = datum.levelNames[i];
 	}
@@ -204,10 +205,10 @@ public:
     void setIntValue(int val) { i = val; type = COLTYPE_INT; }
     void setLogicalValue(int val) { 
 	if (val != 0 && val != 1)
-	    throw std::range_error("ColDatum: logical values must be 0/1.");
+	    throw std::range_error("ColDatum::setLogicalValue: logical values must be 0/1.");
 	i = val; type = COLTYPE_LOGICAL; 
     }
-    void setStringValue(string val) { s = val; type = COLTYPE_STRING; }
+    void setStringValue(std::string val) { s = val; type = COLTYPE_STRING; }
     void setDateValue(RcppDate date) {
 	d = date;
 	type = COLTYPE_DATE;
@@ -216,12 +217,12 @@ public:
 	x = datetime.m_d;
 	type = COLTYPE_DATETIME;
     }
-    void setFactorValue(string *names, int numNames, int factorLevel) {
+    void setFactorValue(std::string *names, int numNames, int factorLevel) {
 	if (factorLevel < 1 || factorLevel > numNames)
-	    throw range_error("setFactorValue: factor level out of range");
+	    throw std::range_error("ColDatum::setFactorValue: factor level out of range");
 	level = factorLevel;
 	numLevels = numNames;
-	levelNames = new string[numLevels];
+	levelNames = new std::string[numLevels];
 	for (int i = 0; i < numLevels; i++)
 	    levelNames[i] = names[i];
 	type = COLTYPE_FACTOR;
@@ -229,27 +230,27 @@ public:
 
     double getDoubleValue() { 
 	if (type != COLTYPE_DOUBLE)
-	    throw std::range_error("RcppFrame: wrong data type in getDoubleValue");
+	    throw std::range_error("ColDatum::getDoubleValue: wrong data type in getDoubleValue");
 	return x; 
     }
     int    getIntValue() { 
 	if (type != COLTYPE_INT)
-	    throw std::range_error("RcppFrame: wrong data type in getIntValue");
+	    throw std::range_error("ColDatum::getIntValue: wrong data type in getIntValue");
 	return i; 
     }
     int    getLogicalValue() { 
 	if (type != COLTYPE_LOGICAL)
-	    throw std::range_error("RcppFrame: wrong data type in getLogicalValue");
+	    throw std::range_error("ColDatum::getLogicalValue: wrong data type in getLogicalValue");
 	return i; 
     }
-    string getStringValue() { 
+    std::string getStringValue() { 
 	if (type != COLTYPE_STRING)
-	    throw std::range_error("RcppFrame: wrong data type in getStringValue");
+	    throw std::range_error("ColDatum::getStringValue: wrong data type in getStringValue");
 	return s; 
     }
     RcppDate getDateValue() {
 	if (type != COLTYPE_DATE)
-	    throw std::range_error("RcppFrame: wrong data type in getDateValue");
+	    throw std::range_error("ColDatum::getDateValue: wrong data type in getDateValue");
 	return d; 
     }
     double getDateRCode() { 
@@ -257,42 +258,42 @@ public:
     }
     RcppDatetime getDatetimeValue() {
 	if (type != COLTYPE_DATETIME)
-	    throw std::range_error("RcppFrame: wrong data type in getDatetimeValue");
+	    throw std::range_error("ColDatum::getDatetimeValue: wrong data type in getDatetimeValue");
 	return RcppDatetime(x); 
     }
 
     void checkFactorType() {
 	if (type != COLTYPE_FACTOR)
-	    throw std::range_error("RcppFrame: wrong data type in getFactor...");
+	    throw std::range_error("ColDatun::checkFactorType: wrong data type in getFactor...");
     }
     int    getFactorNumLevels() { checkFactorType(); return numLevels; }
     int    getFactorLevel() { checkFactorType(); return level; }
-    string *getFactorLevelNames() { checkFactorType(); return levelNames; }
-    string getFactorLevelName() { checkFactorType(); return levelNames[level-1];}
+    std::string *getFactorLevelNames() { checkFactorType(); return levelNames; }
+    std::string getFactorLevelName() { checkFactorType(); return levelNames[level-1];}
 
 private:
     ColType type;
-    string s;
+    std::string s;
     double x;			// used for double and datetime
     int i; 			// used for int and logical
     int level; 			// factor level
     int numLevels; 		// number of levels for this factor
-    string *levelNames; 	// level name = levelNames[level-1]
+    std::string *levelNames; 	// level name = levelNames[level-1]
     RcppDate d;
 };
 
 class RcppFrame {
-    vector<string> colNames;
-    vector<vector<ColDatum> >  table; // table[row][col]
+    std::vector<std::string> colNames;
+    std::vector<std::vector<ColDatum> >  table; // table[row][col]
 public:
     RcppFrame(SEXP df); // Construct from R data frame.
-    RcppFrame(vector<string> colNames) : colNames(colNames) {
+    RcppFrame(std::vector<std::string> colNames) : colNames(colNames) {
 	if (colNames.size() == 0)
 	    throw std::range_error("RcppFrame::RcppFrame: zero length colNames");
     }
-    vector<string>& getColNames() { return colNames; }
-    vector<vector<ColDatum> >& getTableData() { return table; }
-    void addRow(vector<ColDatum> rowData) {
+    std::vector<std::string>& getColNames() { return colNames; }
+    std::vector<std::vector<ColDatum> >& getTableData() { return table; }
+    void addRow(std::vector<ColDatum> rowData) {
 	if (rowData.size() != colNames.size())
 	    throw std::range_error("RcppFrame::addRow: incorrect row length.");
 	if (table.size() > 0) {
@@ -301,7 +302,7 @@ public:
 	    // for rows after the first...
 	    for (int i = 0; i < (int)colNames.size(); i++) {
 		if (rowData[i].getType() != table[0][i].getType()) {
-		    ostringstream oss;
+		    std::ostringstream oss;
 		    oss << "RcppFrame::addRow: incorrect data type at posn "
 			<< i;
 		    throw std::range_error(oss.str());
@@ -317,19 +318,19 @@ public:
 class RcppNumList {
 public:
     RcppNumList(SEXP theList) {
-	if (!isNewList(theList))
+	if (!Rf_isNewList(theList))
 	    throw std::range_error("RcppNumList: non-list passed to constructor");
-        len = length(theList);
-        names = getAttrib(theList, R_NamesSymbol);
+        len = Rf_length(theList);
+        names = Rf_getAttrib(theList, R_NamesSymbol);
         namedList = theList;
     }
-    string getName(int i) {
+    std::string getName(int i) {
         if (i < 0 || i >= len) {
 	    std::ostringstream oss;
 	    oss << "RcppNumList::getName: index out of bounds: " << i;
 	    throw std::range_error(oss.str());
 	}
-        return string(CHAR(STRING_ELT(names,i)));
+        return std::string(CHAR(STRING_ELT(names,i)));
     }
     double getValue(int i) {
         if (i < 0 || i >= len) {
@@ -338,9 +339,9 @@ public:
 	    throw std::range_error(oss.str());
 	}
 	SEXP elt = VECTOR_ELT(namedList, i);
-	if (isReal(elt))
+	if (Rf_isReal(elt))
 	    return REAL(elt)[0];
-	else if (isInteger(elt))
+	else if (Rf_isInteger(elt))
 	    return (double)INTEGER(elt)[0];
 	else
 	    throw std::range_error("RcppNumList: contains non-numeric value");
@@ -368,7 +369,7 @@ public:
 	return v[i];
     }
     T *cVector();
-    vector<T> stlVector();
+    std::vector<T> stlVector();
 private:
     int len;
     T *v;
@@ -380,7 +381,7 @@ public:
     ~RcppStringVector() {
 	delete [] v;
     }
-    inline string& operator()(int i) {
+    inline std::string& operator()(int i) {
 	if (i < 0 || i >= length) {
 	    std::ostringstream oss;
 	    oss << "RcppStringVector: subscript out of range: " << i;
@@ -389,14 +390,14 @@ public:
 	return v[i];
     }
     int size() { return length; }
-    inline vector<string> stlVector() {
-        vector<string> tmp(length);
+    inline std::vector<std::string> stlVector() {
+        std::vector<std::string> tmp(length);
         for (int i = 0; i < length; i++)
            tmp[i] = v[i];
         return tmp;
     }
 private:
-    string *v;
+    std::string *v;
     int length;
 };
 
@@ -456,7 +457,7 @@ public:
 	return a[i][j];
     }
     T **cMatrix();
-    vector<vector<T> > stlMatrix();
+    std::vector<std::vector<T> > stlMatrix();
 private:
     int dim1, dim2;
     T **a;
@@ -523,7 +524,7 @@ private:
 class RcppFunction {
 public:
     RcppFunction(SEXP fn) : fn(fn) { 
-	if (!isFunction(fn))
+	if (!Rf_isFunction(fn))
 	    throw std::range_error("RcppFunction: non-function where function expected");
 	numProtected = 0;
 	currListPosn = 0;
@@ -535,13 +536,13 @@ public:
     }
     SEXP listCall();
     SEXP vectorCall();
-    void setRVector(vector<double>& v);
+    void setRVector(std::vector<double>& v);
     void setRListSize(int size);
-    void appendToRList(string name, double value);
-    void appendToRList(string name, int value);
-    void appendToRList(string name, string value);
-    void appendToRList(string name, RcppDate& date);
-    void appendToRList(string name, RcppDatetime& datetime);
+    void appendToRList(std::string name, double value);
+    void appendToRList(std::string name, int value);
+    void appendToRList(std::string name, std::string value);
+    void appendToRList(std::string name, RcppDate& date);
+    void appendToRList(std::string name, RcppDatetime& datetime);
     void clearProtectionStack() {
 	UNPROTECT(numProtected);
 	numProtected = 0;
@@ -550,39 +551,39 @@ public:
 private:
     SEXP fn, listArg, vectorArg;
     int listSize, currListPosn, numProtected;
-    vector<string> names;
+    std::vector<std::string> names;
 };
 
 class RcppResultSet {
 public:
     RcppResultSet() { numProtected = 0; }
-    void add(string, double);
-    void add(string, int);
-    void add(string, string);
-    void add(string, double *, int);
-    void add(string, int *, int);
-    void add(string, double **, int, int);
-    void add(string, int **, int, int);
-    void add(string, RcppDate&);
-    void add(string, RcppDateVector&);
-    void add(string, RcppDatetime&);
-    void add(string, RcppDatetimeVector&);
-    void add(string, RcppStringVector&);
-    void add(string, vector<double>&);
-    void add(string, vector<int>&);
-    void add(string, vector<vector<double> >&);
-    void add(string, vector<vector<int> >&);
-    void add(string, vector<string>&);
-    void add(string, RcppVector<int>&);
-    void add(string, RcppVector<double>&);
-    void add(string, RcppMatrix<int>&);
-    void add(string, RcppMatrix<double>&);
-    void add(string, RcppFrame&);
-    void add(string, SEXP, bool isProtected);
+    void add(std::string, double);
+    void add(std::string, int);
+    void add(std::string, std::string);
+    void add(std::string, double *, int);
+    void add(std::string, int *, int);
+    void add(std::string, double **, int, int);
+    void add(std::string, int **, int, int);
+    void add(std::string, RcppDate&);
+    void add(std::string, RcppDateVector&);
+    void add(std::string, RcppDatetime&);
+    void add(std::string, RcppDatetimeVector&);
+    void add(std::string, RcppStringVector&);
+    void add(std::string, std::vector<double>&);
+    void add(std::string, std::vector<int>&);
+    void add(std::string, std::vector<std::vector<double> >&);
+    void add(std::string, std::vector<std::vector<int> >&);
+    void add(std::string, std::vector<std::string>&);
+    void add(std::string, RcppVector<int>&);
+    void add(std::string, RcppVector<double>&);
+    void add(std::string, RcppMatrix<int>&);
+    void add(std::string, RcppMatrix<double>&);
+    void add(std::string, RcppFrame&);
+    void add(std::string, SEXP, bool isProtected);
     SEXP getReturnList();
 protected:
     int numProtected;
-    list<pair<string,SEXP> > values;
+    std::list<std::pair<std::string,SEXP> > values;
 };
 
 

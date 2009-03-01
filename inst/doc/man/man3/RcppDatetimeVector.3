@@ -1,0 +1,81 @@
+.TH "RcppDatetimeVector" 3 "24 Feb 2009" "Rcpp" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+RcppDatetimeVector \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <Rcpp.h>\fP
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBRcppDatetimeVector\fP (SEXP vec)"
+.br
+.ti -1c
+.RI "\fB~RcppDatetimeVector\fP ()"
+.br
+.ti -1c
+.RI "\fBRcppDatetime\fP & \fBoperator()\fP (int i)"
+.br
+.ti -1c
+.RI "int \fBsize\fP ()"
+.br
+.in -1c
+.SS "Private Attributes"
+
+.in +1c
+.ti -1c
+.RI "\fBRcppDatetime\fP * \fBv\fP"
+.br
+.ti -1c
+.RI "int \fBlength\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Definition at line 424 of file Rcpp.h.
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "RcppDatetimeVector::RcppDatetimeVector (SEXP vec)"
+.PP
+Definition at line 261 of file Rcpp.cpp.
+.PP
+References length, and v.
+.SS "RcppDatetimeVector::~RcppDatetimeVector ()\fC [inline]\fP"
+.PP
+Definition at line 427 of file Rcpp.h.
+.PP
+References v.
+.SH "Member Function Documentation"
+.PP 
+.SS "\fBRcppDatetime\fP& RcppDatetimeVector::operator() (int i)\fC [inline]\fP"
+.PP
+Definition at line 430 of file Rcpp.h.
+.PP
+References length, and v.
+.SS "int RcppDatetimeVector::size ()\fC [inline]\fP"
+.PP
+Definition at line 438 of file Rcpp.h.
+.PP
+References length.
+.PP
+Referenced by RcppResultSet::add(), and RcppDateExample().
+.SH "Member Data Documentation"
+.PP 
+.SS "\fBRcppDatetime\fP* \fBRcppDatetimeVector::v\fP\fC [private]\fP"
+.PP
+Definition at line 440 of file Rcpp.h.
+.PP
+Referenced by operator()(), RcppDatetimeVector(), and ~RcppDatetimeVector().
+.SS "int \fBRcppDatetimeVector::length\fP\fC [private]\fP"
+.PP
+Definition at line 441 of file Rcpp.h.
+.PP
+Referenced by operator()(), RcppDatetimeVector(), and size().
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Rcpp from the source code.
