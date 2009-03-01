@@ -1,3 +1,34 @@
+2009-03-01  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION: Release 0.6.4
+
+	* .Rbuildignore: Added to exclude debian/ from source tarball
+	
+2009-02-25  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/Makevars.win: Renamed from Makefile.win, added missing mkdir
+	* cleanup: Remove a few more Windows files
+
+2009-02-24  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/doc/{html,latex,man}: Added new documentation of the C++ classes
+	* doxyfile: Added Doxygen configuration file for doc generation
+
+2009-02-22  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/Rcpp.{h,cpp}: cleaner use of namespace 'std' by formal prefix
+	  rather than via 'using namespace std'
+	* src/Rcpp.h: define R_NO_MAP and use Rf_* form of R API functions
+
+2009-02-18  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/Rcpp.{h,cpp}: Added a few explicit casts, and removed unused
+	  loop variable; all to make 'g++ -Wall' happy
+
+2009-02-10  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/Rcpp.{cpp,h}: Expanded a few of the throw() messages
+
 2009-01-09  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION: Release 0.6.3
@@ -9,7 +40,7 @@
 
 	* man/Rcpp-package.Rd: Mention short form CxxFlags() and LdFlags()
 
-	* src/Makevars: Applied another build correction for OS X suggested 
+	* src/Makevars: Applied another build correction for OS X suggested
 	  by Simon Urbanek
 
 	* src/Rcpp.{cpp,h}: Added 'view-only' classes RcppVectorView,
@@ -26,28 +57,28 @@
 	* DESCRIPTION: Release 0.6.1
 
 	* src/Makevars: Added, replacing src/Makefile: thanks to Simon for a
-	rewrite that provides OS X support
+	  rewrite that provides OS X support
 	* src/Makefile: Retired
 	* src/Makefile.win: Now build libRcpp.a instead of Rcpp.a
 
 	* src/Rcpp.{cpp,h}: Removed #ifdef statements related to QuantLib and
-	Date ops as we no longer need to split this off -- one build for all
-	uses; also added another date offset for the difference between the
-	Unix epoch of Jan 1, 1970 and what certain spreadsheets use (which is
-	what QuantLib) follows.  With this change, Rcpp is completely
-	decoupled from QuantLib headers, yet can be used from QuantLib 0.2.10
-	or later. However, this also removes data conversion from R/Rcpp to
-	QL as Rcpp no longer 'knows' QL.
+	  Date ops as we no longer need to split this off -- one build for all
+	  uses; also added another date offset for the difference between the
+	  Unix epoch of Jan 1, 1970 and what certain spreadsheets use (which is
+	  what QuantLib) follows.  With this change, Rcpp is completely
+	  decoupled from QuantLib headers, yet can be used from QuantLib 0.2.10
+	  or later. However, this also removes data conversion from R/Rcpp to
+	  QL as Rcpp no longer 'knows' QL.
 
 	* R/RcppLdPath.R: Adds new functions RcppLdPath() to return lib/
-	directory path, and RcppLdFlags() to return arguments, including the
-	optional rpath settings on Linux
+	  directory path, and RcppLdFlags() to return arguments, including the
+	  optional rpath settings on Linux
 
 	* R/RcppExample.R: Added new example 'RcppVectorExample()', extended
 	  default print method for examples
 
 	* man/Rcpp-package.Rd: Expanded / updated documentation of package
-	use when building other packages
+	  use when building other packages
 
 	* cleanup: Removing static libraries too but do not remove src/Makevars
 

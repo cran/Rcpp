@@ -1,0 +1,71 @@
+.TH "RcppStringVectorView" 3 "24 Feb 2009" "Rcpp" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+RcppStringVectorView \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <Rcpp.h>\fP
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBRcppStringVectorView\fP (SEXP vec)"
+.br
+.ti -1c
+.RI "const char * \fBoperator()\fP (int i)"
+.br
+.ti -1c
+.RI "int \fBsize\fP ()"
+.br
+.in -1c
+.SS "Private Attributes"
+
+.in +1c
+.ti -1c
+.RI "SEXP \fBv\fP"
+.br
+.ti -1c
+.RI "int \fBlength\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Definition at line 506 of file Rcpp.h.
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "RcppStringVectorView::RcppStringVectorView (SEXP vec)"
+.PP
+Definition at line 441 of file Rcpp.cpp.
+.PP
+References length, and v.
+.SH "Member Function Documentation"
+.PP 
+.SS "const char* RcppStringVectorView::operator() (int i)\fC [inline]\fP"
+.PP
+Definition at line 509 of file Rcpp.h.
+.PP
+References length, and v.
+.SS "int RcppStringVectorView::size ()\fC [inline]\fP"
+.PP
+Definition at line 517 of file Rcpp.h.
+.PP
+References length.
+.SH "Member Data Documentation"
+.PP 
+.SS "SEXP \fBRcppStringVectorView::v\fP\fC [private]\fP"
+.PP
+Definition at line 519 of file Rcpp.h.
+.PP
+Referenced by operator()(), and RcppStringVectorView().
+.SS "int \fBRcppStringVectorView::length\fP\fC [private]\fP"
+.PP
+Definition at line 520 of file Rcpp.h.
+.PP
+Referenced by operator()(), RcppStringVectorView(), and size().
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Rcpp from the source code.

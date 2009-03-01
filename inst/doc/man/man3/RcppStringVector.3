@@ -1,0 +1,89 @@
+.TH "RcppStringVector" 3 "24 Feb 2009" "Rcpp" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+RcppStringVector \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <Rcpp.h>\fP
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBRcppStringVector\fP (SEXP vec)"
+.br
+.ti -1c
+.RI "\fB~RcppStringVector\fP ()"
+.br
+.ti -1c
+.RI "std::string & \fBoperator()\fP (int i)"
+.br
+.ti -1c
+.RI "int \fBsize\fP ()"
+.br
+.ti -1c
+.RI "std::vector< std::string > \fBstlVector\fP ()"
+.br
+.in -1c
+.SS "Private Attributes"
+
+.in +1c
+.ti -1c
+.RI "std::string * \fBv\fP"
+.br
+.ti -1c
+.RI "int \fBlength\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Definition at line 378 of file Rcpp.h.
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "RcppStringVector::RcppStringVector (SEXP vec)"
+.PP
+Definition at line 274 of file Rcpp.cpp.
+.PP
+References length, and v.
+.SS "RcppStringVector::~RcppStringVector ()\fC [inline]\fP"
+.PP
+Definition at line 381 of file Rcpp.h.
+.PP
+References v.
+.SH "Member Function Documentation"
+.PP 
+.SS "std::string& RcppStringVector::operator() (int i)\fC [inline]\fP"
+.PP
+Definition at line 384 of file Rcpp.h.
+.PP
+References length, and v.
+.SS "int RcppStringVector::size ()\fC [inline]\fP"
+.PP
+Definition at line 392 of file Rcpp.h.
+.PP
+References length.
+.PP
+Referenced by RcppResultSet::add().
+.SS "std::vector<std::string> RcppStringVector::stlVector ()\fC [inline]\fP"
+.PP
+Definition at line 393 of file Rcpp.h.
+.PP
+References length, and v.
+.SH "Member Data Documentation"
+.PP 
+.SS "std::string* \fBRcppStringVector::v\fP\fC [private]\fP"
+.PP
+Definition at line 400 of file Rcpp.h.
+.PP
+Referenced by operator()(), RcppStringVector(), stlVector(), and ~RcppStringVector().
+.SS "int \fBRcppStringVector::length\fP\fC [private]\fP"
+.PP
+Definition at line 401 of file Rcpp.h.
+.PP
+Referenced by operator()(), RcppStringVector(), size(), and stlVector().
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Rcpp from the source code.

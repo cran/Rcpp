@@ -1,0 +1,41 @@
+.TH "MyRVectorFunc" 3 "24 Feb 2009" "Rcpp" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+MyRVectorFunc \- 
+.SH SYNOPSIS
+.br
+.PP
+Inherits \fBRcppFunction\fP.
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBMyRVectorFunc\fP (SEXP \fBfn\fP)"
+.br
+.ti -1c
+.RI "double \fBgetSum\fP (std::vector< double > &v)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Definition at line 36 of file RcppExample.cpp.
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "MyRVectorFunc::MyRVectorFunc (SEXP fn)\fC [inline]\fP"
+.PP
+Definition at line 38 of file RcppExample.cpp.
+.SH "Member Function Documentation"
+.PP 
+.SS "double MyRVectorFunc::getSum (std::vector< double > & v)\fC [inline]\fP"
+.PP
+Definition at line 42 of file RcppExample.cpp.
+.PP
+References RcppFunction::clearProtectionStack(), RcppFunction::setRVector(), and RcppFunction::vectorCall().
+.PP
+Referenced by Rcpp_Example().
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Rcpp from the source code.

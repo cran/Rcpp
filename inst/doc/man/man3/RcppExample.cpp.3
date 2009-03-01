@@ -1,0 +1,62 @@
+.TH "src/RcppExample.cpp" 3 "24 Feb 2009" "Rcpp" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/RcppExample.cpp \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'Rcpp.h'\fP
+.br
+
+.SS "Classes"
+
+.in +1c
+.ti -1c
+.RI "class \fBMyRVectorFunc\fP"
+.br
+.ti -1c
+.RI "class \fBMyRListFunc\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "RcppExport SEXP \fBRcpp_Example\fP (SEXP params, SEXP nlist, SEXP numvec, SEXP nummat, SEXP df, SEXP datevec, SEXP stringvec, SEXP fnvec, SEXP fnlist)"
+.br
+.ti -1c
+.RI "RcppExport SEXP \fBRcppParamsExample\fP (SEXP params)"
+.br
+.ti -1c
+.RI "RcppExport SEXP \fBRcppDateExample\fP (SEXP dvsexp, SEXP dtvsexp)"
+.br
+.ti -1c
+.RI "RcppExport SEXP \fBRcppVectorExample\fP (SEXP vector)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "RcppExport SEXP Rcpp_Example (SEXP params, SEXP nlist, SEXP numvec, SEXP nummat, SEXP df, SEXP datevec, SEXP stringvec, SEXP fnvec, SEXP fnlist)"
+.PP
+Definition at line 109 of file RcppExample.cpp.
+.PP
+References RcppResultSet::add(), MyRListFunc::addOne(), RcppFrame::addRow(), RcppMatrix< T >::cMatrix(), copyMessageToR(), RcppVector< T >::cVector(), RcppParams::getDateValue(), RcppDate::getDay(), RcppMatrix< T >::getDim1(), RcppMatrix< T >::getDim2(), RcppParams::getDoubleValue(), RcppParams::getIntValue(), RcppDate::getMonth(), RcppNumList::getName(), RcppResultSet::getReturnList(), RcppParams::getStringValue(), MyRVectorFunc::getSum(), RcppNumList::getValue(), RcppDate::getYear(), RcppVector< T >::size(), RcppMatrix< T >::stlMatrix(), and RcppVector< T >::stlVector().
+.SS "RcppExport SEXP RcppDateExample (SEXP dvsexp, SEXP dtvsexp)"
+.PP
+Definition at line 382 of file RcppExample.cpp.
+.PP
+References RcppResultSet::add(), copyMessageToR(), RcppResultSet::getReturnList(), RcppDatetimeVector::size(), and RcppDateVector::size().
+.SS "RcppExport SEXP RcppParamsExample (SEXP params)"
+.PP
+Definition at line 333 of file RcppExample.cpp.
+.PP
+References copyMessageToR(), RcppParams::getDateValue(), RcppDate::getDay(), RcppParams::getDoubleValue(), RcppParams::getIntValue(), RcppDate::getMonth(), RcppParams::getStringValue(), and RcppDate::getYear().
+.SS "RcppExport SEXP RcppVectorExample (SEXP vector)"
+.PP
+Definition at line 423 of file RcppExample.cpp.
+.PP
+References RcppResultSet::add(), copyMessageToR(), RcppResultSet::getReturnList(), and RcppVector< T >::size().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Rcpp from the source code.

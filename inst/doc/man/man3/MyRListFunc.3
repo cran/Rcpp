@@ -1,0 +1,41 @@
+.TH "MyRListFunc" 3 "24 Feb 2009" "Rcpp" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+MyRListFunc \- 
+.SH SYNOPSIS
+.br
+.PP
+Inherits \fBRcppFunction\fP.
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBMyRListFunc\fP (SEXP \fBfn\fP)"
+.br
+.ti -1c
+.RI "std::vector< double > \fBaddOne\fP (double alpha, double beta, double gamma)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Definition at line 78 of file RcppExample.cpp.
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "MyRListFunc::MyRListFunc (SEXP fn)\fC [inline]\fP"
+.PP
+Definition at line 80 of file RcppExample.cpp.
+.SH "Member Function Documentation"
+.PP 
+.SS "std::vector<double> MyRListFunc::addOne (double alpha, double beta, double gamma)\fC [inline]\fP"
+.PP
+Definition at line 81 of file RcppExample.cpp.
+.PP
+References RcppFunction::appendToRList(), RcppFunction::clearProtectionStack(), RcppFunction::listCall(), and RcppFunction::setRListSize().
+.PP
+Referenced by Rcpp_Example().
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Rcpp from the source code.

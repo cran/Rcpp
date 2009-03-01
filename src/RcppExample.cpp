@@ -1,9 +1,9 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; -*-
 //
-// RcppExample.cpp: Part of the R/C++ interface class library, Version 5.0
+// RcppExample.cpp: R/C++ interface class library example
 //
-// Copyright (C) 2005-2006 Dominick Samperi
-// Copyright (C) 2008      Dirk Eddelbuettel
+// Copyright (C) 2005 - 2006 Dominick Samperi
+// Copyright (C) 2008 - 2009 Dirk Eddelbuettel
 //
 // This library is free software; you can redistribute it and/or modify it 
 // under the terms of the GNU Lesser General Public License as published by 
@@ -39,7 +39,7 @@ public:
 
     // This trivial function will use an R function to compute the
     // sum of the elements of v!
-    double getSum(vector<double>& v) {
+    double getSum(std::vector<double>& v) {
 
 	// Turn vector into a SEXP that can be passed to R as an argument.
 	setRVector(v);
@@ -78,7 +78,7 @@ public:
 class MyRListFunc : public RcppFunction {
 public:
     MyRListFunc(SEXP fn) : RcppFunction(fn) {}
-    vector<double> addOne(double alpha, double beta, double gamma) {
+    std::vector<double> addOne(double alpha, double beta, double gamma) {
 
 	// Build argument list.
 	setRListSize(3);
@@ -92,8 +92,8 @@ public:
 
 	// Turn returned R vector into a C++ vector, clear protection stack,
 	// and return.
-	vector<double> vec(length(result));
-	for(int i=0; i < length(result); i++)
+	std::vector<double> vec(Rf_length(result));
+	for(int i=0; i < Rf_length(result); i++)
 	    vec[i] = REAL(result)[i];
 
 	// See comments in previous class definition on the purpose of this.
@@ -120,7 +120,7 @@ RcppExport SEXP Rcpp_Example(SEXP params, SEXP nlist,
 
 	// Get parameters in params.
 	RcppParams rparam(params);
-	string method = rparam.getStringValue("method");
+	std::string method = rparam.getStringValue("method");
 	double tolerance = rparam.getDoubleValue("tolerance");
 	int    maxIter = rparam.getIntValue("maxIter");
 	RcppDate startDate = rparam.getDateValue("startDate");
@@ -174,13 +174,13 @@ RcppExport SEXP Rcpp_Example(SEXP params, SEXP nlist,
 	double  *v = vecD.cVector();
 
 	// ...or we might want to use an STL container...
-	vector<double> stlvec(vecD.stlVector());
+	std::vector<double> stlvec(vecD.stlVector());
 	nrows = (int)stlvec.size();
 	for(i = 0; i < nrows; i++)
 	    stlvec[i] += 1;
 
 	// ...or perhaps a container of containers.
-	vector<vector<double> > stlmat(matD.stlMatrix());
+	std::vector<std::vector<double> > stlmat(matD.stlMatrix());
 	nrows = (int)stlmat.size();
 	ncols = (int)stlmat[0].size();
 	for(i = 0; i < nrows; i++)
@@ -191,7 +191,7 @@ RcppExport SEXP Rcpp_Example(SEXP params, SEXP nlist,
 	//RcppMatrix<double> matZ(nrows, ncols);
 
 	// Make a vector of strings
- 	vector<string> svec(2);
+	std::vector<std::string> svec(2);
         svec[0] = "hello";
 	svec[1] = "world";
 
@@ -234,7 +234,7 @@ RcppExport SEXP Rcpp_Example(SEXP params, SEXP nlist,
 	// the specified column names and data types. The first row added
 	// determines the types for all columns.
 	int numCol=4;
-	vector<string> colNames(numCol);
+	std::vector<std::string> colNames(numCol);
 	colNames[0] = "alpha"; // column of strings
 	colNames[1] = "beta";  // column of reals
 	colNames[2] = "gamma"; // factor column
@@ -247,12 +247,12 @@ RcppExport SEXP Rcpp_Example(SEXP params, SEXP nlist,
 	// for a particular column will be factored out (pardon the pun) in
 	// a future release.
 	int numLevels = 2;
-	string *levelNames = new string[2];
-	levelNames[0] = string("pass"); // level 1
-	levelNames[1] = string("fail"); // level 2
+	std::string *levelNames = new std::string[2];
+	levelNames[0] = std::string("pass"); // level 1
+	levelNames[1] = std::string("fail"); // level 2
 
 	// First row (this one determines column types).
-	vector<ColDatum> row1(numCol);
+	std::vector<ColDatum> row1(numCol);
 	row1[0].setStringValue("a");
 	row1[1].setDoubleValue(3.14);
 	row1[2].setFactorValue(levelNames, numLevels, 1);
@@ -260,7 +260,7 @@ RcppExport SEXP Rcpp_Example(SEXP params, SEXP nlist,
 	frame.addRow(row1);
 
 	// Second row.
-	vector<ColDatum> row2(numCol);
+	std::vector<ColDatum> row2(numCol);
 	row2[0].setStringValue("b");
 	row2[1].setDoubleValue(6.28);
 	row2[2].setFactorValue(levelNames, numLevels, 1);
@@ -273,7 +273,7 @@ RcppExport SEXP Rcpp_Example(SEXP params, SEXP nlist,
 	// Test MyRVectorFunction defined above...
 	MyRVectorFunc vfunc(fnvec);
 	int n = 10;
-	vector<double> vecInput(n);
+	std::vector<double> vecInput(n);
 	for(int i=0; i < n; i++)
 	    vecInput[i] = i;
 	double vecSum = vfunc.getSum(vecInput);
@@ -282,7 +282,7 @@ RcppExport SEXP Rcpp_Example(SEXP params, SEXP nlist,
 	// Test MyRListFunction defined above...
 	MyRListFunc lfunc(fnlist);
 	double alpha=1, beta=2, gamma=3;
-	vector<double> vecOut = lfunc.addOne(alpha, beta, gamma);
+	std::vector<double> vecOut = lfunc.addOne(alpha, beta, gamma);
 	Rprintf("Testing list function argument: %lf, %lf, %lf\n", vecOut[0], vecOut[1], vecOut[2]);
 
 	RcppDate aDate(12, 25, 1999);
@@ -324,7 +324,7 @@ RcppExport SEXP Rcpp_Example(SEXP params, SEXP nlist,
     }
     
     if(exceptionMesg != NULL)
-	error(exceptionMesg);
+	Rf_error(exceptionMesg);
 
     return rl;
 }
@@ -339,7 +339,7 @@ RcppExport SEXP RcppParamsExample(SEXP params) {
 
 	// Get parameters in params.
 	RcppParams rparam(params);
-	string method      = rparam.getStringValue("method");
+	std::string method      = rparam.getStringValue("method");
 	double tolerance   = rparam.getDoubleValue("tolerance");
 	int    maxIter     = rparam.getIntValue("maxIter");
 	RcppDate startDate = rparam.getDateValue("startDate");
@@ -374,7 +374,7 @@ RcppExport SEXP RcppParamsExample(SEXP params) {
     }
     
     if(exceptionMesg != NULL)
-	error(exceptionMesg);
+	Rf_error(exceptionMesg);
 
     return rl;
 }
@@ -415,7 +415,7 @@ RcppExport SEXP RcppDateExample(SEXP dvsexp, SEXP dtvsexp) {
     }
     
     if(exceptionMesg != NULL)
-	error(exceptionMesg);
+	Rf_error(exceptionMesg);
 
     return rl;
 }
@@ -437,7 +437,7 @@ RcppExport SEXP RcppVectorExample(SEXP vector) {
 	std::vector<double> res(n);
 	
 	for (int i=0; i<n; i++) {
-	    res[i] = sqrt(vec(i));
+	    res[i] = sqrt(static_cast<double>(vec(i)));
 	}
 
 	// Build result set to be returned as a list to R.
@@ -456,7 +456,7 @@ RcppExport SEXP RcppVectorExample(SEXP vector) {
     }
     
     if(exceptionMesg != NULL)
-	error(exceptionMesg);
+	Rf_error(exceptionMesg);
 
     return rl;
 }

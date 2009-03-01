@@ -1,0 +1,81 @@
+.TH "RcppDateVector" 3 "24 Feb 2009" "Rcpp" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+RcppDateVector \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <Rcpp.h>\fP
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBRcppDateVector\fP (SEXP vec)"
+.br
+.ti -1c
+.RI "\fB~RcppDateVector\fP ()"
+.br
+.ti -1c
+.RI "\fBRcppDate\fP & \fBoperator()\fP (int i)"
+.br
+.ti -1c
+.RI "int \fBsize\fP ()"
+.br
+.in -1c
+.SS "Private Attributes"
+
+.in +1c
+.ti -1c
+.RI "\fBRcppDate\fP * \fBv\fP"
+.br
+.ti -1c
+.RI "int \fBlength\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Definition at line 404 of file Rcpp.h.
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "RcppDateVector::RcppDateVector (SEXP vec)"
+.PP
+Definition at line 248 of file Rcpp.cpp.
+.PP
+References length, and v.
+.SS "RcppDateVector::~RcppDateVector ()\fC [inline]\fP"
+.PP
+Definition at line 407 of file Rcpp.h.
+.PP
+References v.
+.SH "Member Function Documentation"
+.PP 
+.SS "\fBRcppDate\fP& RcppDateVector::operator() (int i)\fC [inline]\fP"
+.PP
+Definition at line 410 of file Rcpp.h.
+.PP
+References length, and v.
+.SS "int RcppDateVector::size ()\fC [inline]\fP"
+.PP
+Definition at line 418 of file Rcpp.h.
+.PP
+References length.
+.PP
+Referenced by RcppResultSet::add(), and RcppDateExample().
+.SH "Member Data Documentation"
+.PP 
+.SS "\fBRcppDate\fP* \fBRcppDateVector::v\fP\fC [private]\fP"
+.PP
+Definition at line 420 of file Rcpp.h.
+.PP
+Referenced by operator()(), RcppDateVector(), and ~RcppDateVector().
+.SS "int \fBRcppDateVector::length\fP\fC [private]\fP"
+.PP
+Definition at line 421 of file Rcpp.h.
+.PP
+Referenced by operator()(), RcppDateVector(), and size().
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Rcpp from the source code.
