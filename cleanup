@@ -5,6 +5,7 @@ rm -f confdefs.h config.log config.status \
 	inst/lib/libRcpp.so inst/lib/Rcpp.h inst/lib/libRcpp.a \
 	inst/doc/*.cpp inst/doc/*.hpp inst/doc/*.R \
 	inst/doc/*.Rd inst/doc/*.aux inst/doc/*.log inst/doc/*.tex \
+	inst/doc/latex/*.aux inst/doc/latex/*.log \
 	inst/doc/auto \
 	src/Makedeps \
 	autom4te.cache
