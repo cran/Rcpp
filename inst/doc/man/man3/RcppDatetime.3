@@ -1,4 +1,4 @@
-.TH "RcppDatetime" 3 "24 Feb 2009" "Rcpp" \" -*- nroff -*-
+.TH "RcppDatetime" 3 "3 Aug 2009" "Rcpp" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -112,13 +112,11 @@ Definition at line 111 of file Rcpp.h.
 Definition at line 112 of file Rcpp.h.
 .SH "Member Function Documentation"
 .PP 
-.SS "void RcppDatetime::parseTime ()\fC [inline, private]\fP"
+.SS "int RcppDatetime::getDay (void)\fC [inline]\fP"
 .PP
-Definition at line 96 of file Rcpp.h.
+Definition at line 118 of file Rcpp.h.
 .PP
-References m_d, m_parsed, m_tm, and m_us.
-.PP
-Referenced by getDay(), getHour(), getMicroSec(), getMinute(), getMonth(), getSecond(), getWeekday(), and getYear().
+References m_parsed, m_tm, and parseTime().
 .SS "double RcppDatetime::getFractionalTimestamp (void) const\fC [inline]\fP"
 .PP
 Definition at line 114 of file Rcpp.h.
@@ -126,39 +124,9 @@ Definition at line 114 of file Rcpp.h.
 References m_d.
 .PP
 Referenced by RcppResultSet::add(), and RcppFunction::appendToRList().
-.SS "int RcppDatetime::getYear (void)\fC [inline]\fP"
-.PP
-Definition at line 116 of file Rcpp.h.
-.PP
-References m_parsed, m_tm, and parseTime().
-.SS "int RcppDatetime::getMonth (void)\fC [inline]\fP"
-.PP
-Definition at line 117 of file Rcpp.h.
-.PP
-References m_parsed, m_tm, and parseTime().
-.SS "int RcppDatetime::getDay (void)\fC [inline]\fP"
-.PP
-Definition at line 118 of file Rcpp.h.
-.PP
-References m_parsed, m_tm, and parseTime().
-.SS "int RcppDatetime::getWeekday (void)\fC [inline]\fP"
-.PP
-Definition at line 119 of file Rcpp.h.
-.PP
-References m_parsed, m_tm, and parseTime().
 .SS "int RcppDatetime::getHour (void)\fC [inline]\fP"
 .PP
 Definition at line 120 of file Rcpp.h.
-.PP
-References m_parsed, m_tm, and parseTime().
-.SS "int RcppDatetime::getMinute (void)\fC [inline]\fP"
-.PP
-Definition at line 121 of file Rcpp.h.
-.PP
-References m_parsed, m_tm, and parseTime().
-.SS "int RcppDatetime::getSecond (void)\fC [inline]\fP"
-.PP
-Definition at line 122 of file Rcpp.h.
 .PP
 References m_parsed, m_tm, and parseTime().
 .SS "int RcppDatetime::getMicroSec (void)\fC [inline]\fP"
@@ -166,6 +134,38 @@ References m_parsed, m_tm, and parseTime().
 Definition at line 123 of file Rcpp.h.
 .PP
 References m_parsed, m_us, and parseTime().
+.SS "int RcppDatetime::getMinute (void)\fC [inline]\fP"
+.PP
+Definition at line 121 of file Rcpp.h.
+.PP
+References m_parsed, m_tm, and parseTime().
+.SS "int RcppDatetime::getMonth (void)\fC [inline]\fP"
+.PP
+Definition at line 117 of file Rcpp.h.
+.PP
+References m_parsed, m_tm, and parseTime().
+.SS "int RcppDatetime::getSecond (void)\fC [inline]\fP"
+.PP
+Definition at line 122 of file Rcpp.h.
+.PP
+References m_parsed, m_tm, and parseTime().
+.SS "int RcppDatetime::getWeekday (void)\fC [inline]\fP"
+.PP
+Definition at line 119 of file Rcpp.h.
+.PP
+References m_parsed, m_tm, and parseTime().
+.SS "int RcppDatetime::getYear (void)\fC [inline]\fP"
+.PP
+Definition at line 116 of file Rcpp.h.
+.PP
+References m_parsed, m_tm, and parseTime().
+.SS "void RcppDatetime::parseTime ()\fC [inline, private]\fP"
+.PP
+Definition at line 96 of file Rcpp.h.
+.PP
+References m_d, m_parsed, m_tm, and m_us.
+.PP
+Referenced by getDay(), getHour(), getMicroSec(), getMinute(), getMonth(), getSecond(), getWeekday(), and getYear().
 .SH "Friends And Related Function Documentation"
 .PP 
 .SS "friend class \fBColDatum\fP\fC [friend]\fP"
@@ -180,21 +180,21 @@ Definition at line 131 of file Rcpp.h.
 .SS "bool operator< (const \fBRcppDatetime\fP & dt1, const \fBRcppDatetime\fP & dt2)\fC [friend]\fP"
 .PP
 Definition at line 132 of file Rcpp.h.
+.SS "std::ostream& operator<< (std::ostream & os, const \fBRcppDatetime\fP & datetime)\fC [friend]\fP"
+.PP
+Definition at line 138 of file Rcpp.h.
 .SS "bool operator<= (const \fBRcppDatetime\fP & dt1, const \fBRcppDatetime\fP & dt2)\fC [friend]\fP"
 .PP
 Definition at line 133 of file Rcpp.h.
+.SS "bool operator== (const \fBRcppDatetime\fP & dt1, const \fBRcppDatetime\fP & dt2)\fC [friend]\fP"
+.PP
+Definition at line 136 of file Rcpp.h.
 .SS "bool operator> (const \fBRcppDatetime\fP & dt1, const \fBRcppDatetime\fP & dt2)\fC [friend]\fP"
 .PP
 Definition at line 134 of file Rcpp.h.
 .SS "bool operator>= (const \fBRcppDatetime\fP & dt1, const \fBRcppDatetime\fP & dt2)\fC [friend]\fP"
 .PP
 Definition at line 135 of file Rcpp.h.
-.SS "bool operator== (const \fBRcppDatetime\fP & dt1, const \fBRcppDatetime\fP & dt2)\fC [friend]\fP"
-.PP
-Definition at line 136 of file Rcpp.h.
-.SS "std::ostream& operator<< (std::ostream & os, const \fBRcppDatetime\fP & datetime)\fC [friend]\fP"
-.PP
-Definition at line 138 of file Rcpp.h.
 .SH "Member Data Documentation"
 .PP 
 .SS "double \fBRcppDatetime::m_d\fP\fC [private]\fP"
@@ -207,16 +207,16 @@ Referenced by getFractionalTimestamp(), parseTime(), and ColDatum::setDatetimeVa
 Definition at line 93 of file Rcpp.h.
 .PP
 Referenced by getDay(), getHour(), getMicroSec(), getMinute(), getMonth(), getSecond(), getWeekday(), getYear(), and parseTime().
-.SS "int \fBRcppDatetime::m_us\fP\fC [private]\fP"
-.PP
-Definition at line 94 of file Rcpp.h.
-.PP
-Referenced by getMicroSec(), and parseTime().
 .SS "struct tm \fBRcppDatetime::m_tm\fP\fC [read, private]\fP"
 .PP
 Definition at line 95 of file Rcpp.h.
 .PP
 Referenced by getDay(), getHour(), getMinute(), getMonth(), getSecond(), getWeekday(), getYear(), and parseTime().
+.SS "int \fBRcppDatetime::m_us\fP\fC [private]\fP"
+.PP
+Definition at line 94 of file Rcpp.h.
+.PP
+Referenced by getMicroSec(), and parseTime().
 
 .SH "Author"
 .PP 

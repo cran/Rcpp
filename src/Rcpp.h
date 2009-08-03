@@ -150,12 +150,13 @@ public:
 class RcppParams {
 public:
     RcppParams(SEXP params);
-    void   checkNames(char *inputNames[], int len);
-    double getDoubleValue(std::string name);
-    int    getIntValue(std::string name);
+    void   	checkNames(char *inputNames[], int len);
+    bool	exists(std::string name);
+    double 	getDoubleValue(std::string name);
+    int    	getIntValue(std::string name);
     std::string getStringValue(std::string name);
-    bool   getBoolValue(std::string name);
-    RcppDate getDateValue(std::string name);
+    bool   	getBoolValue(std::string name);
+    RcppDate 	getDateValue(std::string name);
     RcppDatetime getDatetimeValue(std::string name);
 private:
     std::map<std::string, int> pmap;

@@ -1,4 +1,4 @@
-.TH "RcppVector" 3 "24 Feb 2009" "Rcpp" \" -*- nroff -*-
+.TH "RcppVector" 3 "3 Aug 2009" "Rcpp" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -46,41 +46,41 @@ RcppVector \-
 .SS "template<typename T> class RcppVector< T >"
 
 .PP
-Definition at line 358 of file Rcpp.h.
+Definition at line 359 of file Rcpp.h.
 .SH "Constructor & Destructor Documentation"
 .PP 
-.SS "template<typename T> \fBRcppVector\fP< T >::\fBRcppVector\fP (SEXP vec)\fC [inline]\fP"
+.SS "template<typename T > \fBRcppVector\fP< T >::\fBRcppVector\fP (SEXP vec)\fC [inline]\fP"
 .PP
-Definition at line 290 of file Rcpp.cpp.
+Definition at line 299 of file Rcpp.cpp.
 .PP
 References RcppVector< T >::len, and RcppVector< T >::v.
-.SS "template<typename T> \fBRcppVector\fP< T >::\fBRcppVector\fP (int len)\fC [inline]\fP"
+.SS "template<typename T > \fBRcppVector\fP< T >::\fBRcppVector\fP (int len)\fC [inline]\fP"
 .PP
-Definition at line 314 of file Rcpp.cpp.
+Definition at line 323 of file Rcpp.cpp.
 .PP
 References RcppVector< T >::len, and RcppVector< T >::v.
 .SH "Member Function Documentation"
 .PP 
-.SS "template<typename T> int \fBRcppVector\fP< T >::size ()\fC [inline]\fP"
+.SS "template<typename T > T * \fBRcppVector\fP< T >::cVector ()\fC [inline]\fP"
 .PP
-Definition at line 362 of file Rcpp.h.
-.PP
-Referenced by RcppResultSet::add(), Rcpp_Example(), and RcppVectorExample().
-.SS "template<typename T> T& \fBRcppVector\fP< T >::operator() (int i)\fC [inline]\fP"
-.PP
-Definition at line 363 of file Rcpp.h.
-.PP
-References RcppVector< T >::v.
-.SS "template<typename T> T * \fBRcppVector\fP< T >::cVector ()\fC [inline]\fP"
-.PP
-Definition at line 322 of file Rcpp.cpp.
+Definition at line 331 of file Rcpp.cpp.
 .PP
 References RcppVector< T >::len, and RcppVector< T >::v.
 .PP
 Referenced by RcppResultSet::add(), and Rcpp_Example().
-.SS "template<typename T> std::vector< T > \fBRcppVector\fP< T >::stlVector ()\fC [inline]\fP"
+.SS "template<typename T> T& \fBRcppVector\fP< T >::operator() (int i)\fC [inline]\fP"
 .PP
-Definition at line 330 of file Rcpp.cpp.
+Definition at line 364 of file Rcpp.h.
+.PP
+References RcppVector< T >::v.
+.SS "template<typename T> int \fBRcppVector\fP< T >::size ()\fC [inline]\fP"
+.PP
+Definition at line 363 of file Rcpp.h.
+.PP
+Referenced by RcppResultSet::add(), Rcpp_Example(), and RcppVectorExample().
+.SS "template<typename T > std::vector< T > \fBRcppVector\fP< T >::stlVector ()\fC [inline]\fP"
+.PP
+Definition at line 339 of file Rcpp.cpp.
 .PP
 References RcppVector< T >::len, and RcppVector< T >::v.
 .PP
@@ -89,12 +89,12 @@ Referenced by Rcpp_Example().
 .PP 
 .SS "template<typename T> int \fBRcppVector\fP< T >::\fBlen\fP\fC [private]\fP"
 .PP
-Definition at line 374 of file Rcpp.h.
+Definition at line 375 of file Rcpp.h.
 .PP
 Referenced by RcppVector< T >::cVector(), RcppVector< T >::RcppVector(), and RcppVector< T >::stlVector().
 .SS "template<typename T> T* \fBRcppVector\fP< T >::\fBv\fP\fC [private]\fP"
 .PP
-Definition at line 375 of file Rcpp.h.
+Definition at line 376 of file Rcpp.h.
 .PP
 Referenced by RcppVector< T >::cVector(), RcppVector< T >::operator()(), RcppVector< T >::RcppVector(), and RcppVector< T >::stlVector().
 

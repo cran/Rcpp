@@ -1,4 +1,4 @@
-.TH "RcppDate" 3 "24 Feb 2009" "Rcpp" \" -*- nroff -*-
+.TH "RcppDate" 3 "3 Aug 2009" "Rcpp" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -119,39 +119,11 @@ Definition at line 59 of file Rcpp.h.
 References mdy2jdn().
 .SH "Member Function Documentation"
 .PP 
-.SS "void RcppDate::mdy2jdn ()\fC [private]\fP"
-.PP
-Definition at line 846 of file Rcpp.cpp.
-.PP
-References day, jdn, month, and year.
-.PP
-Referenced by RcppDate().
-.SS "void RcppDate::jdn2mdy ()\fC [private]\fP"
-.PP
-Definition at line 856 of file Rcpp.cpp.
-.PP
-References day, jdn, month, and year.
-.PP
-Referenced by operator+(), and RcppDate().
-.SS "int RcppDate::getMonth () const\fC [inline]\fP"
-.PP
-Definition at line 66 of file Rcpp.h.
-.PP
-References month.
-.PP
-Referenced by operator<<(), Rcpp_Example(), and RcppParamsExample().
 .SS "int RcppDate::getDay () const\fC [inline]\fP"
 .PP
 Definition at line 67 of file Rcpp.h.
 .PP
 References day.
-.PP
-Referenced by operator<<(), Rcpp_Example(), and RcppParamsExample().
-.SS "int RcppDate::getYear () const\fC [inline]\fP"
-.PP
-Definition at line 68 of file Rcpp.h.
-.PP
-References year.
 .PP
 Referenced by operator<<(), Rcpp_Example(), and RcppParamsExample().
 .SS "int RcppDate::getJDN () const\fC [inline]\fP"
@@ -161,62 +133,90 @@ Definition at line 69 of file Rcpp.h.
 References jdn.
 .PP
 Referenced by RcppResultSet::add(), RcppFunction::appendToRList(), and ColDatum::getDateRCode().
+.SS "int RcppDate::getMonth () const\fC [inline]\fP"
+.PP
+Definition at line 66 of file Rcpp.h.
+.PP
+References month.
+.PP
+Referenced by operator<<(), Rcpp_Example(), and RcppParamsExample().
+.SS "int RcppDate::getYear () const\fC [inline]\fP"
+.PP
+Definition at line 68 of file Rcpp.h.
+.PP
+References year.
+.PP
+Referenced by operator<<(), Rcpp_Example(), and RcppParamsExample().
+.SS "void RcppDate::jdn2mdy ()\fC [private]\fP"
+.PP
+Definition at line 865 of file Rcpp.cpp.
+.PP
+References day, jdn, month, and year.
+.PP
+Referenced by operator+(), and RcppDate().
+.SS "void RcppDate::mdy2jdn ()\fC [private]\fP"
+.PP
+Definition at line 855 of file Rcpp.cpp.
+.PP
+References day, jdn, month, and year.
+.PP
+Referenced by RcppDate().
 .SH "Friends And Related Function Documentation"
 .PP 
 .SS "\fBRcppDate\fP operator+ (const \fBRcppDate\fP & date, int offset)\fC [friend]\fP"
 .PP
-Definition at line 796 of file Rcpp.cpp.
+Definition at line 805 of file Rcpp.cpp.
 .SS "int operator- (const \fBRcppDate\fP & date1, const \fBRcppDate\fP & date2)\fC [friend]\fP"
 .PP
-Definition at line 803 of file Rcpp.cpp.
+Definition at line 812 of file Rcpp.cpp.
 .SS "bool operator< (const \fBRcppDate\fP & date1, const \fBRcppDate\fP & date2)\fC [friend]\fP"
 .PP
-Definition at line 807 of file Rcpp.cpp.
-.SS "bool operator> (const \fBRcppDate\fP & date1, const \fBRcppDate\fP & date2)\fC [friend]\fP"
-.PP
-Definition at line 811 of file Rcpp.cpp.
-.SS "bool operator== (const \fBRcppDate\fP & date1, const \fBRcppDate\fP & date2)\fC [friend]\fP"
-.PP
-Definition at line 823 of file Rcpp.cpp.
-.SS "bool operator>= (const \fBRcppDate\fP & date1, const \fBRcppDate\fP & date2)\fC [friend]\fP"
-.PP
-Definition at line 815 of file Rcpp.cpp.
-.SS "bool operator<= (const \fBRcppDate\fP & date1, const \fBRcppDate\fP & date2)\fC [friend]\fP"
-.PP
-Definition at line 819 of file Rcpp.cpp.
+Definition at line 816 of file Rcpp.cpp.
 .SS "std::ostream& operator<< (std::ostream & os, const \fBRcppDate\fP & date)\fC [friend]\fP"
 .PP
-Definition at line 790 of file Rcpp.cpp.
+Definition at line 799 of file Rcpp.cpp.
+.SS "bool operator<= (const \fBRcppDate\fP & date1, const \fBRcppDate\fP & date2)\fC [friend]\fP"
+.PP
+Definition at line 828 of file Rcpp.cpp.
+.SS "bool operator== (const \fBRcppDate\fP & date1, const \fBRcppDate\fP & date2)\fC [friend]\fP"
+.PP
+Definition at line 832 of file Rcpp.cpp.
+.SS "bool operator> (const \fBRcppDate\fP & date1, const \fBRcppDate\fP & date2)\fC [friend]\fP"
+.PP
+Definition at line 820 of file Rcpp.cpp.
+.SS "bool operator>= (const \fBRcppDate\fP & date1, const \fBRcppDate\fP & date2)\fC [friend]\fP"
+.PP
+Definition at line 824 of file Rcpp.cpp.
 .SH "Member Data Documentation"
 .PP 
-.SS "int \fBRcppDate::month\fP\fC [private]\fP"
-.PP
-Definition at line 51 of file Rcpp.h.
-.PP
-Referenced by getMonth(), jdn2mdy(), mdy2jdn(), operator+(), and RcppDate().
 .SS "int \fBRcppDate::day\fP\fC [private]\fP"
 .PP
 Definition at line 51 of file Rcpp.h.
 .PP
 Referenced by getDay(), jdn2mdy(), mdy2jdn(), operator+(), and RcppDate().
-.SS "int \fBRcppDate::year\fP\fC [private]\fP"
-.PP
-Definition at line 51 of file Rcpp.h.
-.PP
-Referenced by getYear(), jdn2mdy(), mdy2jdn(), operator+(), and RcppDate().
-.SS "int \fBRcppDate::jdn\fP\fC [private]\fP"
-.PP
-Definition at line 52 of file Rcpp.h.
-.PP
-Referenced by getJDN(), jdn2mdy(), mdy2jdn(), operator+(), operator-(), operator<(), operator<=(), operator==(), operator>(), operator>=(), and RcppDate().
 .SS "const int \fBRcppDate::Jan1970Offset\fP = 2440588\fC [static]\fP"
 .PP
 Definition at line 55 of file Rcpp.h.
 .PP
 Referenced by RcppResultSet::add(), RcppFunction::appendToRList(), ColDatum::getDateRCode(), and RcppDate().
+.SS "int \fBRcppDate::jdn\fP\fC [private]\fP"
+.PP
+Definition at line 52 of file Rcpp.h.
+.PP
+Referenced by getJDN(), jdn2mdy(), mdy2jdn(), operator+(), operator-(), operator<(), operator<=(), operator==(), operator>(), operator>=(), and RcppDate().
+.SS "int \fBRcppDate::month\fP\fC [private]\fP"
+.PP
+Definition at line 51 of file Rcpp.h.
+.PP
+Referenced by getMonth(), jdn2mdy(), mdy2jdn(), operator+(), and RcppDate().
 .SS "const int \fBRcppDate::QLtoJan1970Offset\fP = 25569\fC [static]\fP"
 .PP
 Definition at line 56 of file Rcpp.h.
+.SS "int \fBRcppDate::year\fP\fC [private]\fP"
+.PP
+Definition at line 51 of file Rcpp.h.
+.PP
+Referenced by getYear(), jdn2mdy(), mdy2jdn(), operator+(), and RcppDate().
 
 .SH "Author"
 .PP 

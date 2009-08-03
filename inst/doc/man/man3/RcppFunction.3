@@ -1,4 +1,4 @@
-.TH "RcppFunction" 3 "24 Feb 2009" "Rcpp" \" -*- nroff -*-
+.TH "RcppFunction" 3 "3 Aug 2009" "Rcpp" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -77,120 +77,120 @@ Inherited by \fBMyRListFunc\fP, and \fBMyRVectorFunc\fP.
 .in -1c
 .SH "Detailed Description"
 .PP 
-Definition at line 524 of file Rcpp.h.
+Definition at line 525 of file Rcpp.h.
 .SH "Constructor & Destructor Documentation"
 .PP 
 .SS "RcppFunction::RcppFunction (SEXP fn)\fC [inline]\fP"
 .PP
-Definition at line 526 of file Rcpp.h.
+Definition at line 527 of file Rcpp.h.
 .PP
 References currListPosn, listArg, listSize, numProtected, and vectorArg.
 .SS "RcppFunction::~RcppFunction ()\fC [inline]\fP"
 .PP
-Definition at line 534 of file Rcpp.h.
+Definition at line 535 of file Rcpp.h.
 .PP
 References numProtected.
 .SH "Member Function Documentation"
 .PP 
-.SS "SEXP RcppFunction::listCall ()"
-.PP
-Definition at line 877 of file Rcpp.cpp.
-.PP
-References currListPosn, fn, listArg, listSize, names, and numProtected.
-.PP
-Referenced by MyRListFunc::addOne().
-.SS "SEXP RcppFunction::vectorCall ()"
-.PP
-Definition at line 897 of file Rcpp.cpp.
-.PP
-References fn, numProtected, and vectorArg.
-.PP
-Referenced by MyRVectorFunc::getSum().
-.SS "void RcppFunction::setRVector (std::vector< double > & v)"
-.PP
-Definition at line 909 of file Rcpp.cpp.
-.PP
-References numProtected, and vectorArg.
-.PP
-Referenced by MyRVectorFunc::getSum().
-.SS "void RcppFunction::setRListSize (int size)"
-.PP
-Definition at line 916 of file Rcpp.cpp.
-.PP
-References listArg, listSize, and numProtected.
-.PP
-Referenced by MyRListFunc::addOne().
-.SS "void RcppFunction::appendToRList (std::string name, double value)"
-.PP
-Definition at line 922 of file Rcpp.cpp.
-.PP
-References currListPosn, listArg, listSize, names, and numProtected.
-.PP
-Referenced by MyRListFunc::addOne().
-.SS "void RcppFunction::appendToRList (std::string name, int value)"
-.PP
-Definition at line 932 of file Rcpp.cpp.
-.PP
-References currListPosn, listArg, listSize, names, and numProtected.
-.SS "void RcppFunction::appendToRList (std::string name, std::string value)"
-.PP
-Definition at line 942 of file Rcpp.cpp.
-.PP
-References currListPosn, listArg, listSize, names, and numProtected.
-.SS "void RcppFunction::appendToRList (std::string name, \fBRcppDate\fP & date)"
-.PP
-Definition at line 952 of file Rcpp.cpp.
-.PP
-References currListPosn, RcppDate::getJDN(), RcppDate::Jan1970Offset, listArg, listSize, names, and numProtected.
 .SS "void RcppFunction::appendToRList (std::string name, \fBRcppDatetime\fP & datetime)"
 .PP
-Definition at line 966 of file Rcpp.cpp.
+Definition at line 975 of file Rcpp.cpp.
 .PP
 References currListPosn, RcppDatetime::getFractionalTimestamp(), listArg, listSize, names, and numProtected.
+.SS "void RcppFunction::appendToRList (std::string name, \fBRcppDate\fP & date)"
+.PP
+Definition at line 961 of file Rcpp.cpp.
+.PP
+References currListPosn, RcppDate::getJDN(), RcppDate::Jan1970Offset, listArg, listSize, names, and numProtected.
+.SS "void RcppFunction::appendToRList (std::string name, std::string value)"
+.PP
+Definition at line 951 of file Rcpp.cpp.
+.PP
+References currListPosn, listArg, listSize, names, and numProtected.
+.SS "void RcppFunction::appendToRList (std::string name, int value)"
+.PP
+Definition at line 941 of file Rcpp.cpp.
+.PP
+References currListPosn, listArg, listSize, names, and numProtected.
+.SS "void RcppFunction::appendToRList (std::string name, double value)"
+.PP
+Definition at line 931 of file Rcpp.cpp.
+.PP
+References currListPosn, listArg, listSize, names, and numProtected.
+.PP
+Referenced by MyRListFunc::addOne().
 .SS "void RcppFunction::clearProtectionStack ()\fC [inline]\fP"
 .PP
-Definition at line 546 of file Rcpp.h.
+Definition at line 547 of file Rcpp.h.
 .PP
 References numProtected.
 .PP
 Referenced by MyRListFunc::addOne(), and MyRVectorFunc::getSum().
+.SS "SEXP RcppFunction::listCall ()"
+.PP
+Definition at line 886 of file Rcpp.cpp.
+.PP
+References currListPosn, fn, listArg, listSize, names, and numProtected.
+.PP
+Referenced by MyRListFunc::addOne().
+.SS "void RcppFunction::setRListSize (int size)"
+.PP
+Definition at line 925 of file Rcpp.cpp.
+.PP
+References listArg, listSize, and numProtected.
+.PP
+Referenced by MyRListFunc::addOne().
+.SS "void RcppFunction::setRVector (std::vector< double > & v)"
+.PP
+Definition at line 918 of file Rcpp.cpp.
+.PP
+References numProtected, and vectorArg.
+.PP
+Referenced by MyRVectorFunc::getSum().
+.SS "SEXP RcppFunction::vectorCall ()"
+.PP
+Definition at line 906 of file Rcpp.cpp.
+.PP
+References fn, numProtected, and vectorArg.
+.PP
+Referenced by MyRVectorFunc::getSum().
 .SH "Member Data Documentation"
 .PP 
+.SS "int \fBRcppFunction::currListPosn\fP\fC [private]\fP"
+.PP
+Definition at line 554 of file Rcpp.h.
+.PP
+Referenced by appendToRList(), listCall(), and RcppFunction().
 .SS "SEXP \fBRcppFunction::fn\fP\fC [private]\fP"
 .PP
-Definition at line 552 of file Rcpp.h.
+Definition at line 553 of file Rcpp.h.
 .PP
 Referenced by listCall(), and vectorCall().
 .SS "SEXP \fBRcppFunction::listArg\fP\fC [private]\fP"
 .PP
-Definition at line 552 of file Rcpp.h.
+Definition at line 553 of file Rcpp.h.
 .PP
 Referenced by appendToRList(), listCall(), RcppFunction(), and setRListSize().
-.SS "SEXP \fBRcppFunction::vectorArg\fP\fC [private]\fP"
-.PP
-Definition at line 552 of file Rcpp.h.
-.PP
-Referenced by RcppFunction(), setRVector(), and vectorCall().
 .SS "int \fBRcppFunction::listSize\fP\fC [private]\fP"
-.PP
-Definition at line 553 of file Rcpp.h.
-.PP
-Referenced by appendToRList(), listCall(), RcppFunction(), and setRListSize().
-.SS "int \fBRcppFunction::currListPosn\fP\fC [private]\fP"
-.PP
-Definition at line 553 of file Rcpp.h.
-.PP
-Referenced by appendToRList(), listCall(), and RcppFunction().
-.SS "int \fBRcppFunction::numProtected\fP\fC [private]\fP"
-.PP
-Definition at line 553 of file Rcpp.h.
-.PP
-Referenced by appendToRList(), clearProtectionStack(), listCall(), RcppFunction(), setRListSize(), setRVector(), vectorCall(), and ~RcppFunction().
-.SS "std::vector<std::string> \fBRcppFunction::names\fP\fC [private]\fP"
 .PP
 Definition at line 554 of file Rcpp.h.
 .PP
+Referenced by appendToRList(), listCall(), RcppFunction(), and setRListSize().
+.SS "std::vector<std::string> \fBRcppFunction::names\fP\fC [private]\fP"
+.PP
+Definition at line 555 of file Rcpp.h.
+.PP
 Referenced by appendToRList(), and listCall().
+.SS "int \fBRcppFunction::numProtected\fP\fC [private]\fP"
+.PP
+Definition at line 554 of file Rcpp.h.
+.PP
+Referenced by appendToRList(), clearProtectionStack(), listCall(), RcppFunction(), setRListSize(), setRVector(), vectorCall(), and ~RcppFunction().
+.SS "SEXP \fBRcppFunction::vectorArg\fP\fC [private]\fP"
+.PP
+Definition at line 553 of file Rcpp.h.
+.PP
+Referenced by RcppFunction(), setRVector(), and vectorCall().
 
 .SH "Author"
 .PP 

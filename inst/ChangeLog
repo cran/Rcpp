@@ -1,3 +1,12 @@
+2009-08-03  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION: Release 0.6.6
+
+	* src/Rcpp.{h,cpp}: Added exists() method for RcppParams to test
+	  for existence of a named parameter.
+
+	* inst/doc/: Updated doxygen documentation
+
 2009-04-01  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION: Release 0.6.5

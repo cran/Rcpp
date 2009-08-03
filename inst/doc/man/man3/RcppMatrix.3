@@ -1,4 +1,4 @@
-.TH "RcppMatrix" 3 "24 Feb 2009" "Rcpp" \" -*- nroff -*-
+.TH "RcppMatrix" 3 "3 Aug 2009" "Rcpp" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -52,71 +52,71 @@ RcppMatrix \-
 .SS "template<typename T> class RcppMatrix< T >"
 
 .PP
-Definition at line 445 of file Rcpp.h.
+Definition at line 446 of file Rcpp.h.
 .SH "Constructor & Destructor Documentation"
 .PP 
-.SS "template<typename T> \fBRcppMatrix\fP< T >::\fBRcppMatrix\fP (SEXP mat)\fC [inline]\fP"
+.SS "template<typename T > \fBRcppMatrix\fP< T >::\fBRcppMatrix\fP (SEXP mat)\fC [inline]\fP"
 .PP
-Definition at line 338 of file Rcpp.cpp.
+Definition at line 347 of file Rcpp.cpp.
 .PP
 References RcppMatrix< T >::a, RcppMatrix< T >::dim1, and RcppMatrix< T >::dim2.
-.SS "template<typename T> \fBRcppMatrix\fP< T >::\fBRcppMatrix\fP (int nx, int ny)\fC [inline]\fP"
+.SS "template<typename T > \fBRcppMatrix\fP< T >::\fBRcppMatrix\fP (int nx, int ny)\fC [inline]\fP"
 .PP
-Definition at line 369 of file Rcpp.cpp.
+Definition at line 378 of file Rcpp.cpp.
 .PP
 References RcppMatrix< T >::a, RcppMatrix< T >::dim1, and RcppMatrix< T >::dim2.
 .SH "Member Function Documentation"
 .PP 
+.SS "template<typename T > T ** \fBRcppMatrix\fP< T >::cMatrix ()\fC [inline]\fP"
+.PP
+Definition at line 405 of file Rcpp.cpp.
+.PP
+References RcppMatrix< T >::a, RcppMatrix< T >::dim1, and RcppMatrix< T >::dim2.
+.PP
+Referenced by RcppResultSet::add(), and Rcpp_Example().
 .SS "template<typename T> int \fBRcppMatrix\fP< T >::getDim1 ()\fC [inline]\fP"
 .PP
-Definition at line 449 of file Rcpp.h.
+Definition at line 450 of file Rcpp.h.
 .PP
 References RcppMatrix< T >::dim1.
 .PP
 Referenced by RcppResultSet::add(), and Rcpp_Example().
 .SS "template<typename T> int \fBRcppMatrix\fP< T >::getDim2 ()\fC [inline]\fP"
 .PP
-Definition at line 450 of file Rcpp.h.
+Definition at line 451 of file Rcpp.h.
 .PP
 References RcppMatrix< T >::dim2.
 .PP
 Referenced by RcppResultSet::add(), and Rcpp_Example().
 .SS "template<typename T> T& \fBRcppMatrix\fP< T >::operator() (int i, int j)\fC [inline]\fP"
 .PP
-Definition at line 451 of file Rcpp.h.
+Definition at line 452 of file Rcpp.h.
 .PP
 References RcppMatrix< T >::a, RcppMatrix< T >::dim1, and RcppMatrix< T >::dim2.
-.SS "template<typename T> T ** \fBRcppMatrix\fP< T >::cMatrix ()\fC [inline]\fP"
+.SS "template<typename T > std::vector< std::vector< T > > \fBRcppMatrix\fP< T >::stlMatrix ()\fC [inline]\fP"
 .PP
-Definition at line 396 of file Rcpp.cpp.
-.PP
-References RcppMatrix< T >::a, RcppMatrix< T >::dim1, and RcppMatrix< T >::dim2.
-.PP
-Referenced by RcppResultSet::add(), and Rcpp_Example().
-.SS "template<typename T> std::vector< std::vector< T > > \fBRcppMatrix\fP< T >::stlMatrix ()\fC [inline]\fP"
-.PP
-Definition at line 383 of file Rcpp.cpp.
+Definition at line 392 of file Rcpp.cpp.
 .PP
 References RcppMatrix< T >::a, RcppMatrix< T >::dim1, and RcppMatrix< T >::dim2.
 .PP
 Referenced by Rcpp_Example().
 .SH "Member Data Documentation"
 .PP 
+.SS "template<typename T> T** \fBRcppMatrix\fP< T >::\fBa\fP\fC [private]\fP"
+.PP
+Definition at line 464 of file Rcpp.h.
+.PP
+Referenced by RcppMatrix< T >::cMatrix(), RcppMatrix< T >::operator()(), RcppMatrix< T >::RcppMatrix(), and RcppMatrix< T >::stlMatrix().
 .SS "template<typename T> int \fBRcppMatrix\fP< T >::\fBdim1\fP\fC [private]\fP"
 .PP
-Definition at line 462 of file Rcpp.h.
+Definition at line 463 of file Rcpp.h.
 .PP
 Referenced by RcppMatrix< T >::cMatrix(), RcppMatrix< T >::getDim1(), RcppMatrix< T >::operator()(), RcppMatrix< T >::RcppMatrix(), and RcppMatrix< T >::stlMatrix().
 .SS "template<typename T> int \fBRcppMatrix\fP< T >::\fBdim2\fP\fC [private]\fP"
 .PP
-Definition at line 462 of file Rcpp.h.
-.PP
-Referenced by RcppMatrix< T >::cMatrix(), RcppMatrix< T >::getDim2(), RcppMatrix< T >::operator()(), RcppMatrix< T >::RcppMatrix(), and RcppMatrix< T >::stlMatrix().
-.SS "template<typename T> T** \fBRcppMatrix\fP< T >::\fBa\fP\fC [private]\fP"
-.PP
 Definition at line 463 of file Rcpp.h.
 .PP
-Referenced by RcppMatrix< T >::cMatrix(), RcppMatrix< T >::operator()(), RcppMatrix< T >::RcppMatrix(), and RcppMatrix< T >::stlMatrix().
+Referenced by RcppMatrix< T >::cMatrix(), RcppMatrix< T >::getDim2(), RcppMatrix< T >::operator()(), RcppMatrix< T >::RcppMatrix(), and RcppMatrix< T >::stlMatrix().
 
 .SH "Author"
 .PP 

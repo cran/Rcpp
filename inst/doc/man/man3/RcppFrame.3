@@ -1,4 +1,4 @@
-.TH "RcppFrame" 3 "24 Feb 2009" "Rcpp" \" -*- nroff -*-
+.TH "RcppFrame" 3 "3 Aug 2009" "Rcpp" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -45,46 +45,46 @@ RcppFrame \-
 .in -1c
 .SH "Detailed Description"
 .PP 
-Definition at line 285 of file Rcpp.h.
+Definition at line 286 of file Rcpp.h.
 .SH "Constructor & Destructor Documentation"
 .PP 
 .SS "RcppFrame::RcppFrame (SEXP df)"
 .PP
-Definition at line 50 of file Rcpp.cpp.
+Definition at line 59 of file Rcpp.cpp.
 .PP
 References colNames, and table.
 .SS "RcppFrame::RcppFrame (std::vector< std::string > colNames)\fC [inline]\fP"
 .PP
-Definition at line 290 of file Rcpp.h.
+Definition at line 291 of file Rcpp.h.
 .SH "Member Function Documentation"
 .PP 
+.SS "void RcppFrame::addRow (std::vector< \fBColDatum\fP > rowData)\fC [inline]\fP"
+.PP
+Definition at line 297 of file Rcpp.h.
+.PP
+References colNames, and table.
+.PP
+Referenced by Rcpp_Example().
+.SS "int RcppFrame::cols ()\fC [inline]\fP"
+.PP
+Definition at line 316 of file Rcpp.h.
+.PP
+References table.
 .SS "std::vector<std::string>& RcppFrame::getColNames ()\fC [inline]\fP"
 .PP
-Definition at line 294 of file Rcpp.h.
+Definition at line 295 of file Rcpp.h.
 .PP
 References colNames.
 .PP
 Referenced by RcppResultSet::add().
 .SS "std::vector<std::vector<\fBColDatum\fP> >& RcppFrame::getTableData ()\fC [inline]\fP"
 .PP
-Definition at line 295 of file Rcpp.h.
+Definition at line 296 of file Rcpp.h.
 .PP
 References table.
 .PP
 Referenced by RcppResultSet::add().
-.SS "void RcppFrame::addRow (std::vector< \fBColDatum\fP > rowData)\fC [inline]\fP"
-.PP
-Definition at line 296 of file Rcpp.h.
-.PP
-References colNames, and table.
-.PP
-Referenced by Rcpp_Example().
 .SS "int RcppFrame::rows ()\fC [inline]\fP"
-.PP
-Definition at line 314 of file Rcpp.h.
-.PP
-References table.
-.SS "int RcppFrame::cols ()\fC [inline]\fP"
 .PP
 Definition at line 315 of file Rcpp.h.
 .PP
@@ -93,12 +93,12 @@ References table.
 .PP 
 .SS "std::vector<std::string> \fBRcppFrame::colNames\fP\fC [private]\fP"
 .PP
-Definition at line 286 of file Rcpp.h.
+Definition at line 287 of file Rcpp.h.
 .PP
 Referenced by addRow(), getColNames(), and RcppFrame().
 .SS "std::vector<std::vector<\fBColDatum\fP> > \fBRcppFrame::table\fP\fC [private]\fP"
 .PP
-Definition at line 287 of file Rcpp.h.
+Definition at line 288 of file Rcpp.h.
 .PP
 Referenced by addRow(), cols(), getTableData(), RcppFrame(), and rows().
 

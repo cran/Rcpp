@@ -11,6 +11,8 @@
 \item 
 void \hyperlink{classRcppParams_1b8feaf39d3ffdf0f6773c44ac53736c}{checkNames} (char $\ast$inputNames\mbox{[}$\,$\mbox{]}, int len)
 \item 
+bool \hyperlink{classRcppParams_989141ab2a8800b97d91bfb43420c6bc}{exists} (std::string name)
+\item 
 double \hyperlink{classRcppParams_a45f8bc1cd8a64aa9a98e24158407077}{getDoubleValue} (std::string name)
 \item 
 int \hyperlink{classRcppParams_bb554151641ab12a793f28d3d081973a}{getIntValue} (std::string name)
@@ -41,7 +43,7 @@ Definition at line 150 of file Rcpp.h.
 \hypertarget{classRcppParams_7315d083ee0d1d0ca00c3aad0175d524}{
 \index{RcppParams@{RcppParams}!RcppParams@{RcppParams}}
 \index{RcppParams@{RcppParams}!RcppParams@{RcppParams}}
-\subsubsection[RcppParams]{\setlength{\rightskip}{0pt plus 5cm}RcppParams::RcppParams (SEXP {\em params})}}
+\subsubsection[{RcppParams}]{\setlength{\rightskip}{0pt plus 5cm}RcppParams::RcppParams (SEXP {\em params})}}
 \label{classRcppParams_7315d083ee0d1d0ca00c3aad0175d524}
 
 
@@ -55,7 +57,7 @@ References \_\-params, and pmap.
 \hypertarget{classRcppParams_1b8feaf39d3ffdf0f6773c44ac53736c}{
 \index{RcppParams@{RcppParams}!checkNames@{checkNames}}
 \index{checkNames@{checkNames}!RcppParams@{RcppParams}}
-\subsubsection[checkNames]{\setlength{\rightskip}{0pt plus 5cm}void RcppParams::checkNames (char $\ast$ {\em inputNames}\mbox{[}$\,$\mbox{]}, \/  int {\em len})}}
+\subsubsection[{checkNames}]{\setlength{\rightskip}{0pt plus 5cm}void RcppParams::checkNames (char $\ast$ {\em inputNames}\mbox{[}$\,$\mbox{]}, \/  int {\em len})}}
 \label{classRcppParams_1b8feaf39d3ffdf0f6773c44ac53736c}
 
 
@@ -63,106 +65,117 @@ References \_\-params, and pmap.
 
 Definition at line 40 of file Rcpp.cpp.
 
-References pmap.\hypertarget{classRcppParams_a45f8bc1cd8a64aa9a98e24158407077}{
+References pmap.\hypertarget{classRcppParams_989141ab2a8800b97d91bfb43420c6bc}{
+\index{RcppParams@{RcppParams}!exists@{exists}}
+\index{exists@{exists}!RcppParams@{RcppParams}}
+\subsubsection[{exists}]{\setlength{\rightskip}{0pt plus 5cm}bool RcppParams::exists (std::string {\em name})}}
+\label{classRcppParams_989141ab2a8800b97d91bfb43420c6bc}
+
+
+
+
+Definition at line 50 of file Rcpp.cpp.
+
+References pmap.\hypertarget{classRcppParams_d818a50a0e269360f3f74c5259dec882}{
+\index{RcppParams@{RcppParams}!getBoolValue@{getBoolValue}}
+\index{getBoolValue@{getBoolValue}!RcppParams@{RcppParams}}
+\subsubsection[{getBoolValue}]{\setlength{\rightskip}{0pt plus 5cm}bool RcppParams::getBoolValue (std::string {\em name})}}
+\label{classRcppParams_d818a50a0e269360f3f74c5259dec882}
+
+
+
+
+Definition at line 178 of file Rcpp.cpp.
+
+References \_\-params, and pmap.\hypertarget{classRcppParams_a4bec8bfe32d5079e64dc1c9a8fcf1b9}{
+\index{RcppParams@{RcppParams}!getDatetimeValue@{getDatetimeValue}}
+\index{getDatetimeValue@{getDatetimeValue}!RcppParams@{RcppParams}}
+\subsubsection[{getDatetimeValue}]{\setlength{\rightskip}{0pt plus 5cm}{\bf RcppDatetime} RcppParams::getDatetimeValue (std::string {\em name})}}
+\label{classRcppParams_a4bec8bfe32d5079e64dc1c9a8fcf1b9}
+
+
+
+
+Definition at line 235 of file Rcpp.cpp.
+
+References \_\-params, and pmap.\hypertarget{classRcppParams_ae20c7ee73aa2f1176837cc9387ad008}{
+\index{RcppParams@{RcppParams}!getDateValue@{getDateValue}}
+\index{getDateValue@{getDateValue}!RcppParams@{RcppParams}}
+\subsubsection[{getDateValue}]{\setlength{\rightskip}{0pt plus 5cm}{\bf RcppDate} RcppParams::getDateValue (std::string {\em name})}}
+\label{classRcppParams_ae20c7ee73aa2f1176837cc9387ad008}
+
+
+
+
+Definition at line 212 of file Rcpp.cpp.
+
+References \_\-params, and pmap.
+
+Referenced by Rcpp\_\-Example(), and RcppParamsExample().\hypertarget{classRcppParams_a45f8bc1cd8a64aa9a98e24158407077}{
 \index{RcppParams@{RcppParams}!getDoubleValue@{getDoubleValue}}
 \index{getDoubleValue@{getDoubleValue}!RcppParams@{RcppParams}}
-\subsubsection[getDoubleValue]{\setlength{\rightskip}{0pt plus 5cm}double RcppParams::getDoubleValue (std::string {\em name})}}
+\subsubsection[{getDoubleValue}]{\setlength{\rightskip}{0pt plus 5cm}double RcppParams::getDoubleValue (std::string {\em name})}}
 \label{classRcppParams_a45f8bc1cd8a64aa9a98e24158407077}
 
 
 
 
-Definition at line 123 of file Rcpp.cpp.
+Definition at line 132 of file Rcpp.cpp.
 
 References \_\-params, and pmap.
 
 Referenced by Rcpp\_\-Example(), and RcppParamsExample().\hypertarget{classRcppParams_bb554151641ab12a793f28d3d081973a}{
 \index{RcppParams@{RcppParams}!getIntValue@{getIntValue}}
 \index{getIntValue@{getIntValue}!RcppParams@{RcppParams}}
-\subsubsection[getIntValue]{\setlength{\rightskip}{0pt plus 5cm}int RcppParams::getIntValue (std::string {\em name})}}
+\subsubsection[{getIntValue}]{\setlength{\rightskip}{0pt plus 5cm}int RcppParams::getIntValue (std::string {\em name})}}
 \label{classRcppParams_bb554151641ab12a793f28d3d081973a}
 
 
 
 
-Definition at line 146 of file Rcpp.cpp.
+Definition at line 155 of file Rcpp.cpp.
 
 References \_\-params, and pmap.
 
 Referenced by Rcpp\_\-Example(), and RcppParamsExample().\hypertarget{classRcppParams_dc04f4552582eeec09b0806ddd8e2581}{
 \index{RcppParams@{RcppParams}!getStringValue@{getStringValue}}
 \index{getStringValue@{getStringValue}!RcppParams@{RcppParams}}
-\subsubsection[getStringValue]{\setlength{\rightskip}{0pt plus 5cm}std::string RcppParams::getStringValue (std::string {\em name})}}
+\subsubsection[{getStringValue}]{\setlength{\rightskip}{0pt plus 5cm}std::string RcppParams::getStringValue (std::string {\em name})}}
 \label{classRcppParams_dc04f4552582eeec09b0806ddd8e2581}
 
 
 
 
-Definition at line 186 of file Rcpp.cpp.
+Definition at line 195 of file Rcpp.cpp.
 
 References \_\-params, and pmap.
 
-Referenced by Rcpp\_\-Example(), and RcppParamsExample().\hypertarget{classRcppParams_d818a50a0e269360f3f74c5259dec882}{
-\index{RcppParams@{RcppParams}!getBoolValue@{getBoolValue}}
-\index{getBoolValue@{getBoolValue}!RcppParams@{RcppParams}}
-\subsubsection[getBoolValue]{\setlength{\rightskip}{0pt plus 5cm}bool RcppParams::getBoolValue (std::string {\em name})}}
-\label{classRcppParams_d818a50a0e269360f3f74c5259dec882}
-
-
-
-
-Definition at line 169 of file Rcpp.cpp.
-
-References \_\-params, and pmap.\hypertarget{classRcppParams_ae20c7ee73aa2f1176837cc9387ad008}{
-\index{RcppParams@{RcppParams}!getDateValue@{getDateValue}}
-\index{getDateValue@{getDateValue}!RcppParams@{RcppParams}}
-\subsubsection[getDateValue]{\setlength{\rightskip}{0pt plus 5cm}{\bf RcppDate} RcppParams::getDateValue (std::string {\em name})}}
-\label{classRcppParams_ae20c7ee73aa2f1176837cc9387ad008}
-
-
-
-
-Definition at line 203 of file Rcpp.cpp.
-
-References \_\-params, and pmap.
-
-Referenced by Rcpp\_\-Example(), and RcppParamsExample().\hypertarget{classRcppParams_a4bec8bfe32d5079e64dc1c9a8fcf1b9}{
-\index{RcppParams@{RcppParams}!getDatetimeValue@{getDatetimeValue}}
-\index{getDatetimeValue@{getDatetimeValue}!RcppParams@{RcppParams}}
-\subsubsection[getDatetimeValue]{\setlength{\rightskip}{0pt plus 5cm}{\bf RcppDatetime} RcppParams::getDatetimeValue (std::string {\em name})}}
-\label{classRcppParams_a4bec8bfe32d5079e64dc1c9a8fcf1b9}
-
-
-
-
-Definition at line 226 of file Rcpp.cpp.
-
-References \_\-params, and pmap.
+Referenced by Rcpp\_\-Example(), and RcppParamsExample().
 
 \subsection{Member Data Documentation}
-\hypertarget{classRcppParams_399697fc90ba3136c61dd6e20931bd8b}{
-\index{RcppParams@{RcppParams}!pmap@{pmap}}
-\index{pmap@{pmap}!RcppParams@{RcppParams}}
-\subsubsection[pmap]{\setlength{\rightskip}{0pt plus 5cm}std::map$<$std::string, int$>$ {\bf RcppParams::pmap}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
-\label{classRcppParams_399697fc90ba3136c61dd6e20931bd8b}
-
-
-
-
-Definition at line 161 of file Rcpp.h.
-
-Referenced by checkNames(), getBoolValue(), getDatetimeValue(), getDateValue(), getDoubleValue(), getIntValue(), getStringValue(), and RcppParams().\hypertarget{classRcppParams_3040dda3b32eff66fb73d3ba3874ca5b}{
+\hypertarget{classRcppParams_3040dda3b32eff66fb73d3ba3874ca5b}{
 \index{RcppParams@{RcppParams}!\_\-params@{\_\-params}}
 \index{\_\-params@{\_\-params}!RcppParams@{RcppParams}}
-\subsubsection[\_\-params]{\setlength{\rightskip}{0pt plus 5cm}SEXP {\bf RcppParams::\_\-params}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\subsubsection[{\_\-params}]{\setlength{\rightskip}{0pt plus 5cm}SEXP {\bf RcppParams::\_\-params}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
 \label{classRcppParams_3040dda3b32eff66fb73d3ba3874ca5b}
+
+
+
+
+Definition at line 163 of file Rcpp.h.
+
+Referenced by getBoolValue(), getDatetimeValue(), getDateValue(), getDoubleValue(), getIntValue(), getStringValue(), and RcppParams().\hypertarget{classRcppParams_399697fc90ba3136c61dd6e20931bd8b}{
+\index{RcppParams@{RcppParams}!pmap@{pmap}}
+\index{pmap@{pmap}!RcppParams@{RcppParams}}
+\subsubsection[{pmap}]{\setlength{\rightskip}{0pt plus 5cm}std::map$<$std::string, int$>$ {\bf RcppParams::pmap}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\label{classRcppParams_399697fc90ba3136c61dd6e20931bd8b}
 
 
 
 
 Definition at line 162 of file Rcpp.h.
 
-Referenced by getBoolValue(), getDatetimeValue(), getDateValue(), getDoubleValue(), getIntValue(), getStringValue(), and RcppParams().
+Referenced by checkNames(), exists(), getBoolValue(), getDatetimeValue(), getDateValue(), getDoubleValue(), getIntValue(), getStringValue(), and RcppParams().
 
 The documentation for this class was generated from the following files:\begin{CompactItemize}
 \item 

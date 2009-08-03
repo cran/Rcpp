@@ -8,7 +8,7 @@ Collaboration diagram for ColDatum:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=51pt]{classColDatum__coll__graph}
+\includegraphics[width=102pt]{classColDatum__coll__graph}
 \end{center}
 \end{figure}
 \subsection*{Public Member Functions}
@@ -84,198 +84,68 @@ std::string $\ast$ \hyperlink{classColDatum_2abac3c574e1ab36531b03849197f779}{le
 \subsection{Detailed Description}
 
 
-Definition at line 170 of file Rcpp.h.
+Definition at line 171 of file Rcpp.h.
 
 \subsection{Constructor \& Destructor Documentation}
 \hypertarget{classColDatum_b0aa09b7e8d9acd2b0435b256c6b4da7}{
 \index{ColDatum@{ColDatum}!ColDatum@{ColDatum}}
 \index{ColDatum@{ColDatum}!ColDatum@{ColDatum}}
-\subsubsection[ColDatum]{\setlength{\rightskip}{0pt plus 5cm}ColDatum::ColDatum ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\subsubsection[{ColDatum}]{\setlength{\rightskip}{0pt plus 5cm}ColDatum::ColDatum ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
 \label{classColDatum_b0aa09b7e8d9acd2b0435b256c6b4da7}
 
 
 
 
-Definition at line 172 of file Rcpp.h.
+Definition at line 173 of file Rcpp.h.
 
 References level.\hypertarget{classColDatum_ccc1e3ec9da32643bd4953f983165b64}{
 \index{ColDatum@{ColDatum}!$\sim$ColDatum@{$\sim$ColDatum}}
 \index{$\sim$ColDatum@{$\sim$ColDatum}!ColDatum@{ColDatum}}
-\subsubsection[$\sim$ColDatum]{\setlength{\rightskip}{0pt plus 5cm}ColDatum::$\sim$ColDatum ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\subsubsection[{$\sim$ColDatum}]{\setlength{\rightskip}{0pt plus 5cm}ColDatum::$\sim$ColDatum ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
 \label{classColDatum_ccc1e3ec9da32643bd4953f983165b64}
 
 
 
 
-Definition at line 175 of file Rcpp.h.
+Definition at line 176 of file Rcpp.h.
 
 References COLTYPE\_\-FACTOR, levelNames, and type.\hypertarget{classColDatum_0507c6e2b4c76ee5364af001855fbe4e}{
 \index{ColDatum@{ColDatum}!ColDatum@{ColDatum}}
 \index{ColDatum@{ColDatum}!ColDatum@{ColDatum}}
-\subsubsection[ColDatum]{\setlength{\rightskip}{0pt plus 5cm}ColDatum::ColDatum (const {\bf ColDatum} \& {\em datum})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\subsubsection[{ColDatum}]{\setlength{\rightskip}{0pt plus 5cm}ColDatum::ColDatum (const {\bf ColDatum} \& {\em datum})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
 \label{classColDatum_0507c6e2b4c76ee5364af001855fbe4e}
 
 
 
 
-Definition at line 185 of file Rcpp.h.
+Definition at line 186 of file Rcpp.h.
 
 References COLTYPE\_\-FACTOR, d, i, level, levelNames, numLevels, s, type, and x.
 
 \subsection{Member Function Documentation}
-\hypertarget{classColDatum_ae862d41617b3ae39f88b5b729ccccc3}{
-\index{ColDatum@{ColDatum}!getType@{getType}}
-\index{getType@{getType}!ColDatum@{ColDatum}}
-\subsubsection[getType]{\setlength{\rightskip}{0pt plus 5cm}{\bf ColType} ColDatum::getType () const\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
-\label{classColDatum_ae862d41617b3ae39f88b5b729ccccc3}
+\hypertarget{classColDatum_9d151a64fb91608752346a9a16551410}{
+\index{ColDatum@{ColDatum}!checkFactorType@{checkFactorType}}
+\index{checkFactorType@{checkFactorType}!ColDatum@{ColDatum}}
+\subsubsection[{checkFactorType}]{\setlength{\rightskip}{0pt plus 5cm}void ColDatum::checkFactorType ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classColDatum_9d151a64fb91608752346a9a16551410}
 
 
 
 
-Definition at line 202 of file Rcpp.h.
+Definition at line 266 of file Rcpp.h.
 
-References type.\hypertarget{classColDatum_edf3ac3ea399222524f02f3468ec97a0}{
-\index{ColDatum@{ColDatum}!setDoubleValue@{setDoubleValue}}
-\index{setDoubleValue@{setDoubleValue}!ColDatum@{ColDatum}}
-\subsubsection[setDoubleValue]{\setlength{\rightskip}{0pt plus 5cm}void ColDatum::setDoubleValue (double {\em val})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
-\label{classColDatum_edf3ac3ea399222524f02f3468ec97a0}
+References COLTYPE\_\-FACTOR, and type.
 
-
-
-
-Definition at line 204 of file Rcpp.h.
-
-References COLTYPE\_\-DOUBLE, type, and x.\hypertarget{classColDatum_80d401e1efb6e714113990c78e72eb84}{
-\index{ColDatum@{ColDatum}!setIntValue@{setIntValue}}
-\index{setIntValue@{setIntValue}!ColDatum@{ColDatum}}
-\subsubsection[setIntValue]{\setlength{\rightskip}{0pt plus 5cm}void ColDatum::setIntValue (int {\em val})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
-\label{classColDatum_80d401e1efb6e714113990c78e72eb84}
-
-
-
-
-Definition at line 205 of file Rcpp.h.
-
-References COLTYPE\_\-INT, i, and type.\hypertarget{classColDatum_19ebd9c0e3e2544c8679999ab91c9e20}{
-\index{ColDatum@{ColDatum}!setLogicalValue@{setLogicalValue}}
-\index{setLogicalValue@{setLogicalValue}!ColDatum@{ColDatum}}
-\subsubsection[setLogicalValue]{\setlength{\rightskip}{0pt plus 5cm}void ColDatum::setLogicalValue (int {\em val})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
-\label{classColDatum_19ebd9c0e3e2544c8679999ab91c9e20}
-
-
-
-
-Definition at line 206 of file Rcpp.h.
-
-References COLTYPE\_\-LOGICAL, i, and type.\hypertarget{classColDatum_a87060ae6c415167d501c41684d8a586}{
-\index{ColDatum@{ColDatum}!setStringValue@{setStringValue}}
-\index{setStringValue@{setStringValue}!ColDatum@{ColDatum}}
-\subsubsection[setStringValue]{\setlength{\rightskip}{0pt plus 5cm}void ColDatum::setStringValue (std::string {\em val})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
-\label{classColDatum_a87060ae6c415167d501c41684d8a586}
-
-
-
-
-Definition at line 211 of file Rcpp.h.
-
-References COLTYPE\_\-STRING, s, and type.\hypertarget{classColDatum_988defa165f1d5ab7cde96d2c86c7c69}{
-\index{ColDatum@{ColDatum}!setDateValue@{setDateValue}}
-\index{setDateValue@{setDateValue}!ColDatum@{ColDatum}}
-\subsubsection[setDateValue]{\setlength{\rightskip}{0pt plus 5cm}void ColDatum::setDateValue ({\bf RcppDate} {\em date})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
-\label{classColDatum_988defa165f1d5ab7cde96d2c86c7c69}
-
-
-
-
-Definition at line 212 of file Rcpp.h.
-
-References COLTYPE\_\-DATE, d, and type.\hypertarget{classColDatum_5803eb7a89dc467b88d7d412462c6fb5}{
-\index{ColDatum@{ColDatum}!setDatetimeValue@{setDatetimeValue}}
-\index{setDatetimeValue@{setDatetimeValue}!ColDatum@{ColDatum}}
-\subsubsection[setDatetimeValue]{\setlength{\rightskip}{0pt plus 5cm}void ColDatum::setDatetimeValue ({\bf RcppDatetime} {\em datetime})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
-\label{classColDatum_5803eb7a89dc467b88d7d412462c6fb5}
-
-
-
-
-Definition at line 216 of file Rcpp.h.
-
-References COLTYPE\_\-DATETIME, RcppDatetime::m\_\-d, type, and x.\hypertarget{classColDatum_bd6f582044692c2215d9cd4add379ea1}{
-\index{ColDatum@{ColDatum}!setFactorValue@{setFactorValue}}
-\index{setFactorValue@{setFactorValue}!ColDatum@{ColDatum}}
-\subsubsection[setFactorValue]{\setlength{\rightskip}{0pt plus 5cm}void ColDatum::setFactorValue (std::string $\ast$ {\em names}, \/  int {\em numNames}, \/  int {\em factorLevel})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
-\label{classColDatum_bd6f582044692c2215d9cd4add379ea1}
-
-
-
-
-Definition at line 220 of file Rcpp.h.
-
-References COLTYPE\_\-FACTOR, i, level, levelNames, numLevels, and type.\hypertarget{classColDatum_6a19044be8ade2b14b372b179210a9bd}{
-\index{ColDatum@{ColDatum}!getDoubleValue@{getDoubleValue}}
-\index{getDoubleValue@{getDoubleValue}!ColDatum@{ColDatum}}
-\subsubsection[getDoubleValue]{\setlength{\rightskip}{0pt plus 5cm}double ColDatum::getDoubleValue ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
-\label{classColDatum_6a19044be8ade2b14b372b179210a9bd}
-
-
-
-
-Definition at line 231 of file Rcpp.h.
-
-References COLTYPE\_\-DOUBLE, type, and x.\hypertarget{classColDatum_f498266608526c9db7f865bc66cc5e40}{
-\index{ColDatum@{ColDatum}!getIntValue@{getIntValue}}
-\index{getIntValue@{getIntValue}!ColDatum@{ColDatum}}
-\subsubsection[getIntValue]{\setlength{\rightskip}{0pt plus 5cm}int ColDatum::getIntValue ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
-\label{classColDatum_f498266608526c9db7f865bc66cc5e40}
-
-
-
-
-Definition at line 236 of file Rcpp.h.
-
-References COLTYPE\_\-INT, i, and type.\hypertarget{classColDatum_df81b2aed6f8e19b6f36310288991f38}{
-\index{ColDatum@{ColDatum}!getLogicalValue@{getLogicalValue}}
-\index{getLogicalValue@{getLogicalValue}!ColDatum@{ColDatum}}
-\subsubsection[getLogicalValue]{\setlength{\rightskip}{0pt plus 5cm}int ColDatum::getLogicalValue ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
-\label{classColDatum_df81b2aed6f8e19b6f36310288991f38}
-
-
-
-
-Definition at line 241 of file Rcpp.h.
-
-References COLTYPE\_\-LOGICAL, i, and type.\hypertarget{classColDatum_d0d76d861441151f31cf42acff4b8c0f}{
-\index{ColDatum@{ColDatum}!getStringValue@{getStringValue}}
-\index{getStringValue@{getStringValue}!ColDatum@{ColDatum}}
-\subsubsection[getStringValue]{\setlength{\rightskip}{0pt plus 5cm}std::string ColDatum::getStringValue ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
-\label{classColDatum_d0d76d861441151f31cf42acff4b8c0f}
-
-
-
-
-Definition at line 246 of file Rcpp.h.
-
-References COLTYPE\_\-STRING, s, and type.\hypertarget{classColDatum_70480f53f9cee46bcdaed7331e38c943}{
-\index{ColDatum@{ColDatum}!getDateValue@{getDateValue}}
-\index{getDateValue@{getDateValue}!ColDatum@{ColDatum}}
-\subsubsection[getDateValue]{\setlength{\rightskip}{0pt plus 5cm}{\bf RcppDate} ColDatum::getDateValue ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
-\label{classColDatum_70480f53f9cee46bcdaed7331e38c943}
-
-
-
-
-Definition at line 251 of file Rcpp.h.
-
-References COLTYPE\_\-DATE, d, and type.\hypertarget{classColDatum_87c424137afc43068bf1aba75035851d}{
+Referenced by getFactorLevel(), getFactorLevelName(), getFactorLevelNames(), and getFactorNumLevels().\hypertarget{classColDatum_87c424137afc43068bf1aba75035851d}{
 \index{ColDatum@{ColDatum}!getDateRCode@{getDateRCode}}
 \index{getDateRCode@{getDateRCode}!ColDatum@{ColDatum}}
-\subsubsection[getDateRCode]{\setlength{\rightskip}{0pt plus 5cm}double ColDatum::getDateRCode ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\subsubsection[{getDateRCode}]{\setlength{\rightskip}{0pt plus 5cm}double ColDatum::getDateRCode ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
 \label{classColDatum_87c424137afc43068bf1aba75035851d}
 
 
 
 
-Definition at line 256 of file Rcpp.h.
+Definition at line 257 of file Rcpp.h.
 
 References d, RcppDate::getJDN(), and RcppDate::Jan1970Offset.
 
@@ -289,57 +159,46 @@ Here is the call graph for this function:\nopagebreak
 \hypertarget{classColDatum_408e78096b13b5047ae25e99e945ebf6}{
 \index{ColDatum@{ColDatum}!getDatetimeValue@{getDatetimeValue}}
 \index{getDatetimeValue@{getDatetimeValue}!ColDatum@{ColDatum}}
-\subsubsection[getDatetimeValue]{\setlength{\rightskip}{0pt plus 5cm}{\bf RcppDatetime} ColDatum::getDatetimeValue ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\subsubsection[{getDatetimeValue}]{\setlength{\rightskip}{0pt plus 5cm}{\bf RcppDatetime} ColDatum::getDatetimeValue ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
 \label{classColDatum_408e78096b13b5047ae25e99e945ebf6}
 
 
 
 
-Definition at line 259 of file Rcpp.h.
+Definition at line 260 of file Rcpp.h.
 
-References COLTYPE\_\-DATETIME, type, and x.\hypertarget{classColDatum_9d151a64fb91608752346a9a16551410}{
-\index{ColDatum@{ColDatum}!checkFactorType@{checkFactorType}}
-\index{checkFactorType@{checkFactorType}!ColDatum@{ColDatum}}
-\subsubsection[checkFactorType]{\setlength{\rightskip}{0pt plus 5cm}void ColDatum::checkFactorType ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
-\label{classColDatum_9d151a64fb91608752346a9a16551410}
-
-
-
-
-Definition at line 265 of file Rcpp.h.
-
-References COLTYPE\_\-FACTOR, and type.
-
-Referenced by getFactorLevel(), getFactorLevelName(), getFactorLevelNames(), and getFactorNumLevels().\hypertarget{classColDatum_9b5db8254be428e68c61805f02723821}{
-\index{ColDatum@{ColDatum}!getFactorNumLevels@{getFactorNumLevels}}
-\index{getFactorNumLevels@{getFactorNumLevels}!ColDatum@{ColDatum}}
-\subsubsection[getFactorNumLevels]{\setlength{\rightskip}{0pt plus 5cm}int ColDatum::getFactorNumLevels ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
-\label{classColDatum_9b5db8254be428e68c61805f02723821}
+References COLTYPE\_\-DATETIME, type, and x.\hypertarget{classColDatum_70480f53f9cee46bcdaed7331e38c943}{
+\index{ColDatum@{ColDatum}!getDateValue@{getDateValue}}
+\index{getDateValue@{getDateValue}!ColDatum@{ColDatum}}
+\subsubsection[{getDateValue}]{\setlength{\rightskip}{0pt plus 5cm}{\bf RcppDate} ColDatum::getDateValue ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classColDatum_70480f53f9cee46bcdaed7331e38c943}
 
 
 
 
-Definition at line 269 of file Rcpp.h.
+Definition at line 252 of file Rcpp.h.
 
-References checkFactorType(), and numLevels.
+References COLTYPE\_\-DATE, d, and type.\hypertarget{classColDatum_6a19044be8ade2b14b372b179210a9bd}{
+\index{ColDatum@{ColDatum}!getDoubleValue@{getDoubleValue}}
+\index{getDoubleValue@{getDoubleValue}!ColDatum@{ColDatum}}
+\subsubsection[{getDoubleValue}]{\setlength{\rightskip}{0pt plus 5cm}double ColDatum::getDoubleValue ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classColDatum_6a19044be8ade2b14b372b179210a9bd}
 
-Here is the call graph for this function:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=189pt]{classColDatum_9b5db8254be428e68c61805f02723821_cgraph}
-\end{center}
-\end{figure}
-\hypertarget{classColDatum_df3716db9f3483f3cd255a4c05823479}{
+
+
+
+Definition at line 232 of file Rcpp.h.
+
+References COLTYPE\_\-DOUBLE, type, and x.\hypertarget{classColDatum_df3716db9f3483f3cd255a4c05823479}{
 \index{ColDatum@{ColDatum}!getFactorLevel@{getFactorLevel}}
 \index{getFactorLevel@{getFactorLevel}!ColDatum@{ColDatum}}
-\subsubsection[getFactorLevel]{\setlength{\rightskip}{0pt plus 5cm}int ColDatum::getFactorLevel ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\subsubsection[{getFactorLevel}]{\setlength{\rightskip}{0pt plus 5cm}int ColDatum::getFactorLevel ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
 \label{classColDatum_df3716db9f3483f3cd255a4c05823479}
 
 
 
 
-Definition at line 270 of file Rcpp.h.
+Definition at line 271 of file Rcpp.h.
 
 References checkFactorType(), and level.
 
@@ -347,39 +206,19 @@ Here is the call graph for this function:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=176pt]{classColDatum_df3716db9f3483f3cd255a4c05823479_cgraph}
-\end{center}
-\end{figure}
-\hypertarget{classColDatum_4376ad852efcf177fad6f168a8f44877}{
-\index{ColDatum@{ColDatum}!getFactorLevelNames@{getFactorLevelNames}}
-\index{getFactorLevelNames@{getFactorLevelNames}!ColDatum@{ColDatum}}
-\subsubsection[getFactorLevelNames]{\setlength{\rightskip}{0pt plus 5cm}std::string$\ast$ ColDatum::getFactorLevelNames ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
-\label{classColDatum_4376ad852efcf177fad6f168a8f44877}
-
-
-
-
-Definition at line 271 of file Rcpp.h.
-
-References checkFactorType(), and levelNames.
-
-Here is the call graph for this function:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=191pt]{classColDatum_4376ad852efcf177fad6f168a8f44877_cgraph}
+\includegraphics[width=175pt]{classColDatum_df3716db9f3483f3cd255a4c05823479_cgraph}
 \end{center}
 \end{figure}
 \hypertarget{classColDatum_012df5970083052c2348cbda9ed646bb}{
 \index{ColDatum@{ColDatum}!getFactorLevelName@{getFactorLevelName}}
 \index{getFactorLevelName@{getFactorLevelName}!ColDatum@{ColDatum}}
-\subsubsection[getFactorLevelName]{\setlength{\rightskip}{0pt plus 5cm}std::string ColDatum::getFactorLevelName ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\subsubsection[{getFactorLevelName}]{\setlength{\rightskip}{0pt plus 5cm}std::string ColDatum::getFactorLevelName ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
 \label{classColDatum_012df5970083052c2348cbda9ed646bb}
 
 
 
 
-Definition at line 272 of file Rcpp.h.
+Definition at line 273 of file Rcpp.h.
 
 References checkFactorType(), level, and levelNames.
 
@@ -387,101 +226,262 @@ Here is the call graph for this function:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=189pt]{classColDatum_012df5970083052c2348cbda9ed646bb_cgraph}
+\includegraphics[width=188pt]{classColDatum_012df5970083052c2348cbda9ed646bb_cgraph}
 \end{center}
 \end{figure}
+\hypertarget{classColDatum_4376ad852efcf177fad6f168a8f44877}{
+\index{ColDatum@{ColDatum}!getFactorLevelNames@{getFactorLevelNames}}
+\index{getFactorLevelNames@{getFactorLevelNames}!ColDatum@{ColDatum}}
+\subsubsection[{getFactorLevelNames}]{\setlength{\rightskip}{0pt plus 5cm}std::string$\ast$ ColDatum::getFactorLevelNames ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classColDatum_4376ad852efcf177fad6f168a8f44877}
 
+
+
+
+Definition at line 272 of file Rcpp.h.
+
+References checkFactorType(), and levelNames.
+
+Here is the call graph for this function:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=190pt]{classColDatum_4376ad852efcf177fad6f168a8f44877_cgraph}
+\end{center}
+\end{figure}
+\hypertarget{classColDatum_9b5db8254be428e68c61805f02723821}{
+\index{ColDatum@{ColDatum}!getFactorNumLevels@{getFactorNumLevels}}
+\index{getFactorNumLevels@{getFactorNumLevels}!ColDatum@{ColDatum}}
+\subsubsection[{getFactorNumLevels}]{\setlength{\rightskip}{0pt plus 5cm}int ColDatum::getFactorNumLevels ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classColDatum_9b5db8254be428e68c61805f02723821}
+
+
+
+
+Definition at line 270 of file Rcpp.h.
+
+References checkFactorType(), and numLevels.
+
+Here is the call graph for this function:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=188pt]{classColDatum_9b5db8254be428e68c61805f02723821_cgraph}
+\end{center}
+\end{figure}
+\hypertarget{classColDatum_f498266608526c9db7f865bc66cc5e40}{
+\index{ColDatum@{ColDatum}!getIntValue@{getIntValue}}
+\index{getIntValue@{getIntValue}!ColDatum@{ColDatum}}
+\subsubsection[{getIntValue}]{\setlength{\rightskip}{0pt plus 5cm}int ColDatum::getIntValue ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classColDatum_f498266608526c9db7f865bc66cc5e40}
+
+
+
+
+Definition at line 237 of file Rcpp.h.
+
+References COLTYPE\_\-INT, i, and type.\hypertarget{classColDatum_df81b2aed6f8e19b6f36310288991f38}{
+\index{ColDatum@{ColDatum}!getLogicalValue@{getLogicalValue}}
+\index{getLogicalValue@{getLogicalValue}!ColDatum@{ColDatum}}
+\subsubsection[{getLogicalValue}]{\setlength{\rightskip}{0pt plus 5cm}int ColDatum::getLogicalValue ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classColDatum_df81b2aed6f8e19b6f36310288991f38}
+
+
+
+
+Definition at line 242 of file Rcpp.h.
+
+References COLTYPE\_\-LOGICAL, i, and type.\hypertarget{classColDatum_d0d76d861441151f31cf42acff4b8c0f}{
+\index{ColDatum@{ColDatum}!getStringValue@{getStringValue}}
+\index{getStringValue@{getStringValue}!ColDatum@{ColDatum}}
+\subsubsection[{getStringValue}]{\setlength{\rightskip}{0pt plus 5cm}std::string ColDatum::getStringValue ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classColDatum_d0d76d861441151f31cf42acff4b8c0f}
+
+
+
+
+Definition at line 247 of file Rcpp.h.
+
+References COLTYPE\_\-STRING, s, and type.\hypertarget{classColDatum_ae862d41617b3ae39f88b5b729ccccc3}{
+\index{ColDatum@{ColDatum}!getType@{getType}}
+\index{getType@{getType}!ColDatum@{ColDatum}}
+\subsubsection[{getType}]{\setlength{\rightskip}{0pt plus 5cm}{\bf ColType} ColDatum::getType () const\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classColDatum_ae862d41617b3ae39f88b5b729ccccc3}
+
+
+
+
+Definition at line 203 of file Rcpp.h.
+
+References type.\hypertarget{classColDatum_5803eb7a89dc467b88d7d412462c6fb5}{
+\index{ColDatum@{ColDatum}!setDatetimeValue@{setDatetimeValue}}
+\index{setDatetimeValue@{setDatetimeValue}!ColDatum@{ColDatum}}
+\subsubsection[{setDatetimeValue}]{\setlength{\rightskip}{0pt plus 5cm}void ColDatum::setDatetimeValue ({\bf RcppDatetime} {\em datetime})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classColDatum_5803eb7a89dc467b88d7d412462c6fb5}
+
+
+
+
+Definition at line 217 of file Rcpp.h.
+
+References COLTYPE\_\-DATETIME, RcppDatetime::m\_\-d, type, and x.\hypertarget{classColDatum_988defa165f1d5ab7cde96d2c86c7c69}{
+\index{ColDatum@{ColDatum}!setDateValue@{setDateValue}}
+\index{setDateValue@{setDateValue}!ColDatum@{ColDatum}}
+\subsubsection[{setDateValue}]{\setlength{\rightskip}{0pt plus 5cm}void ColDatum::setDateValue ({\bf RcppDate} {\em date})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classColDatum_988defa165f1d5ab7cde96d2c86c7c69}
+
+
+
+
+Definition at line 213 of file Rcpp.h.
+
+References COLTYPE\_\-DATE, d, and type.\hypertarget{classColDatum_edf3ac3ea399222524f02f3468ec97a0}{
+\index{ColDatum@{ColDatum}!setDoubleValue@{setDoubleValue}}
+\index{setDoubleValue@{setDoubleValue}!ColDatum@{ColDatum}}
+\subsubsection[{setDoubleValue}]{\setlength{\rightskip}{0pt plus 5cm}void ColDatum::setDoubleValue (double {\em val})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classColDatum_edf3ac3ea399222524f02f3468ec97a0}
+
+
+
+
+Definition at line 205 of file Rcpp.h.
+
+References COLTYPE\_\-DOUBLE, type, and x.\hypertarget{classColDatum_bd6f582044692c2215d9cd4add379ea1}{
+\index{ColDatum@{ColDatum}!setFactorValue@{setFactorValue}}
+\index{setFactorValue@{setFactorValue}!ColDatum@{ColDatum}}
+\subsubsection[{setFactorValue}]{\setlength{\rightskip}{0pt plus 5cm}void ColDatum::setFactorValue (std::string $\ast$ {\em names}, \/  int {\em numNames}, \/  int {\em factorLevel})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classColDatum_bd6f582044692c2215d9cd4add379ea1}
+
+
+
+
+Definition at line 221 of file Rcpp.h.
+
+References COLTYPE\_\-FACTOR, i, level, levelNames, numLevels, and type.\hypertarget{classColDatum_80d401e1efb6e714113990c78e72eb84}{
+\index{ColDatum@{ColDatum}!setIntValue@{setIntValue}}
+\index{setIntValue@{setIntValue}!ColDatum@{ColDatum}}
+\subsubsection[{setIntValue}]{\setlength{\rightskip}{0pt plus 5cm}void ColDatum::setIntValue (int {\em val})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classColDatum_80d401e1efb6e714113990c78e72eb84}
+
+
+
+
+Definition at line 206 of file Rcpp.h.
+
+References COLTYPE\_\-INT, i, and type.\hypertarget{classColDatum_19ebd9c0e3e2544c8679999ab91c9e20}{
+\index{ColDatum@{ColDatum}!setLogicalValue@{setLogicalValue}}
+\index{setLogicalValue@{setLogicalValue}!ColDatum@{ColDatum}}
+\subsubsection[{setLogicalValue}]{\setlength{\rightskip}{0pt plus 5cm}void ColDatum::setLogicalValue (int {\em val})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classColDatum_19ebd9c0e3e2544c8679999ab91c9e20}
+
+
+
+
+Definition at line 207 of file Rcpp.h.
+
+References COLTYPE\_\-LOGICAL, i, and type.\hypertarget{classColDatum_a87060ae6c415167d501c41684d8a586}{
+\index{ColDatum@{ColDatum}!setStringValue@{setStringValue}}
+\index{setStringValue@{setStringValue}!ColDatum@{ColDatum}}
+\subsubsection[{setStringValue}]{\setlength{\rightskip}{0pt plus 5cm}void ColDatum::setStringValue (std::string {\em val})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classColDatum_a87060ae6c415167d501c41684d8a586}
+
+
+
+
+Definition at line 212 of file Rcpp.h.
+
+References COLTYPE\_\-STRING, s, and type.
 
 \subsection{Member Data Documentation}
-\hypertarget{classColDatum_c539e7f62828f2683f1825a84a19d231}{
-\index{ColDatum@{ColDatum}!type@{type}}
-\index{type@{type}!ColDatum@{ColDatum}}
-\subsubsection[type]{\setlength{\rightskip}{0pt plus 5cm}{\bf ColType} {\bf ColDatum::type}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
-\label{classColDatum_c539e7f62828f2683f1825a84a19d231}
+\hypertarget{classColDatum_01a9fd53a56cf0cafa9c3230a3185c8c}{
+\index{ColDatum@{ColDatum}!d@{d}}
+\index{d@{d}!ColDatum@{ColDatum}}
+\subsubsection[{d}]{\setlength{\rightskip}{0pt plus 5cm}{\bf RcppDate} {\bf ColDatum::d}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\label{classColDatum_01a9fd53a56cf0cafa9c3230a3185c8c}
 
 
 
 
-Definition at line 275 of file Rcpp.h.
+Definition at line 283 of file Rcpp.h.
 
-Referenced by checkFactorType(), ColDatum(), getDatetimeValue(), getDateValue(), getDoubleValue(), getIntValue(), getLogicalValue(), getStringValue(), getType(), setDatetimeValue(), setDateValue(), setDoubleValue(), setFactorValue(), setIntValue(), setLogicalValue(), setStringValue(), and $\sim$ColDatum().\hypertarget{classColDatum_5a1c85e1da2da02052078a3c8d810be9}{
-\index{ColDatum@{ColDatum}!s@{s}}
-\index{s@{s}!ColDatum@{ColDatum}}
-\subsubsection[s]{\setlength{\rightskip}{0pt plus 5cm}std::string {\bf ColDatum::s}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
-\label{classColDatum_5a1c85e1da2da02052078a3c8d810be9}
-
-
-
-
-Definition at line 276 of file Rcpp.h.
-
-Referenced by ColDatum(), getStringValue(), and setStringValue().\hypertarget{classColDatum_6d3d286cbd6c4ad24f1f12266662e42e}{
-\index{ColDatum@{ColDatum}!x@{x}}
-\index{x@{x}!ColDatum@{ColDatum}}
-\subsubsection[x]{\setlength{\rightskip}{0pt plus 5cm}double {\bf ColDatum::x}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
-\label{classColDatum_6d3d286cbd6c4ad24f1f12266662e42e}
-
-
-
-
-Definition at line 277 of file Rcpp.h.
-
-Referenced by ColDatum(), getDatetimeValue(), getDoubleValue(), setDatetimeValue(), and setDoubleValue().\hypertarget{classColDatum_4ceff4204e29f345957cb5544f40104f}{
+Referenced by ColDatum(), getDateRCode(), getDateValue(), and setDateValue().\hypertarget{classColDatum_4ceff4204e29f345957cb5544f40104f}{
 \index{ColDatum@{ColDatum}!i@{i}}
 \index{i@{i}!ColDatum@{ColDatum}}
-\subsubsection[i]{\setlength{\rightskip}{0pt plus 5cm}int {\bf ColDatum::i}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\subsubsection[{i}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf ColDatum::i}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
 \label{classColDatum_4ceff4204e29f345957cb5544f40104f}
-
-
-
-
-Definition at line 278 of file Rcpp.h.
-
-Referenced by ColDatum(), getIntValue(), getLogicalValue(), setFactorValue(), setIntValue(), and setLogicalValue().\hypertarget{classColDatum_7b0fc92a094e9d1a865fd84c939170d0}{
-\index{ColDatum@{ColDatum}!level@{level}}
-\index{level@{level}!ColDatum@{ColDatum}}
-\subsubsection[level]{\setlength{\rightskip}{0pt plus 5cm}int {\bf ColDatum::level}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
-\label{classColDatum_7b0fc92a094e9d1a865fd84c939170d0}
 
 
 
 
 Definition at line 279 of file Rcpp.h.
 
-Referenced by ColDatum(), getFactorLevel(), getFactorLevelName(), and setFactorValue().\hypertarget{classColDatum_42954a262993eee014db2d1fd7a7c34f}{
-\index{ColDatum@{ColDatum}!numLevels@{numLevels}}
-\index{numLevels@{numLevels}!ColDatum@{ColDatum}}
-\subsubsection[numLevels]{\setlength{\rightskip}{0pt plus 5cm}int {\bf ColDatum::numLevels}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
-\label{classColDatum_42954a262993eee014db2d1fd7a7c34f}
+Referenced by ColDatum(), getIntValue(), getLogicalValue(), setFactorValue(), setIntValue(), and setLogicalValue().\hypertarget{classColDatum_7b0fc92a094e9d1a865fd84c939170d0}{
+\index{ColDatum@{ColDatum}!level@{level}}
+\index{level@{level}!ColDatum@{ColDatum}}
+\subsubsection[{level}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf ColDatum::level}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\label{classColDatum_7b0fc92a094e9d1a865fd84c939170d0}
 
 
 
 
 Definition at line 280 of file Rcpp.h.
 
-Referenced by ColDatum(), getFactorNumLevels(), and setFactorValue().\hypertarget{classColDatum_2abac3c574e1ab36531b03849197f779}{
+Referenced by ColDatum(), getFactorLevel(), getFactorLevelName(), and setFactorValue().\hypertarget{classColDatum_2abac3c574e1ab36531b03849197f779}{
 \index{ColDatum@{ColDatum}!levelNames@{levelNames}}
 \index{levelNames@{levelNames}!ColDatum@{ColDatum}}
-\subsubsection[levelNames]{\setlength{\rightskip}{0pt plus 5cm}std::string$\ast$ {\bf ColDatum::levelNames}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\subsubsection[{levelNames}]{\setlength{\rightskip}{0pt plus 5cm}std::string$\ast$ {\bf ColDatum::levelNames}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
 \label{classColDatum_2abac3c574e1ab36531b03849197f779}
-
-
-
-
-Definition at line 281 of file Rcpp.h.
-
-Referenced by ColDatum(), getFactorLevelName(), getFactorLevelNames(), setFactorValue(), and $\sim$ColDatum().\hypertarget{classColDatum_01a9fd53a56cf0cafa9c3230a3185c8c}{
-\index{ColDatum@{ColDatum}!d@{d}}
-\index{d@{d}!ColDatum@{ColDatum}}
-\subsubsection[d]{\setlength{\rightskip}{0pt plus 5cm}{\bf RcppDate} {\bf ColDatum::d}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
-\label{classColDatum_01a9fd53a56cf0cafa9c3230a3185c8c}
 
 
 
 
 Definition at line 282 of file Rcpp.h.
 
-Referenced by ColDatum(), getDateRCode(), getDateValue(), and setDateValue().
+Referenced by ColDatum(), getFactorLevelName(), getFactorLevelNames(), setFactorValue(), and $\sim$ColDatum().\hypertarget{classColDatum_42954a262993eee014db2d1fd7a7c34f}{
+\index{ColDatum@{ColDatum}!numLevels@{numLevels}}
+\index{numLevels@{numLevels}!ColDatum@{ColDatum}}
+\subsubsection[{numLevels}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf ColDatum::numLevels}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\label{classColDatum_42954a262993eee014db2d1fd7a7c34f}
+
+
+
+
+Definition at line 281 of file Rcpp.h.
+
+Referenced by ColDatum(), getFactorNumLevels(), and setFactorValue().\hypertarget{classColDatum_5a1c85e1da2da02052078a3c8d810be9}{
+\index{ColDatum@{ColDatum}!s@{s}}
+\index{s@{s}!ColDatum@{ColDatum}}
+\subsubsection[{s}]{\setlength{\rightskip}{0pt plus 5cm}std::string {\bf ColDatum::s}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\label{classColDatum_5a1c85e1da2da02052078a3c8d810be9}
+
+
+
+
+Definition at line 277 of file Rcpp.h.
+
+Referenced by ColDatum(), getStringValue(), and setStringValue().\hypertarget{classColDatum_c539e7f62828f2683f1825a84a19d231}{
+\index{ColDatum@{ColDatum}!type@{type}}
+\index{type@{type}!ColDatum@{ColDatum}}
+\subsubsection[{type}]{\setlength{\rightskip}{0pt plus 5cm}{\bf ColType} {\bf ColDatum::type}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\label{classColDatum_c539e7f62828f2683f1825a84a19d231}
+
+
+
+
+Definition at line 276 of file Rcpp.h.
+
+Referenced by checkFactorType(), ColDatum(), getDatetimeValue(), getDateValue(), getDoubleValue(), getIntValue(), getLogicalValue(), getStringValue(), getType(), setDatetimeValue(), setDateValue(), setDoubleValue(), setFactorValue(), setIntValue(), setLogicalValue(), setStringValue(), and $\sim$ColDatum().\hypertarget{classColDatum_6d3d286cbd6c4ad24f1f12266662e42e}{
+\index{ColDatum@{ColDatum}!x@{x}}
+\index{x@{x}!ColDatum@{ColDatum}}
+\subsubsection[{x}]{\setlength{\rightskip}{0pt plus 5cm}double {\bf ColDatum::x}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\label{classColDatum_6d3d286cbd6c4ad24f1f12266662e42e}
+
+
+
+
+Definition at line 278 of file Rcpp.h.
+
+Referenced by ColDatum(), getDatetimeValue(), getDoubleValue(), setDatetimeValue(), and setDoubleValue().
 
 The documentation for this class was generated from the following file:\begin{CompactItemize}
 \item 
