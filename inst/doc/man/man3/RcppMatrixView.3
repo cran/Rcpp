@@ -1,4 +1,4 @@
-.TH "RcppMatrixView" 3 "24 Feb 2009" "Rcpp" \" -*- nroff -*-
+.TH "RcppMatrixView" 3 "3 Aug 2009" "Rcpp" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -43,48 +43,48 @@ RcppMatrixView \-
 .SS "template<typename T> class RcppMatrixView< T >"
 
 .PP
-Definition at line 488 of file Rcpp.h.
+Definition at line 489 of file Rcpp.h.
 .SH "Constructor & Destructor Documentation"
 .PP 
-.SS "template<typename T> \fBRcppMatrixView\fP< T >::\fBRcppMatrixView\fP (SEXP mat)\fC [inline]\fP"
+.SS "template<typename T > \fBRcppMatrixView\fP< T >::\fBRcppMatrixView\fP (SEXP mat)\fC [inline]\fP"
 .PP
-Definition at line 427 of file Rcpp.cpp.
+Definition at line 436 of file Rcpp.cpp.
 .PP
 References RcppMatrixView< T >::a, RcppMatrixView< T >::d1, and RcppMatrixView< T >::d2.
 .SH "Member Function Documentation"
 .PP 
-.SS "template<typename T> int \fBRcppMatrixView\fP< T >::dim1 () const\fC [inline]\fP"
-.PP
-Definition at line 491 of file Rcpp.h.
-.PP
-References RcppMatrixView< T >::d1.
-.SS "template<typename T> int \fBRcppMatrixView\fP< T >::dim2 () const\fC [inline]\fP"
+.SS "template<typename T > int \fBRcppMatrixView\fP< T >::dim1 () const\fC [inline]\fP"
 .PP
 Definition at line 492 of file Rcpp.h.
 .PP
-References RcppMatrixView< T >::d2.
-.SS "template<typename T> T \fBRcppMatrixView\fP< T >::operator() (int i, int j) const\fC [inline]\fP"
+References RcppMatrixView< T >::d1.
+.SS "template<typename T > int \fBRcppMatrixView\fP< T >::dim2 () const\fC [inline]\fP"
 .PP
 Definition at line 493 of file Rcpp.h.
+.PP
+References RcppMatrixView< T >::d2.
+.SS "template<typename T > T \fBRcppMatrixView\fP< T >::operator() (int i, int j) const\fC [inline]\fP"
+.PP
+Definition at line 494 of file Rcpp.h.
 .PP
 References RcppMatrixView< T >::a, RcppMatrixView< T >::d1, and RcppMatrixView< T >::d2.
 .SH "Member Data Documentation"
 .PP 
-.SS "template<typename T> int \fBRcppMatrixView\fP< T >::\fBd1\fP\fC [private]\fP"
+.SS "template<typename T > T* \fBRcppMatrixView\fP< T >::\fBa\fP\fC [private]\fP"
 .PP
-Definition at line 502 of file Rcpp.h.
+Definition at line 504 of file Rcpp.h.
 .PP
-Referenced by RcppMatrixView< T >::dim1(), RcppMatrixView< T >::operator()(), and RcppMatrixView< T >::RcppMatrixView().
-.SS "template<typename T> int \fBRcppMatrixView\fP< T >::\fBd2\fP\fC [private]\fP"
-.PP
-Definition at line 502 of file Rcpp.h.
-.PP
-Referenced by RcppMatrixView< T >::dim2(), RcppMatrixView< T >::operator()(), and RcppMatrixView< T >::RcppMatrixView().
-.SS "template<typename T> T* \fBRcppMatrixView\fP< T >::\fBa\fP\fC [private]\fP"
+Referenced by RcppMatrixView< T >::operator()(), and RcppMatrixView< T >::RcppMatrixView().
+.SS "template<typename T > int \fBRcppMatrixView\fP< T >::\fBd1\fP\fC [private]\fP"
 .PP
 Definition at line 503 of file Rcpp.h.
 .PP
-Referenced by RcppMatrixView< T >::operator()(), and RcppMatrixView< T >::RcppMatrixView().
+Referenced by RcppMatrixView< T >::dim1(), RcppMatrixView< T >::operator()(), and RcppMatrixView< T >::RcppMatrixView().
+.SS "template<typename T > int \fBRcppMatrixView\fP< T >::\fBd2\fP\fC [private]\fP"
+.PP
+Definition at line 503 of file Rcpp.h.
+.PP
+Referenced by RcppMatrixView< T >::dim2(), RcppMatrixView< T >::operator()(), and RcppMatrixView< T >::RcppMatrixView().
 
 .SH "Author"
 .PP 

@@ -33,87 +33,87 @@ std::vector$<$ std::vector$<$ \hyperlink{classColDatum}{ColDatum} $>$ $>$ \hyper
 \subsection{Detailed Description}
 
 
-Definition at line 285 of file Rcpp.h.
+Definition at line 286 of file Rcpp.h.
 
 \subsection{Constructor \& Destructor Documentation}
 \hypertarget{classRcppFrame_2aad548eb7d3842ea12da3c5a67bbfbc}{
 \index{RcppFrame@{RcppFrame}!RcppFrame@{RcppFrame}}
 \index{RcppFrame@{RcppFrame}!RcppFrame@{RcppFrame}}
-\subsubsection[RcppFrame]{\setlength{\rightskip}{0pt plus 5cm}RcppFrame::RcppFrame (SEXP {\em df})}}
+\subsubsection[{RcppFrame}]{\setlength{\rightskip}{0pt plus 5cm}RcppFrame::RcppFrame (SEXP {\em df})}}
 \label{classRcppFrame_2aad548eb7d3842ea12da3c5a67bbfbc}
 
 
 
 
-Definition at line 50 of file Rcpp.cpp.
+Definition at line 59 of file Rcpp.cpp.
 
 References colNames, and table.\hypertarget{classRcppFrame_d3caf84a0543c0f31a97705be8902358}{
 \index{RcppFrame@{RcppFrame}!RcppFrame@{RcppFrame}}
 \index{RcppFrame@{RcppFrame}!RcppFrame@{RcppFrame}}
-\subsubsection[RcppFrame]{\setlength{\rightskip}{0pt plus 5cm}RcppFrame::RcppFrame (std::vector$<$ std::string $>$ {\em colNames})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\subsubsection[{RcppFrame}]{\setlength{\rightskip}{0pt plus 5cm}RcppFrame::RcppFrame (std::vector$<$ std::string $>$ {\em colNames})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
 \label{classRcppFrame_d3caf84a0543c0f31a97705be8902358}
 
 
 
 
-Definition at line 290 of file Rcpp.h.
+Definition at line 291 of file Rcpp.h.
 
 \subsection{Member Function Documentation}
-\hypertarget{classRcppFrame_d220bfd289e745d13a99ffe323a00200}{
+\hypertarget{classRcppFrame_ae72791527f2947a477633151106f42c}{
+\index{RcppFrame@{RcppFrame}!addRow@{addRow}}
+\index{addRow@{addRow}!RcppFrame@{RcppFrame}}
+\subsubsection[{addRow}]{\setlength{\rightskip}{0pt plus 5cm}void RcppFrame::addRow (std::vector$<$ {\bf ColDatum} $>$ {\em rowData})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classRcppFrame_ae72791527f2947a477633151106f42c}
+
+
+
+
+Definition at line 297 of file Rcpp.h.
+
+References colNames, and table.
+
+Referenced by Rcpp\_\-Example().\hypertarget{classRcppFrame_ac33f787068fe1bc6f97b2b4e08c9c5d}{
+\index{RcppFrame@{RcppFrame}!cols@{cols}}
+\index{cols@{cols}!RcppFrame@{RcppFrame}}
+\subsubsection[{cols}]{\setlength{\rightskip}{0pt plus 5cm}int RcppFrame::cols ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classRcppFrame_ac33f787068fe1bc6f97b2b4e08c9c5d}
+
+
+
+
+Definition at line 316 of file Rcpp.h.
+
+References table.\hypertarget{classRcppFrame_d220bfd289e745d13a99ffe323a00200}{
 \index{RcppFrame@{RcppFrame}!getColNames@{getColNames}}
 \index{getColNames@{getColNames}!RcppFrame@{RcppFrame}}
-\subsubsection[getColNames]{\setlength{\rightskip}{0pt plus 5cm}std::vector$<$std::string$>$\& RcppFrame::getColNames ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\subsubsection[{getColNames}]{\setlength{\rightskip}{0pt plus 5cm}std::vector$<$std::string$>$\& RcppFrame::getColNames ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
 \label{classRcppFrame_d220bfd289e745d13a99ffe323a00200}
-
-
-
-
-Definition at line 294 of file Rcpp.h.
-
-References colNames.
-
-Referenced by RcppResultSet::add().\hypertarget{classRcppFrame_3a0ac7b2822fc590f6f93ee775b134d0}{
-\index{RcppFrame@{RcppFrame}!getTableData@{getTableData}}
-\index{getTableData@{getTableData}!RcppFrame@{RcppFrame}}
-\subsubsection[getTableData]{\setlength{\rightskip}{0pt plus 5cm}std::vector$<$std::vector$<${\bf ColDatum}$>$ $>$\& RcppFrame::getTableData ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
-\label{classRcppFrame_3a0ac7b2822fc590f6f93ee775b134d0}
 
 
 
 
 Definition at line 295 of file Rcpp.h.
 
-References table.
+References colNames.
 
-Referenced by RcppResultSet::add().\hypertarget{classRcppFrame_ae72791527f2947a477633151106f42c}{
-\index{RcppFrame@{RcppFrame}!addRow@{addRow}}
-\index{addRow@{addRow}!RcppFrame@{RcppFrame}}
-\subsubsection[addRow]{\setlength{\rightskip}{0pt plus 5cm}void RcppFrame::addRow (std::vector$<$ {\bf ColDatum} $>$ {\em rowData})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
-\label{classRcppFrame_ae72791527f2947a477633151106f42c}
+Referenced by RcppResultSet::add().\hypertarget{classRcppFrame_3a0ac7b2822fc590f6f93ee775b134d0}{
+\index{RcppFrame@{RcppFrame}!getTableData@{getTableData}}
+\index{getTableData@{getTableData}!RcppFrame@{RcppFrame}}
+\subsubsection[{getTableData}]{\setlength{\rightskip}{0pt plus 5cm}std::vector$<$std::vector$<${\bf ColDatum}$>$ $>$\& RcppFrame::getTableData ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\label{classRcppFrame_3a0ac7b2822fc590f6f93ee775b134d0}
 
 
 
 
 Definition at line 296 of file Rcpp.h.
 
-References colNames, and table.
+References table.
 
-Referenced by Rcpp\_\-Example().\hypertarget{classRcppFrame_a33ab9553bb9fa510c338a3e092d9ace}{
+Referenced by RcppResultSet::add().\hypertarget{classRcppFrame_a33ab9553bb9fa510c338a3e092d9ace}{
 \index{RcppFrame@{RcppFrame}!rows@{rows}}
 \index{rows@{rows}!RcppFrame@{RcppFrame}}
-\subsubsection[rows]{\setlength{\rightskip}{0pt plus 5cm}int RcppFrame::rows ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
+\subsubsection[{rows}]{\setlength{\rightskip}{0pt plus 5cm}int RcppFrame::rows ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
 \label{classRcppFrame_a33ab9553bb9fa510c338a3e092d9ace}
-
-
-
-
-Definition at line 314 of file Rcpp.h.
-
-References table.\hypertarget{classRcppFrame_ac33f787068fe1bc6f97b2b4e08c9c5d}{
-\index{RcppFrame@{RcppFrame}!cols@{cols}}
-\index{cols@{cols}!RcppFrame@{RcppFrame}}
-\subsubsection[cols]{\setlength{\rightskip}{0pt plus 5cm}int RcppFrame::cols ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
-\label{classRcppFrame_ac33f787068fe1bc6f97b2b4e08c9c5d}
 
 
 
@@ -126,24 +126,24 @@ References table.
 \hypertarget{classRcppFrame_9b549d377248896848b6abcb8df64f82}{
 \index{RcppFrame@{RcppFrame}!colNames@{colNames}}
 \index{colNames@{colNames}!RcppFrame@{RcppFrame}}
-\subsubsection[colNames]{\setlength{\rightskip}{0pt plus 5cm}std::vector$<$std::string$>$ {\bf RcppFrame::colNames}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\subsubsection[{colNames}]{\setlength{\rightskip}{0pt plus 5cm}std::vector$<$std::string$>$ {\bf RcppFrame::colNames}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
 \label{classRcppFrame_9b549d377248896848b6abcb8df64f82}
 
 
 
 
-Definition at line 286 of file Rcpp.h.
+Definition at line 287 of file Rcpp.h.
 
 Referenced by addRow(), getColNames(), and RcppFrame().\hypertarget{classRcppFrame_4de0bda5c0df650b2447a4c029af0302}{
 \index{RcppFrame@{RcppFrame}!table@{table}}
 \index{table@{table}!RcppFrame@{RcppFrame}}
-\subsubsection[table]{\setlength{\rightskip}{0pt plus 5cm}std::vector$<$std::vector$<${\bf ColDatum}$>$ $>$ {\bf RcppFrame::table}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
+\subsubsection[{table}]{\setlength{\rightskip}{0pt plus 5cm}std::vector$<$std::vector$<${\bf ColDatum}$>$ $>$ {\bf RcppFrame::table}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
 \label{classRcppFrame_4de0bda5c0df650b2447a4c029af0302}
 
 
 
 
-Definition at line 287 of file Rcpp.h.
+Definition at line 288 of file Rcpp.h.
 
 Referenced by addRow(), cols(), getTableData(), RcppFrame(), and rows().
 

@@ -1,7 +1,7 @@
 Package: Rcpp
 Title: Rcpp R/C++ interface package
-Version: 0.6.5
-Date: $Date: 2009-04-01 21:37:35 -0500 (Wed, 01 Apr 2009) $
+Version: 0.6.6
+Date: $Date: 2009-08-03 15:06:57 -0500 (Mon, 03 Aug 2009) $
 Author: Dirk Eddelbuettel with contributions by Simon Urbanek and David
         Reiss
 Maintainer: Dirk Eddelbuettel <edd@debian.org>
@@ -13,6 +13,6 @@ Description: R/C++ interface classes and examples The Rcpp library maps
 Depends: R (>= 2.0.0)
 SystemRequirements: None
 License: LGPL (>= 2.1)
-Packaged: Wed Apr 1 21:49:34 2009; edd
+Packaged: 2009-08-03 20:07:05 UTC; edd
 Repository: CRAN
-Date/Publication: 2009-04-03 09:41:37
+Date/Publication: 2009-08-04 14:21:57

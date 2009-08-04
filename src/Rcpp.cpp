@@ -47,6 +47,15 @@ void RcppParams::checkNames(char *inputNames[], int len) {
     }
 }
 
+bool RcppParams::exists(std::string name) {
+    bool rc = true;
+    std::map<std::string,int>::iterator iter = pmap.find(name);
+    if (iter == pmap.end()) {
+	rc = false;
+    }
+    return rc;
+}
+
 RcppFrame::RcppFrame(SEXP df) {
     if (!Rf_isNewList(df))
 	throw std::range_error("RcppFrame::RcppFrame: invalid data frame.");

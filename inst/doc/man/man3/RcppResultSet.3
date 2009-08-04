@@ -1,4 +1,4 @@
-.TH "RcppResultSet" 3 "24 Feb 2009" "Rcpp" \" -*- nroff -*-
+.TH "RcppResultSet" 3 "3 Aug 2009" "Rcpp" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -99,136 +99,136 @@ RcppResultSet \-
 .in -1c
 .SH "Detailed Description"
 .PP 
-Definition at line 557 of file Rcpp.h.
+Definition at line 558 of file Rcpp.h.
 .SH "Constructor & Destructor Documentation"
 .PP 
 .SS "RcppResultSet::RcppResultSet ()\fC [inline]\fP"
 .PP
-Definition at line 559 of file Rcpp.h.
+Definition at line 560 of file Rcpp.h.
 .PP
 References numProtected.
 .SH "Member Function Documentation"
 .PP 
-.SS "void RcppResultSet::add (std::string name, double x)"
+.SS "void RcppResultSet::add (std::string name, SEXP sexp, bool isProtected)"
 .PP
-Definition at line 481 of file Rcpp.cpp.
-.PP
-References numProtected, and values.
-.PP
-Referenced by Rcpp_Example(), RcppDateExample(), and RcppVectorExample().
-.SS "void RcppResultSet::add (std::string name, int i)"
-.PP
-Definition at line 488 of file Rcpp.cpp.
+Definition at line 778 of file Rcpp.cpp.
 .PP
 References numProtected, and values.
-.SS "void RcppResultSet::add (std::string name, std::string strvalue)"
+.SS "void RcppResultSet::add (std::string name, \fBRcppFrame\fP & frame)"
 .PP
-Definition at line 495 of file Rcpp.cpp.
+Definition at line 696 of file Rcpp.cpp.
 .PP
-References numProtected, and values.
-.SS "void RcppResultSet::add (std::string name, double * vec, int len)"
+References COLTYPE_DATE, COLTYPE_DATETIME, COLTYPE_DOUBLE, COLTYPE_FACTOR, COLTYPE_INT, COLTYPE_LOGICAL, COLTYPE_STRING, RcppFrame::getColNames(), RcppFrame::getTableData(), numProtected, and values.
+.SS "void RcppResultSet::add (std::string name, \fBRcppMatrix\fP< double > & mat)"
 .PP
-Definition at line 502 of file Rcpp.cpp.
+Definition at line 684 of file Rcpp.cpp.
 .PP
-References numProtected, and values.
-.SS "void RcppResultSet::add (std::string name, int * vec, int len)"
+References RcppMatrix< T >::cMatrix(), RcppMatrix< T >::getDim1(), RcppMatrix< T >::getDim2(), numProtected, and values.
+.SS "void RcppResultSet::add (std::string name, \fBRcppMatrix\fP< int > & mat)"
 .PP
-Definition at line 548 of file Rcpp.cpp.
+Definition at line 672 of file Rcpp.cpp.
 .PP
-References numProtected, and values.
-.SS "void RcppResultSet::add (std::string name, double ** mat, int nx, int ny)"
+References RcppMatrix< T >::cMatrix(), RcppMatrix< T >::getDim1(), RcppMatrix< T >::getDim2(), numProtected, and values.
+.SS "void RcppResultSet::add (std::string name, \fBRcppVector\fP< double > & vec)"
 .PP
-Definition at line 558 of file Rcpp.cpp.
+Definition at line 662 of file Rcpp.cpp.
 .PP
-References numProtected, and values.
-.SS "void RcppResultSet::add (std::string name, int ** mat, int nx, int ny)"
+References RcppVector< T >::cVector(), numProtected, RcppVector< T >::size(), and values.
+.SS "void RcppResultSet::add (std::string name, \fBRcppVector\fP< int > & vec)"
 .PP
-Definition at line 569 of file Rcpp.cpp.
+Definition at line 652 of file Rcpp.cpp.
 .PP
-References numProtected, and values.
-.SS "void RcppResultSet::add (std::string name, \fBRcppDate\fP & date)"
+References RcppVector< T >::cVector(), numProtected, RcppVector< T >::size(), and values.
+.SS "void RcppResultSet::add (std::string name, std::vector< std::string > & vec)"
 .PP
-Definition at line 458 of file Rcpp.cpp.
-.PP
-References RcppDate::getJDN(), RcppDate::Jan1970Offset, numProtected, and values.
-.SS "void RcppResultSet::add (std::string name, \fBRcppDateVector\fP & datevec)"
-.PP
-Definition at line 512 of file Rcpp.cpp.
-.PP
-References RcppDate::Jan1970Offset, numProtected, RcppDateVector::size(), and values.
-.SS "void RcppResultSet::add (std::string name, \fBRcppDatetime\fP & datetime)"
-.PP
-Definition at line 469 of file Rcpp.cpp.
-.PP
-References RcppDatetime::getFractionalTimestamp(), numProtected, and values.
-.SS "void RcppResultSet::add (std::string name, \fBRcppDatetimeVector\fP & dtvec)"
-.PP
-Definition at line 525 of file Rcpp.cpp.
-.PP
-References numProtected, RcppDatetimeVector::size(), and values.
-.SS "void RcppResultSet::add (std::string name, \fBRcppStringVector\fP & stringvec)"
-.PP
-Definition at line 539 of file Rcpp.cpp.
-.PP
-References numProtected, RcppStringVector::size(), and values.
-.SS "void RcppResultSet::add (std::string name, std::vector< double > & vec)"
-.PP
-Definition at line 602 of file Rcpp.cpp.
-.PP
-References numProtected, and values.
-.SS "void RcppResultSet::add (std::string name, std::vector< int > & vec)"
-.PP
-Definition at line 591 of file Rcpp.cpp.
-.PP
-References numProtected, and values.
-.SS "void RcppResultSet::add (std::string name, std::vector< std::vector< double > > & mat)"
-.PP
-Definition at line 628 of file Rcpp.cpp.
+Definition at line 589 of file Rcpp.cpp.
 .PP
 References numProtected, and values.
 .SS "void RcppResultSet::add (std::string name, std::vector< std::vector< int > > & mat)"
 .PP
-Definition at line 613 of file Rcpp.cpp.
+Definition at line 622 of file Rcpp.cpp.
 .PP
 References numProtected, and values.
-.SS "void RcppResultSet::add (std::string name, std::vector< std::string > & vec)"
+.SS "void RcppResultSet::add (std::string name, std::vector< std::vector< double > > & mat)"
 .PP
-Definition at line 580 of file Rcpp.cpp.
-.PP
-References numProtected, and values.
-.SS "void RcppResultSet::add (std::string name, \fBRcppVector\fP< int > & vec)"
-.PP
-Definition at line 643 of file Rcpp.cpp.
-.PP
-References RcppVector< T >::cVector(), numProtected, RcppVector< T >::size(), and values.
-.SS "void RcppResultSet::add (std::string name, \fBRcppVector\fP< double > & vec)"
-.PP
-Definition at line 653 of file Rcpp.cpp.
-.PP
-References RcppVector< T >::cVector(), numProtected, RcppVector< T >::size(), and values.
-.SS "void RcppResultSet::add (std::string name, \fBRcppMatrix\fP< int > & mat)"
-.PP
-Definition at line 663 of file Rcpp.cpp.
-.PP
-References RcppMatrix< T >::cMatrix(), RcppMatrix< T >::getDim1(), RcppMatrix< T >::getDim2(), numProtected, and values.
-.SS "void RcppResultSet::add (std::string name, \fBRcppMatrix\fP< double > & mat)"
-.PP
-Definition at line 675 of file Rcpp.cpp.
-.PP
-References RcppMatrix< T >::cMatrix(), RcppMatrix< T >::getDim1(), RcppMatrix< T >::getDim2(), numProtected, and values.
-.SS "void RcppResultSet::add (std::string name, \fBRcppFrame\fP & frame)"
-.PP
-Definition at line 687 of file Rcpp.cpp.
-.PP
-References COLTYPE_DATE, COLTYPE_DATETIME, COLTYPE_DOUBLE, COLTYPE_FACTOR, COLTYPE_INT, COLTYPE_LOGICAL, COLTYPE_STRING, RcppFrame::getColNames(), RcppFrame::getTableData(), numProtected, and values.
-.SS "void RcppResultSet::add (std::string name, SEXP sexp, bool isProtected)"
-.PP
-Definition at line 769 of file Rcpp.cpp.
+Definition at line 637 of file Rcpp.cpp.
 .PP
 References numProtected, and values.
+.SS "void RcppResultSet::add (std::string name, std::vector< int > & vec)"
+.PP
+Definition at line 600 of file Rcpp.cpp.
+.PP
+References numProtected, and values.
+.SS "void RcppResultSet::add (std::string name, std::vector< double > & vec)"
+.PP
+Definition at line 611 of file Rcpp.cpp.
+.PP
+References numProtected, and values.
+.SS "void RcppResultSet::add (std::string name, \fBRcppStringVector\fP & stringvec)"
+.PP
+Definition at line 548 of file Rcpp.cpp.
+.PP
+References numProtected, RcppStringVector::size(), and values.
+.SS "void RcppResultSet::add (std::string name, \fBRcppDatetimeVector\fP & dtvec)"
+.PP
+Definition at line 534 of file Rcpp.cpp.
+.PP
+References numProtected, RcppDatetimeVector::size(), and values.
+.SS "void RcppResultSet::add (std::string name, \fBRcppDatetime\fP & datetime)"
+.PP
+Definition at line 478 of file Rcpp.cpp.
+.PP
+References RcppDatetime::getFractionalTimestamp(), numProtected, and values.
+.SS "void RcppResultSet::add (std::string name, \fBRcppDateVector\fP & datevec)"
+.PP
+Definition at line 521 of file Rcpp.cpp.
+.PP
+References RcppDate::Jan1970Offset, numProtected, RcppDateVector::size(), and values.
+.SS "void RcppResultSet::add (std::string name, \fBRcppDate\fP & date)"
+.PP
+Definition at line 467 of file Rcpp.cpp.
+.PP
+References RcppDate::getJDN(), RcppDate::Jan1970Offset, numProtected, and values.
+.SS "void RcppResultSet::add (std::string name, int ** mat, int nx, int ny)"
+.PP
+Definition at line 578 of file Rcpp.cpp.
+.PP
+References numProtected, and values.
+.SS "void RcppResultSet::add (std::string name, double ** mat, int nx, int ny)"
+.PP
+Definition at line 567 of file Rcpp.cpp.
+.PP
+References numProtected, and values.
+.SS "void RcppResultSet::add (std::string name, int * vec, int len)"
+.PP
+Definition at line 557 of file Rcpp.cpp.
+.PP
+References numProtected, and values.
+.SS "void RcppResultSet::add (std::string name, double * vec, int len)"
+.PP
+Definition at line 511 of file Rcpp.cpp.
+.PP
+References numProtected, and values.
+.SS "void RcppResultSet::add (std::string name, std::string strvalue)"
+.PP
+Definition at line 504 of file Rcpp.cpp.
+.PP
+References numProtected, and values.
+.SS "void RcppResultSet::add (std::string name, int i)"
+.PP
+Definition at line 497 of file Rcpp.cpp.
+.PP
+References numProtected, and values.
+.SS "void RcppResultSet::add (std::string name, double x)"
+.PP
+Definition at line 490 of file Rcpp.cpp.
+.PP
+References numProtected, and values.
+.PP
+Referenced by Rcpp_Example(), RcppDateExample(), and RcppVectorExample().
 .SS "SEXP RcppResultSet::getReturnList ()"
 .PP
-Definition at line 775 of file Rcpp.cpp.
+Definition at line 784 of file Rcpp.cpp.
 .PP
 References numProtected, and values.
 .PP
@@ -237,12 +237,12 @@ Referenced by Rcpp_Example(), RcppDateExample(), and RcppVectorExample().
 .PP 
 .SS "int \fBRcppResultSet::numProtected\fP\fC [protected]\fP"
 .PP
-Definition at line 585 of file Rcpp.h.
+Definition at line 586 of file Rcpp.h.
 .PP
 Referenced by add(), getReturnList(), and RcppResultSet().
 .SS "std::list<std::pair<std::string,SEXP> > \fBRcppResultSet::values\fP\fC [protected]\fP"
 .PP
-Definition at line 586 of file Rcpp.h.
+Definition at line 587 of file Rcpp.h.
 .PP
 Referenced by add(), and getReturnList().
 

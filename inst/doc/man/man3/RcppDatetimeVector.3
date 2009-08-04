@@ -1,4 +1,4 @@
-.TH "RcppDatetimeVector" 3 "24 Feb 2009" "Rcpp" \" -*- nroff -*-
+.TH "RcppDatetimeVector" 3 "3 Aug 2009" "Rcpp" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -36,45 +36,45 @@ RcppDatetimeVector \-
 .in -1c
 .SH "Detailed Description"
 .PP 
-Definition at line 424 of file Rcpp.h.
+Definition at line 425 of file Rcpp.h.
 .SH "Constructor & Destructor Documentation"
 .PP 
 .SS "RcppDatetimeVector::RcppDatetimeVector (SEXP vec)"
 .PP
-Definition at line 261 of file Rcpp.cpp.
+Definition at line 270 of file Rcpp.cpp.
 .PP
 References length, and v.
 .SS "RcppDatetimeVector::~RcppDatetimeVector ()\fC [inline]\fP"
 .PP
-Definition at line 427 of file Rcpp.h.
+Definition at line 428 of file Rcpp.h.
 .PP
 References v.
 .SH "Member Function Documentation"
 .PP 
 .SS "\fBRcppDatetime\fP& RcppDatetimeVector::operator() (int i)\fC [inline]\fP"
 .PP
-Definition at line 430 of file Rcpp.h.
+Definition at line 431 of file Rcpp.h.
 .PP
 References length, and v.
 .SS "int RcppDatetimeVector::size ()\fC [inline]\fP"
 .PP
-Definition at line 438 of file Rcpp.h.
+Definition at line 439 of file Rcpp.h.
 .PP
 References length.
 .PP
 Referenced by RcppResultSet::add(), and RcppDateExample().
 .SH "Member Data Documentation"
 .PP 
-.SS "\fBRcppDatetime\fP* \fBRcppDatetimeVector::v\fP\fC [private]\fP"
-.PP
-Definition at line 440 of file Rcpp.h.
-.PP
-Referenced by operator()(), RcppDatetimeVector(), and ~RcppDatetimeVector().
 .SS "int \fBRcppDatetimeVector::length\fP\fC [private]\fP"
+.PP
+Definition at line 442 of file Rcpp.h.
+.PP
+Referenced by operator()(), RcppDatetimeVector(), and size().
+.SS "\fBRcppDatetime\fP* \fBRcppDatetimeVector::v\fP\fC [private]\fP"
 .PP
 Definition at line 441 of file Rcpp.h.
 .PP
-Referenced by operator()(), RcppDatetimeVector(), and size().
+Referenced by operator()(), RcppDatetimeVector(), and ~RcppDatetimeVector().
 
 .SH "Author"
 .PP 

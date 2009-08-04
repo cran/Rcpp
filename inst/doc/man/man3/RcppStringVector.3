@@ -1,4 +1,4 @@
-.TH "RcppStringVector" 3 "24 Feb 2009" "Rcpp" \" -*- nroff -*-
+.TH "RcppStringVector" 3 "3 Aug 2009" "Rcpp" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -39,50 +39,50 @@ RcppStringVector \-
 .in -1c
 .SH "Detailed Description"
 .PP 
-Definition at line 378 of file Rcpp.h.
+Definition at line 379 of file Rcpp.h.
 .SH "Constructor & Destructor Documentation"
 .PP 
 .SS "RcppStringVector::RcppStringVector (SEXP vec)"
 .PP
-Definition at line 274 of file Rcpp.cpp.
+Definition at line 283 of file Rcpp.cpp.
 .PP
 References length, and v.
 .SS "RcppStringVector::~RcppStringVector ()\fC [inline]\fP"
 .PP
-Definition at line 381 of file Rcpp.h.
+Definition at line 382 of file Rcpp.h.
 .PP
 References v.
 .SH "Member Function Documentation"
 .PP 
 .SS "std::string& RcppStringVector::operator() (int i)\fC [inline]\fP"
 .PP
-Definition at line 384 of file Rcpp.h.
+Definition at line 385 of file Rcpp.h.
 .PP
 References length, and v.
 .SS "int RcppStringVector::size ()\fC [inline]\fP"
 .PP
-Definition at line 392 of file Rcpp.h.
+Definition at line 393 of file Rcpp.h.
 .PP
 References length.
 .PP
 Referenced by RcppResultSet::add().
 .SS "std::vector<std::string> RcppStringVector::stlVector ()\fC [inline]\fP"
 .PP
-Definition at line 393 of file Rcpp.h.
+Definition at line 394 of file Rcpp.h.
 .PP
 References length, and v.
 .SH "Member Data Documentation"
 .PP 
-.SS "std::string* \fBRcppStringVector::v\fP\fC [private]\fP"
-.PP
-Definition at line 400 of file Rcpp.h.
-.PP
-Referenced by operator()(), RcppStringVector(), stlVector(), and ~RcppStringVector().
 .SS "int \fBRcppStringVector::length\fP\fC [private]\fP"
+.PP
+Definition at line 402 of file Rcpp.h.
+.PP
+Referenced by operator()(), RcppStringVector(), size(), and stlVector().
+.SS "std::string* \fBRcppStringVector::v\fP\fC [private]\fP"
 .PP
 Definition at line 401 of file Rcpp.h.
 .PP
-Referenced by operator()(), RcppStringVector(), size(), and stlVector().
+Referenced by operator()(), RcppStringVector(), stlVector(), and ~RcppStringVector().
 
 .SH "Author"
 .PP 

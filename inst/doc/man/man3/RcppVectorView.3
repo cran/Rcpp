@@ -1,4 +1,4 @@
-.TH "RcppVectorView" 3 "24 Feb 2009" "Rcpp" \" -*- nroff -*-
+.TH "RcppVectorView" 3 "3 Aug 2009" "Rcpp" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -37,36 +37,36 @@ RcppVectorView \-
 .SS "template<typename T> class RcppVectorView< T >"
 
 .PP
-Definition at line 470 of file Rcpp.h.
+Definition at line 471 of file Rcpp.h.
 .SH "Constructor & Destructor Documentation"
 .PP 
-.SS "template<typename T> \fBRcppVectorView\fP< T >::\fBRcppVectorView\fP (SEXP vec)\fC [inline]\fP"
+.SS "template<typename T > \fBRcppVectorView\fP< T >::\fBRcppVectorView\fP (SEXP vec)\fC [inline]\fP"
 .PP
-Definition at line 415 of file Rcpp.cpp.
+Definition at line 424 of file Rcpp.cpp.
 .PP
 References RcppVectorView< T >::len, and RcppVectorView< T >::v.
 .SH "Member Function Documentation"
 .PP 
-.SS "template<typename T> int \fBRcppVectorView\fP< T >::size () const\fC [inline]\fP"
+.SS "template<typename T > T \fBRcppVectorView\fP< T >::operator() (int i) const\fC [inline]\fP"
 .PP
-Definition at line 473 of file Rcpp.h.
+Definition at line 475 of file Rcpp.h.
 .PP
-References RcppVectorView< T >::len.
-.SS "template<typename T> T \fBRcppVectorView\fP< T >::operator() (int i) const\fC [inline]\fP"
+References RcppVectorView< T >::len, and RcppVectorView< T >::v.
+.SS "template<typename T > int \fBRcppVectorView\fP< T >::size () const\fC [inline]\fP"
 .PP
 Definition at line 474 of file Rcpp.h.
 .PP
-References RcppVectorView< T >::len, and RcppVectorView< T >::v.
+References RcppVectorView< T >::len.
 .SH "Member Data Documentation"
 .PP 
-.SS "template<typename T> int \fBRcppVectorView\fP< T >::\fBlen\fP\fC [private]\fP"
-.PP
-Definition at line 483 of file Rcpp.h.
-.PP
-Referenced by RcppVectorView< T >::operator()(), RcppVectorView< T >::RcppVectorView(), and RcppVectorView< T >::size().
-.SS "template<typename T> T* \fBRcppVectorView\fP< T >::\fBv\fP\fC [private]\fP"
+.SS "template<typename T > int \fBRcppVectorView\fP< T >::\fBlen\fP\fC [private]\fP"
 .PP
 Definition at line 484 of file Rcpp.h.
+.PP
+Referenced by RcppVectorView< T >::operator()(), RcppVectorView< T >::RcppVectorView(), and RcppVectorView< T >::size().
+.SS "template<typename T > T* \fBRcppVectorView\fP< T >::\fBv\fP\fC [private]\fP"
+.PP
+Definition at line 485 of file Rcpp.h.
 .PP
 Referenced by RcppVectorView< T >::operator()(), and RcppVectorView< T >::RcppVectorView().
 
