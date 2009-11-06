@@ -1,4 +1,4 @@
-.TH "src/Rcpp.h" 3 "3 Aug 2009" "Rcpp" \" -*- nroff -*-
+.TH "src/Rcpp.h" 3 "6 Nov 2009" "Rcpp" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -23,6 +23,8 @@ src/Rcpp.h \-
 \fC#include <R.h>\fP
 .br
 \fC#include <Rinternals.h>\fP
+.br
+\fC#include <RcppList.h>\fP
 .br
 
 .SS "Classes"
@@ -108,7 +110,7 @@ src/Rcpp.h \-
 Definition at line 34 of file Rcpp.h.
 .SS "#define RcppExport   extern 'C'"
 .PP
-Definition at line 42 of file Rcpp.h.
+Definition at line 44 of file Rcpp.h.
 .SH "Enumeration Type Documentation"
 .PP 
 .SS "enum \fBColType\fP"
@@ -131,12 +133,12 @@ Definition at line 42 of file Rcpp.h.
 \fB\fICOLTYPE_DATETIME \fP\fP
 
 .PP
-Definition at line 167 of file Rcpp.h.
+Definition at line 168 of file Rcpp.h.
 .SH "Function Documentation"
 .PP 
 .SS "char* copyMessageToR (const char *const  mesg)"
 .PP
-Definition at line 995 of file Rcpp.cpp.
+Definition at line 1000 of file Rcpp.cpp.
 .PP
 Referenced by Rcpp_Example(), RcppDateExample(), RcppParamsExample(), and RcppVectorExample().
 .SH "Author"

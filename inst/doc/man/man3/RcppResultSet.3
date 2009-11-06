@@ -1,4 +1,4 @@
-.TH "RcppResultSet" 3 "3 Aug 2009" "Rcpp" \" -*- nroff -*-
+.TH "RcppResultSet" 3 "6 Nov 2009" "Rcpp" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -6,8 +6,8 @@ RcppResultSet \-
 .SH SYNOPSIS
 .br
 .PP
-\fC#include <Rcpp.h>\fP
 .PP
+\fC#include <Rcpp.h>\fP
 .SS "Public Member Functions"
 
 .in +1c
@@ -81,6 +81,9 @@ RcppResultSet \-
 .RI "void \fBadd\fP (std::string, \fBRcppFrame\fP &)"
 .br
 .ti -1c
+.RI "void \fBadd\fP (std::string, \fBRcppList\fP &)"
+.br
+.ti -1c
 .RI "void \fBadd\fP (std::string, SEXP, bool isProtected)"
 .br
 .ti -1c
@@ -99,21 +102,26 @@ RcppResultSet \-
 .in -1c
 .SH "Detailed Description"
 .PP 
-Definition at line 558 of file Rcpp.h.
+Definition at line 563 of file Rcpp.h.
 .SH "Constructor & Destructor Documentation"
 .PP 
 .SS "RcppResultSet::RcppResultSet ()\fC [inline]\fP"
 .PP
-Definition at line 560 of file Rcpp.h.
+Definition at line 565 of file Rcpp.h.
 .PP
 References numProtected.
 .SH "Member Function Documentation"
 .PP 
 .SS "void RcppResultSet::add (std::string name, SEXP sexp, bool isProtected)"
 .PP
-Definition at line 778 of file Rcpp.cpp.
+Definition at line 783 of file Rcpp.cpp.
 .PP
 References numProtected, and values.
+.SS "void RcppResultSet::add (std::string name, \fBRcppList\fP & list)"
+.PP
+Definition at line 778 of file Rcpp.cpp.
+.PP
+References RcppList::getList(), and values.
 .SS "void RcppResultSet::add (std::string name, \fBRcppFrame\fP & frame)"
 .PP
 Definition at line 696 of file Rcpp.cpp.
@@ -228,7 +236,7 @@ References numProtected, and values.
 Referenced by Rcpp_Example(), RcppDateExample(), and RcppVectorExample().
 .SS "SEXP RcppResultSet::getReturnList ()"
 .PP
-Definition at line 784 of file Rcpp.cpp.
+Definition at line 789 of file Rcpp.cpp.
 .PP
 References numProtected, and values.
 .PP
@@ -237,12 +245,12 @@ Referenced by Rcpp_Example(), RcppDateExample(), and RcppVectorExample().
 .PP 
 .SS "int \fBRcppResultSet::numProtected\fP\fC [protected]\fP"
 .PP
-Definition at line 586 of file Rcpp.h.
+Definition at line 592 of file Rcpp.h.
 .PP
 Referenced by add(), getReturnList(), and RcppResultSet().
 .SS "std::list<std::pair<std::string,SEXP> > \fBRcppResultSet::values\fP\fC [protected]\fP"
 .PP
-Definition at line 587 of file Rcpp.h.
+Definition at line 593 of file Rcpp.h.
 .PP
 Referenced by add(), and getReturnList().
 

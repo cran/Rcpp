@@ -1,4 +1,4 @@
-.TH "ColDatum" 3 "3 Aug 2009" "Rcpp" \" -*- nroff -*-
+.TH "ColDatum" 3 "6 Nov 2009" "Rcpp" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -6,8 +6,8 @@ ColDatum \-
 .SH SYNOPSIS
 .br
 .PP
-\fC#include <Rcpp.h>\fP
 .PP
+\fC#include <Rcpp.h>\fP
 .SS "Public Member Functions"
 
 .in +1c
@@ -111,168 +111,168 @@ ColDatum \-
 .in -1c
 .SH "Detailed Description"
 .PP 
-Definition at line 171 of file Rcpp.h.
+Definition at line 172 of file Rcpp.h.
 .SH "Constructor & Destructor Documentation"
 .PP 
 .SS "ColDatum::ColDatum ()\fC [inline]\fP"
 .PP
-Definition at line 173 of file Rcpp.h.
+Definition at line 174 of file Rcpp.h.
 .PP
 References level.
 .SS "ColDatum::~ColDatum ()\fC [inline]\fP"
 .PP
-Definition at line 176 of file Rcpp.h.
+Definition at line 177 of file Rcpp.h.
 .PP
 References COLTYPE_FACTOR, levelNames, and type.
 .SS "ColDatum::ColDatum (const \fBColDatum\fP & datum)\fC [inline]\fP"
 .PP
-Definition at line 186 of file Rcpp.h.
+Definition at line 187 of file Rcpp.h.
 .PP
 References COLTYPE_FACTOR, d, i, level, levelNames, numLevels, s, type, and x.
 .SH "Member Function Documentation"
 .PP 
 .SS "void ColDatum::checkFactorType ()\fC [inline]\fP"
 .PP
-Definition at line 266 of file Rcpp.h.
+Definition at line 267 of file Rcpp.h.
 .PP
 References COLTYPE_FACTOR, and type.
 .PP
 Referenced by getFactorLevel(), getFactorLevelName(), getFactorLevelNames(), and getFactorNumLevels().
 .SS "double ColDatum::getDateRCode ()\fC [inline]\fP"
 .PP
-Definition at line 257 of file Rcpp.h.
+Definition at line 258 of file Rcpp.h.
 .PP
 References d, RcppDate::getJDN(), and RcppDate::Jan1970Offset.
 .SS "\fBRcppDatetime\fP ColDatum::getDatetimeValue ()\fC [inline]\fP"
 .PP
-Definition at line 260 of file Rcpp.h.
+Definition at line 261 of file Rcpp.h.
 .PP
 References COLTYPE_DATETIME, type, and x.
 .SS "\fBRcppDate\fP ColDatum::getDateValue ()\fC [inline]\fP"
 .PP
-Definition at line 252 of file Rcpp.h.
+Definition at line 253 of file Rcpp.h.
 .PP
 References COLTYPE_DATE, d, and type.
 .SS "double ColDatum::getDoubleValue ()\fC [inline]\fP"
 .PP
-Definition at line 232 of file Rcpp.h.
+Definition at line 233 of file Rcpp.h.
 .PP
 References COLTYPE_DOUBLE, type, and x.
 .SS "int ColDatum::getFactorLevel ()\fC [inline]\fP"
 .PP
-Definition at line 271 of file Rcpp.h.
+Definition at line 272 of file Rcpp.h.
 .PP
 References checkFactorType(), and level.
 .SS "std::string ColDatum::getFactorLevelName ()\fC [inline]\fP"
 .PP
-Definition at line 273 of file Rcpp.h.
+Definition at line 274 of file Rcpp.h.
 .PP
 References checkFactorType(), level, and levelNames.
 .SS "std::string* ColDatum::getFactorLevelNames ()\fC [inline]\fP"
 .PP
-Definition at line 272 of file Rcpp.h.
+Definition at line 273 of file Rcpp.h.
 .PP
 References checkFactorType(), and levelNames.
 .SS "int ColDatum::getFactorNumLevels ()\fC [inline]\fP"
 .PP
-Definition at line 270 of file Rcpp.h.
+Definition at line 271 of file Rcpp.h.
 .PP
 References checkFactorType(), and numLevels.
 .SS "int ColDatum::getIntValue ()\fC [inline]\fP"
 .PP
-Definition at line 237 of file Rcpp.h.
+Definition at line 238 of file Rcpp.h.
 .PP
 References COLTYPE_INT, i, and type.
 .SS "int ColDatum::getLogicalValue ()\fC [inline]\fP"
 .PP
-Definition at line 242 of file Rcpp.h.
+Definition at line 243 of file Rcpp.h.
 .PP
 References COLTYPE_LOGICAL, i, and type.
 .SS "std::string ColDatum::getStringValue ()\fC [inline]\fP"
 .PP
-Definition at line 247 of file Rcpp.h.
+Definition at line 248 of file Rcpp.h.
 .PP
 References COLTYPE_STRING, s, and type.
 .SS "\fBColType\fP ColDatum::getType () const\fC [inline]\fP"
 .PP
-Definition at line 203 of file Rcpp.h.
+Definition at line 204 of file Rcpp.h.
 .PP
 References type.
 .SS "void ColDatum::setDatetimeValue (\fBRcppDatetime\fP datetime)\fC [inline]\fP"
 .PP
-Definition at line 217 of file Rcpp.h.
+Definition at line 218 of file Rcpp.h.
 .PP
 References COLTYPE_DATETIME, RcppDatetime::m_d, type, and x.
 .SS "void ColDatum::setDateValue (\fBRcppDate\fP date)\fC [inline]\fP"
 .PP
-Definition at line 213 of file Rcpp.h.
+Definition at line 214 of file Rcpp.h.
 .PP
 References COLTYPE_DATE, d, and type.
 .SS "void ColDatum::setDoubleValue (double val)\fC [inline]\fP"
 .PP
-Definition at line 205 of file Rcpp.h.
+Definition at line 206 of file Rcpp.h.
 .PP
 References COLTYPE_DOUBLE, type, and x.
 .SS "void ColDatum::setFactorValue (std::string * names, int numNames, int factorLevel)\fC [inline]\fP"
 .PP
-Definition at line 221 of file Rcpp.h.
+Definition at line 222 of file Rcpp.h.
 .PP
 References COLTYPE_FACTOR, i, level, levelNames, numLevels, and type.
 .SS "void ColDatum::setIntValue (int val)\fC [inline]\fP"
 .PP
-Definition at line 206 of file Rcpp.h.
+Definition at line 207 of file Rcpp.h.
 .PP
 References COLTYPE_INT, i, and type.
 .SS "void ColDatum::setLogicalValue (int val)\fC [inline]\fP"
 .PP
-Definition at line 207 of file Rcpp.h.
+Definition at line 208 of file Rcpp.h.
 .PP
 References COLTYPE_LOGICAL, i, and type.
 .SS "void ColDatum::setStringValue (std::string val)\fC [inline]\fP"
 .PP
-Definition at line 212 of file Rcpp.h.
+Definition at line 213 of file Rcpp.h.
 .PP
 References COLTYPE_STRING, s, and type.
 .SH "Member Data Documentation"
 .PP 
 .SS "\fBRcppDate\fP \fBColDatum::d\fP\fC [private]\fP"
 .PP
-Definition at line 283 of file Rcpp.h.
+Definition at line 284 of file Rcpp.h.
 .PP
 Referenced by ColDatum(), getDateRCode(), getDateValue(), and setDateValue().
 .SS "int \fBColDatum::i\fP\fC [private]\fP"
 .PP
-Definition at line 279 of file Rcpp.h.
+Definition at line 280 of file Rcpp.h.
 .PP
 Referenced by ColDatum(), getIntValue(), getLogicalValue(), setFactorValue(), setIntValue(), and setLogicalValue().
 .SS "int \fBColDatum::level\fP\fC [private]\fP"
 .PP
-Definition at line 280 of file Rcpp.h.
+Definition at line 281 of file Rcpp.h.
 .PP
 Referenced by ColDatum(), getFactorLevel(), getFactorLevelName(), and setFactorValue().
 .SS "std::string* \fBColDatum::levelNames\fP\fC [private]\fP"
 .PP
-Definition at line 282 of file Rcpp.h.
+Definition at line 283 of file Rcpp.h.
 .PP
 Referenced by ColDatum(), getFactorLevelName(), getFactorLevelNames(), setFactorValue(), and ~ColDatum().
 .SS "int \fBColDatum::numLevels\fP\fC [private]\fP"
 .PP
-Definition at line 281 of file Rcpp.h.
+Definition at line 282 of file Rcpp.h.
 .PP
 Referenced by ColDatum(), getFactorNumLevels(), and setFactorValue().
 .SS "std::string \fBColDatum::s\fP\fC [private]\fP"
 .PP
-Definition at line 277 of file Rcpp.h.
+Definition at line 278 of file Rcpp.h.
 .PP
 Referenced by ColDatum(), getStringValue(), and setStringValue().
 .SS "\fBColType\fP \fBColDatum::type\fP\fC [private]\fP"
 .PP
-Definition at line 276 of file Rcpp.h.
+Definition at line 277 of file Rcpp.h.
 .PP
 Referenced by checkFactorType(), ColDatum(), getDatetimeValue(), getDateValue(), getDoubleValue(), getIntValue(), getLogicalValue(), getStringValue(), getType(), setDatetimeValue(), setDateValue(), setDoubleValue(), setFactorValue(), setIntValue(), setLogicalValue(), setStringValue(), and ~ColDatum().
 .SS "double \fBColDatum::x\fP\fC [private]\fP"
 .PP
-Definition at line 278 of file Rcpp.h.
+Definition at line 279 of file Rcpp.h.
 .PP
 Referenced by ColDatum(), getDatetimeValue(), getDoubleValue(), setDatetimeValue(), and setDoubleValue().
 

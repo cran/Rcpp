@@ -2,8 +2,8 @@
 #
 # Makefile for Rcpp 
 #
-# Copyright (C) 2008    Dirk Eddelbuettel <edd@debian.org>
-# Copyright (C) 2008    Simon Urbanek <simon.urbanek@r-project.org>
+# Copyright (C) 2008 - 2009 Dirk Eddelbuettel <edd@debian.org>
+# Copyright (C) 2008        Simon Urbanek <simon.urbanek@r-project.org>
 
 ## $(SHLIB) is the usual default target that is built automatically from all source 
 ## files in this directory. userLibrary is an additional target for the second library
@@ -15,19 +15,21 @@ USERLIB	=	libRcpp$(DYLIB_EXT)
 USERLIBST =	libRcpp.a
 USERDIR =	../inst/lib
 
+PKG_CPPFLAGS += -I.
+
 userLibrary: 	$(USERLIB) $(USERLIBST)
 		-@if test ! -e $(USERDIR)$(R_ARCH); then mkdir -p $(USERDIR)$(R_ARCH); fi
 		cp $(USERLIB) $(USERDIR)$(R_ARCH)
-		cp Rcpp.h $(USERDIR)$(R_ARCH)
+		cp Rcpp*.h $(USERDIR)$(R_ARCH)
 		cp $(USERLIBST) $(USERDIR)$(R_ARCH)
 		rm $(USERLIB) $(USERLIBST)
 
-$(USERLIB): 	Rcpp.o
+$(USERLIB): 	Rcpp.o RcppList.o
 		$(SHLIB_CXXLD) -o $(USERLIB) $^ $(SHLIB_CXXLDFLAGS) $(ALL_LIBS)
 		@if test -e "/usr/bin/install_name_tool"; then /usr/bin/install_name_tool -id $(R_PACKAGE_DIR)/lib$(R_ARCH)/$(USERLIB) $(USERLIB); fi
 
-$(USERLIBST): 	Rcpp.o
-		$(AR) qc $(USERLIBST) Rcpp.o
+$(USERLIBST): 	Rcpp.o RcppList.o
+		$(AR) qc $(USERLIBST) $^
 		@if test -n "$(RANLIB)"; then $(RANLIB) $(USERLIBST); fi
 
 .PHONY: 	all clean userLibrary 

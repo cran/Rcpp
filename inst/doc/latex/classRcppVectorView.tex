@@ -2,24 +2,24 @@
 \section{RcppVectorView$<$ T $>$ Class Template Reference}
 \label{classRcppVectorView}\index{RcppVectorView@{RcppVectorView}}
 }
-{\tt \#include $<$Rcpp.h$>$}
 
-\subsection*{Public Member Functions}
-\begin{CompactItemize}
+
+{\ttfamily \#include $<$Rcpp.h$>$}\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
 \item 
-\hyperlink{classRcppVectorView_d2e90fed8ee8a40f56591cc94f83041e}{RcppVectorView} (SEXP vec)
+\hyperlink{classRcppVectorView_ad2e90fed8ee8a40f56591cc94f83041e}{RcppVectorView} (SEXP vec)
 \item 
-int \hyperlink{classRcppVectorView_d4c0f21296eb1cf7b2e2c8b8b43f4b0d}{size} () const 
+int \hyperlink{classRcppVectorView_ad4c0f21296eb1cf7b2e2c8b8b43f4b0d}{size} () const 
 \item 
-T \hyperlink{classRcppVectorView_13d63e990363a37ae29e0eab7400d297}{operator()} (int i) const 
-\end{CompactItemize}
+T \hyperlink{classRcppVectorView_a13d63e990363a37ae29e0eab7400d297}{operator()} (int i) const 
+\end{DoxyCompactItemize}
 \subsection*{Private Attributes}
-\begin{CompactItemize}
+\begin{DoxyCompactItemize}
 \item 
-int \hyperlink{classRcppVectorView_da67f9b1481099e4a820deaf4648778b}{len}
+int \hyperlink{classRcppVectorView_ada67f9b1481099e4a820deaf4648778b}{len}
 \item 
-T $\ast$ \hyperlink{classRcppVectorView_e3dc3546d0dd0e3de95800b7c91857e8}{v}
-\end{CompactItemize}
+T $\ast$ \hyperlink{classRcppVectorView_ae3dc3546d0dd0e3de95800b7c91857e8}{v}
+\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -27,16 +27,14 @@ T $\ast$ \hyperlink{classRcppVectorView_e3dc3546d0dd0e3de95800b7c91857e8}{v}
 
 
 
-Definition at line 471 of file Rcpp.h.
+Definition at line 474 of file Rcpp.h.
 
 \subsection{Constructor \& Destructor Documentation}
-\hypertarget{classRcppVectorView_d2e90fed8ee8a40f56591cc94f83041e}{
+\hypertarget{classRcppVectorView_ad2e90fed8ee8a40f56591cc94f83041e}{
 \index{RcppVectorView@{RcppVectorView}!RcppVectorView@{RcppVectorView}}
 \index{RcppVectorView@{RcppVectorView}!RcppVectorView@{RcppVectorView}}
-\subsubsection[{RcppVectorView}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ {\bf RcppVectorView}$<$ T $>$::{\bf RcppVectorView} (SEXP {\em vec})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
-\label{classRcppVectorView_d2e90fed8ee8a40f56591cc94f83041e}
-
-
+\subsubsection[{RcppVectorView}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ {\bf RcppVectorView}$<$ T $>$::{\bf RcppVectorView} (SEXP {\em vec})\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
+\label{classRcppVectorView_ad2e90fed8ee8a40f56591cc94f83041e}
 
 
 Definition at line 424 of file Rcpp.cpp.
@@ -44,56 +42,48 @@ Definition at line 424 of file Rcpp.cpp.
 References RcppVectorView$<$ T $>$::len, and RcppVectorView$<$ T $>$::v.
 
 \subsection{Member Function Documentation}
-\hypertarget{classRcppVectorView_13d63e990363a37ae29e0eab7400d297}{
+\hypertarget{classRcppVectorView_a13d63e990363a37ae29e0eab7400d297}{
 \index{RcppVectorView@{RcppVectorView}!operator()@{operator()}}
 \index{operator()@{operator()}!RcppVectorView@{RcppVectorView}}
-\subsubsection[{operator()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ T {\bf RcppVectorView}$<$ T $>$::operator() (int {\em i}) const\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
-\label{classRcppVectorView_13d63e990363a37ae29e0eab7400d297}
+\subsubsection[{operator()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ T {\bf RcppVectorView}$<$ T $>$::operator() (int {\em i}) const\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
+\label{classRcppVectorView_a13d63e990363a37ae29e0eab7400d297}
 
 
+Definition at line 478 of file Rcpp.h.
 
-
-Definition at line 475 of file Rcpp.h.
-
-References RcppVectorView$<$ T $>$::len, and RcppVectorView$<$ T $>$::v.\hypertarget{classRcppVectorView_d4c0f21296eb1cf7b2e2c8b8b43f4b0d}{
+References RcppVectorView$<$ T $>$::len, and RcppVectorView$<$ T $>$::v.\hypertarget{classRcppVectorView_ad4c0f21296eb1cf7b2e2c8b8b43f4b0d}{
 \index{RcppVectorView@{RcppVectorView}!size@{size}}
 \index{size@{size}!RcppVectorView@{RcppVectorView}}
-\subsubsection[{size}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ int {\bf RcppVectorView}$<$ T $>$::size () const\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
-\label{classRcppVectorView_d4c0f21296eb1cf7b2e2c8b8b43f4b0d}
+\subsubsection[{size}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ int {\bf RcppVectorView}$<$ T $>$::size () const\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
+\label{classRcppVectorView_ad4c0f21296eb1cf7b2e2c8b8b43f4b0d}
 
 
-
-
-Definition at line 474 of file Rcpp.h.
+Definition at line 477 of file Rcpp.h.
 
 References RcppVectorView$<$ T $>$::len.
 
 \subsection{Member Data Documentation}
-\hypertarget{classRcppVectorView_da67f9b1481099e4a820deaf4648778b}{
+\hypertarget{classRcppVectorView_ada67f9b1481099e4a820deaf4648778b}{
 \index{RcppVectorView@{RcppVectorView}!len@{len}}
 \index{len@{len}!RcppVectorView@{RcppVectorView}}
-\subsubsection[{len}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ int {\bf RcppVectorView}$<$ T $>$::{\bf len}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
-\label{classRcppVectorView_da67f9b1481099e4a820deaf4648778b}
+\subsubsection[{len}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ int {\bf RcppVectorView}$<$ T $>$::{\bf len}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}
+\label{classRcppVectorView_ada67f9b1481099e4a820deaf4648778b}
 
 
+Definition at line 487 of file Rcpp.h.
 
-
-Definition at line 484 of file Rcpp.h.
-
-Referenced by RcppVectorView$<$ T $>$::operator()(), RcppVectorView$<$ T $>$::RcppVectorView(), and RcppVectorView$<$ T $>$::size().\hypertarget{classRcppVectorView_e3dc3546d0dd0e3de95800b7c91857e8}{
+Referenced by RcppVectorView$<$ T $>$::operator()(), RcppVectorView$<$ T $>$::RcppVectorView(), and RcppVectorView$<$ T $>$::size().\hypertarget{classRcppVectorView_ae3dc3546d0dd0e3de95800b7c91857e8}{
 \index{RcppVectorView@{RcppVectorView}!v@{v}}
 \index{v@{v}!RcppVectorView@{RcppVectorView}}
-\subsubsection[{v}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ T$\ast$ {\bf RcppVectorView}$<$ T $>$::{\bf v}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
-\label{classRcppVectorView_e3dc3546d0dd0e3de95800b7c91857e8}
+\subsubsection[{v}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ T$\ast$ {\bf RcppVectorView}$<$ T $>$::{\bf v}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}
+\label{classRcppVectorView_ae3dc3546d0dd0e3de95800b7c91857e8}
 
 
-
-
-Definition at line 485 of file Rcpp.h.
+Definition at line 488 of file Rcpp.h.
 
 Referenced by RcppVectorView$<$ T $>$::operator()(), and RcppVectorView$<$ T $>$::RcppVectorView().
 
-The documentation for this class was generated from the following files:\begin{CompactItemize}
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
 \item 
 src/\hyperlink{Rcpp_8h}{Rcpp.h}\item 
-src/\hyperlink{Rcpp_8cpp}{Rcpp.cpp}\end{CompactItemize}
+src/\hyperlink{Rcpp_8cpp}{Rcpp.cpp}\end{DoxyCompactItemize}
