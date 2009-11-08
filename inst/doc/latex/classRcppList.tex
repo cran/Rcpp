@@ -1,0 +1,201 @@
+\hypertarget{classRcppList}{
+\section{RcppList Class Reference}
+\label{classRcppList}\index{RcppList@{RcppList}}
+}
+
+
+{\ttfamily \#include $<$RcppList.h$>$}\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classRcppList_a833e37533d546d5855536a331f398fe9}{RcppList} (void)
+\item 
+\hyperlink{classRcppList_ad73b9a2282219d7b8501ce7d3841bffa}{$\sim$RcppList} ()
+\item 
+void \hyperlink{classRcppList_aa107c65834057ff79f5f8285ef5b1f3c}{setSize} (int size)
+\item 
+void \hyperlink{classRcppList_a259b0c48d68d995bcd906b8c1e8c970a}{append} (std::string name, double value)
+\item 
+void \hyperlink{classRcppList_a129144193234d87bcba6aed3acf53254}{append} (std::string name, int value)
+\item 
+void \hyperlink{classRcppList_a896d405a8a82cd6b5b9eaf2976bc54d6}{append} (std::string name, std::string value)
+\item 
+void \hyperlink{classRcppList_a01cb90a1561ce26bfbfb77b7d1f43a22}{append} (std::string name, SEXP sexp)
+\item 
+void \hyperlink{classRcppList_a164577340e23dd0811fc7057aa9aedec}{clearProtectionStack} ()
+\item 
+SEXP \hyperlink{classRcppList_a0d983805932608efbab2afecfd547ec4}{getList} (void) const 
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+SEXP \hyperlink{classRcppList_abaa6e138e2c0153c8d95d7d7669e7330}{listArg}
+\item 
+int \hyperlink{classRcppList_a05ddf3e17ed3d9aebca235fccf15d383}{listSize}
+\item 
+int \hyperlink{classRcppList_a4b991902830e9f33eac03a42b2718195}{currListPosn}
+\item 
+int \hyperlink{classRcppList_a58644ce3af78cc421f04bafc3cc559b4}{numProtected}
+\item 
+std::vector$<$ std::string $>$ \hyperlink{classRcppList_ad718b4509024d31cc7e894518ce909dd}{names}
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classRcppList_a36944d83d40784eedc607fbb24a5e993}{RcppResultSet}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 40 of file RcppList.h.
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classRcppList_a833e37533d546d5855536a331f398fe9}{
+\index{RcppList@{RcppList}!RcppList@{RcppList}}
+\index{RcppList@{RcppList}!RcppList@{RcppList}}
+\subsubsection[{RcppList}]{\setlength{\rightskip}{0pt plus 5cm}RcppList::RcppList (void)\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
+\label{classRcppList_a833e37533d546d5855536a331f398fe9}
+
+
+Definition at line 42 of file RcppList.h.\hypertarget{classRcppList_ad73b9a2282219d7b8501ce7d3841bffa}{
+\index{RcppList@{RcppList}!$\sim$RcppList@{$\sim$RcppList}}
+\index{$\sim$RcppList@{$\sim$RcppList}!RcppList@{RcppList}}
+\subsubsection[{$\sim$RcppList}]{\setlength{\rightskip}{0pt plus 5cm}RcppList::$\sim$RcppList ()\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
+\label{classRcppList_ad73b9a2282219d7b8501ce7d3841bffa}
+
+
+Definition at line 44 of file RcppList.h.
+
+References numProtected.
+
+\subsection{Member Function Documentation}
+\hypertarget{classRcppList_a01cb90a1561ce26bfbfb77b7d1f43a22}{
+\index{RcppList@{RcppList}!append@{append}}
+\index{append@{append}!RcppList@{RcppList}}
+\subsubsection[{append}]{\setlength{\rightskip}{0pt plus 5cm}void RcppList::append (std::string {\em name}, \/  SEXP {\em sexp})}}
+\label{classRcppList_a01cb90a1561ce26bfbfb77b7d1f43a22}
+
+
+Definition at line 59 of file RcppList.cpp.
+
+References currListPosn, listArg, listSize, and names.\hypertarget{classRcppList_a896d405a8a82cd6b5b9eaf2976bc54d6}{
+\index{RcppList@{RcppList}!append@{append}}
+\index{append@{append}!RcppList@{RcppList}}
+\subsubsection[{append}]{\setlength{\rightskip}{0pt plus 5cm}void RcppList::append (std::string {\em name}, \/  std::string {\em value})}}
+\label{classRcppList_a896d405a8a82cd6b5b9eaf2976bc54d6}
+
+
+Definition at line 49 of file RcppList.cpp.
+
+References currListPosn, listArg, listSize, names, and numProtected.\hypertarget{classRcppList_a129144193234d87bcba6aed3acf53254}{
+\index{RcppList@{RcppList}!append@{append}}
+\index{append@{append}!RcppList@{RcppList}}
+\subsubsection[{append}]{\setlength{\rightskip}{0pt plus 5cm}void RcppList::append (std::string {\em name}, \/  int {\em value})}}
+\label{classRcppList_a129144193234d87bcba6aed3acf53254}
+
+
+Definition at line 39 of file RcppList.cpp.
+
+References currListPosn, listArg, listSize, names, and numProtected.\hypertarget{classRcppList_a259b0c48d68d995bcd906b8c1e8c970a}{
+\index{RcppList@{RcppList}!append@{append}}
+\index{append@{append}!RcppList@{RcppList}}
+\subsubsection[{append}]{\setlength{\rightskip}{0pt plus 5cm}void RcppList::append (std::string {\em name}, \/  double {\em value})}}
+\label{classRcppList_a259b0c48d68d995bcd906b8c1e8c970a}
+
+
+Definition at line 29 of file RcppList.cpp.
+
+References currListPosn, listArg, listSize, names, and numProtected.\hypertarget{classRcppList_a164577340e23dd0811fc7057aa9aedec}{
+\index{RcppList@{RcppList}!clearProtectionStack@{clearProtectionStack}}
+\index{clearProtectionStack@{clearProtectionStack}!RcppList@{RcppList}}
+\subsubsection[{clearProtectionStack}]{\setlength{\rightskip}{0pt plus 5cm}void RcppList::clearProtectionStack ()}}
+\label{classRcppList_a164577340e23dd0811fc7057aa9aedec}
+
+
+Definition at line 66 of file RcppList.cpp.
+
+References numProtected.\hypertarget{classRcppList_a0d983805932608efbab2afecfd547ec4}{
+\index{RcppList@{RcppList}!getList@{getList}}
+\index{getList@{getList}!RcppList@{RcppList}}
+\subsubsection[{getList}]{\setlength{\rightskip}{0pt plus 5cm}SEXP RcppList::getList (void) const}}
+\label{classRcppList_a0d983805932608efbab2afecfd547ec4}
+
+
+Definition at line 71 of file RcppList.cpp.
+
+References listArg, listSize, and names.
+
+Referenced by RcppResultSet::add().\hypertarget{classRcppList_aa107c65834057ff79f5f8285ef5b1f3c}{
+\index{RcppList@{RcppList}!setSize@{setSize}}
+\index{setSize@{setSize}!RcppList@{RcppList}}
+\subsubsection[{setSize}]{\setlength{\rightskip}{0pt plus 5cm}void RcppList::setSize (int {\em size})}}
+\label{classRcppList_aa107c65834057ff79f5f8285ef5b1f3c}
+
+
+Definition at line 23 of file RcppList.cpp.
+
+References listArg, listSize, and numProtected.
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{classRcppList_a36944d83d40784eedc607fbb24a5e993}{
+\index{RcppList@{RcppList}!RcppResultSet@{RcppResultSet}}
+\index{RcppResultSet@{RcppResultSet}!RcppList@{RcppList}}
+\subsubsection[{RcppResultSet}]{\setlength{\rightskip}{0pt plus 5cm}friend class {\bf RcppResultSet}\hspace{0.3cm}{\ttfamily  \mbox{[}friend\mbox{]}}}}
+\label{classRcppList_a36944d83d40784eedc607fbb24a5e993}
+
+
+Definition at line 58 of file RcppList.h.
+
+\subsection{Member Data Documentation}
+\hypertarget{classRcppList_a4b991902830e9f33eac03a42b2718195}{
+\index{RcppList@{RcppList}!currListPosn@{currListPosn}}
+\index{currListPosn@{currListPosn}!RcppList@{RcppList}}
+\subsubsection[{currListPosn}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf RcppList::currListPosn}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}
+\label{classRcppList_a4b991902830e9f33eac03a42b2718195}
+
+
+Definition at line 62 of file RcppList.h.
+
+Referenced by append().\hypertarget{classRcppList_abaa6e138e2c0153c8d95d7d7669e7330}{
+\index{RcppList@{RcppList}!listArg@{listArg}}
+\index{listArg@{listArg}!RcppList@{RcppList}}
+\subsubsection[{listArg}]{\setlength{\rightskip}{0pt plus 5cm}SEXP {\bf RcppList::listArg}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}
+\label{classRcppList_abaa6e138e2c0153c8d95d7d7669e7330}
+
+
+Definition at line 61 of file RcppList.h.
+
+Referenced by append(), getList(), and setSize().\hypertarget{classRcppList_a05ddf3e17ed3d9aebca235fccf15d383}{
+\index{RcppList@{RcppList}!listSize@{listSize}}
+\index{listSize@{listSize}!RcppList@{RcppList}}
+\subsubsection[{listSize}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf RcppList::listSize}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}
+\label{classRcppList_a05ddf3e17ed3d9aebca235fccf15d383}
+
+
+Definition at line 62 of file RcppList.h.
+
+Referenced by append(), getList(), and setSize().\hypertarget{classRcppList_ad718b4509024d31cc7e894518ce909dd}{
+\index{RcppList@{RcppList}!names@{names}}
+\index{names@{names}!RcppList@{RcppList}}
+\subsubsection[{names}]{\setlength{\rightskip}{0pt plus 5cm}std::vector$<$std::string$>$ {\bf RcppList::names}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}
+\label{classRcppList_ad718b4509024d31cc7e894518ce909dd}
+
+
+Definition at line 63 of file RcppList.h.
+
+Referenced by append(), and getList().\hypertarget{classRcppList_a58644ce3af78cc421f04bafc3cc559b4}{
+\index{RcppList@{RcppList}!numProtected@{numProtected}}
+\index{numProtected@{numProtected}!RcppList@{RcppList}}
+\subsubsection[{numProtected}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf RcppList::numProtected}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}
+\label{classRcppList_a58644ce3af78cc421f04bafc3cc559b4}
+
+
+Definition at line 62 of file RcppList.h.
+
+Referenced by append(), clearProtectionStack(), setSize(), and $\sim$RcppList().
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+src/\hyperlink{RcppList_8h}{RcppList.h}\item 
+src/\hyperlink{RcppList_8cpp}{RcppList.cpp}\end{DoxyCompactItemize}

@@ -3,7 +3,7 @@
 \alias{RcppMatrix}
 \alias{RcppStringVector}
 \alias{RcppVectorExample}
-\title{C++ classes for receiving \R object in C++}
+\title{C++ classes for receiving R object in C++}
 \description{
   \code{RcppVector}, \code{RcppMatrix} and \code{RcppStringVector} are
   C++ classes defined in \code{Rcpp.h} that can

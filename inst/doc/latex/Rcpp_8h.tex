@@ -2,17 +2,16 @@
 \section{src/Rcpp.h File Reference}
 \label{Rcpp_8h}\index{src/Rcpp.h@{src/Rcpp.h}}
 }
-{\tt \#include $<$iostream$>$}\par
-{\tt \#include $<$sstream$>$}\par
-{\tt \#include $<$string$>$}\par
-{\tt \#include $<$list$>$}\par
-{\tt \#include $<$map$>$}\par
-{\tt \#include $<$stdexcept$>$}\par
-{\tt \#include $<$vector$>$}\par
-{\tt \#include $<$R.h$>$}\par
-{\tt \#include $<$Rinternals.h$>$}\par
-
-
+{\ttfamily \#include $<$iostream$>$}\par
+{\ttfamily \#include $<$sstream$>$}\par
+{\ttfamily \#include $<$string$>$}\par
+{\ttfamily \#include $<$list$>$}\par
+{\ttfamily \#include $<$map$>$}\par
+{\ttfamily \#include $<$stdexcept$>$}\par
+{\ttfamily \#include $<$vector$>$}\par
+{\ttfamily \#include $<$R.h$>$}\par
+{\ttfamily \#include $<$Rinternals.h$>$}\par
+{\ttfamily \#include $<$RcppList.h$>$}\par
 Include dependency graph for Rcpp.h:\nopagebreak
 \begin{figure}[H]
 \begin{center}
@@ -20,8 +19,6 @@ Include dependency graph for Rcpp.h:\nopagebreak
 \includegraphics[width=296pt]{Rcpp_8h__incl}
 \end{center}
 \end{figure}
-
-
 This graph shows which files directly or indirectly include this file:\nopagebreak
 \begin{figure}[H]
 \begin{center}
@@ -30,7 +27,7 @@ This graph shows which files directly or indirectly include this file:\nopagebre
 \end{center}
 \end{figure}
 \subsection*{Classes}
-\begin{CompactItemize}
+\begin{DoxyCompactItemize}
 \item 
 class \hyperlink{classRcppDate}{RcppDate}
 \item 
@@ -63,112 +60,104 @@ class \hyperlink{classRcppStringVectorView}{RcppStringVectorView}
 class \hyperlink{classRcppFunction}{RcppFunction}
 \item 
 class \hyperlink{classRcppResultSet}{RcppResultSet}
-\end{CompactItemize}
+\end{DoxyCompactItemize}
 \subsection*{Defines}
-\begin{CompactItemize}
+\begin{DoxyCompactItemize}
 \item 
-\#define \hyperlink{Rcpp_8h_367e747a6abc54938d838483bb3c97ee}{R\_\-NO\_\-REMAP}
+\#define \hyperlink{Rcpp_8h_a367e747a6abc54938d838483bb3c97ee}{R\_\-NO\_\-REMAP}
 \item 
-\#define \hyperlink{Rcpp_8h_df8c24d3d9680f80efbccf56b0bbcb87}{RcppExport}~extern \char`\"{}C\char`\"{}
-\end{CompactItemize}
+\#define \hyperlink{Rcpp_8h_adf8c24d3d9680f80efbccf56b0bbcb87}{RcppExport}~extern \char`\"{}C\char`\"{}
+\end{DoxyCompactItemize}
 \subsection*{Enumerations}
-\begin{CompactItemize}
+\begin{DoxyCompactItemize}
 \item 
-enum \hyperlink{Rcpp_8h_3145f0ed02782c5b592881e0e8e53655}{ColType} \{ \par
-\hyperlink{Rcpp_8h_3145f0ed02782c5b592881e0e8e536558033c9699467cc74f87d24c004ca6bff}{COLTYPE\_\-DOUBLE}, 
-\hyperlink{Rcpp_8h_3145f0ed02782c5b592881e0e8e536555e594154d950baa0cfa4dca34eec8c4f}{COLTYPE\_\-INT}, 
-\hyperlink{Rcpp_8h_3145f0ed02782c5b592881e0e8e5365580fa6b7860dbefb7f6201b10a325a95e}{COLTYPE\_\-STRING}, 
-\hyperlink{Rcpp_8h_3145f0ed02782c5b592881e0e8e53655cd671810dc639245baafc3a9ca57a92c}{COLTYPE\_\-FACTOR}, 
+enum \hyperlink{Rcpp_8h_a3145f0ed02782c5b592881e0e8e53655}{ColType} \{ \par
+\hyperlink{Rcpp_8h_a3145f0ed02782c5b592881e0e8e53655a8033c9699467cc74f87d24c004ca6bff}{COLTYPE\_\-DOUBLE}, 
+\hyperlink{Rcpp_8h_a3145f0ed02782c5b592881e0e8e53655a5e594154d950baa0cfa4dca34eec8c4f}{COLTYPE\_\-INT}, 
+\hyperlink{Rcpp_8h_a3145f0ed02782c5b592881e0e8e53655a80fa6b7860dbefb7f6201b10a325a95e}{COLTYPE\_\-STRING}, 
+\hyperlink{Rcpp_8h_a3145f0ed02782c5b592881e0e8e53655acd671810dc639245baafc3a9ca57a92c}{COLTYPE\_\-FACTOR}, 
 \par
-\hyperlink{Rcpp_8h_3145f0ed02782c5b592881e0e8e53655bf580a6f2d25cee49648795700ad476d}{COLTYPE\_\-LOGICAL}, 
-\hyperlink{Rcpp_8h_3145f0ed02782c5b592881e0e8e53655df2f73e5b0ca56a91699e5e0ba4f945f}{COLTYPE\_\-DATE}, 
-\hyperlink{Rcpp_8h_3145f0ed02782c5b592881e0e8e5365505d7e518f4a1811bdb53a7ec4ed3c579}{COLTYPE\_\-DATETIME}
+\hyperlink{Rcpp_8h_a3145f0ed02782c5b592881e0e8e53655abf580a6f2d25cee49648795700ad476d}{COLTYPE\_\-LOGICAL}, 
+\hyperlink{Rcpp_8h_a3145f0ed02782c5b592881e0e8e53655adf2f73e5b0ca56a91699e5e0ba4f945f}{COLTYPE\_\-DATE}, 
+\hyperlink{Rcpp_8h_a3145f0ed02782c5b592881e0e8e53655a05d7e518f4a1811bdb53a7ec4ed3c579}{COLTYPE\_\-DATETIME}
  \}
-\end{CompactItemize}
+\end{DoxyCompactItemize}
 \subsection*{Functions}
-\begin{CompactItemize}
+\begin{DoxyCompactItemize}
 \item 
-char $\ast$ \hyperlink{Rcpp_8h_86330168f60698ba4d745bb97cdbb15b}{copyMessageToR} (const char $\ast$const mesg)
-\end{CompactItemize}
+char $\ast$ \hyperlink{Rcpp_8h_a86330168f60698ba4d745bb97cdbb15b}{copyMessageToR} (const char $\ast$const mesg)
+\end{DoxyCompactItemize}
 
 
 \subsection{Define Documentation}
-\hypertarget{Rcpp_8h_367e747a6abc54938d838483bb3c97ee}{
+\hypertarget{Rcpp_8h_a367e747a6abc54938d838483bb3c97ee}{
 \index{Rcpp.h@{Rcpp.h}!R\_\-NO\_\-REMAP@{R\_\-NO\_\-REMAP}}
 \index{R\_\-NO\_\-REMAP@{R\_\-NO\_\-REMAP}!Rcpp.h@{Rcpp.h}}
 \subsubsection[{R\_\-NO\_\-REMAP}]{\setlength{\rightskip}{0pt plus 5cm}\#define R\_\-NO\_\-REMAP}}
-\label{Rcpp_8h_367e747a6abc54938d838483bb3c97ee}
+\label{Rcpp_8h_a367e747a6abc54938d838483bb3c97ee}
 
 
-
-
-Definition at line 34 of file Rcpp.h.\hypertarget{Rcpp_8h_df8c24d3d9680f80efbccf56b0bbcb87}{
+Definition at line 34 of file Rcpp.h.\hypertarget{Rcpp_8h_adf8c24d3d9680f80efbccf56b0bbcb87}{
 \index{Rcpp.h@{Rcpp.h}!RcppExport@{RcppExport}}
 \index{RcppExport@{RcppExport}!Rcpp.h@{Rcpp.h}}
 \subsubsection[{RcppExport}]{\setlength{\rightskip}{0pt plus 5cm}\#define RcppExport~extern \char`\"{}C\char`\"{}}}
-\label{Rcpp_8h_df8c24d3d9680f80efbccf56b0bbcb87}
+\label{Rcpp_8h_adf8c24d3d9680f80efbccf56b0bbcb87}
 
 
-
-
-Definition at line 42 of file Rcpp.h.
+Definition at line 44 of file Rcpp.h.
 
 \subsection{Enumeration Type Documentation}
-\hypertarget{Rcpp_8h_3145f0ed02782c5b592881e0e8e53655}{
+\hypertarget{Rcpp_8h_a3145f0ed02782c5b592881e0e8e53655}{
 \index{Rcpp.h@{Rcpp.h}!ColType@{ColType}}
 \index{ColType@{ColType}!Rcpp.h@{Rcpp.h}}
 \subsubsection[{ColType}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf ColType}}}
-\label{Rcpp_8h_3145f0ed02782c5b592881e0e8e53655}
-
-
+\label{Rcpp_8h_a3145f0ed02782c5b592881e0e8e53655}
 \begin{Desc}
 \item[Enumerator: ]\par
 \begin{description}
 \index{COLTYPE\_\-DOUBLE@{COLTYPE\_\-DOUBLE}!Rcpp.h@{Rcpp.h}}\index{Rcpp.h@{Rcpp.h}!COLTYPE\_\-DOUBLE@{COLTYPE\_\-DOUBLE}}\item[{\em 
-\hypertarget{Rcpp_8h_3145f0ed02782c5b592881e0e8e536558033c9699467cc74f87d24c004ca6bff}{
+\hypertarget{Rcpp_8h_a3145f0ed02782c5b592881e0e8e53655a8033c9699467cc74f87d24c004ca6bff}{
 COLTYPE\_\-DOUBLE}
-\label{Rcpp_8h_3145f0ed02782c5b592881e0e8e536558033c9699467cc74f87d24c004ca6bff}
+\label{Rcpp_8h_a3145f0ed02782c5b592881e0e8e53655a8033c9699467cc74f87d24c004ca6bff}
 }]\index{COLTYPE\_\-INT@{COLTYPE\_\-INT}!Rcpp.h@{Rcpp.h}}\index{Rcpp.h@{Rcpp.h}!COLTYPE\_\-INT@{COLTYPE\_\-INT}}\item[{\em 
-\hypertarget{Rcpp_8h_3145f0ed02782c5b592881e0e8e536555e594154d950baa0cfa4dca34eec8c4f}{
+\hypertarget{Rcpp_8h_a3145f0ed02782c5b592881e0e8e53655a5e594154d950baa0cfa4dca34eec8c4f}{
 COLTYPE\_\-INT}
-\label{Rcpp_8h_3145f0ed02782c5b592881e0e8e536555e594154d950baa0cfa4dca34eec8c4f}
+\label{Rcpp_8h_a3145f0ed02782c5b592881e0e8e53655a5e594154d950baa0cfa4dca34eec8c4f}
 }]\index{COLTYPE\_\-STRING@{COLTYPE\_\-STRING}!Rcpp.h@{Rcpp.h}}\index{Rcpp.h@{Rcpp.h}!COLTYPE\_\-STRING@{COLTYPE\_\-STRING}}\item[{\em 
-\hypertarget{Rcpp_8h_3145f0ed02782c5b592881e0e8e5365580fa6b7860dbefb7f6201b10a325a95e}{
+\hypertarget{Rcpp_8h_a3145f0ed02782c5b592881e0e8e53655a80fa6b7860dbefb7f6201b10a325a95e}{
 COLTYPE\_\-STRING}
-\label{Rcpp_8h_3145f0ed02782c5b592881e0e8e5365580fa6b7860dbefb7f6201b10a325a95e}
+\label{Rcpp_8h_a3145f0ed02782c5b592881e0e8e53655a80fa6b7860dbefb7f6201b10a325a95e}
 }]\index{COLTYPE\_\-FACTOR@{COLTYPE\_\-FACTOR}!Rcpp.h@{Rcpp.h}}\index{Rcpp.h@{Rcpp.h}!COLTYPE\_\-FACTOR@{COLTYPE\_\-FACTOR}}\item[{\em 
-\hypertarget{Rcpp_8h_3145f0ed02782c5b592881e0e8e53655cd671810dc639245baafc3a9ca57a92c}{
+\hypertarget{Rcpp_8h_a3145f0ed02782c5b592881e0e8e53655acd671810dc639245baafc3a9ca57a92c}{
 COLTYPE\_\-FACTOR}
-\label{Rcpp_8h_3145f0ed02782c5b592881e0e8e53655cd671810dc639245baafc3a9ca57a92c}
+\label{Rcpp_8h_a3145f0ed02782c5b592881e0e8e53655acd671810dc639245baafc3a9ca57a92c}
 }]\index{COLTYPE\_\-LOGICAL@{COLTYPE\_\-LOGICAL}!Rcpp.h@{Rcpp.h}}\index{Rcpp.h@{Rcpp.h}!COLTYPE\_\-LOGICAL@{COLTYPE\_\-LOGICAL}}\item[{\em 
-\hypertarget{Rcpp_8h_3145f0ed02782c5b592881e0e8e53655bf580a6f2d25cee49648795700ad476d}{
+\hypertarget{Rcpp_8h_a3145f0ed02782c5b592881e0e8e53655abf580a6f2d25cee49648795700ad476d}{
 COLTYPE\_\-LOGICAL}
-\label{Rcpp_8h_3145f0ed02782c5b592881e0e8e53655bf580a6f2d25cee49648795700ad476d}
+\label{Rcpp_8h_a3145f0ed02782c5b592881e0e8e53655abf580a6f2d25cee49648795700ad476d}
 }]\index{COLTYPE\_\-DATE@{COLTYPE\_\-DATE}!Rcpp.h@{Rcpp.h}}\index{Rcpp.h@{Rcpp.h}!COLTYPE\_\-DATE@{COLTYPE\_\-DATE}}\item[{\em 
-\hypertarget{Rcpp_8h_3145f0ed02782c5b592881e0e8e53655df2f73e5b0ca56a91699e5e0ba4f945f}{
+\hypertarget{Rcpp_8h_a3145f0ed02782c5b592881e0e8e53655adf2f73e5b0ca56a91699e5e0ba4f945f}{
 COLTYPE\_\-DATE}
-\label{Rcpp_8h_3145f0ed02782c5b592881e0e8e53655df2f73e5b0ca56a91699e5e0ba4f945f}
+\label{Rcpp_8h_a3145f0ed02782c5b592881e0e8e53655adf2f73e5b0ca56a91699e5e0ba4f945f}
 }]\index{COLTYPE\_\-DATETIME@{COLTYPE\_\-DATETIME}!Rcpp.h@{Rcpp.h}}\index{Rcpp.h@{Rcpp.h}!COLTYPE\_\-DATETIME@{COLTYPE\_\-DATETIME}}\item[{\em 
-\hypertarget{Rcpp_8h_3145f0ed02782c5b592881e0e8e5365505d7e518f4a1811bdb53a7ec4ed3c579}{
+\hypertarget{Rcpp_8h_a3145f0ed02782c5b592881e0e8e53655a05d7e518f4a1811bdb53a7ec4ed3c579}{
 COLTYPE\_\-DATETIME}
-\label{Rcpp_8h_3145f0ed02782c5b592881e0e8e5365505d7e518f4a1811bdb53a7ec4ed3c579}
+\label{Rcpp_8h_a3145f0ed02782c5b592881e0e8e53655a05d7e518f4a1811bdb53a7ec4ed3c579}
 }]\end{description}
 \end{Desc}
 
 
 
-Definition at line 167 of file Rcpp.h.
+Definition at line 168 of file Rcpp.h.
 
 \subsection{Function Documentation}
-\hypertarget{Rcpp_8h_86330168f60698ba4d745bb97cdbb15b}{
+\hypertarget{Rcpp_8h_a86330168f60698ba4d745bb97cdbb15b}{
 \index{Rcpp.h@{Rcpp.h}!copyMessageToR@{copyMessageToR}}
 \index{copyMessageToR@{copyMessageToR}!Rcpp.h@{Rcpp.h}}
 \subsubsection[{copyMessageToR}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ copyMessageToR (const char $\ast$const  {\em mesg})}}
-\label{Rcpp_8h_86330168f60698ba4d745bb97cdbb15b}
+\label{Rcpp_8h_a86330168f60698ba4d745bb97cdbb15b}
 
 
-
-
-Definition at line 995 of file Rcpp.cpp.
+Definition at line 1000 of file Rcpp.cpp.
 
 Referenced by Rcpp\_\-Example(), RcppDateExample(), RcppParamsExample(), and RcppVectorExample().

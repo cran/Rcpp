@@ -775,6 +775,11 @@ void RcppResultSet::add(std::string name, RcppFrame& frame) {
     values.push_back(make_pair(name, rl));
 }
 
+void RcppResultSet::add(std::string name, RcppList &list) {
+    // we let RcppList export itself as a SEXP and send it along
+    values.push_back(make_pair(name, list.getList()));
+}
+
 void RcppResultSet::add(std::string name, SEXP sexp, bool isProtected) {
     values.push_back(make_pair(name, sexp));
     if (isProtected)

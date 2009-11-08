@@ -36,6 +36,8 @@
 #include <R.h>
 #include <Rinternals.h>
 
+#include <RcppList.h>
+
 // #ifdef BUILDING_DLL
 // #define RcppExport extern "C" __declspec(dllexport)
 // #else
@@ -94,9 +96,8 @@ private:
     int m_us;					// microseconds giving us fractional seconds
     struct tm m_tm;
     void parseTime() {
-	time_t tt;
-	tt = floor(m_d);			// time_t is the number of seconds, so ignore the fractional microseconds
-	m_us = round( (m_d - tt) * 1.0e6);	// fractional (micro)seconds is difference between (fractional) m_d and m_tt
+	time_t tt = static_cast<time_t>(floor(m_d));		// time_t is the nb of seconds, ignore the fractional microseconds
+	m_us = static_cast<int>(round( (m_d - tt) * 1.0e6));	// fractional (micro)secs is diff. between (fractional) m_d and m_tt
 	m_tm = *localtime(&tt);			// parse time type into time structure 
 	m_parsed = true;			// and note that we parsed the time type
 	//printf("Time is %s %20u %8u\n", ctime(&m_tt), (unsigned int) m_tt, m_us);
@@ -449,6 +450,8 @@ public:
     RcppMatrix(int nx, int ny);
     int getDim1() { return dim1; }
     int getDim2() { return dim2; }
+    int rows() { return dim1; }
+    int cols() { return dim2; }
     inline T& operator()(int i, int j) {
 	if (i < 0 || i >= dim1 || j < 0 || j >= dim2) {
 	    std::ostringstream oss;
@@ -491,6 +494,8 @@ public:
     RcppMatrixView(SEXP mat);
     inline int dim1() const { return d1; }
     inline int dim2() const { return d2; }
+    inline int rows() { return d1; }
+    inline int cols() { return d2; }
     inline T operator()(int i, int j) const {
 	if (i < 0 || i >= d1 || j < 0 || j >= d2) {
 	    std::ostringstream oss;
@@ -580,6 +585,7 @@ public:
     void add(std::string, RcppMatrix<int>&);
     void add(std::string, RcppMatrix<double>&);
     void add(std::string, RcppFrame&);
+    void add(std::string, RcppList&);
     void add(std::string, SEXP, bool isProtected);
     SEXP getReturnList();
 protected:

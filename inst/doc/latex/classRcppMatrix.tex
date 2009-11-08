@@ -2,34 +2,38 @@
 \section{RcppMatrix$<$ T $>$ Class Template Reference}
 \label{classRcppMatrix}\index{RcppMatrix@{RcppMatrix}}
 }
-{\tt \#include $<$Rcpp.h$>$}
 
-\subsection*{Public Member Functions}
-\begin{CompactItemize}
+
+{\ttfamily \#include $<$Rcpp.h$>$}\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
 \item 
-\hyperlink{classRcppMatrix_6cdd09180c21b504d1455ae2bc8939a7}{RcppMatrix} (SEXP mat)
+\hyperlink{classRcppMatrix_a6cdd09180c21b504d1455ae2bc8939a7}{RcppMatrix} (SEXP mat)
 \item 
-\hyperlink{classRcppMatrix_9ac16e2fcccd2a21a33097139e4ec253}{RcppMatrix} (int nx, int ny)
+\hyperlink{classRcppMatrix_a9ac16e2fcccd2a21a33097139e4ec253}{RcppMatrix} (int nx, int ny)
 \item 
-int \hyperlink{classRcppMatrix_edbe27d643d704a0f5a995821307fdaf}{getDim1} ()
+int \hyperlink{classRcppMatrix_aedbe27d643d704a0f5a995821307fdaf}{getDim1} ()
 \item 
-int \hyperlink{classRcppMatrix_356e04f844e3ebfac29b50e2e749734f}{getDim2} ()
+int \hyperlink{classRcppMatrix_a356e04f844e3ebfac29b50e2e749734f}{getDim2} ()
 \item 
-T \& \hyperlink{classRcppMatrix_7733c87524d7e216f70fc10ccc971a29}{operator()} (int i, int j)
+int \hyperlink{classRcppMatrix_a17749a8e567433b055be1221c399f0cd}{rows} ()
 \item 
-T $\ast$$\ast$ \hyperlink{classRcppMatrix_e94a95b2125bd594965e26a93c994da4}{cMatrix} ()
+int \hyperlink{classRcppMatrix_a1b92a0bda663e14ea2f225e755029299}{cols} ()
 \item 
-std::vector$<$ std::vector$<$ T $>$ $>$ \hyperlink{classRcppMatrix_e74547edb5d989adb87b2e483153de89}{stlMatrix} ()
-\end{CompactItemize}
+T \& \hyperlink{classRcppMatrix_a7733c87524d7e216f70fc10ccc971a29}{operator()} (int i, int j)
+\item 
+T $\ast$$\ast$ \hyperlink{classRcppMatrix_ae94a95b2125bd594965e26a93c994da4}{cMatrix} ()
+\item 
+std::vector$<$ std::vector$<$ T $>$ $>$ \hyperlink{classRcppMatrix_ae74547edb5d989adb87b2e483153de89}{stlMatrix} ()
+\end{DoxyCompactItemize}
 \subsection*{Private Attributes}
-\begin{CompactItemize}
+\begin{DoxyCompactItemize}
 \item 
-int \hyperlink{classRcppMatrix_3b2f3ef7c2b482e4f7e7f4f96b787128}{dim1}
+int \hyperlink{classRcppMatrix_a3b2f3ef7c2b482e4f7e7f4f96b787128}{dim1}
 \item 
-int \hyperlink{classRcppMatrix_d01bc64d89dcc475f7c90f1580bf5d52}{dim2}
+int \hyperlink{classRcppMatrix_ad01bc64d89dcc475f7c90f1580bf5d52}{dim2}
 \item 
-T $\ast$$\ast$ \hyperlink{classRcppMatrix_3f4dad8e2aed525c9b20e98d262ec31e}{a}
-\end{CompactItemize}
+T $\ast$$\ast$ \hyperlink{classRcppMatrix_a3f4dad8e2aed525c9b20e98d262ec31e}{a}
+\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -37,27 +41,23 @@ T $\ast$$\ast$ \hyperlink{classRcppMatrix_3f4dad8e2aed525c9b20e98d262ec31e}{a}
 
 
 
-Definition at line 446 of file Rcpp.h.
+Definition at line 447 of file Rcpp.h.
 
 \subsection{Constructor \& Destructor Documentation}
-\hypertarget{classRcppMatrix_6cdd09180c21b504d1455ae2bc8939a7}{
+\hypertarget{classRcppMatrix_a6cdd09180c21b504d1455ae2bc8939a7}{
 \index{RcppMatrix@{RcppMatrix}!RcppMatrix@{RcppMatrix}}
 \index{RcppMatrix@{RcppMatrix}!RcppMatrix@{RcppMatrix}}
-\subsubsection[{RcppMatrix}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ {\bf RcppMatrix}$<$ T $>$::{\bf RcppMatrix} (SEXP {\em mat})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
-\label{classRcppMatrix_6cdd09180c21b504d1455ae2bc8939a7}
-
-
+\subsubsection[{RcppMatrix}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ {\bf RcppMatrix}$<$ T $>$::{\bf RcppMatrix} (SEXP {\em mat})\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
+\label{classRcppMatrix_a6cdd09180c21b504d1455ae2bc8939a7}
 
 
 Definition at line 347 of file Rcpp.cpp.
 
-References RcppMatrix$<$ T $>$::a, RcppMatrix$<$ T $>$::dim1, and RcppMatrix$<$ T $>$::dim2.\hypertarget{classRcppMatrix_9ac16e2fcccd2a21a33097139e4ec253}{
+References RcppMatrix$<$ T $>$::a, RcppMatrix$<$ T $>$::dim1, and RcppMatrix$<$ T $>$::dim2.\hypertarget{classRcppMatrix_a9ac16e2fcccd2a21a33097139e4ec253}{
 \index{RcppMatrix@{RcppMatrix}!RcppMatrix@{RcppMatrix}}
 \index{RcppMatrix@{RcppMatrix}!RcppMatrix@{RcppMatrix}}
-\subsubsection[{RcppMatrix}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ {\bf RcppMatrix}$<$ T $>$::{\bf RcppMatrix} (int {\em nx}, \/  int {\em ny})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
-\label{classRcppMatrix_9ac16e2fcccd2a21a33097139e4ec253}
-
-
+\subsubsection[{RcppMatrix}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ {\bf RcppMatrix}$<$ T $>$::{\bf RcppMatrix} (int {\em nx}, \/  int {\em ny})\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
+\label{classRcppMatrix_a9ac16e2fcccd2a21a33097139e4ec253}
 
 
 Definition at line 378 of file Rcpp.cpp.
@@ -65,63 +65,71 @@ Definition at line 378 of file Rcpp.cpp.
 References RcppMatrix$<$ T $>$::a, RcppMatrix$<$ T $>$::dim1, and RcppMatrix$<$ T $>$::dim2.
 
 \subsection{Member Function Documentation}
-\hypertarget{classRcppMatrix_e94a95b2125bd594965e26a93c994da4}{
+\hypertarget{classRcppMatrix_ae94a95b2125bd594965e26a93c994da4}{
 \index{RcppMatrix@{RcppMatrix}!cMatrix@{cMatrix}}
 \index{cMatrix@{cMatrix}!RcppMatrix@{RcppMatrix}}
-\subsubsection[{cMatrix}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ T $\ast$$\ast$ {\bf RcppMatrix}$<$ T $>$::cMatrix ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
-\label{classRcppMatrix_e94a95b2125bd594965e26a93c994da4}
-
-
+\subsubsection[{cMatrix}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ T $\ast$$\ast$ {\bf RcppMatrix}$<$ T $>$::cMatrix ()\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
+\label{classRcppMatrix_ae94a95b2125bd594965e26a93c994da4}
 
 
 Definition at line 405 of file Rcpp.cpp.
 
 References RcppMatrix$<$ T $>$::a, RcppMatrix$<$ T $>$::dim1, and RcppMatrix$<$ T $>$::dim2.
 
-Referenced by RcppResultSet::add(), and Rcpp\_\-Example().\hypertarget{classRcppMatrix_edbe27d643d704a0f5a995821307fdaf}{
+Referenced by RcppResultSet::add(), and Rcpp\_\-Example().\hypertarget{classRcppMatrix_a1b92a0bda663e14ea2f225e755029299}{
+\index{RcppMatrix@{RcppMatrix}!cols@{cols}}
+\index{cols@{cols}!RcppMatrix@{RcppMatrix}}
+\subsubsection[{cols}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ int {\bf RcppMatrix}$<$ T $>$::cols ()\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
+\label{classRcppMatrix_a1b92a0bda663e14ea2f225e755029299}
+
+
+Definition at line 454 of file Rcpp.h.
+
+References RcppMatrix$<$ T $>$::dim2.\hypertarget{classRcppMatrix_aedbe27d643d704a0f5a995821307fdaf}{
 \index{RcppMatrix@{RcppMatrix}!getDim1@{getDim1}}
 \index{getDim1@{getDim1}!RcppMatrix@{RcppMatrix}}
-\subsubsection[{getDim1}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ int {\bf RcppMatrix}$<$ T $>$::getDim1 ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
-\label{classRcppMatrix_edbe27d643d704a0f5a995821307fdaf}
-
-
-
-
-Definition at line 450 of file Rcpp.h.
-
-References RcppMatrix$<$ T $>$::dim1.
-
-Referenced by RcppResultSet::add(), and Rcpp\_\-Example().\hypertarget{classRcppMatrix_356e04f844e3ebfac29b50e2e749734f}{
-\index{RcppMatrix@{RcppMatrix}!getDim2@{getDim2}}
-\index{getDim2@{getDim2}!RcppMatrix@{RcppMatrix}}
-\subsubsection[{getDim2}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ int {\bf RcppMatrix}$<$ T $>$::getDim2 ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
-\label{classRcppMatrix_356e04f844e3ebfac29b50e2e749734f}
-
-
+\subsubsection[{getDim1}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ int {\bf RcppMatrix}$<$ T $>$::getDim1 ()\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
+\label{classRcppMatrix_aedbe27d643d704a0f5a995821307fdaf}
 
 
 Definition at line 451 of file Rcpp.h.
 
-References RcppMatrix$<$ T $>$::dim2.
+References RcppMatrix$<$ T $>$::dim1.
 
-Referenced by RcppResultSet::add(), and Rcpp\_\-Example().\hypertarget{classRcppMatrix_7733c87524d7e216f70fc10ccc971a29}{
-\index{RcppMatrix@{RcppMatrix}!operator()@{operator()}}
-\index{operator()@{operator()}!RcppMatrix@{RcppMatrix}}
-\subsubsection[{operator()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ T\& {\bf RcppMatrix}$<$ T $>$::operator() (int {\em i}, \/  int {\em j})\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
-\label{classRcppMatrix_7733c87524d7e216f70fc10ccc971a29}
-
-
+Referenced by RcppResultSet::add(), and Rcpp\_\-Example().\hypertarget{classRcppMatrix_a356e04f844e3ebfac29b50e2e749734f}{
+\index{RcppMatrix@{RcppMatrix}!getDim2@{getDim2}}
+\index{getDim2@{getDim2}!RcppMatrix@{RcppMatrix}}
+\subsubsection[{getDim2}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ int {\bf RcppMatrix}$<$ T $>$::getDim2 ()\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
+\label{classRcppMatrix_a356e04f844e3ebfac29b50e2e749734f}
 
 
 Definition at line 452 of file Rcpp.h.
 
-References RcppMatrix$<$ T $>$::a, RcppMatrix$<$ T $>$::dim1, and RcppMatrix$<$ T $>$::dim2.\hypertarget{classRcppMatrix_e74547edb5d989adb87b2e483153de89}{
+References RcppMatrix$<$ T $>$::dim2.
+
+Referenced by RcppResultSet::add(), and Rcpp\_\-Example().\hypertarget{classRcppMatrix_a7733c87524d7e216f70fc10ccc971a29}{
+\index{RcppMatrix@{RcppMatrix}!operator()@{operator()}}
+\index{operator()@{operator()}!RcppMatrix@{RcppMatrix}}
+\subsubsection[{operator()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ T\& {\bf RcppMatrix}$<$ T $>$::operator() (int {\em i}, \/  int {\em j})\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
+\label{classRcppMatrix_a7733c87524d7e216f70fc10ccc971a29}
+
+
+Definition at line 455 of file Rcpp.h.
+
+References RcppMatrix$<$ T $>$::a, RcppMatrix$<$ T $>$::dim1, and RcppMatrix$<$ T $>$::dim2.\hypertarget{classRcppMatrix_a17749a8e567433b055be1221c399f0cd}{
+\index{RcppMatrix@{RcppMatrix}!rows@{rows}}
+\index{rows@{rows}!RcppMatrix@{RcppMatrix}}
+\subsubsection[{rows}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ int {\bf RcppMatrix}$<$ T $>$::rows ()\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
+\label{classRcppMatrix_a17749a8e567433b055be1221c399f0cd}
+
+
+Definition at line 453 of file Rcpp.h.
+
+References RcppMatrix$<$ T $>$::dim1.\hypertarget{classRcppMatrix_ae74547edb5d989adb87b2e483153de89}{
 \index{RcppMatrix@{RcppMatrix}!stlMatrix@{stlMatrix}}
 \index{stlMatrix@{stlMatrix}!RcppMatrix@{RcppMatrix}}
-\subsubsection[{stlMatrix}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ std::vector$<$ std::vector$<$ T $>$ $>$ {\bf RcppMatrix}$<$ T $>$::stlMatrix ()\hspace{0.3cm}{\tt  \mbox{[}inline\mbox{]}}}}
-\label{classRcppMatrix_e74547edb5d989adb87b2e483153de89}
-
-
+\subsubsection[{stlMatrix}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ std::vector$<$ std::vector$<$ T $>$ $>$ {\bf RcppMatrix}$<$ T $>$::stlMatrix ()\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
+\label{classRcppMatrix_ae74547edb5d989adb87b2e483153de89}
 
 
 Definition at line 392 of file Rcpp.cpp.
@@ -131,42 +139,36 @@ References RcppMatrix$<$ T $>$::a, RcppMatrix$<$ T $>$::dim1, and RcppMatrix$<$ 
 Referenced by Rcpp\_\-Example().
 
 \subsection{Member Data Documentation}
-\hypertarget{classRcppMatrix_3f4dad8e2aed525c9b20e98d262ec31e}{
+\hypertarget{classRcppMatrix_a3f4dad8e2aed525c9b20e98d262ec31e}{
 \index{RcppMatrix@{RcppMatrix}!a@{a}}
 \index{a@{a}!RcppMatrix@{RcppMatrix}}
-\subsubsection[{a}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ T$\ast$$\ast$ {\bf RcppMatrix}$<$ T $>$::{\bf a}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
-\label{classRcppMatrix_3f4dad8e2aed525c9b20e98d262ec31e}
+\subsubsection[{a}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ T$\ast$$\ast$ {\bf RcppMatrix}$<$ T $>$::{\bf a}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}
+\label{classRcppMatrix_a3f4dad8e2aed525c9b20e98d262ec31e}
 
 
+Definition at line 467 of file Rcpp.h.
 
-
-Definition at line 464 of file Rcpp.h.
-
-Referenced by RcppMatrix$<$ T $>$::cMatrix(), RcppMatrix$<$ T $>$::operator()(), RcppMatrix$<$ T $>$::RcppMatrix(), and RcppMatrix$<$ T $>$::stlMatrix().\hypertarget{classRcppMatrix_3b2f3ef7c2b482e4f7e7f4f96b787128}{
+Referenced by RcppMatrix$<$ T $>$::cMatrix(), RcppMatrix$<$ T $>$::operator()(), RcppMatrix$<$ T $>$::RcppMatrix(), and RcppMatrix$<$ T $>$::stlMatrix().\hypertarget{classRcppMatrix_a3b2f3ef7c2b482e4f7e7f4f96b787128}{
 \index{RcppMatrix@{RcppMatrix}!dim1@{dim1}}
 \index{dim1@{dim1}!RcppMatrix@{RcppMatrix}}
-\subsubsection[{dim1}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ int {\bf RcppMatrix}$<$ T $>$::{\bf dim1}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
-\label{classRcppMatrix_3b2f3ef7c2b482e4f7e7f4f96b787128}
+\subsubsection[{dim1}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ int {\bf RcppMatrix}$<$ T $>$::{\bf dim1}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}
+\label{classRcppMatrix_a3b2f3ef7c2b482e4f7e7f4f96b787128}
 
 
+Definition at line 466 of file Rcpp.h.
 
-
-Definition at line 463 of file Rcpp.h.
-
-Referenced by RcppMatrix$<$ T $>$::cMatrix(), RcppMatrix$<$ T $>$::getDim1(), RcppMatrix$<$ T $>$::operator()(), RcppMatrix$<$ T $>$::RcppMatrix(), and RcppMatrix$<$ T $>$::stlMatrix().\hypertarget{classRcppMatrix_d01bc64d89dcc475f7c90f1580bf5d52}{
+Referenced by RcppMatrix$<$ T $>$::cMatrix(), RcppMatrix$<$ T $>$::getDim1(), RcppMatrix$<$ T $>$::operator()(), RcppMatrix$<$ T $>$::RcppMatrix(), RcppMatrix$<$ T $>$::rows(), and RcppMatrix$<$ T $>$::stlMatrix().\hypertarget{classRcppMatrix_ad01bc64d89dcc475f7c90f1580bf5d52}{
 \index{RcppMatrix@{RcppMatrix}!dim2@{dim2}}
 \index{dim2@{dim2}!RcppMatrix@{RcppMatrix}}
-\subsubsection[{dim2}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ int {\bf RcppMatrix}$<$ T $>$::{\bf dim2}\hspace{0.3cm}{\tt  \mbox{[}private\mbox{]}}}}
-\label{classRcppMatrix_d01bc64d89dcc475f7c90f1580bf5d52}
+\subsubsection[{dim2}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ int {\bf RcppMatrix}$<$ T $>$::{\bf dim2}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}
+\label{classRcppMatrix_ad01bc64d89dcc475f7c90f1580bf5d52}
 
 
+Definition at line 466 of file Rcpp.h.
 
+Referenced by RcppMatrix$<$ T $>$::cMatrix(), RcppMatrix$<$ T $>$::cols(), RcppMatrix$<$ T $>$::getDim2(), RcppMatrix$<$ T $>$::operator()(), RcppMatrix$<$ T $>$::RcppMatrix(), and RcppMatrix$<$ T $>$::stlMatrix().
 
-Definition at line 463 of file Rcpp.h.
-
-Referenced by RcppMatrix$<$ T $>$::cMatrix(), RcppMatrix$<$ T $>$::getDim2(), RcppMatrix$<$ T $>$::operator()(), RcppMatrix$<$ T $>$::RcppMatrix(), and RcppMatrix$<$ T $>$::stlMatrix().
-
-The documentation for this class was generated from the following files:\begin{CompactItemize}
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
 \item 
 src/\hyperlink{Rcpp_8h}{Rcpp.h}\item 
-src/\hyperlink{Rcpp_8cpp}{Rcpp.cpp}\end{CompactItemize}
+src/\hyperlink{Rcpp_8cpp}{Rcpp.cpp}\end{DoxyCompactItemize}

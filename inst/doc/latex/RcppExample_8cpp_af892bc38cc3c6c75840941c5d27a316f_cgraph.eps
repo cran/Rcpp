@@ -1,0 +1,1353 @@
+%!PS-Adobe-3.0 EPSF-3.0
+%%Creator: Graphviz version 2.20.2 (Mon Jun 29 17:34:52 UTC 2009)
+%%For: (edd) Dirk Eddelbuettel,,,
+%%Title: G
+%%Pages: (atend)
+%%BoundingBox: (atend)
+%%EndComments
+save
+%%BeginProlog
+/DotDict 200 dict def
+DotDict begin
+
+/setupLatin1 {
+mark
+/EncodingVector 256 array def
+ EncodingVector 0
+
+ISOLatin1Encoding 0 255 getinterval putinterval
+EncodingVector 45 /hyphen put
+
+% Set up ISO Latin 1 character encoding
+/starnetISO {
+        dup dup findfont dup length dict begin
+        { 1 index /FID ne { def }{ pop pop } ifelse
+        } forall
+        /Encoding EncodingVector def
+        currentdict end definefont
+} def
+/Times-Roman starnetISO def
+/Times-Italic starnetISO def
+/Times-Bold starnetISO def
+/Times-BoldItalic starnetISO def
+/Helvetica starnetISO def
+/Helvetica-Oblique starnetISO def
+/Helvetica-Bold starnetISO def
+/Helvetica-BoldOblique starnetISO def
+/Courier starnetISO def
+/Courier-Oblique starnetISO def
+/Courier-Bold starnetISO def
+/Courier-BoldOblique starnetISO def
+cleartomark
+} bind def
+
+%%BeginResource: procset graphviz 0 0
+/coord-font-family /Times-Roman def
+/default-font-family /Times-Roman def
+/coordfont coord-font-family findfont 8 scalefont def
+
+/InvScaleFactor 1.0 def
+/set_scale {
+       dup 1 exch div /InvScaleFactor exch def
+       scale
+} bind def
+
+% styles
+/solid { [] 0 setdash } bind def
+/dashed { [9 InvScaleFactor mul dup ] 0 setdash } bind def
+/dotted { [1 InvScaleFactor mul 6 InvScaleFactor mul] 0 setdash } bind def
+/invis {/fill {newpath} def /stroke {newpath} def /show {pop newpath} def} bind def
+/bold { 2 setlinewidth } bind def
+/filled { } bind def
+/unfilled { } bind def
+/rounded { } bind def
+/diagonals { } bind def
+
+% hooks for setting color 
+/nodecolor { sethsbcolor } bind def
+/edgecolor { sethsbcolor } bind def
+/graphcolor { sethsbcolor } bind def
+/nopcolor {pop pop pop} bind def
+
+/beginpage {	% i j npages
+	/npages exch def
+	/j exch def
+	/i exch def
+	/str 10 string def
+	npages 1 gt {
+		gsave
+			coordfont setfont
+			0 0 moveto
+			(\() show i str cvs show (,) show j str cvs show (\)) show
+		grestore
+	} if
+} bind def
+
+/set_font {
+	findfont exch
+	scalefont setfont
+} def
+
+% draw text fitted to its expected width
+/alignedtext {			% width text
+	/text exch def
+	/width exch def
+	gsave
+		width 0 gt {
+			[] 0 setdash
+			text stringwidth pop width exch sub text length div 0 text ashow
+		} if
+	grestore
+} def
+
+/boxprim {				% xcorner ycorner xsize ysize
+		4 2 roll
+		moveto
+		2 copy
+		exch 0 rlineto
+		0 exch rlineto
+		pop neg 0 rlineto
+		closepath
+} bind def
+
+/ellipse_path {
+	/ry exch def
+	/rx exch def
+	/y exch def
+	/x exch def
+	matrix currentmatrix
+	newpath
+	x y translate
+	rx ry scale
+	0 0 1 0 360 arc
+	setmatrix
+} bind def
+
+/endpage { showpage } bind def
+/showpage { } def
+
+/layercolorseq
+	[	% layer color sequence - darkest to lightest
+		[0 0 0]
+		[.2 .8 .8]
+		[.4 .8 .8]
+		[.6 .8 .8]
+		[.8 .8 .8]
+	]
+def
+
+/layerlen layercolorseq length def
+
+/setlayer {/maxlayer exch def /curlayer exch def
+	layercolorseq curlayer 1 sub layerlen mod get
+	aload pop sethsbcolor
+	/nodecolor {nopcolor} def
+	/edgecolor {nopcolor} def
+	/graphcolor {nopcolor} def
+} bind def
+
+/onlayer { curlayer ne {invis} if } def
+
+/onlayers {
+	/myupper exch def
+	/mylower exch def
+	curlayer mylower lt
+	curlayer myupper gt
+	or
+	{invis} if
+} def
+
+/curlayer 0 def
+
+%%EndResource
+%%EndProlog
+%%BeginSetup
+14 default-font-family set_font
+1 setmiterlimit
+% /arrowlength 10 def
+% /arrowwidth 5 def
+
+% make sure pdfmark is harmless for PS-interpreters other than Distiller
+/pdfmark where {pop} {userdict /pdfmark /cleartomark load put} ifelse
+% make '<<' and '>>' safe on PS Level 1 devices
+/languagelevel where {pop languagelevel}{1} ifelse
+2 lt {
+    userdict (<<) cvn ([) cvn load put
+    userdict (>>) cvn ([) cvn load put
+} if
+
+%%EndSetup
+setupLatin1
+%%Page: 1 1
+%%PageBoundingBox: 36 36 516 906
+%%PageOrientation: Portrait
+0 0 1 beginpage
+gsave
+36 36 480 870 boxprim clip newpath
+1 1 set_scale 0 rotate 40 40 translate
+% Node1
+gsave
+0.000 0.000 0.749 nodecolor
+newpath 0 420 moveto
+0 442 lineto
+82 442 lineto
+82 420 lineto
+closepath fill
+1 setlinewidth
+filled
+0.000 0.000 0.000 nodecolor
+newpath 0 420 moveto
+0 442 lineto
+82 442 lineto
+82 420 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+10 /FreeSans set_font
+8 429 moveto 66 (Rcpp_Example) alignedtext
+grestore
+% Node2
+gsave
+[ /Rect [ 140 840 242 862 ]
+  /Border [ 0 0 0 ]
+  /Action << /Subtype /URI /URI ($classRcppResultSet.html#a7c7da37f18bd352303bf06b7c5233bc4) >>
+  /Subtype /Link
+/ANN pdfmark
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 140 840 moveto
+140 862 lineto
+243 862 lineto
+243 840 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+10 /FreeSans set_font
+147.5 849 moveto 87 (RcppResultSet::add) alignedtext
+grestore
+% Node1->Node2
+gsave
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 42 442 moveto
+45 501 64 771 118 831 curveto
+122 835 126 838 131 841 curveto
+stroke
+0.667 0.776 0.439 edgecolor
+newpath 129.44 844.14 moveto
+140 845 lineto
+132.28 837.74 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 129.44 844.14 moveto
+140 845 lineto
+132.28 837.74 lineto
+closepath stroke
+grestore
+% Node3
+gsave
+[ /Rect [ 135 800 247 822 ]
+  /Border [ 0 0 0 ]
+  /Action << /Subtype /URI /URI ($classMyRListFunc.html#a0dec3b59e1e235c0502594a5d92cae13) >>
+  /Subtype /Link
+/ANN pdfmark
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 135 800 moveto
+135 822 lineto
+248 822 lineto
+248 800 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+10 /FreeSans set_font
+142.5 809 moveto 97 (MyRListFunc::addOne) alignedtext
+grestore
+% Node1->Node3
+gsave
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 42 442 moveto
+46 497 68 738 118 791 curveto
+120 794 123 796 126 797 curveto
+stroke
+0.667 0.776 0.439 edgecolor
+newpath 124.56 800.2 moveto
+135 802 lineto
+127.96 794.08 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 124.56 800.2 moveto
+135 802 lineto
+127.96 794.08 lineto
+closepath stroke
+grestore
+% Node8
+gsave
+[ /Rect [ 138 760 244 782 ]
+  /Border [ 0 0 0 ]
+  /Action << /Subtype /URI /URI ($classRcppFrame.html#aae72791527f2947a477633151106f42c) >>
+  /Subtype /Link
+/ANN pdfmark
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 138 760 moveto
+138 782 lineto
+244 782 lineto
+244 760 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+10 /FreeSans set_font
+146 769 moveto 90 (RcppFrame::addRow) alignedtext
+grestore
+% Node1->Node8
+gsave
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 42 442 moveto
+48 493 74 705 118 751 curveto
+121 754 125 757 129 760 curveto
+stroke
+0.667 0.776 0.439 edgecolor
+newpath 127.44 763.14 moveto
+138 764 lineto
+130.28 756.74 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 127.44 763.14 moveto
+138 764 lineto
+130.28 756.74 lineto
+closepath stroke
+grestore
+% Node9
+gsave
+[ /Rect [ 139 720 243 742 ]
+  /Border [ 0 0 0 ]
+  /Action << /Subtype /URI /URI ($classRcppMatrix.html#ae94a95b2125bd594965e26a93c994da4) >>
+  /Subtype /Link
+/ANN pdfmark
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 139 720 moveto
+139 742 lineto
+243 742 lineto
+243 720 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+10 /FreeSans set_font
+147 729 moveto 88 (RcppMatrix::cMatrix) alignedtext
+grestore
+% Node1->Node9
+gsave
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 43 442 moveto
+50 489 79 671 118 711 curveto
+122 715 125 717 130 720 curveto
+stroke
+0.667 0.776 0.439 edgecolor
+newpath 128.44 723.14 moveto
+139 724 lineto
+131.28 716.74 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 128.44 723.14 moveto
+139 724 lineto
+131.28 716.74 lineto
+closepath stroke
+grestore
+% Node10
+gsave
+[ /Rect [ 144 680 238 702 ]
+  /Border [ 0 0 0 ]
+  /Action << /Subtype /URI /URI ($Rcpp_8cpp.html#a86330168f60698ba4d745bb97cdbb15b) >>
+  /Subtype /Link
+/ANN pdfmark
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 144 680 moveto
+144 702 lineto
+238 702 lineto
+238 680 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+10 /FreeSans set_font
+152 689 moveto 78 (copyMessageToR) alignedtext
+grestore
+% Node1->Node10
+gsave
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 43 442 moveto
+52 485 84 638 118 671 curveto
+123 676 128 679 135 682 curveto
+stroke
+0.667 0.776 0.439 edgecolor
+newpath 133.41 685.16 moveto
+144 685 lineto
+135.62 678.52 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 133.41 685.16 moveto
+144 685 lineto
+135.62 678.52 lineto
+closepath stroke
+grestore
+% Node11
+gsave
+[ /Rect [ 139 640 243 662 ]
+  /Border [ 0 0 0 ]
+  /Action << /Subtype /URI /URI ($classRcppVector.html#af4660a27a888a51693b02d2f51b47b08) >>
+  /Subtype /Link
+/ANN pdfmark
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 139 640 moveto
+139 662 lineto
+244 662 lineto
+244 640 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+10 /FreeSans set_font
+146.5 649 moveto 89 (RcppVector::cVector) alignedtext
+grestore
+% Node1->Node11
+gsave
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 42 442 moveto
+45 477 60 578 118 631 curveto
+122 634 125 637 130 639 curveto
+stroke
+0.667 0.776 0.439 edgecolor
+newpath 128.44 642.14 moveto
+139 643 lineto
+131.28 635.74 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 128.44 642.14 moveto
+139 643 lineto
+131.28 635.74 lineto
+closepath stroke
+grestore
+% Node12
+gsave
+[ /Rect [ 124 600 258 622 ]
+  /Border [ 0 0 0 ]
+  /Action << /Subtype /URI /URI ($classRcppParams.html#aae20c7ee73aa2f1176837cc9387ad008) >>
+  /Subtype /Link
+/ANN pdfmark
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 124 600 moveto
+124 622 lineto
+259 622 lineto
+259 600 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+10 /FreeSans set_font
+131.5 609 moveto 119 (RcppParams::getDateValue) alignedtext
+grestore
+% Node1->Node12
+gsave
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 43 442 moveto
+49 471 70 550 118 591 curveto
+120 593 122 594 124 595 curveto
+stroke
+0.667 0.776 0.439 edgecolor
+newpath 122.56 598.2 moveto
+133 600 lineto
+125.96 592.08 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 122.56 598.2 moveto
+133 600 lineto
+125.96 592.08 lineto
+closepath stroke
+grestore
+% Node13
+gsave
+[ /Rect [ 143 560 239 582 ]
+  /Border [ 0 0 0 ]
+  /Action << /Subtype /URI /URI ($classRcppDate.html#a20efbcdddceac536425407b3169fff5a) >>
+  /Subtype /Link
+/ANN pdfmark
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 143 560 moveto
+143 582 lineto
+239 582 lineto
+239 560 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+10 /FreeSans set_font
+151 569 moveto 80 (RcppDate::getDay) alignedtext
+grestore
+% Node1->Node13
+gsave
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 45 442 moveto
+54 466 79 522 118 551 curveto
+122 554 128 557 133 559 curveto
+stroke
+0.667 0.776 0.439 edgecolor
+newpath 132.42 562.54 moveto
+143 563 lineto
+135.02 556.04 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 132.42 562.54 moveto
+143 563 lineto
+135.02 556.04 lineto
+closepath stroke
+grestore
+% Node14
+gsave
+[ /Rect [ 137 520 245 542 ]
+  /Border [ 0 0 0 ]
+  /Action << /Subtype /URI /URI ($classRcppMatrix.html#aedbe27d643d704a0f5a995821307fdaf) >>
+  /Subtype /Link
+/ANN pdfmark
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 137 520 moveto
+137 542 lineto
+245 542 lineto
+245 520 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+10 /FreeSans set_font
+145 529 moveto 92 (RcppMatrix::getDim1) alignedtext
+grestore
+% Node1->Node14
+gsave
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 49 442 moveto
+62 460 88 492 118 511 curveto
+121 513 125 515 128 517 curveto
+stroke
+0.667 0.776 0.439 edgecolor
+newpath 127.42 520.48 moveto
+138 520 lineto
+129.43 513.77 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 127.42 520.48 moveto
+138 520 lineto
+129.43 513.77 lineto
+closepath stroke
+grestore
+% Node15
+gsave
+[ /Rect [ 137 480 245 502 ]
+  /Border [ 0 0 0 ]
+  /Action << /Subtype /URI /URI ($classRcppMatrix.html#a356e04f844e3ebfac29b50e2e749734f) >>
+  /Subtype /Link
+/ANN pdfmark
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 137 480 moveto
+137 502 lineto
+245 502 lineto
+245 480 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+10 /FreeSans set_font
+145 489 moveto 92 (RcppMatrix::getDim2) alignedtext
+grestore
+% Node1->Node15
+gsave
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 60 442 moveto
+76 451 98 462 118 471 curveto
+124 473 130 475 136 477 curveto
+stroke
+0.667 0.776 0.439 edgecolor
+newpath 135.42 480.48 moveto
+146 480 lineto
+137.43 473.77 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 135.42 480.48 moveto
+146 480 lineto
+137.43 473.77 lineto
+closepath stroke
+grestore
+% Node16
+gsave
+[ /Rect [ 119 440 263 462 ]
+  /Border [ 0 0 0 ]
+  /Action << /Subtype /URI /URI ($classRcppParams.html#aa45f8bc1cd8a64aa9a98e24158407077) >>
+  /Subtype /Link
+/ANN pdfmark
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 119 440 moveto
+119 462 lineto
+264 462 lineto
+264 440 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+10 /FreeSans set_font
+126.5 449 moveto 129 (RcppParams::getDoubleValue) alignedtext
+grestore
+% Node1->Node16
+gsave
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 82 437 moveto
+91 438 100 439 109 440 curveto
+stroke
+0.667 0.776 0.439 edgecolor
+newpath 108.7 443.49 moveto
+119 441 lineto
+109.4 436.52 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 108.7 443.49 moveto
+119 441 lineto
+109.4 436.52 lineto
+closepath stroke
+grestore
+% Node17
+gsave
+[ /Rect [ 128 400 254 422 ]
+  /Border [ 0 0 0 ]
+  /Action << /Subtype /URI /URI ($classRcppParams.html#abb554151641ab12a793f28d3d081973a) >>
+  /Subtype /Link
+/ANN pdfmark
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 128 400 moveto
+128 422 lineto
+254 422 lineto
+254 400 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+10 /FreeSans set_font
+136 409 moveto 110 (RcppParams::getIntValue) alignedtext
+grestore
+% Node1->Node17
+gsave
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 82 425 moveto
+93 423 105 422 118 420 curveto
+stroke
+0.667 0.776 0.439 edgecolor
+newpath 118.4 423.48 moveto
+128 419 lineto
+117.7 416.51 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 118.4 423.48 moveto
+128 419 lineto
+117.7 416.51 lineto
+closepath stroke
+grestore
+% Node18
+gsave
+[ /Rect [ 139 360 243 382 ]
+  /Border [ 0 0 0 ]
+  /Action << /Subtype /URI /URI ($classRcppDate.html#a16ca2d57a2c4047b027c8b8b0db5184f) >>
+  /Subtype /Link
+/ANN pdfmark
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 139 360 moveto
+139 382 lineto
+244 382 lineto
+244 360 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+10 /FreeSans set_font
+146.5 369 moveto 89 (RcppDate::getMonth) alignedtext
+grestore
+% Node1->Node18
+gsave
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 60 420 moveto
+75 411 98 399 118 391 curveto
+123 389 129 387 134 385 curveto
+stroke
+0.667 0.776 0.439 edgecolor
+newpath 135.43 388.23 moveto
+144 382 lineto
+133.42 381.52 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 135.43 388.23 moveto
+144 382 lineto
+133.42 381.52 lineto
+closepath stroke
+grestore
+% Node19
+gsave
+[ /Rect [ 131 320 251 342 ]
+  /Border [ 0 0 0 ]
+  /Action << /Subtype /URI /URI ($classRcppNumList.html#a246d8e534d97fbe798b8567bbfa93ca7) >>
+  /Subtype /Link
+/ANN pdfmark
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 131 320 moveto
+131 342 lineto
+251 342 lineto
+251 320 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+10 /FreeSans set_font
+139 329 moveto 104 (RcppNumList::getName) alignedtext
+grestore
+% Node1->Node19
+gsave
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 49 420 moveto
+61 402 88 369 118 351 curveto
+121 349 124 347 127 346 curveto
+stroke
+0.667 0.776 0.439 edgecolor
+newpath 129.02 348.96 moveto
+137 342 lineto
+126.42 342.46 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 129.02 348.96 moveto
+137 342 lineto
+126.42 342.46 lineto
+closepath stroke
+grestore
+% Node20
+gsave
+[ /Rect [ 119 280 263 302 ]
+  /Border [ 0 0 0 ]
+  /Action << /Subtype /URI /URI ($classRcppResultSet.html#a916989ff6c0ed1149a5f93fb6a532946) >>
+  /Subtype /Link
+/ANN pdfmark
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 119 280 moveto
+119 302 lineto
+264 302 lineto
+264 280 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+10 /FreeSans set_font
+126.5 289 moveto 129 (RcppResultSet::getReturnList) alignedtext
+grestore
+% Node1->Node20
+gsave
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 45 420 moveto
+54 396 79 340 118 311 curveto
+120 309 123 308 125 306 curveto
+stroke
+0.667 0.776 0.439 edgecolor
+newpath 126.28 309.26 moveto
+134 302 lineto
+123.44 302.86 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 126.28 309.26 moveto
+134 302 lineto
+123.44 302.86 lineto
+closepath stroke
+grestore
+% Node21
+gsave
+[ /Rect [ 121 240 261 262 ]
+  /Border [ 0 0 0 ]
+  /Action << /Subtype /URI /URI ($classRcppParams.html#adc04f4552582eeec09b0806ddd8e2581) >>
+  /Subtype /Link
+/ANN pdfmark
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 121 240 moveto
+121 262 lineto
+262 262 lineto
+262 240 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+10 /FreeSans set_font
+128.5 249 moveto 125 (RcppParams::getStringValue) alignedtext
+grestore
+% Node1->Node21
+gsave
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 43 420 moveto
+49 390 70 311 118 271 curveto
+119 270 121 268 123 267 curveto
+stroke
+0.667 0.776 0.439 edgecolor
+newpath 124.96 269.92 moveto
+132 262 lineto
+121.56 263.8 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 124.96 269.92 moveto
+132 262 lineto
+121.56 263.8 lineto
+closepath stroke
+grestore
+% Node22
+gsave
+[ /Rect [ 129 200 253 222 ]
+  /Border [ 0 0 0 ]
+  /Action << /Subtype /URI /URI ($classMyRVectorFunc.html#a2eba5a390ca620a687e77208bfbb6df4) >>
+  /Subtype /Link
+/ANN pdfmark
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 129 200 moveto
+129 222 lineto
+253 222 lineto
+253 200 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+10 /FreeSans set_font
+137 209 moveto 108 (MyRVectorFunc::getSum) alignedtext
+grestore
+% Node1->Node22
+gsave
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 42 420 moveto
+45 386 60 283 118 231 curveto
+119 230 121 228 122 227 curveto
+stroke
+0.667 0.776 0.439 edgecolor
+newpath 123.96 229.92 moveto
+131 222 lineto
+120.56 223.8 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 123.96 229.92 moveto
+131 222 lineto
+120.56 223.8 lineto
+closepath stroke
+grestore
+% Node25
+gsave
+[ /Rect [ 132 160 250 182 ]
+  /Border [ 0 0 0 ]
+  /Action << /Subtype /URI /URI ($classRcppNumList.html#a2e83950933ddc73ad64ed800f6f5e23b) >>
+  /Subtype /Link
+/ANN pdfmark
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 132 160 moveto
+132 182 lineto
+250 182 lineto
+250 160 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+10 /FreeSans set_font
+140 169 moveto 102 (RcppNumList::getValue) alignedtext
+grestore
+% Node1->Node25
+gsave
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 43 420 moveto
+52 377 84 224 118 191 curveto
+120 189 121 188 123 187 curveto
+stroke
+0.667 0.776 0.439 edgecolor
+newpath 125.62 189.46 moveto
+132 181 lineto
+121.74 183.63 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 125.62 189.46 moveto
+132 181 lineto
+121.74 183.63 lineto
+closepath stroke
+grestore
+% Node26
+gsave
+[ /Rect [ 142 120 240 142 ]
+  /Border [ 0 0 0 ]
+  /Action << /Subtype /URI /URI ($classRcppDate.html#a79a7696fbce7b448ab545ce35c40811b) >>
+  /Subtype /Link
+/ANN pdfmark
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 142 120 moveto
+142 142 lineto
+240 142 lineto
+240 120 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+10 /FreeSans set_font
+150 129 moveto 82 (RcppDate::getYear) alignedtext
+grestore
+% Node1->Node26
+gsave
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 43 420 moveto
+50 373 79 190 118 151 curveto
+122 147 127 143 133 141 curveto
+stroke
+0.667 0.776 0.439 edgecolor
+newpath 134.28 144.26 moveto
+142 137 lineto
+131.44 137.86 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 134.28 144.26 moveto
+142 137 lineto
+131.44 137.86 lineto
+closepath stroke
+grestore
+% Node27
+gsave
+[ /Rect [ 146 80 236 102 ]
+  /Border [ 0 0 0 ]
+  /Action << /Subtype /URI /URI ($classRcppVector.html#a1e2424dc9b91014ba8b2c9351d97eb37) >>
+  /Subtype /Link
+/ANN pdfmark
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 146 80 moveto
+146 102 lineto
+236 102 lineto
+236 80 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+10 /FreeSans set_font
+154 89 moveto 74 (RcppVector::size) alignedtext
+grestore
+% Node1->Node27
+gsave
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 42 420 moveto
+48 368 74 157 118 111 curveto
+123 106 130 102 136 99 curveto
+stroke
+0.667 0.776 0.439 edgecolor
+newpath 138.02 101.96 moveto
+146 95 lineto
+135.42 95.46 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 138.02 101.96 moveto
+146 95 lineto
+135.42 95.46 lineto
+closepath stroke
+grestore
+% Node28
+gsave
+[ /Rect [ 137 40 245 62 ]
+  /Border [ 0 0 0 ]
+  /Action << /Subtype /URI /URI ($classRcppMatrix.html#ae74547edb5d989adb87b2e483153de89) >>
+  /Subtype /Link
+/ANN pdfmark
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 137 40 moveto
+137 62 lineto
+246 62 lineto
+246 40 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+10 /FreeSans set_font
+144.5 49 moveto 93 (RcppMatrix::stlMatrix) alignedtext
+grestore
+% Node1->Node28
+gsave
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 42 420 moveto
+46 365 68 123 118 71 curveto
+121 68 124 66 128 64 curveto
+stroke
+0.667 0.776 0.439 edgecolor
+newpath 129.96 66.92 moveto
+137 59 lineto
+126.56 60.8 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 129.96 66.92 moveto
+137 59 lineto
+126.56 60.8 lineto
+closepath stroke
+grestore
+% Node29
+gsave
+[ /Rect [ 136 0 246 22 ]
+  /Border [ 0 0 0 ]
+  /Action << /Subtype /URI /URI ($classRcppVector.html#ac650f89b966962b167f3bc42aecf213b) >>
+  /Subtype /Link
+/ANN pdfmark
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 136 0 moveto
+136 22 lineto
+247 22 lineto
+247 0 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+10 /FreeSans set_font
+143.5 9 moveto 95 (RcppVector::stlVector) alignedtext
+grestore
+% Node1->Node29
+gsave
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 42 420 moveto
+45 361 64 90 118 31 curveto
+121 28 124 26 127 24 curveto
+stroke
+0.667 0.776 0.439 edgecolor
+newpath 128.96 26.92 moveto
+136 19 lineto
+125.56 20.8 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 128.96 26.92 moveto
+136 19 lineto
+125.56 20.8 lineto
+closepath stroke
+grestore
+% Node4
+gsave
+[ /Rect [ 313 840 459 862 ]
+  /Border [ 0 0 0 ]
+  /Action << /Subtype /URI /URI ($classRcppFunction.html#a0df1a8ff093e21a2a7c6fc80d6645c7e) >>
+  /Subtype /Link
+/ANN pdfmark
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 313 840 moveto
+313 862 lineto
+459 862 lineto
+459 840 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+10 /FreeSans set_font
+321 849 moveto 130 (RcppFunction::appendToRList) alignedtext
+grestore
+% Node3->Node4
+gsave
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 245 822 moveto
+269 827 297 833 322 838 curveto
+stroke
+0.667 0.776 0.439 edgecolor
+newpath 321.51 841.47 moveto
+332 840 lineto
+322.88 834.61 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 321.51 841.47 moveto
+332 840 lineto
+322.88 834.61 lineto
+closepath stroke
+grestore
+% Node5
+gsave
+[ /Rect [ 300 480 472 502 ]
+  /Border [ 0 0 0 ]
+  /Action << /Subtype /URI /URI ($classRcppFunction.html#a689c914636f0f0e86b90da4425c6e6a3) >>
+  /Subtype /Link
+/ANN pdfmark
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 300 480 moveto
+300 502 lineto
+472 502 lineto
+472 480 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+10 /FreeSans set_font
+308 489 moveto 156 (RcppFunction::clearProtectionStack) alignedtext
+grestore
+% Node3->Node5
+gsave
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 248 801 moveto
+254 798 259 795 264 791 curveto
+351 714 377 567 384 512 curveto
+stroke
+0.667 0.776 0.439 edgecolor
+newpath 387.49 512.3 moveto
+385 502 lineto
+380.52 511.6 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 387.49 512.3 moveto
+385 502 lineto
+380.52 511.6 lineto
+closepath stroke
+grestore
+% Node6
+gsave
+[ /Rect [ 331 800 441 822 ]
+  /Border [ 0 0 0 ]
+  /Action << /Subtype /URI /URI ($classRcppFunction.html#a0cc9d29ab7db552494dddefaa78e6578) >>
+  /Subtype /Link
+/ANN pdfmark
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 331 800 moveto
+331 822 lineto
+442 822 lineto
+442 800 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+10 /FreeSans set_font
+338.5 809 moveto 95 (RcppFunction::listCall) alignedtext
+grestore
+% Node3->Node6
+gsave
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 248 811 moveto
+271 811 297 811 321 811 curveto
+stroke
+0.667 0.776 0.439 edgecolor
+newpath 321 814.5 moveto
+331 811 lineto
+321 807.5 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 321 814.5 moveto
+331 811 lineto
+321 807.5 lineto
+closepath stroke
+grestore
+% Node7
+gsave
+[ /Rect [ 318 760 454 782 ]
+  /Border [ 0 0 0 ]
+  /Action << /Subtype /URI /URI ($classRcppFunction.html#af3dbcf8dcfbdfc49ef566b5efd0ad978) >>
+  /Subtype /Link
+/ANN pdfmark
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 318 760 moveto
+318 782 lineto
+455 782 lineto
+455 760 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+10 /FreeSans set_font
+325.5 769 moveto 121 (RcppFunction::setRListSize) alignedtext
+grestore
+% Node3->Node7
+gsave
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 245 800 moveto
+269 795 297 789 322 784 curveto
+stroke
+0.667 0.776 0.439 edgecolor
+newpath 322.88 787.39 moveto
+332 782 lineto
+321.51 780.53 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 322.88 787.39 moveto
+332 782 lineto
+321.51 780.53 lineto
+closepath stroke
+grestore
+% Node22->Node5
+gsave
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 251 222 moveto
+255 225 260 227 264 231 curveto
+341 296 373 421 382 470 curveto
+stroke
+0.667 0.776 0.439 edgecolor
+newpath 378.61 470.88 moveto
+384 480 lineto
+385.47 469.51 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 378.61 470.88 moveto
+384 480 lineto
+385.47 469.51 lineto
+closepath stroke
+grestore
+% Node23
+gsave
+[ /Rect [ 322 220 450 242 ]
+  /Border [ 0 0 0 ]
+  /Action << /Subtype /URI /URI ($classRcppFunction.html#a482df5aa5e2a98d52c9a79cf3ab31c67) >>
+  /Subtype /Link
+/ANN pdfmark
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 322 220 moveto
+322 242 lineto
+451 242 lineto
+451 220 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+10 /FreeSans set_font
+329.5 229 moveto 113 (RcppFunction::setRVector) alignedtext
+grestore
+% Node22->Node23
+gsave
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 253 217 moveto
+272 219 293 221 312 223 curveto
+stroke
+0.667 0.776 0.439 edgecolor
+newpath 311.7 226.49 moveto
+322 224 lineto
+312.4 219.52 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 311.7 226.49 moveto
+322 224 lineto
+312.4 219.52 lineto
+closepath stroke
+grestore
+% Node24
+gsave
+[ /Rect [ 324 180 448 202 ]
+  /Border [ 0 0 0 ]
+  /Action << /Subtype /URI /URI ($classRcppFunction.html#ac57c514c761609892ff553434e134446) >>
+  /Subtype /Link
+/ANN pdfmark
+1 setlinewidth
+0.000 0.000 0.000 nodecolor
+newpath 324 180 moveto
+324 202 lineto
+449 202 lineto
+449 180 lineto
+closepath stroke
+0.000 0.000 0.000 nodecolor
+10 /FreeSans set_font
+331.5 189 moveto 109 (RcppFunction::vectorCall) alignedtext
+grestore
+% Node22->Node24
+gsave
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 253 205 moveto
+273 203 294 201 314 199 curveto
+stroke
+0.667 0.776 0.439 edgecolor
+newpath 314.4 202.48 moveto
+324 198 lineto
+313.7 195.51 lineto
+closepath fill
+1 setlinewidth
+solid
+0.667 0.776 0.439 edgecolor
+newpath 314.4 202.48 moveto
+324 198 lineto
+313.7 195.51 lineto
+closepath stroke
+grestore
+endpage
+showpage
+grestore
+%%PageTrailer
+%%EndPage: 1
+%%Trailer
+%%Pages: 1
+%%BoundingBox: 36 36 516 906
+end
+restore
+%%EOF
