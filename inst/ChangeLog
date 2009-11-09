@@ -1,3 +1,13 @@
+2009-11-09  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION: Release 0.6.8
+
+	* src/RcppParams.{cpp,h}: Code reorginsation, moved out of Rcpp.{h,cpp}
+	* src/RcppDate.{cpp,h}: idem
+	* src/RcppDatetime.{cpp,h}: idem
+	* src/RcppCommon.h: New header file for common defines and includes
+	* src/Makevars{,.win}: Updated and generalised to reflect new files
+
 2009-11-08  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION: Release 0.6.7
