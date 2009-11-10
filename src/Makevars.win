@@ -2,29 +2,48 @@
 #
 # Makefile.win for Rcpp
 #
-# Copyright (C) 2008    Dirk Eddelbuettel <edd@debian.org>
+# Copyright (C) 2008 - 2009 Dirk Eddelbuettel <edd@debian.org>
 #
 # Contributions from an older Makefile.win are
 # (C) Dominick Samperi and Uwe Ligges and gratefully acknowledged
 
-RCPPFLAGS	= `${R_HOME}/bin/R CMD config --cppflags`
-RLDFLAGS	= `${R_HOME}/bin/R CMD config --ldflags`
+## ask R about compiler flags and libraries
+#RCPPFLAGS = 	`${R_HOME}/bin/R CMD config --cppflags`
+#RLDFLAGS := 	`${R_HOME}/bin/R CMD config --ldflags`
+
+# or just set it directly
+#RCPPFLAGS =	-I$(R_HOME)/include -I.
+RLDFLAGS =	-L$(R_HOME)/bin -lR
+
+# or just copy defaults (cf $R_HOME/etc/Makeconf)
+#RCPPFLAGS = $(ALL_CXXFLAGS)
+#RLDFLAGS = $(LIBR) $(LIBM)
+
+## and pass this on to the implicit build rules
+PKG_CPPFLAGS +=	-I.
+PKG_LIBS +=	-s $(RLDFLAGS)
+
+## all sources and objects
+SOURCES =	$(wildcard *.cpp)
+OBJECTS =	$(SOURCES:.cpp=.o)
+
+## the 'user' library contains all source apart from RcppExample.o and is what
+## users need for their projects -- RcppExample is used by the package library
+## we place it inside the inst/ directory so that it gets installed by the package
+USEROBJ	=	$(filter-out RcppExample.o,$(OBJECTS))
+USERDIR	= 	../inst/lib
+USERLIB	= 	$(USERDIR)/libRcpp.a
+
+## to filter out -Wall which generated a ton with older compilers
+newCXXFLAGS := 	$(filter-out -Wall,$(CXXFLAGS))
+CXXFLAGS := 	$(newCXXFLAGS)
 
 ## the 'package' library contains both Rcpp.{cpp,h} and the RcppExample used to demonstrate the package
 ## it is loaded via library(Rcpp) but is not used for compiling / linking against
-PKGLIB 		= Rcpp.dll
-PKGOBJ 		= RcppExample.o Rcpp.o
-PKGLDFLAGS 	= -s $(RLDFLAGS)
+PKGLIB = 	Rcpp.dll
+PKGOBJ = 	$(OBJECTS)
 
-## the 'user' library contains only Rcpp.{cpp,h} and is what users need for their projects
-## we place it inside the inst/ directory so that it gets installed 
-## use 'Rscript -e 'cat(system.file("lib", "Rcpp.a", package="Rcpp", "\n")'  to get location
-USERDIR		= ../inst/lib
-USERLIB		= $(USERDIR)/libRcpp.a
-USEROBJ		= Rcpp.o
-
-CXXFLAGS 	= -I. $(RCPPFLAGS) -Wall -O2
-RM 		= rm -f
+RM = 		rm -f
 
 .PHONY: 	all clean
 
@@ -34,13 +53,13 @@ clean:
 		${RM} $(PKGOBJ) $(PKGLIB)
 
 $(PKGLIB): 	$(PKGOBJ)
-		$(CXX) -shared -o $(PKGLIB) $(PKGOBJ) $(PKGLDFLAGS)
+		$(CXX) -shared -o $(PKGLIB) $(PKGOBJ) $(PKG_LIBS)
 
 $(USERLIB):	$(USEROBJ)
 		-mkdir -p $(USERDIR) 2>/dev/null
 		ar r $(USERLIB) $(USEROBJ)
 		ranlib $(USERLIB)
-		cp -vax Rcpp.h $(USERDIR)
+		cp -vax Rcp*.h $(USERDIR)
 
 
 

@@ -11,9 +11,19 @@
 
 all: 		$(SHLIB) userLibrary 
 
+## all sources and objects
+SOURCES =	$(wildcard *.cpp)
+OBJECTS =	$(SOURCES:.cpp=.o)
+
+## the 'user' library contains all source apart from RcppExample.o and is what
+## users need for their projects -- RcppExample is used by the package library
+USEROBJ	=	$(filter-out RcppExample.o,$(OBJECTS))
+
+## we place it inside the inst/ directory so that it gets installed by the package
+USERDIR =	../inst/lib
+
 USERLIB	=	libRcpp$(DYLIB_EXT)
 USERLIBST =	libRcpp.a
-USERDIR =	../inst/lib
 
 PKG_CPPFLAGS += -I.
 
@@ -24,11 +34,11 @@ userLibrary: 	$(USERLIB) $(USERLIBST)
 		cp $(USERLIBST) $(USERDIR)$(R_ARCH)
 		rm $(USERLIB) $(USERLIBST)
 
-$(USERLIB): 	Rcpp.o RcppList.o
+$(USERLIB): 	$(USEROBJ)
 		$(SHLIB_CXXLD) -o $(USERLIB) $^ $(SHLIB_CXXLDFLAGS) $(ALL_LIBS)
 		@if test -e "/usr/bin/install_name_tool"; then /usr/bin/install_name_tool -id $(R_PACKAGE_DIR)/lib$(R_ARCH)/$(USERLIB) $(USERLIB); fi
 
-$(USERLIBST): 	Rcpp.o RcppList.o
+$(USERLIBST): 	$(USEROBJ)
 		$(AR) qc $(USERLIBST) $^
 		@if test -n "$(RANLIB)"; then $(RANLIB) $(USERLIBST); fi
 

@@ -18,7 +18,17 @@
 // along with this library; if not, write to the Free Software Foundation, 
 // Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
 
-#include "RcppList.h"
+#include <RcppList.h>
+
+RcppList::RcppList(void) : listArg(R_NilValue), 
+			   listSize(0), 
+			   currListPosn(0), 
+			   numProtected(0) { 
+}; 
+
+RcppList::~RcppList(void) {
+    UNPROTECT(numProtected);
+}
 
 void RcppList::setSize(int n) {
     listSize = n;

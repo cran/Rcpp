@@ -1,6 +1,6 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 8 -*-
 //
-// RcppList.h: Rcpp.h: R/C++ interface class library -- 'list' type support
+// RcppList.h: Rcpp R/C++ interface class library -- 'list' type support
 //
 // Copyright (C) 2009 Dirk Eddelbuettel
 //
@@ -21,29 +21,14 @@
 #ifndef RcppList_h
 #define RcppList_h
 
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <list>
-#include <map>
-#include <stdexcept>
-#include <vector>
-
-// include R headers, but set R_NO_REMAP and access everything via Rf_ prefixes
-#define R_NO_REMAP
-
-#include <R.h>
-#include <Rinternals.h>
+#include <RcppCommon.h>
 
 // This class was first used in the RProtoBuf project (currently on r-forge only)
 // but is more generally useful and hence moved over here
 class RcppList {
 public:
-    RcppList(void): 
-	listArg(R_NilValue), listSize(0), currListPosn(0), numProtected(0) { }; 
-    ~RcppList() {
-	UNPROTECT(numProtected);
-    }
+    RcppList(void);
+    ~RcppList();
     void setSize(int size);
     void append(std::string name, double value);
     void append(std::string name, int value);
