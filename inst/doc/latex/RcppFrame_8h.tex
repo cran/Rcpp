@@ -1,0 +1,87 @@
+\hypertarget{RcppFrame_8h}{
+\section{src/RcppFrame.h File Reference}
+\label{RcppFrame_8h}\index{src/RcppFrame.h@{src/RcppFrame.h}}
+}
+{\ttfamily \#include $<$RcppCommon.h$>$}\par
+{\ttfamily \#include $<$RcppDate.h$>$}\par
+{\ttfamily \#include $<$RcppDatetime.h$>$}\par
+Include dependency graph for RcppFrame.h:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=296pt]{RcppFrame_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=188pt]{RcppFrame_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classRcppFrame}{RcppFrame}
+\item 
+class \hyperlink{classColDatum}{ColDatum}
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{RcppFrame_8h_a3145f0ed02782c5b592881e0e8e53655}{ColType} \{ \par
+\hyperlink{RcppFrame_8h_a3145f0ed02782c5b592881e0e8e53655a8033c9699467cc74f87d24c004ca6bff}{COLTYPE\_\-DOUBLE}, 
+\hyperlink{RcppFrame_8h_a3145f0ed02782c5b592881e0e8e53655a5e594154d950baa0cfa4dca34eec8c4f}{COLTYPE\_\-INT}, 
+\hyperlink{RcppFrame_8h_a3145f0ed02782c5b592881e0e8e53655a80fa6b7860dbefb7f6201b10a325a95e}{COLTYPE\_\-STRING}, 
+\hyperlink{RcppFrame_8h_a3145f0ed02782c5b592881e0e8e53655acd671810dc639245baafc3a9ca57a92c}{COLTYPE\_\-FACTOR}, 
+\par
+\hyperlink{RcppFrame_8h_a3145f0ed02782c5b592881e0e8e53655abf580a6f2d25cee49648795700ad476d}{COLTYPE\_\-LOGICAL}, 
+\hyperlink{RcppFrame_8h_a3145f0ed02782c5b592881e0e8e53655adf2f73e5b0ca56a91699e5e0ba4f945f}{COLTYPE\_\-DATE}, 
+\hyperlink{RcppFrame_8h_a3145f0ed02782c5b592881e0e8e53655a05d7e518f4a1811bdb53a7ec4ed3c579}{COLTYPE\_\-DATETIME}
+ \}
+\end{DoxyCompactItemize}
+
+
+\subsection{Enumeration Type Documentation}
+\hypertarget{RcppFrame_8h_a3145f0ed02782c5b592881e0e8e53655}{
+\index{RcppFrame.h@{RcppFrame.h}!ColType@{ColType}}
+\index{ColType@{ColType}!RcppFrame.h@{RcppFrame.h}}
+\subsubsection[{ColType}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf ColType}}}
+\label{RcppFrame_8h_a3145f0ed02782c5b592881e0e8e53655}
+\begin{Desc}
+\item[Enumerator: ]\par
+\begin{description}
+\index{COLTYPE\_\-DOUBLE@{COLTYPE\_\-DOUBLE}!RcppFrame.h@{RcppFrame.h}}\index{RcppFrame.h@{RcppFrame.h}!COLTYPE\_\-DOUBLE@{COLTYPE\_\-DOUBLE}}\item[{\em 
+\hypertarget{RcppFrame_8h_a3145f0ed02782c5b592881e0e8e53655a8033c9699467cc74f87d24c004ca6bff}{
+COLTYPE\_\-DOUBLE}
+\label{RcppFrame_8h_a3145f0ed02782c5b592881e0e8e53655a8033c9699467cc74f87d24c004ca6bff}
+}]\index{COLTYPE\_\-INT@{COLTYPE\_\-INT}!RcppFrame.h@{RcppFrame.h}}\index{RcppFrame.h@{RcppFrame.h}!COLTYPE\_\-INT@{COLTYPE\_\-INT}}\item[{\em 
+\hypertarget{RcppFrame_8h_a3145f0ed02782c5b592881e0e8e53655a5e594154d950baa0cfa4dca34eec8c4f}{
+COLTYPE\_\-INT}
+\label{RcppFrame_8h_a3145f0ed02782c5b592881e0e8e53655a5e594154d950baa0cfa4dca34eec8c4f}
+}]\index{COLTYPE\_\-STRING@{COLTYPE\_\-STRING}!RcppFrame.h@{RcppFrame.h}}\index{RcppFrame.h@{RcppFrame.h}!COLTYPE\_\-STRING@{COLTYPE\_\-STRING}}\item[{\em 
+\hypertarget{RcppFrame_8h_a3145f0ed02782c5b592881e0e8e53655a80fa6b7860dbefb7f6201b10a325a95e}{
+COLTYPE\_\-STRING}
+\label{RcppFrame_8h_a3145f0ed02782c5b592881e0e8e53655a80fa6b7860dbefb7f6201b10a325a95e}
+}]\index{COLTYPE\_\-FACTOR@{COLTYPE\_\-FACTOR}!RcppFrame.h@{RcppFrame.h}}\index{RcppFrame.h@{RcppFrame.h}!COLTYPE\_\-FACTOR@{COLTYPE\_\-FACTOR}}\item[{\em 
+\hypertarget{RcppFrame_8h_a3145f0ed02782c5b592881e0e8e53655acd671810dc639245baafc3a9ca57a92c}{
+COLTYPE\_\-FACTOR}
+\label{RcppFrame_8h_a3145f0ed02782c5b592881e0e8e53655acd671810dc639245baafc3a9ca57a92c}
+}]\index{COLTYPE\_\-LOGICAL@{COLTYPE\_\-LOGICAL}!RcppFrame.h@{RcppFrame.h}}\index{RcppFrame.h@{RcppFrame.h}!COLTYPE\_\-LOGICAL@{COLTYPE\_\-LOGICAL}}\item[{\em 
+\hypertarget{RcppFrame_8h_a3145f0ed02782c5b592881e0e8e53655abf580a6f2d25cee49648795700ad476d}{
+COLTYPE\_\-LOGICAL}
+\label{RcppFrame_8h_a3145f0ed02782c5b592881e0e8e53655abf580a6f2d25cee49648795700ad476d}
+}]\index{COLTYPE\_\-DATE@{COLTYPE\_\-DATE}!RcppFrame.h@{RcppFrame.h}}\index{RcppFrame.h@{RcppFrame.h}!COLTYPE\_\-DATE@{COLTYPE\_\-DATE}}\item[{\em 
+\hypertarget{RcppFrame_8h_a3145f0ed02782c5b592881e0e8e53655adf2f73e5b0ca56a91699e5e0ba4f945f}{
+COLTYPE\_\-DATE}
+\label{RcppFrame_8h_a3145f0ed02782c5b592881e0e8e53655adf2f73e5b0ca56a91699e5e0ba4f945f}
+}]\index{COLTYPE\_\-DATETIME@{COLTYPE\_\-DATETIME}!RcppFrame.h@{RcppFrame.h}}\index{RcppFrame.h@{RcppFrame.h}!COLTYPE\_\-DATETIME@{COLTYPE\_\-DATETIME}}\item[{\em 
+\hypertarget{RcppFrame_8h_a3145f0ed02782c5b592881e0e8e53655a05d7e518f4a1811bdb53a7ec4ed3c579}{
+COLTYPE\_\-DATETIME}
+\label{RcppFrame_8h_a3145f0ed02782c5b592881e0e8e53655a05d7e518f4a1811bdb53a7ec4ed3c579}
+}]\end{description}
+\end{Desc}
+
+
+
+Definition at line 30 of file RcppFrame.h.

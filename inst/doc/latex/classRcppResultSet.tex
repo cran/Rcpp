@@ -4,7 +4,7 @@
 }
 
 
-{\ttfamily \#include $<$Rcpp.h$>$}\subsection*{Public Member Functions}
+{\ttfamily \#include $<$RcppResultSet.h$>$}\subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{classRcppResultSet_ab799c6b9bd730e55d92228203903ba74}{RcppResultSet} ()
@@ -58,6 +58,8 @@ void \hyperlink{classRcppResultSet_a37b3d22adf1e47eec75ee664085daa59}{add} (std:
 void \hyperlink{classRcppResultSet_a5f44a63a2cab43db551c0e27d6fec378}{add} (std::string, SEXP, bool isProtected)
 \item 
 SEXP \hyperlink{classRcppResultSet_a916989ff6c0ed1149a5f93fb6a532946}{getReturnList} ()
+\item 
+SEXP \hyperlink{classRcppResultSet_a372bdf017661811062631e0c9f1f5083}{getSEXP} ()
 \end{DoxyCompactItemize}
 \subsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
@@ -71,19 +73,17 @@ std::list$<$ std::pair$<$ std::string, SEXP $>$ $>$ \hyperlink{classRcppResultSe
 \subsection{Detailed Description}
 
 
-Definition at line 563 of file Rcpp.h.
+Definition at line 40 of file RcppResultSet.h.
 
 \subsection{Constructor \& Destructor Documentation}
 \hypertarget{classRcppResultSet_ab799c6b9bd730e55d92228203903ba74}{
 \index{RcppResultSet@{RcppResultSet}!RcppResultSet@{RcppResultSet}}
 \index{RcppResultSet@{RcppResultSet}!RcppResultSet@{RcppResultSet}}
-\subsubsection[{RcppResultSet}]{\setlength{\rightskip}{0pt plus 5cm}RcppResultSet::RcppResultSet ()\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
+\subsubsection[{RcppResultSet}]{\setlength{\rightskip}{0pt plus 5cm}RcppResultSet::RcppResultSet ()}}
 \label{classRcppResultSet_ab799c6b9bd730e55d92228203903ba74}
 
 
-Definition at line 565 of file Rcpp.h.
-
-References numProtected.
+Definition at line 25 of file RcppResultSet.cpp.
 
 \subsection{Member Function Documentation}
 \hypertarget{classRcppResultSet_a5f44a63a2cab43db551c0e27d6fec378}{
@@ -93,7 +93,7 @@ References numProtected.
 \label{classRcppResultSet_a5f44a63a2cab43db551c0e27d6fec378}
 
 
-Definition at line 783 of file Rcpp.cpp.
+Definition at line 343 of file RcppResultSet.cpp.
 
 References numProtected, and values.\hypertarget{classRcppResultSet_a37b3d22adf1e47eec75ee664085daa59}{
 \index{RcppResultSet@{RcppResultSet}!add@{add}}
@@ -102,7 +102,7 @@ References numProtected, and values.\hypertarget{classRcppResultSet_a37b3d22adf1
 \label{classRcppResultSet_a37b3d22adf1e47eec75ee664085daa59}
 
 
-Definition at line 778 of file Rcpp.cpp.
+Definition at line 338 of file RcppResultSet.cpp.
 
 References RcppList::getList(), and values.
 
@@ -120,7 +120,7 @@ Here is the call graph for this function:\nopagebreak
 \label{classRcppResultSet_a9e05fb2ca92258529ffbb536e23a2a4d}
 
 
-Definition at line 696 of file Rcpp.cpp.
+Definition at line 256 of file RcppResultSet.cpp.
 
 References COLTYPE\_\-DATE, COLTYPE\_\-DATETIME, COLTYPE\_\-DOUBLE, COLTYPE\_\-FACTOR, COLTYPE\_\-INT, COLTYPE\_\-LOGICAL, COLTYPE\_\-STRING, RcppFrame::getColNames(), RcppFrame::getTableData(), numProtected, and values.
 
@@ -138,7 +138,7 @@ Here is the call graph for this function:\nopagebreak
 \label{classRcppResultSet_af6f50ca0a589fc12ef68c0406e83243b}
 
 
-Definition at line 684 of file Rcpp.cpp.
+Definition at line 244 of file RcppResultSet.cpp.
 
 References RcppMatrix$<$ T $>$::cMatrix(), RcppMatrix$<$ T $>$::getDim1(), RcppMatrix$<$ T $>$::getDim2(), numProtected, and values.
 
@@ -156,7 +156,7 @@ Here is the call graph for this function:\nopagebreak
 \label{classRcppResultSet_a56f1bff720a6cf6503ab942bdb6892b3}
 
 
-Definition at line 672 of file Rcpp.cpp.
+Definition at line 232 of file RcppResultSet.cpp.
 
 References RcppMatrix$<$ T $>$::cMatrix(), RcppMatrix$<$ T $>$::getDim1(), RcppMatrix$<$ T $>$::getDim2(), numProtected, and values.
 
@@ -174,7 +174,7 @@ Here is the call graph for this function:\nopagebreak
 \label{classRcppResultSet_a10a64eb042cd3bac5b635670ae2fff5d}
 
 
-Definition at line 662 of file Rcpp.cpp.
+Definition at line 222 of file RcppResultSet.cpp.
 
 References RcppVector$<$ T $>$::cVector(), numProtected, RcppVector$<$ T $>$::size(), and values.
 
@@ -192,7 +192,7 @@ Here is the call graph for this function:\nopagebreak
 \label{classRcppResultSet_a068cb13e27c0e26dd05e92d67eaeb7d0}
 
 
-Definition at line 652 of file Rcpp.cpp.
+Definition at line 212 of file RcppResultSet.cpp.
 
 References RcppVector$<$ T $>$::cVector(), numProtected, RcppVector$<$ T $>$::size(), and values.
 
@@ -210,7 +210,7 @@ Here is the call graph for this function:\nopagebreak
 \label{classRcppResultSet_adb4236a049c8dceb7112229f5e68a295}
 
 
-Definition at line 589 of file Rcpp.cpp.
+Definition at line 149 of file RcppResultSet.cpp.
 
 References numProtected, and values.\hypertarget{classRcppResultSet_ab51f30f4bd5f3c6153221a3bd7bb7e24}{
 \index{RcppResultSet@{RcppResultSet}!add@{add}}
@@ -219,7 +219,7 @@ References numProtected, and values.\hypertarget{classRcppResultSet_ab51f30f4bd5
 \label{classRcppResultSet_ab51f30f4bd5f3c6153221a3bd7bb7e24}
 
 
-Definition at line 622 of file Rcpp.cpp.
+Definition at line 182 of file RcppResultSet.cpp.
 
 References numProtected, and values.\hypertarget{classRcppResultSet_ab10cd8503c12708e27068b92a83e4047}{
 \index{RcppResultSet@{RcppResultSet}!add@{add}}
@@ -228,7 +228,7 @@ References numProtected, and values.\hypertarget{classRcppResultSet_ab10cd8503c1
 \label{classRcppResultSet_ab10cd8503c12708e27068b92a83e4047}
 
 
-Definition at line 637 of file Rcpp.cpp.
+Definition at line 197 of file RcppResultSet.cpp.
 
 References numProtected, and values.\hypertarget{classRcppResultSet_a23fa5be81281adcf3014749094816522}{
 \index{RcppResultSet@{RcppResultSet}!add@{add}}
@@ -237,7 +237,7 @@ References numProtected, and values.\hypertarget{classRcppResultSet_a23fa5be8128
 \label{classRcppResultSet_a23fa5be81281adcf3014749094816522}
 
 
-Definition at line 600 of file Rcpp.cpp.
+Definition at line 160 of file RcppResultSet.cpp.
 
 References numProtected, and values.\hypertarget{classRcppResultSet_a2b4575ca5ccc390bc5437b1be4718ca6}{
 \index{RcppResultSet@{RcppResultSet}!add@{add}}
@@ -246,7 +246,7 @@ References numProtected, and values.\hypertarget{classRcppResultSet_a2b4575ca5cc
 \label{classRcppResultSet_a2b4575ca5ccc390bc5437b1be4718ca6}
 
 
-Definition at line 611 of file Rcpp.cpp.
+Definition at line 171 of file RcppResultSet.cpp.
 
 References numProtected, and values.\hypertarget{classRcppResultSet_a10d01a24ef006c1ff14ca7e95fb9e0ea}{
 \index{RcppResultSet@{RcppResultSet}!add@{add}}
@@ -255,7 +255,7 @@ References numProtected, and values.\hypertarget{classRcppResultSet_a10d01a24ef0
 \label{classRcppResultSet_a10d01a24ef006c1ff14ca7e95fb9e0ea}
 
 
-Definition at line 548 of file Rcpp.cpp.
+Definition at line 108 of file RcppResultSet.cpp.
 
 References numProtected, RcppStringVector::size(), and values.
 
@@ -273,7 +273,7 @@ Here is the call graph for this function:\nopagebreak
 \label{classRcppResultSet_aac8cade970247a377e8dbebf1c79a86c}
 
 
-Definition at line 534 of file Rcpp.cpp.
+Definition at line 94 of file RcppResultSet.cpp.
 
 References numProtected, RcppDatetimeVector::size(), and values.
 
@@ -291,7 +291,7 @@ Here is the call graph for this function:\nopagebreak
 \label{classRcppResultSet_a1d921e7a24e50369ae67a1bc63826131}
 
 
-Definition at line 478 of file Rcpp.cpp.
+Definition at line 38 of file RcppResultSet.cpp.
 
 References RcppDatetime::getFractionalTimestamp(), numProtected, and values.
 
@@ -309,7 +309,7 @@ Here is the call graph for this function:\nopagebreak
 \label{classRcppResultSet_ad7efd746596959ce68ca98c690a2f645}
 
 
-Definition at line 521 of file Rcpp.cpp.
+Definition at line 81 of file RcppResultSet.cpp.
 
 References RcppDate::Jan1970Offset, numProtected, RcppDateVector::size(), and values.
 
@@ -327,7 +327,7 @@ Here is the call graph for this function:\nopagebreak
 \label{classRcppResultSet_ae5cb861a0d6e95cc7ed465ccae2ac4a7}
 
 
-Definition at line 467 of file Rcpp.cpp.
+Definition at line 27 of file RcppResultSet.cpp.
 
 References RcppDate::getJDN(), RcppDate::Jan1970Offset, numProtected, and values.
 
@@ -345,7 +345,7 @@ Here is the call graph for this function:\nopagebreak
 \label{classRcppResultSet_a2cca9ea4e9554c4fad9bc326355c354c}
 
 
-Definition at line 578 of file Rcpp.cpp.
+Definition at line 138 of file RcppResultSet.cpp.
 
 References numProtected, and values.\hypertarget{classRcppResultSet_a88ff0e3db486eec0012eb58beee05e9b}{
 \index{RcppResultSet@{RcppResultSet}!add@{add}}
@@ -354,7 +354,7 @@ References numProtected, and values.\hypertarget{classRcppResultSet_a88ff0e3db48
 \label{classRcppResultSet_a88ff0e3db486eec0012eb58beee05e9b}
 
 
-Definition at line 567 of file Rcpp.cpp.
+Definition at line 127 of file RcppResultSet.cpp.
 
 References numProtected, and values.\hypertarget{classRcppResultSet_a494dbe1f6db48bf48e9e33a32d897f29}{
 \index{RcppResultSet@{RcppResultSet}!add@{add}}
@@ -363,7 +363,7 @@ References numProtected, and values.\hypertarget{classRcppResultSet_a494dbe1f6db
 \label{classRcppResultSet_a494dbe1f6db48bf48e9e33a32d897f29}
 
 
-Definition at line 557 of file Rcpp.cpp.
+Definition at line 117 of file RcppResultSet.cpp.
 
 References numProtected, and values.\hypertarget{classRcppResultSet_a5d06d8a4f0497abc6fad4ea22b4934f9}{
 \index{RcppResultSet@{RcppResultSet}!add@{add}}
@@ -372,7 +372,7 @@ References numProtected, and values.\hypertarget{classRcppResultSet_a5d06d8a4f04
 \label{classRcppResultSet_a5d06d8a4f0497abc6fad4ea22b4934f9}
 
 
-Definition at line 511 of file Rcpp.cpp.
+Definition at line 71 of file RcppResultSet.cpp.
 
 References numProtected, and values.\hypertarget{classRcppResultSet_a2633372ab2f50b269e9e26dd7a489492}{
 \index{RcppResultSet@{RcppResultSet}!add@{add}}
@@ -381,7 +381,7 @@ References numProtected, and values.\hypertarget{classRcppResultSet_a2633372ab2f
 \label{classRcppResultSet_a2633372ab2f50b269e9e26dd7a489492}
 
 
-Definition at line 504 of file Rcpp.cpp.
+Definition at line 64 of file RcppResultSet.cpp.
 
 References numProtected, and values.\hypertarget{classRcppResultSet_a8b7841ff8a52477b0c6a1fb7c03c0fd9}{
 \index{RcppResultSet@{RcppResultSet}!add@{add}}
@@ -390,7 +390,7 @@ References numProtected, and values.\hypertarget{classRcppResultSet_a8b7841ff8a5
 \label{classRcppResultSet_a8b7841ff8a52477b0c6a1fb7c03c0fd9}
 
 
-Definition at line 497 of file Rcpp.cpp.
+Definition at line 57 of file RcppResultSet.cpp.
 
 References numProtected, and values.\hypertarget{classRcppResultSet_a7c7da37f18bd352303bf06b7c5233bc4}{
 \index{RcppResultSet@{RcppResultSet}!add@{add}}
@@ -399,7 +399,7 @@ References numProtected, and values.\hypertarget{classRcppResultSet_a7c7da37f18b
 \label{classRcppResultSet_a7c7da37f18bd352303bf06b7c5233bc4}
 
 
-Definition at line 490 of file Rcpp.cpp.
+Definition at line 50 of file RcppResultSet.cpp.
 
 References numProtected, and values.
 
@@ -410,11 +410,20 @@ Referenced by Rcpp\_\-Example(), RcppDateExample(), and RcppVectorExample().\hyp
 \label{classRcppResultSet_a916989ff6c0ed1149a5f93fb6a532946}
 
 
-Definition at line 789 of file Rcpp.cpp.
+Definition at line 349 of file RcppResultSet.cpp.
 
 References numProtected, and values.
 
-Referenced by Rcpp\_\-Example(), RcppDateExample(), and RcppVectorExample().
+Referenced by Rcpp\_\-Example(), RcppDateExample(), and RcppVectorExample().\hypertarget{classRcppResultSet_a372bdf017661811062631e0c9f1f5083}{
+\index{RcppResultSet@{RcppResultSet}!getSEXP@{getSEXP}}
+\index{getSEXP@{getSEXP}!RcppResultSet@{RcppResultSet}}
+\subsubsection[{getSEXP}]{\setlength{\rightskip}{0pt plus 5cm}SEXP RcppResultSet::getSEXP ()}}
+\label{classRcppResultSet_a372bdf017661811062631e0c9f1f5083}
+
+
+Definition at line 363 of file RcppResultSet.cpp.
+
+References numProtected, and values.
 
 \subsection{Member Data Documentation}
 \hypertarget{classRcppResultSet_a19edd02ac05783f9b4fd840c22e74153}{
@@ -424,20 +433,20 @@ Referenced by Rcpp\_\-Example(), RcppDateExample(), and RcppVectorExample().
 \label{classRcppResultSet_a19edd02ac05783f9b4fd840c22e74153}
 
 
-Definition at line 592 of file Rcpp.h.
+Definition at line 70 of file RcppResultSet.h.
 
-Referenced by add(), getReturnList(), and RcppResultSet().\hypertarget{classRcppResultSet_a509f3d779c88476dea89ade9c08d403f}{
+Referenced by add(), getReturnList(), and getSEXP().\hypertarget{classRcppResultSet_a509f3d779c88476dea89ade9c08d403f}{
 \index{RcppResultSet@{RcppResultSet}!values@{values}}
 \index{values@{values}!RcppResultSet@{RcppResultSet}}
 \subsubsection[{values}]{\setlength{\rightskip}{0pt plus 5cm}std::list$<$std::pair$<$std::string,SEXP$>$ $>$ {\bf RcppResultSet::values}\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}
 \label{classRcppResultSet_a509f3d779c88476dea89ade9c08d403f}
 
 
-Definition at line 593 of file Rcpp.h.
+Definition at line 71 of file RcppResultSet.h.
 
-Referenced by add(), and getReturnList().
+Referenced by add(), getReturnList(), and getSEXP().
 
 The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
 \item 
-src/\hyperlink{Rcpp_8h}{Rcpp.h}\item 
-src/\hyperlink{Rcpp_8cpp}{Rcpp.cpp}\end{DoxyCompactItemize}
+src/\hyperlink{RcppResultSet_8h}{RcppResultSet.h}\item 
+src/\hyperlink{RcppResultSet_8cpp}{RcppResultSet.cpp}\end{DoxyCompactItemize}

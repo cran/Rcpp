@@ -1,4 +1,4 @@
-.TH "RcppDateVector" 3 "6 Nov 2009" "Rcpp" \" -*- nroff -*-
+.TH "RcppDateVector" 3 "19 Dec 2009" "Rcpp" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -7,7 +7,7 @@ RcppDateVector \-
 .br
 .PP
 .PP
-\fC#include <Rcpp.h>\fP
+\fC#include <RcppDateVector.h>\fP
 .SS "Public Member Functions"
 
 .in +1c
@@ -21,7 +21,7 @@ RcppDateVector \-
 .RI "\fBRcppDate\fP & \fBoperator()\fP (int i)"
 .br
 .ti -1c
-.RI "int \fBsize\fP ()"
+.RI "int \fBsize\fP () const "
 .br
 .in -1c
 .SS "Private Attributes"
@@ -36,29 +36,29 @@ RcppDateVector \-
 .in -1c
 .SH "Detailed Description"
 .PP 
-Definition at line 406 of file Rcpp.h.
+Definition at line 29 of file RcppDateVector.h.
 .SH "Constructor & Destructor Documentation"
 .PP 
 .SS "RcppDateVector::RcppDateVector (SEXP vec)"
 .PP
-Definition at line 257 of file Rcpp.cpp.
+Definition at line 25 of file RcppDateVector.cpp.
 .PP
 References length, and v.
-.SS "RcppDateVector::~RcppDateVector ()\fC [inline]\fP"
+.SS "RcppDateVector::~RcppDateVector ()"
 .PP
-Definition at line 409 of file Rcpp.h.
+Definition at line 38 of file RcppDateVector.cpp.
 .PP
 References v.
 .SH "Member Function Documentation"
 .PP 
-.SS "\fBRcppDate\fP& RcppDateVector::operator() (int i)\fC [inline]\fP"
+.SS "\fBRcppDate\fP & RcppDateVector::operator() (int i)"
 .PP
-Definition at line 412 of file Rcpp.h.
+Definition at line 42 of file RcppDateVector.cpp.
 .PP
 References length, and v.
-.SS "int RcppDateVector::size ()\fC [inline]\fP"
+.SS "int RcppDateVector::size () const"
 .PP
-Definition at line 420 of file Rcpp.h.
+Definition at line 51 of file RcppDateVector.cpp.
 .PP
 References length.
 .PP
@@ -67,12 +67,12 @@ Referenced by RcppResultSet::add(), and RcppDateExample().
 .PP 
 .SS "int \fBRcppDateVector::length\fP\fC [private]\fP"
 .PP
-Definition at line 423 of file Rcpp.h.
+Definition at line 37 of file RcppDateVector.h.
 .PP
 Referenced by operator()(), RcppDateVector(), and size().
 .SS "\fBRcppDate\fP* \fBRcppDateVector::v\fP\fC [private]\fP"
 .PP
-Definition at line 422 of file Rcpp.h.
+Definition at line 36 of file RcppDateVector.h.
 .PP
 Referenced by operator()(), RcppDateVector(), and ~RcppDateVector().
 

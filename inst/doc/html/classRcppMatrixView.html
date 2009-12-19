@@ -26,7 +26,7 @@
 </div>
 <div class="contents">
 <h1>RcppMatrixView&lt; T &gt; Class Template Reference</h1><!-- doxytag: class="RcppMatrixView" -->
-<p><code>#include &lt;<a class="el" href="Rcpp_8h_source.html">Rcpp.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="RcppMatrixView_8h_source.html">RcppMatrixView.h</a>&gt;</code></p>
 
 <p><a href="classRcppMatrixView-members.html">List of all members.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
@@ -34,8 +34,8 @@
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppMatrixView.html#ac3489c6a24c2975f3ea7103ada50e328">RcppMatrixView</a> (SEXP mat)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppMatrixView.html#a72d1d7fcdc4b1cc6dd877b1df2f9f5e6">dim1</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppMatrixView.html#aebb7f65646ce780c897dc39f31899439">dim2</a> () const </td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppMatrixView.html#a0892184e9fc01863f79d76b3751ddbdb">rows</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppMatrixView.html#a037e6fee7e029eef53c35a63f11e2e2a">cols</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppMatrixView.html#aa9760806a822cd988264e1dbdc1f6c37">rows</a> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppMatrixView.html#a417b875d8d7dde8130c3b294312c930d">cols</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">T&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppMatrixView.html#ad135a7e855eee55b078807766aff9e96">operator()</a> (int i, int j) const </td></tr>
 <tr><td colspan="2"><h2>Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppMatrixView.html#ad492401691ef709f6d2ef7dc1dcc2134">d1</a></td></tr>
@@ -47,7 +47,7 @@
  class RcppMatrixView&lt; T &gt;</h3>
 
 
-<p>Definition at line <a class="el" href="Rcpp_8h_source.html#l00492">492</a> of file <a class="el" href="Rcpp_8h_source.html">Rcpp.h</a>.</p>
+<p>Definition at line <a class="el" href="RcppMatrixView_8h_source.html#l00029">29</a> of file <a class="el" href="RcppMatrixView_8h_source.html">RcppMatrixView.h</a>.</p>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="ac3489c6a24c2975f3ea7103ada50e328"></a><!-- doxytag: member="RcppMatrixView::RcppMatrixView" ref="ac3489c6a24c2975f3ea7103ada50e328" args="(SEXP mat)" -->
 <div class="memitem">
@@ -67,14 +67,14 @@ template&lt;typename T &gt; </div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="Rcpp_8cpp_source.html#l00436">436</a> of file <a class="el" href="Rcpp_8cpp_source.html">Rcpp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="RcppMatrixView_8cpp_source.html#l00026">26</a> of file <a class="el" href="RcppMatrixView_8cpp_source.html">RcppMatrixView.cpp</a>.</p>
 
-<p>References <a class="el" href="Rcpp_8h_source.html#l00509">RcppMatrixView&lt; T &gt;::a</a>, <a class="el" href="Rcpp_8h_source.html#l00508">RcppMatrixView&lt; T &gt;::d1</a>, and <a class="el" href="Rcpp_8h_source.html#l00508">RcppMatrixView&lt; T &gt;::d2</a>.</p>
+<p>References <a class="el" href="RcppMatrixView_8h_source.html#l00039">RcppMatrixView&lt; T &gt;::a</a>, <a class="el" href="RcppMatrixView_8h_source.html#l00038">RcppMatrixView&lt; T &gt;::d1</a>, and <a class="el" href="RcppMatrixView_8h_source.html#l00038">RcppMatrixView&lt; T &gt;::d2</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="a037e6fee7e029eef53c35a63f11e2e2a"></a><!-- doxytag: member="RcppMatrixView::cols" ref="a037e6fee7e029eef53c35a63f11e2e2a" args="()" -->
+<a class="anchor" id="a417b875d8d7dde8130c3b294312c930d"></a><!-- doxytag: member="RcppMatrixView::cols" ref="a417b875d8d7dde8130c3b294312c930d" args="() const " -->
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -85,15 +85,15 @@ template&lt;typename T &gt; </div>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
+          <td> const<code> [inline]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="Rcpp_8h_source.html#l00498">498</a> of file <a class="el" href="Rcpp_8h_source.html">Rcpp.h</a>.</p>
+<p>Definition at line <a class="el" href="RcppMatrixView_8cpp_source.html#l00056">56</a> of file <a class="el" href="RcppMatrixView_8cpp_source.html">RcppMatrixView.cpp</a>.</p>
 
-<p>References <a class="el" href="Rcpp_8h_source.html#l00508">RcppMatrixView&lt; T &gt;::d2</a>.</p>
+<p>References <a class="el" href="RcppMatrixView_8h_source.html#l00038">RcppMatrixView&lt; T &gt;::d2</a>.</p>
 
 </div>
 </div>
@@ -114,9 +114,9 @@ template&lt;typename T &gt; </div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="Rcpp_8h_source.html#l00495">495</a> of file <a class="el" href="Rcpp_8h_source.html">Rcpp.h</a>.</p>
+<p>Definition at line <a class="el" href="RcppMatrixView_8cpp_source.html#l00041">41</a> of file <a class="el" href="RcppMatrixView_8cpp_source.html">RcppMatrixView.cpp</a>.</p>
 
-<p>References <a class="el" href="Rcpp_8h_source.html#l00508">RcppMatrixView&lt; T &gt;::d1</a>.</p>
+<p>References <a class="el" href="RcppMatrixView_8h_source.html#l00038">RcppMatrixView&lt; T &gt;::d1</a>.</p>
 
 </div>
 </div>
@@ -137,9 +137,9 @@ template&lt;typename T &gt; </div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="Rcpp_8h_source.html#l00496">496</a> of file <a class="el" href="Rcpp_8h_source.html">Rcpp.h</a>.</p>
+<p>Definition at line <a class="el" href="RcppMatrixView_8cpp_source.html#l00046">46</a> of file <a class="el" href="RcppMatrixView_8cpp_source.html">RcppMatrixView.cpp</a>.</p>
 
-<p>References <a class="el" href="Rcpp_8h_source.html#l00508">RcppMatrixView&lt; T &gt;::d2</a>.</p>
+<p>References <a class="el" href="RcppMatrixView_8h_source.html#l00038">RcppMatrixView&lt; T &gt;::d2</a>.</p>
 
 </div>
 </div>
@@ -170,13 +170,13 @@ template&lt;typename T &gt; </div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="Rcpp_8h_source.html#l00499">499</a> of file <a class="el" href="Rcpp_8h_source.html">Rcpp.h</a>.</p>
+<p>Definition at line <a class="el" href="RcppMatrixView_8cpp_source.html#l00061">61</a> of file <a class="el" href="RcppMatrixView_8cpp_source.html">RcppMatrixView.cpp</a>.</p>
 
-<p>References <a class="el" href="Rcpp_8h_source.html#l00509">RcppMatrixView&lt; T &gt;::a</a>, <a class="el" href="Rcpp_8h_source.html#l00508">RcppMatrixView&lt; T &gt;::d1</a>, and <a class="el" href="Rcpp_8h_source.html#l00508">RcppMatrixView&lt; T &gt;::d2</a>.</p>
+<p>References <a class="el" href="RcppMatrixView_8h_source.html#l00039">RcppMatrixView&lt; T &gt;::a</a>, <a class="el" href="RcppMatrixView_8h_source.html#l00038">RcppMatrixView&lt; T &gt;::d1</a>, and <a class="el" href="RcppMatrixView_8h_source.html#l00038">RcppMatrixView&lt; T &gt;::d2</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a0892184e9fc01863f79d76b3751ddbdb"></a><!-- doxytag: member="RcppMatrixView::rows" ref="a0892184e9fc01863f79d76b3751ddbdb" args="()" -->
+<a class="anchor" id="aa9760806a822cd988264e1dbdc1f6c37"></a><!-- doxytag: member="RcppMatrixView::rows" ref="aa9760806a822cd988264e1dbdc1f6c37" args="() const " -->
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -187,15 +187,15 @@ template&lt;typename T &gt; </div>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
+          <td> const<code> [inline]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="Rcpp_8h_source.html#l00497">497</a> of file <a class="el" href="Rcpp_8h_source.html">Rcpp.h</a>.</p>
+<p>Definition at line <a class="el" href="RcppMatrixView_8cpp_source.html#l00051">51</a> of file <a class="el" href="RcppMatrixView_8cpp_source.html">RcppMatrixView.cpp</a>.</p>
 
-<p>References <a class="el" href="Rcpp_8h_source.html#l00508">RcppMatrixView&lt; T &gt;::d1</a>.</p>
+<p>References <a class="el" href="RcppMatrixView_8h_source.html#l00038">RcppMatrixView&lt; T &gt;::d1</a>.</p>
 
 </div>
 </div>
@@ -213,9 +213,9 @@ template&lt;typename T &gt; </div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="Rcpp_8h_source.html#l00509">509</a> of file <a class="el" href="Rcpp_8h_source.html">Rcpp.h</a>.</p>
+<p>Definition at line <a class="el" href="RcppMatrixView_8h_source.html#l00039">39</a> of file <a class="el" href="RcppMatrixView_8h_source.html">RcppMatrixView.h</a>.</p>
 
-<p>Referenced by <a class="el" href="Rcpp_8h_source.html#l00499">RcppMatrixView&lt; T &gt;::operator()()</a>, and <a class="el" href="Rcpp_8cpp_source.html#l00436">RcppMatrixView&lt; T &gt;::RcppMatrixView()</a>.</p>
+<p>Referenced by <a class="el" href="RcppMatrixView_8cpp_source.html#l00061">RcppMatrixView&lt; T &gt;::operator()()</a>, and <a class="el" href="RcppMatrixView_8cpp_source.html#l00026">RcppMatrixView&lt; T &gt;::RcppMatrixView()</a>.</p>
 
 </div>
 </div>
@@ -232,9 +232,9 @@ template&lt;typename T &gt; </div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="Rcpp_8h_source.html#l00508">508</a> of file <a class="el" href="Rcpp_8h_source.html">Rcpp.h</a>.</p>
+<p>Definition at line <a class="el" href="RcppMatrixView_8h_source.html#l00038">38</a> of file <a class="el" href="RcppMatrixView_8h_source.html">RcppMatrixView.h</a>.</p>
 
-<p>Referenced by <a class="el" href="Rcpp_8h_source.html#l00495">RcppMatrixView&lt; T &gt;::dim1()</a>, <a class="el" href="Rcpp_8h_source.html#l00499">RcppMatrixView&lt; T &gt;::operator()()</a>, <a class="el" href="Rcpp_8cpp_source.html#l00436">RcppMatrixView&lt; T &gt;::RcppMatrixView()</a>, and <a class="el" href="Rcpp_8h_source.html#l00497">RcppMatrixView&lt; T &gt;::rows()</a>.</p>
+<p>Referenced by <a class="el" href="RcppMatrixView_8cpp_source.html#l00041">RcppMatrixView&lt; T &gt;::dim1()</a>, <a class="el" href="RcppMatrixView_8cpp_source.html#l00061">RcppMatrixView&lt; T &gt;::operator()()</a>, <a class="el" href="RcppMatrixView_8cpp_source.html#l00026">RcppMatrixView&lt; T &gt;::RcppMatrixView()</a>, and <a class="el" href="RcppMatrixView_8cpp_source.html#l00051">RcppMatrixView&lt; T &gt;::rows()</a>.</p>
 
 </div>
 </div>
@@ -251,18 +251,18 @@ template&lt;typename T &gt; </div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="Rcpp_8h_source.html#l00508">508</a> of file <a class="el" href="Rcpp_8h_source.html">Rcpp.h</a>.</p>
+<p>Definition at line <a class="el" href="RcppMatrixView_8h_source.html#l00038">38</a> of file <a class="el" href="RcppMatrixView_8h_source.html">RcppMatrixView.h</a>.</p>
 
-<p>Referenced by <a class="el" href="Rcpp_8h_source.html#l00498">RcppMatrixView&lt; T &gt;::cols()</a>, <a class="el" href="Rcpp_8h_source.html#l00496">RcppMatrixView&lt; T &gt;::dim2()</a>, <a class="el" href="Rcpp_8h_source.html#l00499">RcppMatrixView&lt; T &gt;::operator()()</a>, and <a class="el" href="Rcpp_8cpp_source.html#l00436">RcppMatrixView&lt; T &gt;::RcppMatrixView()</a>.</p>
+<p>Referenced by <a class="el" href="RcppMatrixView_8cpp_source.html#l00056">RcppMatrixView&lt; T &gt;::cols()</a>, <a class="el" href="RcppMatrixView_8cpp_source.html#l00046">RcppMatrixView&lt; T &gt;::dim2()</a>, <a class="el" href="RcppMatrixView_8cpp_source.html#l00061">RcppMatrixView&lt; T &gt;::operator()()</a>, and <a class="el" href="RcppMatrixView_8cpp_source.html#l00026">RcppMatrixView&lt; T &gt;::RcppMatrixView()</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/<a class="el" href="Rcpp_8h_source.html">Rcpp.h</a></li>
-<li>src/<a class="el" href="Rcpp_8cpp_source.html">Rcpp.cpp</a></li>
+<li>src/<a class="el" href="RcppMatrixView_8h_source.html">RcppMatrixView.h</a></li>
+<li>src/<a class="el" href="RcppMatrixView_8cpp_source.html">RcppMatrixView.cpp</a></li>
 </ul>
 </div>
-<hr size="1"/><address style="text-align: right;"><small>Generated on Fri Nov 6 13:03:18 2009 for Rcpp by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Sat Dec 19 14:01:38 2009 for Rcpp by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

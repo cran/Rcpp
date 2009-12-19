@@ -1,0 +1,49 @@
+\hypertarget{RcppDatetime_8cpp}{
+\section{src/RcppDatetime.cpp File Reference}
+\label{RcppDatetime_8cpp}\index{src/RcppDatetime.cpp@{src/RcppDatetime.cpp}}
+}
+{\ttfamily \#include $<$RcppDatetime.h$>$}\par
+Include dependency graph for RcppDatetime.cpp:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=296pt]{RcppDatetime_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std::ostream \& \hyperlink{RcppDatetime_8cpp_a778b21a52b7f2b17978933c3ec27754e}{operator$<$$<$} (std::ostream \&os, const \hyperlink{classRcppDatetime}{RcppDatetime} \&datetime)
+\item 
+\hyperlink{classRcppDatetime}{RcppDatetime} \hyperlink{RcppDatetime_8cpp_a29513e04f8cb90b2a7efea97f8cbd37a}{operator+} (const \hyperlink{classRcppDatetime}{RcppDatetime} \&date, double offset)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{RcppDatetime_8cpp_a29513e04f8cb90b2a7efea97f8cbd37a}{
+\index{RcppDatetime.cpp@{RcppDatetime.cpp}!operator+@{operator+}}
+\index{operator+@{operator+}!RcppDatetime.cpp@{RcppDatetime.cpp}}
+\subsubsection[{operator+}]{\setlength{\rightskip}{0pt plus 5cm}{\bf RcppDatetime} operator+ (const {\bf RcppDatetime} \& {\em date}, \/  double {\em offset})}}
+\label{RcppDatetime_8cpp_a29513e04f8cb90b2a7efea97f8cbd37a}
+
+
+Definition at line 55 of file RcppDatetime.cpp.
+
+References RcppDatetime::m\_\-d, and RcppDatetime::m\_\-parsed.\hypertarget{RcppDatetime_8cpp_a778b21a52b7f2b17978933c3ec27754e}{
+\index{RcppDatetime.cpp@{RcppDatetime.cpp}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!RcppDatetime.cpp@{RcppDatetime.cpp}}
+\subsubsection[{operator$<$$<$}]{\setlength{\rightskip}{0pt plus 5cm}std::ostream\& operator$<$$<$ (std::ostream \& {\em os}, \/  const {\bf RcppDatetime} \& {\em datetime})}}
+\label{RcppDatetime_8cpp_a778b21a52b7f2b17978933c3ec27754e}
+
+
+Definition at line 45 of file RcppDatetime.cpp.
+
+References RcppDatetime::m\_\-tm, RcppDatetime::m\_\-us, and RcppDatetime::parseTime().
+
+Here is the call graph for this function:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=137pt]{RcppDatetime_8cpp_a778b21a52b7f2b17978933c3ec27754e_cgraph}
+\end{center}
+\end{figure}

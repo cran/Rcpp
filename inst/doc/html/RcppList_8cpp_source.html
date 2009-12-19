@@ -28,85 +28,96 @@
 <a name="l00004"></a>00004 <span class="comment">//</span>
 <a name="l00005"></a>00005 <span class="comment">// Copyright (C) 2009 Dirk Eddelbuettel</span>
 <a name="l00006"></a>00006 <span class="comment">//</span>
-<a name="l00007"></a>00007 <span class="comment">// This library is free software; you can redistribute it and/or modify it </span>
-<a name="l00008"></a>00008 <span class="comment">// under the terms of the GNU Lesser General Public License as published by </span>
-<a name="l00009"></a>00009 <span class="comment">// the Free Software Foundation; either version 2.1 of the License, or (at </span>
-<a name="l00010"></a>00010 <span class="comment">// your option) any later version.</span>
-<a name="l00011"></a>00011 <span class="comment">//</span>
-<a name="l00012"></a>00012 <span class="comment">// This library is distributed in the hope that it will be useful, but </span>
-<a name="l00013"></a>00013 <span class="comment">// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY</span>
-<a name="l00014"></a>00014 <span class="comment">// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public </span>
-<a name="l00015"></a>00015 <span class="comment">// License for more details.</span>
-<a name="l00016"></a>00016 <span class="comment">//</span>
-<a name="l00017"></a>00017 <span class="comment">// You should have received a copy of the GNU Lesser General Public License </span>
-<a name="l00018"></a>00018 <span class="comment">// along with this library; if not, write to the Free Software Foundation, </span>
-<a name="l00019"></a>00019 <span class="comment">// Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA </span>
-<a name="l00020"></a>00020 
-<a name="l00021"></a>00021 <span class="preprocessor">#include &quot;<a class="code" href="RcppList_8h.html">RcppList.h</a>&quot;</span>
-<a name="l00022"></a>00022 
-<a name="l00023"></a><a class="code" href="classRcppList.html#aa107c65834057ff79f5f8285ef5b1f3c">00023</a> <span class="keywordtype">void</span> <a class="code" href="classRcppList.html#aa107c65834057ff79f5f8285ef5b1f3c">RcppList::setSize</a>(<span class="keywordtype">int</span> n) {
-<a name="l00024"></a>00024     <a class="code" href="classRcppList.html#a05ddf3e17ed3d9aebca235fccf15d383">listSize</a> = n;
-<a name="l00025"></a>00025     <a class="code" href="classRcppList.html#abaa6e138e2c0153c8d95d7d7669e7330">listArg</a> = PROTECT(Rf_allocVector(VECSXP, n));
-<a name="l00026"></a>00026     <a class="code" href="classRcppList.html#a58644ce3af78cc421f04bafc3cc559b4">numProtected</a>++;
-<a name="l00027"></a>00027 }
-<a name="l00028"></a>00028 
-<a name="l00029"></a><a class="code" href="classRcppList.html#a259b0c48d68d995bcd906b8c1e8c970a">00029</a> <span class="keywordtype">void</span> <a class="code" href="classRcppList.html#a259b0c48d68d995bcd906b8c1e8c970a">RcppList::append</a>(std::string name, <span class="keywordtype">double</span> value) {
-<a name="l00030"></a>00030     <span class="keywordflow">if</span> (currListPosn &lt; 0 || currListPosn &gt;= <a class="code" href="classRcppList.html#a05ddf3e17ed3d9aebca235fccf15d383">listSize</a>)
-<a name="l00031"></a>00031         <span class="keywordflow">throw</span> std::range_error(<span class="stringliteral">&quot;RcppList::append(double): list posn out of range&quot;</span>);
-<a name="l00032"></a>00032     SEXP valsxp = PROTECT(Rf_allocVector(REALSXP,1));
-<a name="l00033"></a>00033     <a class="code" href="classRcppList.html#a58644ce3af78cc421f04bafc3cc559b4">numProtected</a>++;
-<a name="l00034"></a>00034     REAL(valsxp)[0] = value;
-<a name="l00035"></a>00035     SET_VECTOR_ELT(<a class="code" href="classRcppList.html#abaa6e138e2c0153c8d95d7d7669e7330">listArg</a>, <a class="code" href="classRcppList.html#a4b991902830e9f33eac03a42b2718195">currListPosn</a>++, valsxp);
-<a name="l00036"></a>00036     <a class="code" href="classRcppList.html#ad718b4509024d31cc7e894518ce909dd">names</a>.push_back(name);
-<a name="l00037"></a>00037 }
-<a name="l00038"></a>00038 
-<a name="l00039"></a><a class="code" href="classRcppList.html#a129144193234d87bcba6aed3acf53254">00039</a> <span class="keywordtype">void</span> <a class="code" href="classRcppList.html#a259b0c48d68d995bcd906b8c1e8c970a">RcppList::append</a>(std::string name, <span class="keywordtype">int</span> value) {
-<a name="l00040"></a>00040     <span class="keywordflow">if</span> (currListPosn &lt; 0 || currListPosn &gt;= <a class="code" href="classRcppList.html#a05ddf3e17ed3d9aebca235fccf15d383">listSize</a>)
-<a name="l00041"></a>00041         <span class="keywordflow">throw</span> std::range_error(<span class="stringliteral">&quot;RcppList::append(int): posn out of range&quot;</span>);
-<a name="l00042"></a>00042     SEXP valsxp = PROTECT(Rf_allocVector(INTSXP,1));
-<a name="l00043"></a>00043     <a class="code" href="classRcppList.html#a58644ce3af78cc421f04bafc3cc559b4">numProtected</a>++;
-<a name="l00044"></a>00044     INTEGER(valsxp)[0] = value;
-<a name="l00045"></a>00045     SET_VECTOR_ELT(<a class="code" href="classRcppList.html#abaa6e138e2c0153c8d95d7d7669e7330">listArg</a>, <a class="code" href="classRcppList.html#a4b991902830e9f33eac03a42b2718195">currListPosn</a>++, valsxp);
-<a name="l00046"></a>00046     <a class="code" href="classRcppList.html#ad718b4509024d31cc7e894518ce909dd">names</a>.push_back(name);
-<a name="l00047"></a>00047 }
-<a name="l00048"></a>00048 
-<a name="l00049"></a><a class="code" href="classRcppList.html#a896d405a8a82cd6b5b9eaf2976bc54d6">00049</a> <span class="keywordtype">void</span> <a class="code" href="classRcppList.html#a259b0c48d68d995bcd906b8c1e8c970a">RcppList::append</a>(std::string name, std::string value) {
-<a name="l00050"></a>00050     <span class="keywordflow">if</span> (currListPosn &lt; 0 || currListPosn &gt;= <a class="code" href="classRcppList.html#a05ddf3e17ed3d9aebca235fccf15d383">listSize</a>)
-<a name="l00051"></a>00051         <span class="keywordflow">throw</span> std::range_error(<span class="stringliteral">&quot;RcppList::append(string): posn out of range&quot;</span>);
-<a name="l00052"></a>00052     SEXP valsxp = PROTECT(Rf_allocVector(STRSXP,1));
-<a name="l00053"></a>00053     <a class="code" href="classRcppList.html#a58644ce3af78cc421f04bafc3cc559b4">numProtected</a>++;
-<a name="l00054"></a>00054     SET_STRING_ELT(valsxp, 0, Rf_mkChar(value.c_str()));
-<a name="l00055"></a>00055     SET_VECTOR_ELT(<a class="code" href="classRcppList.html#abaa6e138e2c0153c8d95d7d7669e7330">listArg</a>, <a class="code" href="classRcppList.html#a4b991902830e9f33eac03a42b2718195">currListPosn</a>++, valsxp);
-<a name="l00056"></a>00056     <a class="code" href="classRcppList.html#ad718b4509024d31cc7e894518ce909dd">names</a>.push_back(name);
-<a name="l00057"></a>00057 }
-<a name="l00058"></a>00058 
-<a name="l00059"></a><a class="code" href="classRcppList.html#a01cb90a1561ce26bfbfb77b7d1f43a22">00059</a> <span class="keywordtype">void</span> <a class="code" href="classRcppList.html#a259b0c48d68d995bcd906b8c1e8c970a">RcppList::append</a>(std::string name, SEXP sexp) {
-<a name="l00060"></a>00060     <span class="keywordflow">if</span> (currListPosn &lt; 0 || currListPosn &gt;= <a class="code" href="classRcppList.html#a05ddf3e17ed3d9aebca235fccf15d383">listSize</a>)
-<a name="l00061"></a>00061         <span class="keywordflow">throw</span> std::range_error(<span class="stringliteral">&quot;RcppList::append(sexp): posn out of range&quot;</span>);
-<a name="l00062"></a>00062     SET_VECTOR_ELT(<a class="code" href="classRcppList.html#abaa6e138e2c0153c8d95d7d7669e7330">listArg</a>, <a class="code" href="classRcppList.html#a4b991902830e9f33eac03a42b2718195">currListPosn</a>++, sexp);
-<a name="l00063"></a>00063     <a class="code" href="classRcppList.html#ad718b4509024d31cc7e894518ce909dd">names</a>.push_back(name);
-<a name="l00064"></a>00064 }
-<a name="l00065"></a>00065 
-<a name="l00066"></a><a class="code" href="classRcppList.html#a164577340e23dd0811fc7057aa9aedec">00066</a> <span class="keywordtype">void</span> <a class="code" href="classRcppList.html#a164577340e23dd0811fc7057aa9aedec">RcppList::clearProtectionStack</a>() {
-<a name="l00067"></a>00067     UNPROTECT(<a class="code" href="classRcppList.html#a58644ce3af78cc421f04bafc3cc559b4">numProtected</a>);
-<a name="l00068"></a>00068     <a class="code" href="classRcppList.html#a58644ce3af78cc421f04bafc3cc559b4">numProtected</a> = 0;
-<a name="l00069"></a>00069 }
-<a name="l00070"></a>00070 
-<a name="l00071"></a><a class="code" href="classRcppList.html#a0d983805932608efbab2afecfd547ec4">00071</a> SEXP <a class="code" href="classRcppList.html#a0d983805932608efbab2afecfd547ec4">RcppList::getList</a>(<span class="keywordtype">void</span>)<span class="keyword"> const </span>{ 
-<a name="l00072"></a>00072     SEXP li = PROTECT(Rf_allocVector(VECSXP, <a class="code" href="classRcppList.html#a05ddf3e17ed3d9aebca235fccf15d383">listSize</a>));
-<a name="l00073"></a>00073     SEXP nm = PROTECT(Rf_allocVector(STRSXP, <a class="code" href="classRcppList.html#a05ddf3e17ed3d9aebca235fccf15d383">listSize</a>));
-<a name="l00074"></a>00074     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=0; i&lt;<a class="code" href="classRcppList.html#a05ddf3e17ed3d9aebca235fccf15d383">listSize</a>; i++) {
-<a name="l00075"></a>00075         SET_VECTOR_ELT(li, i, VECTOR_ELT(<a class="code" href="classRcppList.html#abaa6e138e2c0153c8d95d7d7669e7330">listArg</a>, i));
-<a name="l00076"></a>00076         SET_STRING_ELT(nm, i, Rf_mkChar(<a class="code" href="classRcppList.html#ad718b4509024d31cc7e894518ce909dd">names</a>[i].c_str()));
-<a name="l00077"></a>00077     }
-<a name="l00078"></a>00078     Rf_setAttrib(li, R_NamesSymbol, nm);
-<a name="l00079"></a>00079     UNPROTECT(2);
-<a name="l00080"></a>00080     <span class="keywordflow">return</span> li; 
-<a name="l00081"></a>00081 }
-<a name="l00082"></a>00082 
-<a name="l00083"></a>00083 
+<a name="l00007"></a>00007 <span class="comment">// This file is part of Rcpp.</span>
+<a name="l00008"></a>00008 <span class="comment">//</span>
+<a name="l00009"></a>00009 <span class="comment">// Rcpp is free software: you can redistribute it and/or modify it</span>
+<a name="l00010"></a>00010 <span class="comment">// under the terms of the GNU General Public License as published by</span>
+<a name="l00011"></a>00011 <span class="comment">// the Free Software Foundation, either version 2 of the License, or</span>
+<a name="l00012"></a>00012 <span class="comment">// (at your option) any later version.</span>
+<a name="l00013"></a>00013 <span class="comment">//</span>
+<a name="l00014"></a>00014 <span class="comment">// Rcpp is distributed in the hope that it will be useful, but</span>
+<a name="l00015"></a>00015 <span class="comment">// WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="l00016"></a>00016 <span class="comment">// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="l00017"></a>00017 <span class="comment">// GNU General Public License for more details.</span>
+<a name="l00018"></a>00018 <span class="comment">//</span>
+<a name="l00019"></a>00019 <span class="comment">// You should have received a copy of the GNU General Public License</span>
+<a name="l00020"></a>00020 <span class="comment">// along with Rcpp.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<a name="l00021"></a>00021 
+<a name="l00022"></a>00022 <span class="preprocessor">#include &lt;<a class="code" href="RcppList_8h.html">RcppList.h</a>&gt;</span>
+<a name="l00023"></a>00023 
+<a name="l00024"></a><a class="code" href="classRcppList.html#a833e37533d546d5855536a331f398fe9">00024</a> <a class="code" href="classRcppList.html#a833e37533d546d5855536a331f398fe9">RcppList::RcppList</a>(<span class="keywordtype">void</span>) : listArg(R_NilValue), 
+<a name="l00025"></a>00025                            listSize(0), 
+<a name="l00026"></a>00026                            currListPosn(0), 
+<a name="l00027"></a>00027                            numProtected(0) { 
+<a name="l00028"></a>00028 }; 
+<a name="l00029"></a>00029 
+<a name="l00030"></a><a class="code" href="classRcppList.html#ad73b9a2282219d7b8501ce7d3841bffa">00030</a> <a class="code" href="classRcppList.html#ad73b9a2282219d7b8501ce7d3841bffa">RcppList::~RcppList</a>(<span class="keywordtype">void</span>) {
+<a name="l00031"></a>00031     UNPROTECT(<a class="code" href="classRcppList.html#a58644ce3af78cc421f04bafc3cc559b4">numProtected</a>);
+<a name="l00032"></a>00032 }
+<a name="l00033"></a>00033 
+<a name="l00034"></a><a class="code" href="classRcppList.html#aa107c65834057ff79f5f8285ef5b1f3c">00034</a> <span class="keywordtype">void</span> <a class="code" href="classRcppList.html#aa107c65834057ff79f5f8285ef5b1f3c">RcppList::setSize</a>(<span class="keywordtype">int</span> n) {
+<a name="l00035"></a>00035     <a class="code" href="classRcppList.html#a05ddf3e17ed3d9aebca235fccf15d383">listSize</a> = n;
+<a name="l00036"></a>00036     <a class="code" href="classRcppList.html#abaa6e138e2c0153c8d95d7d7669e7330">listArg</a> = PROTECT(Rf_allocVector(VECSXP, n));
+<a name="l00037"></a>00037     <a class="code" href="classRcppList.html#a58644ce3af78cc421f04bafc3cc559b4">numProtected</a>++;
+<a name="l00038"></a>00038 }
+<a name="l00039"></a>00039 
+<a name="l00040"></a><a class="code" href="classRcppList.html#a259b0c48d68d995bcd906b8c1e8c970a">00040</a> <span class="keywordtype">void</span> <a class="code" href="classRcppList.html#a259b0c48d68d995bcd906b8c1e8c970a">RcppList::append</a>(std::string name, <span class="keywordtype">double</span> value) {
+<a name="l00041"></a>00041     <span class="keywordflow">if</span> (currListPosn &lt; 0 || currListPosn &gt;= <a class="code" href="classRcppList.html#a05ddf3e17ed3d9aebca235fccf15d383">listSize</a>)
+<a name="l00042"></a>00042         <span class="keywordflow">throw</span> std::range_error(<span class="stringliteral">&quot;RcppList::append(double): list posn out of range&quot;</span>);
+<a name="l00043"></a>00043     SEXP valsxp = PROTECT(Rf_allocVector(REALSXP,1));
+<a name="l00044"></a>00044     <a class="code" href="classRcppList.html#a58644ce3af78cc421f04bafc3cc559b4">numProtected</a>++;
+<a name="l00045"></a>00045     REAL(valsxp)[0] = value;
+<a name="l00046"></a>00046     SET_VECTOR_ELT(<a class="code" href="classRcppList.html#abaa6e138e2c0153c8d95d7d7669e7330">listArg</a>, <a class="code" href="classRcppList.html#a4b991902830e9f33eac03a42b2718195">currListPosn</a>++, valsxp);
+<a name="l00047"></a>00047     <a class="code" href="classRcppList.html#ad718b4509024d31cc7e894518ce909dd">names</a>.push_back(name);
+<a name="l00048"></a>00048 }
+<a name="l00049"></a>00049 
+<a name="l00050"></a><a class="code" href="classRcppList.html#a129144193234d87bcba6aed3acf53254">00050</a> <span class="keywordtype">void</span> <a class="code" href="classRcppList.html#a259b0c48d68d995bcd906b8c1e8c970a">RcppList::append</a>(std::string name, <span class="keywordtype">int</span> value) {
+<a name="l00051"></a>00051     <span class="keywordflow">if</span> (currListPosn &lt; 0 || currListPosn &gt;= <a class="code" href="classRcppList.html#a05ddf3e17ed3d9aebca235fccf15d383">listSize</a>)
+<a name="l00052"></a>00052         <span class="keywordflow">throw</span> std::range_error(<span class="stringliteral">&quot;RcppList::append(int): posn out of range&quot;</span>);
+<a name="l00053"></a>00053     SEXP valsxp = PROTECT(Rf_allocVector(INTSXP,1));
+<a name="l00054"></a>00054     <a class="code" href="classRcppList.html#a58644ce3af78cc421f04bafc3cc559b4">numProtected</a>++;
+<a name="l00055"></a>00055     INTEGER(valsxp)[0] = value;
+<a name="l00056"></a>00056     SET_VECTOR_ELT(<a class="code" href="classRcppList.html#abaa6e138e2c0153c8d95d7d7669e7330">listArg</a>, <a class="code" href="classRcppList.html#a4b991902830e9f33eac03a42b2718195">currListPosn</a>++, valsxp);
+<a name="l00057"></a>00057     <a class="code" href="classRcppList.html#ad718b4509024d31cc7e894518ce909dd">names</a>.push_back(name);
+<a name="l00058"></a>00058 }
+<a name="l00059"></a>00059 
+<a name="l00060"></a><a class="code" href="classRcppList.html#a896d405a8a82cd6b5b9eaf2976bc54d6">00060</a> <span class="keywordtype">void</span> <a class="code" href="classRcppList.html#a259b0c48d68d995bcd906b8c1e8c970a">RcppList::append</a>(std::string name, std::string value) {
+<a name="l00061"></a>00061     <span class="keywordflow">if</span> (currListPosn &lt; 0 || currListPosn &gt;= <a class="code" href="classRcppList.html#a05ddf3e17ed3d9aebca235fccf15d383">listSize</a>)
+<a name="l00062"></a>00062         <span class="keywordflow">throw</span> std::range_error(<span class="stringliteral">&quot;RcppList::append(string): posn out of range&quot;</span>);
+<a name="l00063"></a>00063     SEXP valsxp = PROTECT(Rf_allocVector(STRSXP,1));
+<a name="l00064"></a>00064     <a class="code" href="classRcppList.html#a58644ce3af78cc421f04bafc3cc559b4">numProtected</a>++;
+<a name="l00065"></a>00065     SET_STRING_ELT(valsxp, 0, Rf_mkChar(value.c_str()));
+<a name="l00066"></a>00066     SET_VECTOR_ELT(<a class="code" href="classRcppList.html#abaa6e138e2c0153c8d95d7d7669e7330">listArg</a>, <a class="code" href="classRcppList.html#a4b991902830e9f33eac03a42b2718195">currListPosn</a>++, valsxp);
+<a name="l00067"></a>00067     <a class="code" href="classRcppList.html#ad718b4509024d31cc7e894518ce909dd">names</a>.push_back(name);
+<a name="l00068"></a>00068 }
+<a name="l00069"></a>00069 
+<a name="l00070"></a><a class="code" href="classRcppList.html#a01cb90a1561ce26bfbfb77b7d1f43a22">00070</a> <span class="keywordtype">void</span> <a class="code" href="classRcppList.html#a259b0c48d68d995bcd906b8c1e8c970a">RcppList::append</a>(std::string name, SEXP sexp) {
+<a name="l00071"></a>00071     <span class="keywordflow">if</span> (currListPosn &lt; 0 || currListPosn &gt;= <a class="code" href="classRcppList.html#a05ddf3e17ed3d9aebca235fccf15d383">listSize</a>)
+<a name="l00072"></a>00072         <span class="keywordflow">throw</span> std::range_error(<span class="stringliteral">&quot;RcppList::append(sexp): posn out of range&quot;</span>);
+<a name="l00073"></a>00073     SET_VECTOR_ELT(<a class="code" href="classRcppList.html#abaa6e138e2c0153c8d95d7d7669e7330">listArg</a>, <a class="code" href="classRcppList.html#a4b991902830e9f33eac03a42b2718195">currListPosn</a>++, sexp);
+<a name="l00074"></a>00074     <a class="code" href="classRcppList.html#ad718b4509024d31cc7e894518ce909dd">names</a>.push_back(name);
+<a name="l00075"></a>00075 }
+<a name="l00076"></a>00076 
+<a name="l00077"></a><a class="code" href="classRcppList.html#a164577340e23dd0811fc7057aa9aedec">00077</a> <span class="keywordtype">void</span> <a class="code" href="classRcppList.html#a164577340e23dd0811fc7057aa9aedec">RcppList::clearProtectionStack</a>() {
+<a name="l00078"></a>00078     UNPROTECT(<a class="code" href="classRcppList.html#a58644ce3af78cc421f04bafc3cc559b4">numProtected</a>);
+<a name="l00079"></a>00079     <a class="code" href="classRcppList.html#a58644ce3af78cc421f04bafc3cc559b4">numProtected</a> = 0;
+<a name="l00080"></a>00080 }
+<a name="l00081"></a>00081 
+<a name="l00082"></a><a class="code" href="classRcppList.html#a0d983805932608efbab2afecfd547ec4">00082</a> SEXP <a class="code" href="classRcppList.html#a0d983805932608efbab2afecfd547ec4">RcppList::getList</a>(<span class="keywordtype">void</span>)<span class="keyword"> const </span>{ 
+<a name="l00083"></a>00083     SEXP li = PROTECT(Rf_allocVector(VECSXP, <a class="code" href="classRcppList.html#a05ddf3e17ed3d9aebca235fccf15d383">listSize</a>));
+<a name="l00084"></a>00084     SEXP nm = PROTECT(Rf_allocVector(STRSXP, <a class="code" href="classRcppList.html#a05ddf3e17ed3d9aebca235fccf15d383">listSize</a>));
+<a name="l00085"></a>00085     <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=0; i&lt;<a class="code" href="classRcppList.html#a05ddf3e17ed3d9aebca235fccf15d383">listSize</a>; i++) {
+<a name="l00086"></a>00086         SET_VECTOR_ELT(li, i, VECTOR_ELT(<a class="code" href="classRcppList.html#abaa6e138e2c0153c8d95d7d7669e7330">listArg</a>, i));
+<a name="l00087"></a>00087         SET_STRING_ELT(nm, i, Rf_mkChar(<a class="code" href="classRcppList.html#ad718b4509024d31cc7e894518ce909dd">names</a>[i].c_str()));
+<a name="l00088"></a>00088     }
+<a name="l00089"></a>00089     Rf_setAttrib(li, R_NamesSymbol, nm);
+<a name="l00090"></a>00090     UNPROTECT(2);
+<a name="l00091"></a>00091     <span class="keywordflow">return</span> li; 
+<a name="l00092"></a>00092 }
+<a name="l00093"></a>00093 
+<a name="l00094"></a>00094 
 </pre></div></div>
-<hr size="1"/><address style="text-align: right;"><small>Generated on Fri Nov 6 13:03:18 2009 for Rcpp by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Sat Dec 19 14:00:50 2009 for Rcpp by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

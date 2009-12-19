@@ -46,11 +46,11 @@
   \preformatted{%
   SEXP someFunction(SEXP params) {
     RcppParams par(params);
-    double p   = RcppParams.getDoubleValue("pie");
-    int magic  = RcppParams.getIntValue("magicanswer");
-    string txt = RcppParams.getStringValue("sometext");
-    bool yn    = RcppParams.getBoolValue("yesno");
-    RcppDate d = RcppParams.getDateValue("today");
+    double p   = par.getDoubleValue("pie");
+    int magic  = par.getIntValue("magicanswer");
+    string txt = par.getStringValue("sometext");
+    bool yn    = par.getBoolValue("yesno");
+    RcppDate d = par.getDateValue("today");
     // some calculations ...
     // some return values ...
   }

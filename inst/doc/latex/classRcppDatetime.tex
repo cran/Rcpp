@@ -4,7 +4,7 @@
 }
 
 
-{\ttfamily \#include $<$Rcpp.h$>$}\subsection*{Public Member Functions}
+{\ttfamily \#include $<$RcppDatetime.h$>$}\subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{classRcppDatetime_a5a1679444e775781bf038553ef3b04ae}{RcppDatetime} (void)
@@ -50,8 +50,6 @@ struct tm \hyperlink{classRcppDatetime_a3f65c708657270208656c1be885e9f1b}{m\_\-t
 \item 
 class \hyperlink{classRcppDatetime_a2740dcf7de2c2f5471d8fa18944a98d7}{ColDatum}
 \item 
-\hyperlink{classRcppDatetime}{RcppDatetime} \hyperlink{classRcppDatetime_a29513e04f8cb90b2a7efea97f8cbd37a}{operator+} (const \hyperlink{classRcppDatetime}{RcppDatetime} \&date, double offset)
-\item 
 double \hyperlink{classRcppDatetime_a946df17f9ce3c423518d0db74e2bbbc4}{operator-\/} (const \hyperlink{classRcppDatetime}{RcppDatetime} \&dt1, const \hyperlink{classRcppDatetime}{RcppDatetime} \&dt2)
 \item 
 bool \hyperlink{classRcppDatetime_a142f9346629bf7a6f673ba05d9338cf3}{operator$<$} (const \hyperlink{classRcppDatetime}{RcppDatetime} \&dt1, const \hyperlink{classRcppDatetime}{RcppDatetime} \&dt2)
@@ -65,30 +63,32 @@ bool \hyperlink{classRcppDatetime_a1aac48969216af0555677a43b3617781}{operator$>$
 bool \hyperlink{classRcppDatetime_ac6643666732e0a62c501da9f0ae9e342}{operator==} (const \hyperlink{classRcppDatetime}{RcppDatetime} \&dt1, const \hyperlink{classRcppDatetime}{RcppDatetime} \&dt2)
 \item 
 std::ostream \& \hyperlink{classRcppDatetime_a778b21a52b7f2b17978933c3ec27754e}{operator$<$$<$} (std::ostream \&os, const \hyperlink{classRcppDatetime}{RcppDatetime} \&datetime)
+\item 
+\hyperlink{classRcppDatetime}{RcppDatetime} \hyperlink{classRcppDatetime_a29513e04f8cb90b2a7efea97f8cbd37a}{operator+} (const \hyperlink{classRcppDatetime}{RcppDatetime} \&date, double offset)
 \end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
 
 
-Definition at line 92 of file Rcpp.h.
+Definition at line 27 of file RcppDatetime.h.
 
 \subsection{Constructor \& Destructor Documentation}
 \hypertarget{classRcppDatetime_a5a1679444e775781bf038553ef3b04ae}{
 \index{RcppDatetime@{RcppDatetime}!RcppDatetime@{RcppDatetime}}
 \index{RcppDatetime@{RcppDatetime}!RcppDatetime@{RcppDatetime}}
-\subsubsection[{RcppDatetime}]{\setlength{\rightskip}{0pt plus 5cm}RcppDatetime::RcppDatetime (void)\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
+\subsubsection[{RcppDatetime}]{\setlength{\rightskip}{0pt plus 5cm}RcppDatetime::RcppDatetime (void)}}
 \label{classRcppDatetime_a5a1679444e775781bf038553ef3b04ae}
 
 
-Definition at line 112 of file Rcpp.h.\hypertarget{classRcppDatetime_a43972d46cd15e6cb666d61f13bdc31f2}{
+Definition at line 24 of file RcppDatetime.cpp.\hypertarget{classRcppDatetime_a43972d46cd15e6cb666d61f13bdc31f2}{
 \index{RcppDatetime@{RcppDatetime}!RcppDatetime@{RcppDatetime}}
 \index{RcppDatetime@{RcppDatetime}!RcppDatetime@{RcppDatetime}}
-\subsubsection[{RcppDatetime}]{\setlength{\rightskip}{0pt plus 5cm}RcppDatetime::RcppDatetime (const double {\em d})\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
+\subsubsection[{RcppDatetime}]{\setlength{\rightskip}{0pt plus 5cm}RcppDatetime::RcppDatetime (const double {\em d})}}
 \label{classRcppDatetime_a43972d46cd15e6cb666d61f13bdc31f2}
 
 
-Definition at line 113 of file Rcpp.h.
+Definition at line 29 of file RcppDatetime.cpp.
 
 \subsection{Member Function Documentation}
 \hypertarget{classRcppDatetime_a23e9f09bef162e1ffef0e43f8a446b77}{
@@ -98,7 +98,7 @@ Definition at line 113 of file Rcpp.h.
 \label{classRcppDatetime_a23e9f09bef162e1ffef0e43f8a446b77}
 
 
-Definition at line 119 of file Rcpp.h.
+Definition at line 45 of file RcppDatetime.h.
 
 References m\_\-parsed, m\_\-tm, and parseTime().
 
@@ -116,7 +116,7 @@ Here is the call graph for this function:\nopagebreak
 \label{classRcppDatetime_acb74d27387c0d851414e20d30354ac62}
 
 
-Definition at line 115 of file Rcpp.h.
+Definition at line 42 of file RcppDatetime.h.
 
 References m\_\-d.
 
@@ -127,7 +127,7 @@ Referenced by RcppResultSet::add(), and RcppFunction::appendToRList().\hypertarg
 \label{classRcppDatetime_a0da8db1ecd235a6e7ab309e70e4e93b0}
 
 
-Definition at line 121 of file Rcpp.h.
+Definition at line 47 of file RcppDatetime.h.
 
 References m\_\-parsed, m\_\-tm, and parseTime().
 
@@ -145,7 +145,7 @@ Here is the call graph for this function:\nopagebreak
 \label{classRcppDatetime_acdf9e19f28c84fde38c352df5f225999}
 
 
-Definition at line 124 of file Rcpp.h.
+Definition at line 50 of file RcppDatetime.h.
 
 References m\_\-parsed, m\_\-us, and parseTime().
 
@@ -163,7 +163,7 @@ Here is the call graph for this function:\nopagebreak
 \label{classRcppDatetime_adb41bd524ead66d69e129b1f2767358a}
 
 
-Definition at line 122 of file Rcpp.h.
+Definition at line 48 of file RcppDatetime.h.
 
 References m\_\-parsed, m\_\-tm, and parseTime().
 
@@ -181,7 +181,7 @@ Here is the call graph for this function:\nopagebreak
 \label{classRcppDatetime_aa7f04947d2a27e4bba2d19efa21771ed}
 
 
-Definition at line 118 of file Rcpp.h.
+Definition at line 44 of file RcppDatetime.h.
 
 References m\_\-parsed, m\_\-tm, and parseTime().
 
@@ -199,7 +199,7 @@ Here is the call graph for this function:\nopagebreak
 \label{classRcppDatetime_a2feb900005890d183cc5f6a626c4d614}
 
 
-Definition at line 123 of file Rcpp.h.
+Definition at line 49 of file RcppDatetime.h.
 
 References m\_\-parsed, m\_\-tm, and parseTime().
 
@@ -217,7 +217,7 @@ Here is the call graph for this function:\nopagebreak
 \label{classRcppDatetime_a796802561fa8bb87a8e2a1836afaaa58}
 
 
-Definition at line 120 of file Rcpp.h.
+Definition at line 46 of file RcppDatetime.h.
 
 References m\_\-parsed, m\_\-tm, and parseTime().
 
@@ -235,7 +235,7 @@ Here is the call graph for this function:\nopagebreak
 \label{classRcppDatetime_aba930a8d7d575eb10444258a442027cf}
 
 
-Definition at line 117 of file Rcpp.h.
+Definition at line 43 of file RcppDatetime.h.
 
 References m\_\-parsed, m\_\-tm, and parseTime().
 
@@ -249,15 +249,15 @@ Here is the call graph for this function:\nopagebreak
 \hypertarget{classRcppDatetime_aa4b2eba45c4c02b5d334dd89e080b660}{
 \index{RcppDatetime@{RcppDatetime}!parseTime@{parseTime}}
 \index{parseTime@{parseTime}!RcppDatetime@{RcppDatetime}}
-\subsubsection[{parseTime}]{\setlength{\rightskip}{0pt plus 5cm}void RcppDatetime::parseTime ()\hspace{0.3cm}{\ttfamily  \mbox{[}inline, private\mbox{]}}}}
+\subsubsection[{parseTime}]{\setlength{\rightskip}{0pt plus 5cm}void RcppDatetime::parseTime ()\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}
 \label{classRcppDatetime_aa4b2eba45c4c02b5d334dd89e080b660}
 
 
-Definition at line 98 of file Rcpp.h.
+Definition at line 34 of file RcppDatetime.cpp.
 
 References m\_\-d, m\_\-parsed, m\_\-tm, and m\_\-us.
 
-Referenced by getDay(), getHour(), getMicroSec(), getMinute(), getMonth(), getSecond(), getWeekday(), and getYear().
+Referenced by getDay(), getHour(), getMicroSec(), getMinute(), getMonth(), getSecond(), getWeekday(), getYear(), and operator$<$$<$().
 
 \subsection{Friends And Related Function Documentation}
 \hypertarget{classRcppDatetime_a2740dcf7de2c2f5471d8fa18944a98d7}{
@@ -267,63 +267,59 @@ Referenced by getDay(), getHour(), getMicroSec(), getMinute(), getMonth(), getSe
 \label{classRcppDatetime_a2740dcf7de2c2f5471d8fa18944a98d7}
 
 
-Definition at line 104 of file Rcpp.h.\hypertarget{classRcppDatetime_a29513e04f8cb90b2a7efea97f8cbd37a}{
+Definition at line 36 of file RcppDatetime.h.\hypertarget{classRcppDatetime_a29513e04f8cb90b2a7efea97f8cbd37a}{
 \index{RcppDatetime@{RcppDatetime}!operator+@{operator+}}
 \index{operator+@{operator+}!RcppDatetime@{RcppDatetime}}
 \subsubsection[{operator+}]{\setlength{\rightskip}{0pt plus 5cm}{\bf RcppDatetime} operator+ (const {\bf RcppDatetime} \& {\em date}, \/  double {\em offset})\hspace{0.3cm}{\ttfamily  \mbox{[}friend\mbox{]}}}}
 \label{classRcppDatetime_a29513e04f8cb90b2a7efea97f8cbd37a}
-
-
-Definition at line 126 of file Rcpp.h.\hypertarget{classRcppDatetime_a946df17f9ce3c423518d0db74e2bbbc4}{
+\hypertarget{classRcppDatetime_a946df17f9ce3c423518d0db74e2bbbc4}{
 \index{RcppDatetime@{RcppDatetime}!operator-\/@{operator-\/}}
 \index{operator-\/@{operator-\/}!RcppDatetime@{RcppDatetime}}
 \subsubsection[{operator-\/}]{\setlength{\rightskip}{0pt plus 5cm}double operator-\/ (const {\bf RcppDatetime} \& {\em dt1}, \/  const {\bf RcppDatetime} \& {\em dt2})\hspace{0.3cm}{\ttfamily  \mbox{[}friend\mbox{]}}}}
 \label{classRcppDatetime_a946df17f9ce3c423518d0db74e2bbbc4}
 
 
-Definition at line 132 of file Rcpp.h.\hypertarget{classRcppDatetime_a142f9346629bf7a6f673ba05d9338cf3}{
+Definition at line 52 of file RcppDatetime.h.\hypertarget{classRcppDatetime_a142f9346629bf7a6f673ba05d9338cf3}{
 \index{RcppDatetime@{RcppDatetime}!operator$<$@{operator$<$}}
 \index{operator$<$@{operator$<$}!RcppDatetime@{RcppDatetime}}
 \subsubsection[{operator$<$}]{\setlength{\rightskip}{0pt plus 5cm}bool operator$<$ (const {\bf RcppDatetime} \& {\em dt1}, \/  const {\bf RcppDatetime} \& {\em dt2})\hspace{0.3cm}{\ttfamily  \mbox{[}friend\mbox{]}}}}
 \label{classRcppDatetime_a142f9346629bf7a6f673ba05d9338cf3}
 
 
-Definition at line 133 of file Rcpp.h.\hypertarget{classRcppDatetime_a778b21a52b7f2b17978933c3ec27754e}{
+Definition at line 53 of file RcppDatetime.h.\hypertarget{classRcppDatetime_a778b21a52b7f2b17978933c3ec27754e}{
 \index{RcppDatetime@{RcppDatetime}!operator$<$$<$@{operator$<$$<$}}
 \index{operator$<$$<$@{operator$<$$<$}!RcppDatetime@{RcppDatetime}}
 \subsubsection[{operator$<$$<$}]{\setlength{\rightskip}{0pt plus 5cm}std::ostream\& operator$<$$<$ (std::ostream \& {\em os}, \/  const {\bf RcppDatetime} \& {\em datetime})\hspace{0.3cm}{\ttfamily  \mbox{[}friend\mbox{]}}}}
 \label{classRcppDatetime_a778b21a52b7f2b17978933c3ec27754e}
-
-
-Definition at line 139 of file Rcpp.h.\hypertarget{classRcppDatetime_a7d98733f95f5647ac10bb8236c1a7a8d}{
+\hypertarget{classRcppDatetime_a7d98733f95f5647ac10bb8236c1a7a8d}{
 \index{RcppDatetime@{RcppDatetime}!operator$<$=@{operator$<$=}}
 \index{operator$<$=@{operator$<$=}!RcppDatetime@{RcppDatetime}}
 \subsubsection[{operator$<$=}]{\setlength{\rightskip}{0pt plus 5cm}bool operator$<$= (const {\bf RcppDatetime} \& {\em dt1}, \/  const {\bf RcppDatetime} \& {\em dt2})\hspace{0.3cm}{\ttfamily  \mbox{[}friend\mbox{]}}}}
 \label{classRcppDatetime_a7d98733f95f5647ac10bb8236c1a7a8d}
 
 
-Definition at line 134 of file Rcpp.h.\hypertarget{classRcppDatetime_ac6643666732e0a62c501da9f0ae9e342}{
+Definition at line 54 of file RcppDatetime.h.\hypertarget{classRcppDatetime_ac6643666732e0a62c501da9f0ae9e342}{
 \index{RcppDatetime@{RcppDatetime}!operator==@{operator==}}
 \index{operator==@{operator==}!RcppDatetime@{RcppDatetime}}
 \subsubsection[{operator==}]{\setlength{\rightskip}{0pt plus 5cm}bool operator== (const {\bf RcppDatetime} \& {\em dt1}, \/  const {\bf RcppDatetime} \& {\em dt2})\hspace{0.3cm}{\ttfamily  \mbox{[}friend\mbox{]}}}}
 \label{classRcppDatetime_ac6643666732e0a62c501da9f0ae9e342}
 
 
-Definition at line 137 of file Rcpp.h.\hypertarget{classRcppDatetime_a062107b2e2809a60c67f80da5dab77ed}{
+Definition at line 57 of file RcppDatetime.h.\hypertarget{classRcppDatetime_a062107b2e2809a60c67f80da5dab77ed}{
 \index{RcppDatetime@{RcppDatetime}!operator$>$@{operator$>$}}
 \index{operator$>$@{operator$>$}!RcppDatetime@{RcppDatetime}}
 \subsubsection[{operator$>$}]{\setlength{\rightskip}{0pt plus 5cm}bool operator$>$ (const {\bf RcppDatetime} \& {\em dt1}, \/  const {\bf RcppDatetime} \& {\em dt2})\hspace{0.3cm}{\ttfamily  \mbox{[}friend\mbox{]}}}}
 \label{classRcppDatetime_a062107b2e2809a60c67f80da5dab77ed}
 
 
-Definition at line 135 of file Rcpp.h.\hypertarget{classRcppDatetime_a1aac48969216af0555677a43b3617781}{
+Definition at line 55 of file RcppDatetime.h.\hypertarget{classRcppDatetime_a1aac48969216af0555677a43b3617781}{
 \index{RcppDatetime@{RcppDatetime}!operator$>$=@{operator$>$=}}
 \index{operator$>$=@{operator$>$=}!RcppDatetime@{RcppDatetime}}
 \subsubsection[{operator$>$=}]{\setlength{\rightskip}{0pt plus 5cm}bool operator$>$= (const {\bf RcppDatetime} \& {\em dt1}, \/  const {\bf RcppDatetime} \& {\em dt2})\hspace{0.3cm}{\ttfamily  \mbox{[}friend\mbox{]}}}}
 \label{classRcppDatetime_a1aac48969216af0555677a43b3617781}
 
 
-Definition at line 136 of file Rcpp.h.
+Definition at line 56 of file RcppDatetime.h.
 
 \subsection{Member Data Documentation}
 \hypertarget{classRcppDatetime_a1af187ff381bfa0f5b57d28b64d7b60c}{
@@ -333,37 +329,38 @@ Definition at line 136 of file Rcpp.h.
 \label{classRcppDatetime_a1af187ff381bfa0f5b57d28b64d7b60c}
 
 
-Definition at line 94 of file Rcpp.h.
+Definition at line 29 of file RcppDatetime.h.
 
-Referenced by getFractionalTimestamp(), parseTime(), and ColDatum::setDatetimeValue().\hypertarget{classRcppDatetime_a515e3390c1834e58ce6bba39854638ad}{
+Referenced by getFractionalTimestamp(), operator+(), parseTime(), and ColDatum::setDatetimeValue().\hypertarget{classRcppDatetime_a515e3390c1834e58ce6bba39854638ad}{
 \index{RcppDatetime@{RcppDatetime}!m\_\-parsed@{m\_\-parsed}}
 \index{m\_\-parsed@{m\_\-parsed}!RcppDatetime@{RcppDatetime}}
 \subsubsection[{m\_\-parsed}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf RcppDatetime::m\_\-parsed}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}
 \label{classRcppDatetime_a515e3390c1834e58ce6bba39854638ad}
 
 
-Definition at line 95 of file Rcpp.h.
+Definition at line 30 of file RcppDatetime.h.
 
-Referenced by getDay(), getHour(), getMicroSec(), getMinute(), getMonth(), getSecond(), getWeekday(), getYear(), and parseTime().\hypertarget{classRcppDatetime_a3f65c708657270208656c1be885e9f1b}{
+Referenced by getDay(), getHour(), getMicroSec(), getMinute(), getMonth(), getSecond(), getWeekday(), getYear(), operator+(), and parseTime().\hypertarget{classRcppDatetime_a3f65c708657270208656c1be885e9f1b}{
 \index{RcppDatetime@{RcppDatetime}!m\_\-tm@{m\_\-tm}}
 \index{m\_\-tm@{m\_\-tm}!RcppDatetime@{RcppDatetime}}
 \subsubsection[{m\_\-tm}]{\setlength{\rightskip}{0pt plus 5cm}struct tm {\bf RcppDatetime::m\_\-tm}\hspace{0.3cm}{\ttfamily  \mbox{[}read, private\mbox{]}}}}
 \label{classRcppDatetime_a3f65c708657270208656c1be885e9f1b}
 
 
-Definition at line 97 of file Rcpp.h.
+Definition at line 32 of file RcppDatetime.h.
 
-Referenced by getDay(), getHour(), getMinute(), getMonth(), getSecond(), getWeekday(), getYear(), and parseTime().\hypertarget{classRcppDatetime_a68b9c7b759ffbba14aca3ae0680ea8a4}{
+Referenced by getDay(), getHour(), getMinute(), getMonth(), getSecond(), getWeekday(), getYear(), operator$<$$<$(), and parseTime().\hypertarget{classRcppDatetime_a68b9c7b759ffbba14aca3ae0680ea8a4}{
 \index{RcppDatetime@{RcppDatetime}!m\_\-us@{m\_\-us}}
 \index{m\_\-us@{m\_\-us}!RcppDatetime@{RcppDatetime}}
 \subsubsection[{m\_\-us}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf RcppDatetime::m\_\-us}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}
 \label{classRcppDatetime_a68b9c7b759ffbba14aca3ae0680ea8a4}
 
 
-Definition at line 96 of file Rcpp.h.
+Definition at line 31 of file RcppDatetime.h.
 
-Referenced by getMicroSec(), and parseTime().
+Referenced by getMicroSec(), operator$<$$<$(), and parseTime().
 
-The documentation for this class was generated from the following file:\begin{DoxyCompactItemize}
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
 \item 
-src/\hyperlink{Rcpp_8h}{Rcpp.h}\end{DoxyCompactItemize}
+src/\hyperlink{RcppDatetime_8h}{RcppDatetime.h}\item 
+src/\hyperlink{RcppDatetime_8cpp}{RcppDatetime.cpp}\end{DoxyCompactItemize}

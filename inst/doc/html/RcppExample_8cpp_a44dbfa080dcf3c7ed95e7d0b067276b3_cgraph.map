@@ -1,5 +1,5 @@
 <map id="G" name="G">
-<area shape="rect" href="$Rcpp_8cpp.html#a86330168f60698ba4d745bb97cdbb15b" title="copyMessageToR" alt="" coords="235,5,360,35"/>
+<area shape="rect" href="$RcppCommon_8cpp.html#a86330168f60698ba4d745bb97cdbb15b" title="copyMessageToR" alt="" coords="235,5,360,35"/>
 <area shape="rect" href="$classRcppParams.html#aae20c7ee73aa2f1176837cc9387ad008" title="RcppParams::getDateValue" alt="" coords="208,59,387,88"/>
 <area shape="rect" href="$classRcppDate.html#a20efbcdddceac536425407b3169fff5a" title="RcppDate::getDay" alt="" coords="233,112,361,141"/>
 <area shape="rect" href="$classRcppParams.html#aa45f8bc1cd8a64aa9a98e24158407077" title="RcppParams::getDoubleValue" alt="" coords="201,165,393,195"/>

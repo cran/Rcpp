@@ -24,158 +24,44 @@
   </div>
 </div>
 <div class="contents">
-<h1>src/Rcpp.h File Reference</h1><code>#include &lt;iostream&gt;</code><br/>
-<code>#include &lt;sstream&gt;</code><br/>
-<code>#include &lt;string&gt;</code><br/>
-<code>#include &lt;list&gt;</code><br/>
-<code>#include &lt;map&gt;</code><br/>
-<code>#include &lt;stdexcept&gt;</code><br/>
-<code>#include &lt;vector&gt;</code><br/>
-<code>#include &lt;R.h&gt;</code><br/>
-<code>#include &lt;Rinternals.h&gt;</code><br/>
+<h1>src/Rcpp.h File Reference</h1><code>#include &lt;<a class="el" href="RcppCommon_8h_source.html">RcppCommon.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="RcppDate_8h_source.html">RcppDate.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="RcppDateVector_8h_source.html">RcppDateVector.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="RcppDatetime_8h_source.html">RcppDatetime.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="RcppDatetimeVector_8h_source.html">RcppDatetimeVector.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="RcppFrame_8h_source.html">RcppFrame.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="RcppFunction_8h_source.html">RcppFunction.h</a>&gt;</code><br/>
 <code>#include &lt;<a class="el" href="RcppList_8h_source.html">RcppList.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="RcppMatrix_8h_source.html">RcppMatrix.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="RcppMatrixView_8h_source.html">RcppMatrixView.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="RcppNumList_8h_source.html">RcppNumList.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="RcppParams_8h_source.html">RcppParams.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="RcppResultSet_8h_source.html">RcppResultSet.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="RcppStringVector_8h_source.html">RcppStringVector.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="RcppStringVectorView_8h_source.html">RcppStringVectorView.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="RcppVector_8h_source.html">RcppVector.h</a>&gt;</code><br/>
+<code>#include &lt;<a class="el" href="RcppVectorView_8h_source.html">RcppVectorView.h</a>&gt;</code><br/>
 <div class="dynheader">
 Include dependency graph for Rcpp.h:</div>
 <div class="dynsection">
 <div class="center"><img src="Rcpp_8h__incl.png" border="0" usemap="#src_2Rcpp_8h_map" alt=""/></div>
 <map name="src_2Rcpp_8h_map" id="src_2Rcpp_8h">
-<area shape="rect" href="RcppList_8h.html" title="RcppList.h" alt="" coords="307,83,389,112"/></map>
+<area shape="rect" href="RcppCommon_8h.html" title="RcppCommon.h" alt="" coords="967,315,1081,344"/><area shape="rect" href="RcppDate_8h.html" title="RcppDate.h" alt="" coords="367,237,455,267"/><area shape="rect" href="RcppDateVector_8h.html" title="RcppDateVector.h" alt="" coords="61,160,187,189"/><area shape="rect" href="RcppDatetime_8h.html" title="RcppDatetime.h" alt="" coords="665,237,780,267"/><area shape="rect" href="RcppDatetimeVector_8h.html" title="RcppDatetimeVector.h" alt="" coords="803,160,955,189"/><area shape="rect" href="RcppFrame_8h.html" title="RcppFrame.h" alt="" coords="579,160,677,189"/><area shape="rect" href="RcppFunction_8h.html" title="RcppFunction.h" alt="" coords="211,160,323,189"/><area shape="rect" href="RcppList_8h.html" title="RcppList.h" alt="" coords="1029,160,1112,189"/><area shape="rect" href="RcppMatrix_8h.html" title="RcppMatrix.h" alt="" coords="1136,160,1235,189"/><area shape="rect" href="RcppMatrixView_8h.html" title="RcppMatrixView.h" alt="" coords="1429,237,1555,267"/><area shape="rect" href="RcppNumList_8h.html" title="RcppNumList.h" alt="" coords="1259,160,1368,189"/><area shape="rect" href="RcppParams_8h.html" title="RcppParams.h" alt="" coords="448,160,555,189"/><area shape="rect" href="RcppResultSet_8h.html" title="RcppResultSet.h" alt="" coords="928,83,1048,112"/><area shape="rect" href="RcppStringVector_8h.html" title="RcppStringVector.h" alt="" coords="1392,160,1525,189"/><area shape="rect" href="RcppVector_8h.html" title="RcppVector.h" alt="" coords="1600,160,1699,189"/><area shape="rect" href="RcppSexp_8h.html" title="RcppSexp.h" alt="" coords="1651,237,1741,267"/><area shape="rect" href="RcppStringVectorView_8h.html" title="RcppStringVectorView.h" alt="" coords="1707,83,1867,112"/><area shape="rect" href="RcppVectorView_8h.html" title="RcppVectorView.h" alt="" coords="1891,83,2019,112"/></map>
 </div>
 <div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dynsection">
 <div class="center"><img src="Rcpp_8h__dep__incl.png" border="0" usemap="#src_2Rcpp_8hdep_map" alt=""/></div>
 <map name="src_2Rcpp_8hdep_map" id="src_2Rcpp_8hdep">
-<area shape="rect" href="Rcpp_8cpp.html" title="src/Rcpp.cpp" alt="" coords="5,83,104,112"/><area shape="rect" href="RcppExample_8cpp.html" title="src/RcppExample.cpp" alt="" coords="128,83,277,112"/></map>
+<area shape="rect" href="RcppCommon_8cpp.html" title="src/RcppCommon.cpp" alt="" coords="5,83,155,112"/><area shape="rect" href="RcppExample_8cpp.html" title="src/RcppExample.cpp" alt="" coords="179,83,328,112"/></map>
 </div>
 
 <p><a href="Rcpp_8h_source.html">Go to the source code of this file.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
-<tr><td colspan="2"><h2>Classes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppDate.html">RcppDate</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppDatetime.html">RcppDatetime</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppParams.html">RcppParams</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classColDatum.html">ColDatum</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppFrame.html">RcppFrame</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppNumList.html">RcppNumList</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppVector.html">RcppVector&lt; T &gt;</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppStringVector.html">RcppStringVector</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppDateVector.html">RcppDateVector</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppDatetimeVector.html">RcppDatetimeVector</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppMatrix.html">RcppMatrix&lt; T &gt;</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppVectorView.html">RcppVectorView&lt; T &gt;</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppMatrixView.html">RcppMatrixView&lt; T &gt;</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppStringVectorView.html">RcppStringVectorView</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppFunction.html">RcppFunction</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppResultSet.html">RcppResultSet</a></td></tr>
-<tr><td colspan="2"><h2>Defines</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="Rcpp_8h.html#a367e747a6abc54938d838483bb3c97ee">R_NO_REMAP</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="Rcpp_8h.html#adf8c24d3d9680f80efbccf56b0bbcb87">RcppExport</a>&nbsp;&nbsp;&nbsp;extern &quot;C&quot;</td></tr>
-<tr><td colspan="2"><h2>Enumerations</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="Rcpp_8h.html#a3145f0ed02782c5b592881e0e8e53655">ColType</a> { <br/>
-&nbsp;&nbsp;<a class="el" href="Rcpp_8h.html#a3145f0ed02782c5b592881e0e8e53655a8033c9699467cc74f87d24c004ca6bff">COLTYPE_DOUBLE</a>, 
-<a class="el" href="Rcpp_8h.html#a3145f0ed02782c5b592881e0e8e53655a5e594154d950baa0cfa4dca34eec8c4f">COLTYPE_INT</a>, 
-<a class="el" href="Rcpp_8h.html#a3145f0ed02782c5b592881e0e8e53655a80fa6b7860dbefb7f6201b10a325a95e">COLTYPE_STRING</a>, 
-<a class="el" href="Rcpp_8h.html#a3145f0ed02782c5b592881e0e8e53655acd671810dc639245baafc3a9ca57a92c">COLTYPE_FACTOR</a>, 
-<br/>
-&nbsp;&nbsp;<a class="el" href="Rcpp_8h.html#a3145f0ed02782c5b592881e0e8e53655abf580a6f2d25cee49648795700ad476d">COLTYPE_LOGICAL</a>, 
-<a class="el" href="Rcpp_8h.html#a3145f0ed02782c5b592881e0e8e53655adf2f73e5b0ca56a91699e5e0ba4f945f">COLTYPE_DATE</a>, 
-<a class="el" href="Rcpp_8h.html#a3145f0ed02782c5b592881e0e8e53655a05d7e518f4a1811bdb53a7ec4ed3c579">COLTYPE_DATETIME</a>
-<br/>
- }</td></tr>
-<tr><td colspan="2"><h2>Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">char *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="Rcpp_8h.html#a86330168f60698ba4d745bb97cdbb15b">copyMessageToR</a> (const char *const mesg)</td></tr>
 </table>
-<hr/><h2>Define Documentation</h2>
-<a class="anchor" id="a367e747a6abc54938d838483bb3c97ee"></a><!-- doxytag: member="Rcpp.h::R_NO_REMAP" ref="a367e747a6abc54938d838483bb3c97ee" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define R_NO_REMAP</td>
-        </tr>
-      </table>
 </div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="Rcpp_8h_source.html#l00034">34</a> of file <a class="el" href="Rcpp_8h_source.html">Rcpp.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="adf8c24d3d9680f80efbccf56b0bbcb87"></a><!-- doxytag: member="Rcpp.h::RcppExport" ref="adf8c24d3d9680f80efbccf56b0bbcb87" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define RcppExport&nbsp;&nbsp;&nbsp;extern &quot;C&quot;</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="Rcpp_8h_source.html#l00044">44</a> of file <a class="el" href="Rcpp_8h_source.html">Rcpp.h</a>.</p>
-
-</div>
-</div>
-<hr/><h2>Enumeration Type Documentation</h2>
-<a class="anchor" id="a3145f0ed02782c5b592881e0e8e53655"></a><!-- doxytag: member="Rcpp.h::ColType" ref="a3145f0ed02782c5b592881e0e8e53655" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="Rcpp_8h.html#a3145f0ed02782c5b592881e0e8e53655">ColType</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
-<tr><td valign="top"><em><a class="anchor" id="a3145f0ed02782c5b592881e0e8e53655a8033c9699467cc74f87d24c004ca6bff"></a><!-- doxytag: member="COLTYPE_DOUBLE" ref="a3145f0ed02782c5b592881e0e8e53655a8033c9699467cc74f87d24c004ca6bff" args="" -->COLTYPE_DOUBLE</em>&nbsp;</td><td>
-</td></tr>
-<tr><td valign="top"><em><a class="anchor" id="a3145f0ed02782c5b592881e0e8e53655a5e594154d950baa0cfa4dca34eec8c4f"></a><!-- doxytag: member="COLTYPE_INT" ref="a3145f0ed02782c5b592881e0e8e53655a5e594154d950baa0cfa4dca34eec8c4f" args="" -->COLTYPE_INT</em>&nbsp;</td><td>
-</td></tr>
-<tr><td valign="top"><em><a class="anchor" id="a3145f0ed02782c5b592881e0e8e53655a80fa6b7860dbefb7f6201b10a325a95e"></a><!-- doxytag: member="COLTYPE_STRING" ref="a3145f0ed02782c5b592881e0e8e53655a80fa6b7860dbefb7f6201b10a325a95e" args="" -->COLTYPE_STRING</em>&nbsp;</td><td>
-</td></tr>
-<tr><td valign="top"><em><a class="anchor" id="a3145f0ed02782c5b592881e0e8e53655acd671810dc639245baafc3a9ca57a92c"></a><!-- doxytag: member="COLTYPE_FACTOR" ref="a3145f0ed02782c5b592881e0e8e53655acd671810dc639245baafc3a9ca57a92c" args="" -->COLTYPE_FACTOR</em>&nbsp;</td><td>
-</td></tr>
-<tr><td valign="top"><em><a class="anchor" id="a3145f0ed02782c5b592881e0e8e53655abf580a6f2d25cee49648795700ad476d"></a><!-- doxytag: member="COLTYPE_LOGICAL" ref="a3145f0ed02782c5b592881e0e8e53655abf580a6f2d25cee49648795700ad476d" args="" -->COLTYPE_LOGICAL</em>&nbsp;</td><td>
-</td></tr>
-<tr><td valign="top"><em><a class="anchor" id="a3145f0ed02782c5b592881e0e8e53655adf2f73e5b0ca56a91699e5e0ba4f945f"></a><!-- doxytag: member="COLTYPE_DATE" ref="a3145f0ed02782c5b592881e0e8e53655adf2f73e5b0ca56a91699e5e0ba4f945f" args="" -->COLTYPE_DATE</em>&nbsp;</td><td>
-</td></tr>
-<tr><td valign="top"><em><a class="anchor" id="a3145f0ed02782c5b592881e0e8e53655a05d7e518f4a1811bdb53a7ec4ed3c579"></a><!-- doxytag: member="COLTYPE_DATETIME" ref="a3145f0ed02782c5b592881e0e8e53655a05d7e518f4a1811bdb53a7ec4ed3c579" args="" -->COLTYPE_DATETIME</em>&nbsp;</td><td>
-</td></tr>
-</table>
-</dd>
-</dl>
-
-<p>Definition at line <a class="el" href="Rcpp_8h_source.html#l00168">168</a> of file <a class="el" href="Rcpp_8h_source.html">Rcpp.h</a>.</p>
-
-</div>
-</div>
-<hr/><h2>Function Documentation</h2>
-<a class="anchor" id="a86330168f60698ba4d745bb97cdbb15b"></a><!-- doxytag: member="Rcpp.h::copyMessageToR" ref="a86330168f60698ba4d745bb97cdbb15b" args="(const char *const mesg)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">char* copyMessageToR </td>
-          <td>(</td>
-          <td class="paramtype">const char *const &nbsp;</td>
-          <td class="paramname"> <em>mesg</em></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="Rcpp_8cpp_source.html#l01000">1000</a> of file <a class="el" href="Rcpp_8cpp_source.html">Rcpp.cpp</a>.</p>
-
-<p>Referenced by <a class="el" href="RcppExample_8cpp_source.html#l00109">Rcpp_Example()</a>, <a class="el" href="RcppExample_8cpp_source.html#l00382">RcppDateExample()</a>, <a class="el" href="RcppExample_8cpp_source.html#l00333">RcppParamsExample()</a>, and <a class="el" href="RcppExample_8cpp_source.html#l00423">RcppVectorExample()</a>.</p>
-
-</div>
-</div>
-</div>
-<hr size="1"/><address style="text-align: right;"><small>Generated on Fri Nov 6 13:03:18 2009 for Rcpp by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Sat Dec 19 14:00:55 2009 for Rcpp by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

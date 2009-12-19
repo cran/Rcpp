@@ -1,3 +1,91 @@
+2009-12-19  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION: Release 0.7.0
+
+	* DESCRIPTION: Descrition fields reworded and expanded to explicitly
+	  mention 'inlining' ability as well as simple SEXP support.
+
+	* src/RcppSexp.{h,cpp}: Switch to R_ProtectObject and R_ReleaseObject
+	  with a big thanks to Romain for the most appropriate suggestion
+	* src/RcppSexp.{h,cpp}: Added converters for vectors of
+	  int, double, and std::string vectors
+	* src/RcppResultsSetp.{h,cpp}: Added simple single SEXP return
+	* src/RcppCommon.{h,cpp}: Adding simple logging facility
+	* inst/examples/RcppInline/RcppSexpTests.r: expanded for new types
+
+2009-12-18  Dirk Eddelbuettel  <edd@debian.org>
+
+	* R/RcppInline.R: Another improvement for Rcpp use
+        * inst/examples/RcppInline/RcppSimpleExamples.r: Another simple case
+
+2009-12-17  Dirk Eddelbuettel  <edd@debian.org>
+
+	* R/RcppInline.R: Improved / simplified in light of getting it to
+ 	  work on Windoze too so switched to setting env var explicitly;
+	  also split into three args for CPPFLAGS, CXXFLAGS and LIBS
+	* man/RcppInline.Rd: Updated accordingly to reflect new args
+        * inst/examples/RcppInline/RcppInlineWithLibsExamples.r: Idem
+
+2009-12-16  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/RcppSexp.{h,cpp}: Added simple RcppSexp class for simple
+	  conversion from and to single-element SEXPs -- currently limited
+	  to int, double, std::string
+	* inst/examples/RcppInline/RcppSexpTests.r: Simple tests for this
+
+2009-12-15  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION: License changed to 'GPL (>= 2)'
+	* COPYING: Changed from LGPL 2.1 to GPL 2 (or later)
+	* src/*.{h,cpp}: Relicensed under GPL 2 (or later)
+
+2009-12-13  Dirk Eddelbuettel  <edd@debian.org>
+
+	* R/RcppInline.R: Extended to for additional header and library
+	  arguments so that we can work with arbitrary other projects
+	* man/RcppInline.Rd: Added documentation for these arguments
+        * inst/examples/RcppInline/RcppInlineWithLibsExamples.r: New
+	  examples using GNU GSL to show how to compile + link via inline
+
+2009-12-11  Dirk Eddelbuettel  <edd@debian.org>
+
+	* R/RcppInline.R: Imported function 'cfunction' from the inline
+  	  package, along with small patch to directly support Rcpp. The
+	  inclusion may be temporary -- if our patch is integrated into
+	  inline we may just depend on that package
+        * man/RcppInline.Rd: Imported from inline, plus change for Rcpp
+        * inst/examples/RcppInline/RcppInlineExample.r: Small example
+	  taken from the 'Intro to HPC with R' tutorials
+
+	* R/RcppVersion.R: Removed as unused as redundant given read.dcf() in R
+	* man/RcppVersion.R: idem
+	* NAMESPACE: updated accordingly
+	* INDEX: idem
+
+2009-11-18  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION: Add Dominick back into Authors per his new request
+	  reversing his requests to be removed from last December
+
+2009-11-17  Dirk Eddelbuettel  <edd@debian.org>
+
+	* man/RcppParams.Rd: applied patch by Frank S. Thomas to fix example
+
+2009-11-15  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/RcppDateVector.{cpp,h}: Moved out of Rcpp.{h,cpp}
+	* src/RcppDatetimeVector.{cpp,h}: idem
+	* src/RcppFunction.{cpp,h}: idem
+	* src/RcppMatrix.{cpp,h}: idem
+	* src/RcppMatrixView.{cpp,h}: idem
+	* src/RcppNumList.{cpp,h}: idem
+	* src/RcppResultSet.{cpp,h}: idem
+	* src/RcppStringVector.{cpp,h}: idem
+	* src/RcppStringVectorView.{cpp,h}: idem
+	* src/RcppVector.{cpp,h}: idem
+	* src/RcppVectorView.{cpp,h}: idem
+	* src/RcppCommon.cpp: takes remaining utility function from Rcpp.cpp
+
 2009-11-09  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION: Release 0.6.8
@@ -17,7 +105,7 @@
 
 2009-11-06  Dirk Eddelbuettel  <edd@debian.org>
 
-	* src/RcppList.{h,cppp}: Added a simple class to accept list()
+	* src/RcppList.{h,cpp}: Added a simple class to accept list()
 	  objects in order to cope with non-rectangular data-types -- this
 	  comes from the RProtoBuf code currently only on r-forge where
 	  we need accept lists that are potentially nested.

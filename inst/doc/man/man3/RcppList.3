@@ -1,4 +1,4 @@
-.TH "RcppList" 3 "6 Nov 2009" "Rcpp" \" -*- nroff -*-
+.TH "RcppList" 3 "19 Dec 2009" "Rcpp" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -67,86 +67,86 @@ RcppList \-
 .in -1c
 .SH "Detailed Description"
 .PP 
-Definition at line 40 of file RcppList.h.
+Definition at line 29 of file RcppList.h.
 .SH "Constructor & Destructor Documentation"
 .PP 
-.SS "RcppList::RcppList (void)\fC [inline]\fP"
+.SS "RcppList::RcppList (void)"
 .PP
-Definition at line 42 of file RcppList.h.
-.SS "RcppList::~RcppList ()\fC [inline]\fP"
+Definition at line 24 of file RcppList.cpp.
+.SS "RcppList::~RcppList (void)"
 .PP
-Definition at line 44 of file RcppList.h.
+Definition at line 30 of file RcppList.cpp.
 .PP
 References numProtected.
 .SH "Member Function Documentation"
 .PP 
 .SS "void RcppList::append (std::string name, SEXP sexp)"
 .PP
-Definition at line 59 of file RcppList.cpp.
+Definition at line 70 of file RcppList.cpp.
 .PP
 References currListPosn, listArg, listSize, and names.
 .SS "void RcppList::append (std::string name, std::string value)"
 .PP
-Definition at line 49 of file RcppList.cpp.
+Definition at line 60 of file RcppList.cpp.
 .PP
 References currListPosn, listArg, listSize, names, and numProtected.
 .SS "void RcppList::append (std::string name, int value)"
 .PP
-Definition at line 39 of file RcppList.cpp.
+Definition at line 50 of file RcppList.cpp.
 .PP
 References currListPosn, listArg, listSize, names, and numProtected.
 .SS "void RcppList::append (std::string name, double value)"
 .PP
-Definition at line 29 of file RcppList.cpp.
+Definition at line 40 of file RcppList.cpp.
 .PP
 References currListPosn, listArg, listSize, names, and numProtected.
 .SS "void RcppList::clearProtectionStack ()"
 .PP
-Definition at line 66 of file RcppList.cpp.
+Definition at line 77 of file RcppList.cpp.
 .PP
 References numProtected.
 .SS "SEXP RcppList::getList (void) const"
 .PP
-Definition at line 71 of file RcppList.cpp.
+Definition at line 82 of file RcppList.cpp.
 .PP
 References listArg, listSize, and names.
 .PP
 Referenced by RcppResultSet::add().
 .SS "void RcppList::setSize (int size)"
 .PP
-Definition at line 23 of file RcppList.cpp.
+Definition at line 34 of file RcppList.cpp.
 .PP
 References listArg, listSize, and numProtected.
 .SH "Friends And Related Function Documentation"
 .PP 
 .SS "friend class \fBRcppResultSet\fP\fC [friend]\fP"
 .PP
-Definition at line 58 of file RcppList.h.
+Definition at line 44 of file RcppList.h.
 .SH "Member Data Documentation"
 .PP 
 .SS "int \fBRcppList::currListPosn\fP\fC [private]\fP"
 .PP
-Definition at line 62 of file RcppList.h.
+Definition at line 48 of file RcppList.h.
 .PP
 Referenced by append().
 .SS "SEXP \fBRcppList::listArg\fP\fC [private]\fP"
 .PP
-Definition at line 61 of file RcppList.h.
+Definition at line 47 of file RcppList.h.
 .PP
 Referenced by append(), getList(), and setSize().
 .SS "int \fBRcppList::listSize\fP\fC [private]\fP"
 .PP
-Definition at line 62 of file RcppList.h.
+Definition at line 48 of file RcppList.h.
 .PP
 Referenced by append(), getList(), and setSize().
 .SS "std::vector<std::string> \fBRcppList::names\fP\fC [private]\fP"
 .PP
-Definition at line 63 of file RcppList.h.
+Definition at line 49 of file RcppList.h.
 .PP
 Referenced by append(), and getList().
 .SS "int \fBRcppList::numProtected\fP\fC [private]\fP"
 .PP
-Definition at line 62 of file RcppList.h.
+Definition at line 48 of file RcppList.h.
 .PP
 Referenced by append(), clearProtectionStack(), setSize(), and ~RcppList().
 

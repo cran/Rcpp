@@ -1,0 +1,163 @@
+.TH "RcppSexp" 3 "19 Dec 2009" "Rcpp" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+RcppSexp \- 
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <RcppSexp.h>\fP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBRcppSexp\fP (SEXP sexp, int numprot=0)"
+.br
+.ti -1c
+.RI "\fBRcppSexp\fP ()"
+.br
+.ti -1c
+.RI "\fBRcppSexp\fP (const double &v)"
+.br
+.ti -1c
+.RI "\fBRcppSexp\fP (const int &v)"
+.br
+.ti -1c
+.RI "\fBRcppSexp\fP (const std::string &v)"
+.br
+.ti -1c
+.RI "\fBRcppSexp\fP (const std::vector< int > &v)"
+.br
+.ti -1c
+.RI "\fBRcppSexp\fP (const std::vector< double > &v)"
+.br
+.ti -1c
+.RI "\fBRcppSexp\fP (const std::vector< std::string > &v)"
+.br
+.ti -1c
+.RI "\fB~RcppSexp\fP ()"
+.br
+.ti -1c
+.RI "double \fBasDouble\fP () const "
+.br
+.ti -1c
+.RI "int \fBasInt\fP () const "
+.br
+.ti -1c
+.RI "std::string \fBasStdString\fP () const "
+.br
+.ti -1c
+.RI "std::vector< int > \fBasStdVectorInt\fP () const "
+.br
+.ti -1c
+.RI "std::vector< double > \fBasStdVectorDouble\fP () const "
+.br
+.ti -1c
+.RI "std::vector< std::string > \fBasStdVectorString\fP () const "
+.br
+.ti -1c
+.RI "SEXP \fBasSexp\fP () const "
+.br
+.in -1c
+.SS "Private Attributes"
+
+.in +1c
+.ti -1c
+.RI "SEXP \fBm_sexp\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Definition at line 27 of file RcppSexp.h.
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "RcppSexp::RcppSexp (SEXP sexp, int numprot = \fC0\fP)\fC [inline]\fP"
+.PP
+Definition at line 29 of file RcppSexp.h.
+.SS "RcppSexp::RcppSexp ()\fC [inline]\fP"
+.PP
+Definition at line 30 of file RcppSexp.h.
+.SS "RcppSexp::RcppSexp (const double & v)"
+.PP
+Definition at line 24 of file RcppSexp.cpp.
+.PP
+References logTxt, and m_sexp.
+.SS "RcppSexp::RcppSexp (const int & v)"
+.PP
+Definition at line 31 of file RcppSexp.cpp.
+.PP
+References logTxt, and m_sexp.
+.SS "RcppSexp::RcppSexp (const std::string & v)"
+.PP
+Definition at line 38 of file RcppSexp.cpp.
+.PP
+References logTxt, and m_sexp.
+.SS "RcppSexp::RcppSexp (const std::vector< int > & v)"
+.PP
+Definition at line 45 of file RcppSexp.cpp.
+.PP
+References logTxt, and m_sexp.
+.SS "RcppSexp::RcppSexp (const std::vector< double > & v)"
+.PP
+Definition at line 55 of file RcppSexp.cpp.
+.PP
+References logTxt, and m_sexp.
+.SS "RcppSexp::RcppSexp (const std::vector< std::string > & v)"
+.PP
+Definition at line 65 of file RcppSexp.cpp.
+.PP
+References logTxt, and m_sexp.
+.SS "RcppSexp::~RcppSexp ()"
+.PP
+Definition at line 75 of file RcppSexp.cpp.
+.PP
+References logTxt, and m_sexp.
+.SH "Member Function Documentation"
+.PP 
+.SS "double RcppSexp::asDouble () const"
+.PP
+Definition at line 80 of file RcppSexp.cpp.
+.PP
+References m_sexp.
+.SS "int RcppSexp::asInt () const"
+.PP
+Definition at line 97 of file RcppSexp.cpp.
+.PP
+References m_sexp.
+.SS "SEXP RcppSexp::asSexp () const"
+.PP
+Definition at line 124 of file RcppSexp.cpp.
+.PP
+References m_sexp.
+.SS "std::string RcppSexp::asStdString () const"
+.PP
+Definition at line 114 of file RcppSexp.cpp.
+.PP
+References m_sexp.
+.SS "std::vector< double > RcppSexp::asStdVectorDouble () const"
+.PP
+Definition at line 144 of file RcppSexp.cpp.
+.PP
+References m_sexp.
+.SS "std::vector< int > RcppSexp::asStdVectorInt () const"
+.PP
+Definition at line 128 of file RcppSexp.cpp.
+.PP
+References m_sexp.
+.SS "std::vector< std::string > RcppSexp::asStdVectorString () const"
+.PP
+Definition at line 160 of file RcppSexp.cpp.
+.PP
+References m_sexp.
+.SH "Member Data Documentation"
+.PP 
+.SS "SEXP \fBRcppSexp::m_sexp\fP\fC [private]\fP"
+.PP
+Definition at line 48 of file RcppSexp.h.
+.PP
+Referenced by asDouble(), asInt(), asSexp(), asStdString(), asStdVectorDouble(), asStdVectorInt(), asStdVectorString(), RcppSexp(), and ~RcppSexp().
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Rcpp from the source code.

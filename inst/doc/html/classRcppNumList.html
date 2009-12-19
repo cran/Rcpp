@@ -26,15 +26,15 @@
 </div>
 <div class="contents">
 <h1>RcppNumList Class Reference</h1><!-- doxytag: class="RcppNumList" -->
-<p><code>#include &lt;<a class="el" href="Rcpp_8h_source.html">Rcpp.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="RcppNumList_8h_source.html">RcppNumList.h</a>&gt;</code></p>
 
 <p><a href="classRcppNumList-members.html">List of all members.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td colspan="2"><h2>Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppNumList.html#a4a8a321d0dc84b6d4be988005fa74fcd">RcppNumList</a> (SEXP theList)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">std::string&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppNumList.html#a246d8e534d97fbe798b8567bbfa93ca7">getName</a> (int i)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">double&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppNumList.html#a2e83950933ddc73ad64ed800f6f5e23b">getValue</a> (int i)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppNumList.html#a18dc0660cc827bcf17d9738cb5874db7">size</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::string&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppNumList.html#aabd02f34fb896791cb5ffb64f29d8f62">getName</a> (int i) const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">double&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppNumList.html#a20200d6f7e0daf7736675bcc6700d64c">getValue</a> (int i) const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppNumList.html#afb82fcc91a60ceca5a2dd389cf02f8fe">size</a> () const </td></tr>
 <tr><td colspan="2"><h2>Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppNumList.html#ac4cb5c784f7105f0f28ae48d02deb3a1">len</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">SEXP&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppNumList.html#a7464927aafe555a0c4a104247dba7185">namedList</a></td></tr>
@@ -42,7 +42,7 @@
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 
-<p>Definition at line <a class="el" href="Rcpp_8h_source.html#l00320">320</a> of file <a class="el" href="Rcpp_8h_source.html">Rcpp.h</a>.</p>
+<p>Definition at line <a class="el" href="RcppNumList_8h_source.html#l00028">28</a> of file <a class="el" href="RcppNumList_8h_source.html">RcppNumList.h</a>.</p>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a4a8a321d0dc84b6d4be988005fa74fcd"></a><!-- doxytag: member="RcppNumList::RcppNumList" ref="a4a8a321d0dc84b6d4be988005fa74fcd" args="(SEXP theList)" -->
 <div class="memitem">
@@ -54,20 +54,20 @@
           <td class="paramtype">SEXP&nbsp;</td>
           <td class="paramname"> <em>theList</em></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
+          <td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="Rcpp_8h_source.html#l00322">322</a> of file <a class="el" href="Rcpp_8h_source.html">Rcpp.h</a>.</p>
+<p>Definition at line <a class="el" href="RcppNumList_8cpp_source.html#l00025">25</a> of file <a class="el" href="RcppNumList_8cpp_source.html">RcppNumList.cpp</a>.</p>
 
-<p>References <a class="el" href="Rcpp_8h_source.html#l00354">len</a>, <a class="el" href="Rcpp_8h_source.html#l00355">namedList</a>, and <a class="el" href="Rcpp_8h_source.html#l00356">names</a>.</p>
+<p>References <a class="el" href="RcppNumList_8h_source.html#l00035">len</a>, <a class="el" href="RcppNumList_8h_source.html#l00036">namedList</a>, and <a class="el" href="RcppNumList_8h_source.html#l00037">names</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="a246d8e534d97fbe798b8567bbfa93ca7"></a><!-- doxytag: member="RcppNumList::getName" ref="a246d8e534d97fbe798b8567bbfa93ca7" args="(int i)" -->
+<a class="anchor" id="aabd02f34fb896791cb5ffb64f29d8f62"></a><!-- doxytag: member="RcppNumList::getName" ref="aabd02f34fb896791cb5ffb64f29d8f62" args="(int i) const " -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -77,21 +77,21 @@
           <td class="paramtype">int&nbsp;</td>
           <td class="paramname"> <em>i</em></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
+          <td> const</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="Rcpp_8h_source.html#l00329">329</a> of file <a class="el" href="Rcpp_8h_source.html">Rcpp.h</a>.</p>
+<p>Definition at line <a class="el" href="RcppNumList_8cpp_source.html#l00033">33</a> of file <a class="el" href="RcppNumList_8cpp_source.html">RcppNumList.cpp</a>.</p>
 
-<p>References <a class="el" href="Rcpp_8h_source.html#l00354">len</a>, and <a class="el" href="Rcpp_8h_source.html#l00356">names</a>.</p>
+<p>References <a class="el" href="RcppNumList_8h_source.html#l00035">len</a>, and <a class="el" href="RcppNumList_8h_source.html#l00037">names</a>.</p>
 
-<p>Referenced by <a class="el" href="RcppExample_8cpp_source.html#l00109">Rcpp_Example()</a>.</p>
+<p>Referenced by <a class="el" href="RcppExample_8cpp_source.html#l00110">Rcpp_Example()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a2e83950933ddc73ad64ed800f6f5e23b"></a><!-- doxytag: member="RcppNumList::getValue" ref="a2e83950933ddc73ad64ed800f6f5e23b" args="(int i)" -->
+<a class="anchor" id="a20200d6f7e0daf7736675bcc6700d64c"></a><!-- doxytag: member="RcppNumList::getValue" ref="a20200d6f7e0daf7736675bcc6700d64c" args="(int i) const " -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -101,21 +101,21 @@
           <td class="paramtype">int&nbsp;</td>
           <td class="paramname"> <em>i</em></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
+          <td> const</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="Rcpp_8h_source.html#l00337">337</a> of file <a class="el" href="Rcpp_8h_source.html">Rcpp.h</a>.</p>
+<p>Definition at line <a class="el" href="RcppNumList_8cpp_source.html#l00042">42</a> of file <a class="el" href="RcppNumList_8cpp_source.html">RcppNumList.cpp</a>.</p>
 
-<p>References <a class="el" href="Rcpp_8h_source.html#l00354">len</a>, and <a class="el" href="Rcpp_8h_source.html#l00355">namedList</a>.</p>
+<p>References <a class="el" href="RcppNumList_8h_source.html#l00035">len</a>, and <a class="el" href="RcppNumList_8h_source.html#l00036">namedList</a>.</p>
 
-<p>Referenced by <a class="el" href="RcppExample_8cpp_source.html#l00109">Rcpp_Example()</a>.</p>
+<p>Referenced by <a class="el" href="RcppExample_8cpp_source.html#l00110">Rcpp_Example()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a18dc0660cc827bcf17d9738cb5874db7"></a><!-- doxytag: member="RcppNumList::size" ref="a18dc0660cc827bcf17d9738cb5874db7" args="()" -->
+<a class="anchor" id="afb82fcc91a60ceca5a2dd389cf02f8fe"></a><!-- doxytag: member="RcppNumList::size" ref="afb82fcc91a60ceca5a2dd389cf02f8fe" args="() const " -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -124,15 +124,15 @@
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
+          <td> const</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="Rcpp_8h_source.html#l00352">352</a> of file <a class="el" href="Rcpp_8h_source.html">Rcpp.h</a>.</p>
+<p>Definition at line <a class="el" href="RcppNumList_8cpp_source.html#l00058">58</a> of file <a class="el" href="RcppNumList_8cpp_source.html">RcppNumList.cpp</a>.</p>
 
-<p>References <a class="el" href="Rcpp_8h_source.html#l00354">len</a>.</p>
+<p>References <a class="el" href="RcppNumList_8h_source.html#l00035">len</a>.</p>
 
 </div>
 </div>
@@ -148,9 +148,9 @@
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="Rcpp_8h_source.html#l00354">354</a> of file <a class="el" href="Rcpp_8h_source.html">Rcpp.h</a>.</p>
+<p>Definition at line <a class="el" href="RcppNumList_8h_source.html#l00035">35</a> of file <a class="el" href="RcppNumList_8h_source.html">RcppNumList.h</a>.</p>
 
-<p>Referenced by <a class="el" href="Rcpp_8h_source.html#l00329">getName()</a>, <a class="el" href="Rcpp_8h_source.html#l00337">getValue()</a>, <a class="el" href="Rcpp_8h_source.html#l00322">RcppNumList()</a>, and <a class="el" href="Rcpp_8h_source.html#l00352">size()</a>.</p>
+<p>Referenced by <a class="el" href="RcppNumList_8cpp_source.html#l00033">getName()</a>, <a class="el" href="RcppNumList_8cpp_source.html#l00042">getValue()</a>, <a class="el" href="RcppNumList_8cpp_source.html#l00025">RcppNumList()</a>, and <a class="el" href="RcppNumList_8cpp_source.html#l00058">size()</a>.</p>
 
 </div>
 </div>
@@ -165,9 +165,9 @@
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="Rcpp_8h_source.html#l00355">355</a> of file <a class="el" href="Rcpp_8h_source.html">Rcpp.h</a>.</p>
+<p>Definition at line <a class="el" href="RcppNumList_8h_source.html#l00036">36</a> of file <a class="el" href="RcppNumList_8h_source.html">RcppNumList.h</a>.</p>
 
-<p>Referenced by <a class="el" href="Rcpp_8h_source.html#l00337">getValue()</a>, and <a class="el" href="Rcpp_8h_source.html#l00322">RcppNumList()</a>.</p>
+<p>Referenced by <a class="el" href="RcppNumList_8cpp_source.html#l00042">getValue()</a>, and <a class="el" href="RcppNumList_8cpp_source.html#l00025">RcppNumList()</a>.</p>
 
 </div>
 </div>
@@ -182,17 +182,18 @@
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="Rcpp_8h_source.html#l00356">356</a> of file <a class="el" href="Rcpp_8h_source.html">Rcpp.h</a>.</p>
+<p>Definition at line <a class="el" href="RcppNumList_8h_source.html#l00037">37</a> of file <a class="el" href="RcppNumList_8h_source.html">RcppNumList.h</a>.</p>
 
-<p>Referenced by <a class="el" href="Rcpp_8h_source.html#l00329">getName()</a>, and <a class="el" href="Rcpp_8h_source.html#l00322">RcppNumList()</a>.</p>
+<p>Referenced by <a class="el" href="RcppNumList_8cpp_source.html#l00033">getName()</a>, and <a class="el" href="RcppNumList_8cpp_source.html#l00025">RcppNumList()</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>src/<a class="el" href="Rcpp_8h_source.html">Rcpp.h</a></li>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>src/<a class="el" href="RcppNumList_8h_source.html">RcppNumList.h</a></li>
+<li>src/<a class="el" href="RcppNumList_8cpp_source.html">RcppNumList.cpp</a></li>
 </ul>
 </div>
-<hr size="1"/><address style="text-align: right;"><small>Generated on Fri Nov 6 13:03:18 2009 for Rcpp by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Sat Dec 19 14:01:38 2009 for Rcpp by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

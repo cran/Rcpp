@@ -1,4 +1,4 @@
-.TH "RcppStringVector" 3 "6 Nov 2009" "Rcpp" \" -*- nroff -*-
+.TH "RcppStringVector" 3 "19 Dec 2009" "Rcpp" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -7,7 +7,7 @@ RcppStringVector \-
 .br
 .PP
 .PP
-\fC#include <Rcpp.h>\fP
+\fC#include <RcppStringVector.h>\fP
 .SS "Public Member Functions"
 
 .in +1c
@@ -18,13 +18,13 @@ RcppStringVector \-
 .RI "\fB~RcppStringVector\fP ()"
 .br
 .ti -1c
-.RI "std::string & \fBoperator()\fP (int i)"
+.RI "std::string & \fBoperator()\fP (int i) const "
 .br
 .ti -1c
-.RI "int \fBsize\fP ()"
+.RI "int \fBsize\fP () const "
 .br
 .ti -1c
-.RI "std::vector< std::string > \fBstlVector\fP ()"
+.RI "std::vector< std::string > \fBstlVector\fP () const "
 .br
 .in -1c
 .SS "Private Attributes"
@@ -39,48 +39,48 @@ RcppStringVector \-
 .in -1c
 .SH "Detailed Description"
 .PP 
-Definition at line 380 of file Rcpp.h.
+Definition at line 28 of file RcppStringVector.h.
 .SH "Constructor & Destructor Documentation"
 .PP 
 .SS "RcppStringVector::RcppStringVector (SEXP vec)"
 .PP
-Definition at line 283 of file Rcpp.cpp.
+Definition at line 25 of file RcppStringVector.cpp.
 .PP
 References length, and v.
-.SS "RcppStringVector::~RcppStringVector ()\fC [inline]\fP"
+.SS "RcppStringVector::~RcppStringVector ()"
 .PP
-Definition at line 383 of file Rcpp.h.
+Definition at line 40 of file RcppStringVector.cpp.
 .PP
 References v.
 .SH "Member Function Documentation"
 .PP 
-.SS "std::string& RcppStringVector::operator() (int i)\fC [inline]\fP"
+.SS "std::string & RcppStringVector::operator() (int i) const"
 .PP
-Definition at line 386 of file Rcpp.h.
+Definition at line 44 of file RcppStringVector.cpp.
 .PP
 References length, and v.
-.SS "int RcppStringVector::size ()\fC [inline]\fP"
+.SS "int RcppStringVector::size () const"
 .PP
-Definition at line 394 of file Rcpp.h.
+Definition at line 53 of file RcppStringVector.cpp.
 .PP
 References length.
 .PP
 Referenced by RcppResultSet::add().
-.SS "std::vector<std::string> RcppStringVector::stlVector ()\fC [inline]\fP"
+.SS "std::vector< std::string > RcppStringVector::stlVector () const"
 .PP
-Definition at line 395 of file Rcpp.h.
+Definition at line 57 of file RcppStringVector.cpp.
 .PP
 References length, and v.
 .SH "Member Data Documentation"
 .PP 
 .SS "int \fBRcppStringVector::length\fP\fC [private]\fP"
 .PP
-Definition at line 403 of file Rcpp.h.
+Definition at line 37 of file RcppStringVector.h.
 .PP
 Referenced by operator()(), RcppStringVector(), size(), and stlVector().
 .SS "std::string* \fBRcppStringVector::v\fP\fC [private]\fP"
 .PP
-Definition at line 402 of file Rcpp.h.
+Definition at line 36 of file RcppStringVector.h.
 .PP
 Referenced by operator()(), RcppStringVector(), stlVector(), and ~RcppStringVector().
 

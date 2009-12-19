@@ -6,9 +6,6 @@
 \description{The \pkg{Rcpp} package provides C++ classes that
   greatly facilitate interfacing C or C++ code in \R packages using
   the \code{.Call} interface provided by \R.
-
-  Detailed information is provided in the vignette \sQuote{RcppAPI} that
-  can be invoked from \R via \code{vignette("RcppAPI")}.
 }
 \section{Overview}{
   \pkg{Rcpp} provides matching C++ classes for a large number of

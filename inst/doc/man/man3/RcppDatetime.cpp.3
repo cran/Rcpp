@@ -1,0 +1,36 @@
+.TH "src/RcppDatetime.cpp" 3 "19 Dec 2009" "Rcpp" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/RcppDatetime.cpp \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <RcppDatetime.h>\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "std::ostream & \fBoperator<<\fP (std::ostream &os, const \fBRcppDatetime\fP &datetime)"
+.br
+.ti -1c
+.RI "\fBRcppDatetime\fP \fBoperator+\fP (const \fBRcppDatetime\fP &date, double offset)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "\fBRcppDatetime\fP operator+ (const \fBRcppDatetime\fP & date, double offset)"
+.PP
+Definition at line 55 of file RcppDatetime.cpp.
+.PP
+References RcppDatetime::m_d, and RcppDatetime::m_parsed.
+.SS "std::ostream& operator<< (std::ostream & os, const \fBRcppDatetime\fP & datetime)"
+.PP
+Definition at line 45 of file RcppDatetime.cpp.
+.PP
+References RcppDatetime::m_tm, RcppDatetime::m_us, and RcppDatetime::parseTime().
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Rcpp from the source code.

@@ -2,7 +2,12 @@ useDynLib(Rcpp)
 
 export(RcppExample,
        print.RcppExample,
-       RcppVersion,
        RcppDateExample,
        RcppParamsExample,
-       RcppVectorExample)
+       RcppVectorExample,
+       cfunction 		## from inline and adapted
+)
+
+exportMethods(
+       setCMethod
+)
