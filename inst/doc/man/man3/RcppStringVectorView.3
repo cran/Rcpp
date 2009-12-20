@@ -1,4 +1,4 @@
-.TH "RcppStringVectorView" 3 "6 Nov 2009" "Rcpp" \" -*- nroff -*-
+.TH "RcppStringVectorView" 3 "19 Dec 2009" "Rcpp" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -7,7 +7,7 @@ RcppStringVectorView \-
 .br
 .PP
 .PP
-\fC#include <Rcpp.h>\fP
+\fC#include <RcppStringVectorView.h>\fP
 .SS "Public Member Functions"
 
 .in +1c
@@ -15,10 +15,10 @@ RcppStringVectorView \-
 .RI "\fBRcppStringVectorView\fP (SEXP vec)"
 .br
 .ti -1c
-.RI "const char * \fBoperator()\fP (int i)"
+.RI "const char * \fBoperator()\fP (int i) const "
 .br
 .ti -1c
-.RI "int \fBsize\fP ()"
+.RI "int \fBsize\fP () const "
 .br
 .in -1c
 .SS "Private Attributes"
@@ -33,36 +33,36 @@ RcppStringVectorView \-
 .in -1c
 .SH "Detailed Description"
 .PP 
-Definition at line 512 of file Rcpp.h.
+Definition at line 28 of file RcppStringVectorView.h.
 .SH "Constructor & Destructor Documentation"
 .PP 
 .SS "RcppStringVectorView::RcppStringVectorView (SEXP vec)"
 .PP
-Definition at line 450 of file Rcpp.cpp.
+Definition at line 25 of file RcppStringVectorView.cpp.
 .PP
 References length, and v.
 .SH "Member Function Documentation"
 .PP 
-.SS "const char* RcppStringVectorView::operator() (int i)\fC [inline]\fP"
+.SS "const char * RcppStringVectorView::operator() (int i) const"
 .PP
-Definition at line 515 of file Rcpp.h.
+Definition at line 37 of file RcppStringVectorView.cpp.
 .PP
 References length, and v.
-.SS "int RcppStringVectorView::size ()\fC [inline]\fP"
+.SS "int RcppStringVectorView::size () const"
 .PP
-Definition at line 523 of file Rcpp.h.
+Definition at line 46 of file RcppStringVectorView.cpp.
 .PP
 References length.
 .SH "Member Data Documentation"
 .PP 
 .SS "int \fBRcppStringVectorView::length\fP\fC [private]\fP"
 .PP
-Definition at line 526 of file Rcpp.h.
+Definition at line 35 of file RcppStringVectorView.h.
 .PP
 Referenced by operator()(), RcppStringVectorView(), and size().
 .SS "SEXP \fBRcppStringVectorView::v\fP\fC [private]\fP"
 .PP
-Definition at line 525 of file Rcpp.h.
+Definition at line 34 of file RcppStringVectorView.h.
 .PP
 Referenced by operator()(), and RcppStringVectorView().
 

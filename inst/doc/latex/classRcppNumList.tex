@@ -4,16 +4,16 @@
 }
 
 
-{\ttfamily \#include $<$Rcpp.h$>$}\subsection*{Public Member Functions}
+{\ttfamily \#include $<$RcppNumList.h$>$}\subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{classRcppNumList_a4a8a321d0dc84b6d4be988005fa74fcd}{RcppNumList} (SEXP theList)
 \item 
-std::string \hyperlink{classRcppNumList_a246d8e534d97fbe798b8567bbfa93ca7}{getName} (int i)
+std::string \hyperlink{classRcppNumList_aabd02f34fb896791cb5ffb64f29d8f62}{getName} (int i) const 
 \item 
-double \hyperlink{classRcppNumList_a2e83950933ddc73ad64ed800f6f5e23b}{getValue} (int i)
+double \hyperlink{classRcppNumList_a20200d6f7e0daf7736675bcc6700d64c}{getValue} (int i) const 
 \item 
-int \hyperlink{classRcppNumList_a18dc0660cc827bcf17d9738cb5874db7}{size} ()
+int \hyperlink{classRcppNumList_afb82fcc91a60ceca5a2dd389cf02f8fe}{size} () const 
 \end{DoxyCompactItemize}
 \subsection*{Private Attributes}
 \begin{DoxyCompactItemize}
@@ -29,51 +29,51 @@ SEXP \hyperlink{classRcppNumList_aa669b28cba0c95531a3c92910a60ecb0}{names}
 \subsection{Detailed Description}
 
 
-Definition at line 320 of file Rcpp.h.
+Definition at line 28 of file RcppNumList.h.
 
 \subsection{Constructor \& Destructor Documentation}
 \hypertarget{classRcppNumList_a4a8a321d0dc84b6d4be988005fa74fcd}{
 \index{RcppNumList@{RcppNumList}!RcppNumList@{RcppNumList}}
 \index{RcppNumList@{RcppNumList}!RcppNumList@{RcppNumList}}
-\subsubsection[{RcppNumList}]{\setlength{\rightskip}{0pt plus 5cm}RcppNumList::RcppNumList (SEXP {\em theList})\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
+\subsubsection[{RcppNumList}]{\setlength{\rightskip}{0pt plus 5cm}RcppNumList::RcppNumList (SEXP {\em theList})}}
 \label{classRcppNumList_a4a8a321d0dc84b6d4be988005fa74fcd}
 
 
-Definition at line 322 of file Rcpp.h.
+Definition at line 25 of file RcppNumList.cpp.
 
 References len, namedList, and names.
 
 \subsection{Member Function Documentation}
-\hypertarget{classRcppNumList_a246d8e534d97fbe798b8567bbfa93ca7}{
+\hypertarget{classRcppNumList_aabd02f34fb896791cb5ffb64f29d8f62}{
 \index{RcppNumList@{RcppNumList}!getName@{getName}}
 \index{getName@{getName}!RcppNumList@{RcppNumList}}
-\subsubsection[{getName}]{\setlength{\rightskip}{0pt plus 5cm}std::string RcppNumList::getName (int {\em i})\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
-\label{classRcppNumList_a246d8e534d97fbe798b8567bbfa93ca7}
+\subsubsection[{getName}]{\setlength{\rightskip}{0pt plus 5cm}std::string RcppNumList::getName (int {\em i}) const}}
+\label{classRcppNumList_aabd02f34fb896791cb5ffb64f29d8f62}
 
 
-Definition at line 329 of file Rcpp.h.
+Definition at line 33 of file RcppNumList.cpp.
 
 References len, and names.
 
-Referenced by Rcpp\_\-Example().\hypertarget{classRcppNumList_a2e83950933ddc73ad64ed800f6f5e23b}{
+Referenced by Rcpp\_\-Example().\hypertarget{classRcppNumList_a20200d6f7e0daf7736675bcc6700d64c}{
 \index{RcppNumList@{RcppNumList}!getValue@{getValue}}
 \index{getValue@{getValue}!RcppNumList@{RcppNumList}}
-\subsubsection[{getValue}]{\setlength{\rightskip}{0pt plus 5cm}double RcppNumList::getValue (int {\em i})\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
-\label{classRcppNumList_a2e83950933ddc73ad64ed800f6f5e23b}
+\subsubsection[{getValue}]{\setlength{\rightskip}{0pt plus 5cm}double RcppNumList::getValue (int {\em i}) const}}
+\label{classRcppNumList_a20200d6f7e0daf7736675bcc6700d64c}
 
 
-Definition at line 337 of file Rcpp.h.
+Definition at line 42 of file RcppNumList.cpp.
 
 References len, and namedList.
 
-Referenced by Rcpp\_\-Example().\hypertarget{classRcppNumList_a18dc0660cc827bcf17d9738cb5874db7}{
+Referenced by Rcpp\_\-Example().\hypertarget{classRcppNumList_afb82fcc91a60ceca5a2dd389cf02f8fe}{
 \index{RcppNumList@{RcppNumList}!size@{size}}
 \index{size@{size}!RcppNumList@{RcppNumList}}
-\subsubsection[{size}]{\setlength{\rightskip}{0pt plus 5cm}int RcppNumList::size ()\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
-\label{classRcppNumList_a18dc0660cc827bcf17d9738cb5874db7}
+\subsubsection[{size}]{\setlength{\rightskip}{0pt plus 5cm}int RcppNumList::size () const}}
+\label{classRcppNumList_afb82fcc91a60ceca5a2dd389cf02f8fe}
 
 
-Definition at line 352 of file Rcpp.h.
+Definition at line 58 of file RcppNumList.cpp.
 
 References len.
 
@@ -85,7 +85,7 @@ References len.
 \label{classRcppNumList_ac4cb5c784f7105f0f28ae48d02deb3a1}
 
 
-Definition at line 354 of file Rcpp.h.
+Definition at line 35 of file RcppNumList.h.
 
 Referenced by getName(), getValue(), RcppNumList(), and size().\hypertarget{classRcppNumList_a7464927aafe555a0c4a104247dba7185}{
 \index{RcppNumList@{RcppNumList}!namedList@{namedList}}
@@ -94,7 +94,7 @@ Referenced by getName(), getValue(), RcppNumList(), and size().\hypertarget{clas
 \label{classRcppNumList_a7464927aafe555a0c4a104247dba7185}
 
 
-Definition at line 355 of file Rcpp.h.
+Definition at line 36 of file RcppNumList.h.
 
 Referenced by getValue(), and RcppNumList().\hypertarget{classRcppNumList_aa669b28cba0c95531a3c92910a60ecb0}{
 \index{RcppNumList@{RcppNumList}!names@{names}}
@@ -103,10 +103,11 @@ Referenced by getValue(), and RcppNumList().\hypertarget{classRcppNumList_aa669b
 \label{classRcppNumList_aa669b28cba0c95531a3c92910a60ecb0}
 
 
-Definition at line 356 of file Rcpp.h.
+Definition at line 37 of file RcppNumList.h.
 
 Referenced by getName(), and RcppNumList().
 
-The documentation for this class was generated from the following file:\begin{DoxyCompactItemize}
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
 \item 
-src/\hyperlink{Rcpp_8h}{Rcpp.h}\end{DoxyCompactItemize}
+src/\hyperlink{RcppNumList_8h}{RcppNumList.h}\item 
+src/\hyperlink{RcppNumList_8cpp}{RcppNumList.cpp}\end{DoxyCompactItemize}

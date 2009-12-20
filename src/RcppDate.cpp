@@ -5,19 +5,20 @@
 // Copyright (C) 2005 - 2006 Dominick Samperi
 // Copyright (C) 2008 - 2009 Dirk Eddelbuettel
 //
-// This library is free software; you can redistribute it and/or modify it 
-// under the terms of the GNU Lesser General Public License as published by 
-// the Free Software Foundation; either version 2.1 of the License, or (at 
-// your option) any later version.
+// This file is part of Rcpp.
 //
-// This library is distributed in the hope that it will be useful, but 
-// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public 
-// License for more details.
+// Rcpp is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 2 of the License, or
+// (at your option) any later version.
 //
-// You should have received a copy of the GNU Lesser General Public License 
-// along with this library; if not, write to the Free Software Foundation, 
-// Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
+// Rcpp is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <RcppDate.h>
 
@@ -25,22 +26,22 @@ const int RcppDate::Jan1970Offset = 2440588;    // Offset from R date representa
 const int RcppDate::QLtoJan1970Offset = 25569;  // Offset between R / Unix epoch date and the QL base date
 
 RcppDate::RcppDate() : month(1), 
-				   day(1), 
-				   year(1970) { 
-	mdy2jdn(); 
+		       day(1), 
+		       year(1970) { 
+    mdy2jdn(); 
 }
 
 RcppDate::RcppDate(int Rjdn) { 
-	jdn = Rjdn+Jan1970Offset; 
-	jdn2mdy(); 
+    jdn = Rjdn+Jan1970Offset; 
+    jdn2mdy(); 
 }
 
 RcppDate::RcppDate(int month_, int day_, int year_) : month(month_), 
-													  day(day_), 
-													  year(year_) { 
-	if (month < 1 || month > 12 || day < 1 || day > 31)
-		throw std::range_error("RcppDate: invalid date");
-	mdy2jdn();
+						      day(day_), 
+						      year(year_) { 
+    if (month < 1 || month > 12 || day < 1 || day > 31)
+	throw std::range_error("RcppDate: invalid date");
+    mdy2jdn();
 }
 
 // Print an RcppDate.

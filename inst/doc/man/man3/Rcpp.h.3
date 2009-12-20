@@ -1,4 +1,4 @@
-.TH "src/Rcpp.h" 3 "6 Nov 2009" "Rcpp" \" -*- nroff -*-
+.TH "src/Rcpp.h" 3 "19 Dec 2009" "Rcpp" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -6,141 +6,43 @@ src/Rcpp.h \-
 .SH SYNOPSIS
 .br
 .PP
-\fC#include <iostream>\fP
+\fC#include <RcppCommon.h>\fP
 .br
-\fC#include <sstream>\fP
+\fC#include <RcppDate.h>\fP
 .br
-\fC#include <string>\fP
+\fC#include <RcppDateVector.h>\fP
 .br
-\fC#include <list>\fP
+\fC#include <RcppDatetime.h>\fP
 .br
-\fC#include <map>\fP
+\fC#include <RcppDatetimeVector.h>\fP
 .br
-\fC#include <stdexcept>\fP
+\fC#include <RcppFrame.h>\fP
 .br
-\fC#include <vector>\fP
-.br
-\fC#include <R.h>\fP
-.br
-\fC#include <Rinternals.h>\fP
+\fC#include <RcppFunction.h>\fP
 .br
 \fC#include <RcppList.h>\fP
 .br
+\fC#include <RcppMatrix.h>\fP
+.br
+\fC#include <RcppMatrixView.h>\fP
+.br
+\fC#include <RcppNumList.h>\fP
+.br
+\fC#include <RcppParams.h>\fP
+.br
+\fC#include <RcppResultSet.h>\fP
+.br
+\fC#include <RcppSexp.h>\fP
+.br
+\fC#include <RcppStringVector.h>\fP
+.br
+\fC#include <RcppStringVectorView.h>\fP
+.br
+\fC#include <RcppVector.h>\fP
+.br
+\fC#include <RcppVectorView.h>\fP
+.br
 
-.SS "Classes"
-
-.in +1c
-.ti -1c
-.RI "class \fBRcppDate\fP"
-.br
-.ti -1c
-.RI "class \fBRcppDatetime\fP"
-.br
-.ti -1c
-.RI "class \fBRcppParams\fP"
-.br
-.ti -1c
-.RI "class \fBColDatum\fP"
-.br
-.ti -1c
-.RI "class \fBRcppFrame\fP"
-.br
-.ti -1c
-.RI "class \fBRcppNumList\fP"
-.br
-.ti -1c
-.RI "class \fBRcppVector< T >\fP"
-.br
-.ti -1c
-.RI "class \fBRcppStringVector\fP"
-.br
-.ti -1c
-.RI "class \fBRcppDateVector\fP"
-.br
-.ti -1c
-.RI "class \fBRcppDatetimeVector\fP"
-.br
-.ti -1c
-.RI "class \fBRcppMatrix< T >\fP"
-.br
-.ti -1c
-.RI "class \fBRcppVectorView< T >\fP"
-.br
-.ti -1c
-.RI "class \fBRcppMatrixView< T >\fP"
-.br
-.ti -1c
-.RI "class \fBRcppStringVectorView\fP"
-.br
-.ti -1c
-.RI "class \fBRcppFunction\fP"
-.br
-.ti -1c
-.RI "class \fBRcppResultSet\fP"
-.br
-.in -1c
-.SS "Defines"
-
-.in +1c
-.ti -1c
-.RI "#define \fBR_NO_REMAP\fP"
-.br
-.ti -1c
-.RI "#define \fBRcppExport\fP   extern 'C'"
-.br
-.in -1c
-.SS "Enumerations"
-
-.in +1c
-.ti -1c
-.RI "enum \fBColType\fP { \fBCOLTYPE_DOUBLE\fP, \fBCOLTYPE_INT\fP, \fBCOLTYPE_STRING\fP, \fBCOLTYPE_FACTOR\fP, \fBCOLTYPE_LOGICAL\fP, \fBCOLTYPE_DATE\fP, \fBCOLTYPE_DATETIME\fP }"
-.br
-.in -1c
-.SS "Functions"
-
-.in +1c
-.ti -1c
-.RI "char * \fBcopyMessageToR\fP (const char *const mesg)"
-.br
-.in -1c
-.SH "Define Documentation"
-.PP 
-.SS "#define R_NO_REMAP"
-.PP
-Definition at line 34 of file Rcpp.h.
-.SS "#define RcppExport   extern 'C'"
-.PP
-Definition at line 44 of file Rcpp.h.
-.SH "Enumeration Type Documentation"
-.PP 
-.SS "enum \fBColType\fP"
-.PP
-\fBEnumerator: \fP
-.in +1c
-.TP
-\fB\fICOLTYPE_DOUBLE \fP\fP
-.TP
-\fB\fICOLTYPE_INT \fP\fP
-.TP
-\fB\fICOLTYPE_STRING \fP\fP
-.TP
-\fB\fICOLTYPE_FACTOR \fP\fP
-.TP
-\fB\fICOLTYPE_LOGICAL \fP\fP
-.TP
-\fB\fICOLTYPE_DATE \fP\fP
-.TP
-\fB\fICOLTYPE_DATETIME \fP\fP
-
-.PP
-Definition at line 168 of file Rcpp.h.
-.SH "Function Documentation"
-.PP 
-.SS "char* copyMessageToR (const char *const  mesg)"
-.PP
-Definition at line 1000 of file Rcpp.cpp.
-.PP
-Referenced by Rcpp_Example(), RcppDateExample(), RcppParamsExample(), and RcppVectorExample().
 .SH "Author"
 .PP 
 Generated automatically by Doxygen for Rcpp from the source code.

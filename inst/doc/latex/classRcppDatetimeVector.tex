@@ -4,7 +4,7 @@
 }
 
 
-{\ttfamily \#include $<$Rcpp.h$>$}Collaboration diagram for RcppDatetimeVector:\nopagebreak
+{\ttfamily \#include $<$RcppDatetimeVector.h$>$}Collaboration diagram for RcppDatetimeVector:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -18,9 +18,9 @@
 \item 
 \hyperlink{classRcppDatetimeVector_a81d6c5daba7448058a2f896841ddeb3a}{$\sim$RcppDatetimeVector} ()
 \item 
-\hyperlink{classRcppDatetime}{RcppDatetime} \& \hyperlink{classRcppDatetimeVector_a2ffa33b5231a7975652e1e2498d0e16a}{operator()} (int i)
+\hyperlink{classRcppDatetime}{RcppDatetime} \& \hyperlink{classRcppDatetimeVector_a5af7ec7f15263cee68ae11ce00770672}{operator()} (int i) const 
 \item 
-int \hyperlink{classRcppDatetimeVector_a8ca7268098fb2b9250523c4e2ef3c8b7}{size} ()
+int \hyperlink{classRcppDatetimeVector_ab9c8683a2883c6cc3bb600d0b0682965}{size} () const 
 \end{DoxyCompactItemize}
 \subsection*{Private Attributes}
 \begin{DoxyCompactItemize}
@@ -34,7 +34,7 @@ int \hyperlink{classRcppDatetimeVector_ae131031fcf2e65b7bfeee3d8e25c4f8c}{length
 \subsection{Detailed Description}
 
 
-Definition at line 426 of file Rcpp.h.
+Definition at line 28 of file RcppDatetimeVector.h.
 
 \subsection{Constructor \& Destructor Documentation}
 \hypertarget{classRcppDatetimeVector_a1c1d1e2087fdc8e7601299dc2c4fe24c}{
@@ -44,37 +44,37 @@ Definition at line 426 of file Rcpp.h.
 \label{classRcppDatetimeVector_a1c1d1e2087fdc8e7601299dc2c4fe24c}
 
 
-Definition at line 270 of file Rcpp.cpp.
+Definition at line 24 of file RcppDatetimeVector.cpp.
 
-References length, and v.\hypertarget{classRcppDatetimeVector_a81d6c5daba7448058a2f896841ddeb3a}{
+References ColDatum::i, length, and v.\hypertarget{classRcppDatetimeVector_a81d6c5daba7448058a2f896841ddeb3a}{
 \index{RcppDatetimeVector@{RcppDatetimeVector}!$\sim$RcppDatetimeVector@{$\sim$RcppDatetimeVector}}
 \index{$\sim$RcppDatetimeVector@{$\sim$RcppDatetimeVector}!RcppDatetimeVector@{RcppDatetimeVector}}
-\subsubsection[{$\sim$RcppDatetimeVector}]{\setlength{\rightskip}{0pt plus 5cm}RcppDatetimeVector::$\sim$RcppDatetimeVector ()\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
+\subsubsection[{$\sim$RcppDatetimeVector}]{\setlength{\rightskip}{0pt plus 5cm}RcppDatetimeVector::$\sim$RcppDatetimeVector ()}}
 \label{classRcppDatetimeVector_a81d6c5daba7448058a2f896841ddeb3a}
 
 
-Definition at line 429 of file Rcpp.h.
+Definition at line 37 of file RcppDatetimeVector.cpp.
 
 References v.
 
 \subsection{Member Function Documentation}
-\hypertarget{classRcppDatetimeVector_a2ffa33b5231a7975652e1e2498d0e16a}{
+\hypertarget{classRcppDatetimeVector_a5af7ec7f15263cee68ae11ce00770672}{
 \index{RcppDatetimeVector@{RcppDatetimeVector}!operator()@{operator()}}
 \index{operator()@{operator()}!RcppDatetimeVector@{RcppDatetimeVector}}
-\subsubsection[{operator()}]{\setlength{\rightskip}{0pt plus 5cm}{\bf RcppDatetime}\& RcppDatetimeVector::operator() (int {\em i})\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
-\label{classRcppDatetimeVector_a2ffa33b5231a7975652e1e2498d0e16a}
+\subsubsection[{operator()}]{\setlength{\rightskip}{0pt plus 5cm}{\bf RcppDatetime} \& RcppDatetimeVector::operator() (int {\em i}) const}}
+\label{classRcppDatetimeVector_a5af7ec7f15263cee68ae11ce00770672}
 
 
-Definition at line 432 of file Rcpp.h.
+Definition at line 41 of file RcppDatetimeVector.cpp.
 
-References length, and v.\hypertarget{classRcppDatetimeVector_a8ca7268098fb2b9250523c4e2ef3c8b7}{
+References length, and v.\hypertarget{classRcppDatetimeVector_ab9c8683a2883c6cc3bb600d0b0682965}{
 \index{RcppDatetimeVector@{RcppDatetimeVector}!size@{size}}
 \index{size@{size}!RcppDatetimeVector@{RcppDatetimeVector}}
-\subsubsection[{size}]{\setlength{\rightskip}{0pt plus 5cm}int RcppDatetimeVector::size ()\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
-\label{classRcppDatetimeVector_a8ca7268098fb2b9250523c4e2ef3c8b7}
+\subsubsection[{size}]{\setlength{\rightskip}{0pt plus 5cm}int RcppDatetimeVector::size () const}}
+\label{classRcppDatetimeVector_ab9c8683a2883c6cc3bb600d0b0682965}
 
 
-Definition at line 440 of file Rcpp.h.
+Definition at line 50 of file RcppDatetimeVector.cpp.
 
 References length.
 
@@ -88,7 +88,7 @@ Referenced by RcppResultSet::add(), and RcppDateExample().
 \label{classRcppDatetimeVector_ae131031fcf2e65b7bfeee3d8e25c4f8c}
 
 
-Definition at line 443 of file Rcpp.h.
+Definition at line 36 of file RcppDatetimeVector.h.
 
 Referenced by operator()(), RcppDatetimeVector(), and size().\hypertarget{classRcppDatetimeVector_a0138476000351892e9ec591b2c9ec02f}{
 \index{RcppDatetimeVector@{RcppDatetimeVector}!v@{v}}
@@ -97,11 +97,11 @@ Referenced by operator()(), RcppDatetimeVector(), and size().\hypertarget{classR
 \label{classRcppDatetimeVector_a0138476000351892e9ec591b2c9ec02f}
 
 
-Definition at line 442 of file Rcpp.h.
+Definition at line 35 of file RcppDatetimeVector.h.
 
 Referenced by operator()(), RcppDatetimeVector(), and $\sim$RcppDatetimeVector().
 
 The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
 \item 
-src/\hyperlink{Rcpp_8h}{Rcpp.h}\item 
-src/\hyperlink{Rcpp_8cpp}{Rcpp.cpp}\end{DoxyCompactItemize}
+src/\hyperlink{RcppDatetimeVector_8h}{RcppDatetimeVector.h}\item 
+src/\hyperlink{RcppDatetimeVector_8cpp}{RcppDatetimeVector.cpp}\end{DoxyCompactItemize}

@@ -1,0 +1,84 @@
+.TH "src/RcppDate.cpp" 3 "19 Dec 2009" "Rcpp" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/RcppDate.cpp \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <RcppDate.h>\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "std::ostream & \fBoperator<<\fP (std::ostream &os, const \fBRcppDate\fP &date)"
+.br
+.ti -1c
+.RI "\fBRcppDate\fP \fBoperator+\fP (const \fBRcppDate\fP &date, int offset)"
+.br
+.ti -1c
+.RI "int \fBoperator-\fP (const \fBRcppDate\fP &date2, const \fBRcppDate\fP &date1)"
+.br
+.ti -1c
+.RI "bool \fBoperator<\fP (const \fBRcppDate\fP &date1, const \fBRcppDate\fP &date2)"
+.br
+.ti -1c
+.RI "bool \fBoperator>\fP (const \fBRcppDate\fP &date1, const \fBRcppDate\fP &date2)"
+.br
+.ti -1c
+.RI "bool \fBoperator>=\fP (const \fBRcppDate\fP &date1, const \fBRcppDate\fP &date2)"
+.br
+.ti -1c
+.RI "bool \fBoperator<=\fP (const \fBRcppDate\fP &date1, const \fBRcppDate\fP &date2)"
+.br
+.ti -1c
+.RI "bool \fBoperator==\fP (const \fBRcppDate\fP &date1, const \fBRcppDate\fP &date2)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "\fBRcppDate\fP operator+ (const \fBRcppDate\fP & date, int offset)"
+.PP
+Definition at line 54 of file RcppDate.cpp.
+.PP
+References RcppDate::day, RcppDate::jdn, RcppDate::jdn2mdy(), RcppDate::month, and RcppDate::year.
+.SS "int operator- (const \fBRcppDate\fP & date2, const \fBRcppDate\fP & date1)"
+.PP
+Definition at line 61 of file RcppDate.cpp.
+.PP
+References RcppDate::jdn.
+.SS "bool operator< (const \fBRcppDate\fP & date1, const \fBRcppDate\fP & date2)"
+.PP
+Definition at line 65 of file RcppDate.cpp.
+.PP
+References RcppDate::jdn.
+.SS "std::ostream& operator<< (std::ostream & os, const \fBRcppDate\fP & date)"
+.PP
+Definition at line 48 of file RcppDate.cpp.
+.PP
+References RcppDate::getDay(), RcppDate::getMonth(), and RcppDate::getYear().
+.SS "bool operator<= (const \fBRcppDate\fP & date1, const \fBRcppDate\fP & date2)"
+.PP
+Definition at line 77 of file RcppDate.cpp.
+.PP
+References RcppDate::jdn.
+.SS "bool operator== (const \fBRcppDate\fP & date1, const \fBRcppDate\fP & date2)"
+.PP
+Definition at line 81 of file RcppDate.cpp.
+.PP
+References RcppDate::jdn.
+.SS "bool operator> (const \fBRcppDate\fP & date1, const \fBRcppDate\fP & date2)"
+.PP
+Definition at line 69 of file RcppDate.cpp.
+.PP
+References RcppDate::jdn.
+.SS "bool operator>= (const \fBRcppDate\fP & date1, const \fBRcppDate\fP & date2)"
+.PP
+Definition at line 73 of file RcppDate.cpp.
+.PP
+References RcppDate::jdn.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Rcpp from the source code.

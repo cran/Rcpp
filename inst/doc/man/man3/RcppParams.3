@@ -1,4 +1,4 @@
-.TH "RcppParams" 3 "6 Nov 2009" "Rcpp" \" -*- nroff -*-
+.TH "RcppParams" 3 "19 Dec 2009" "Rcpp" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -7,7 +7,7 @@ RcppParams \-
 .br
 .PP
 .PP
-\fC#include <Rcpp.h>\fP
+\fC#include <RcppParams.h>\fP
 .SS "Public Member Functions"
 
 .in +1c
@@ -51,60 +51,60 @@ RcppParams \-
 .in -1c
 .SH "Detailed Description"
 .PP 
-Definition at line 151 of file Rcpp.h.
+Definition at line 30 of file RcppParams.h.
 .SH "Constructor & Destructor Documentation"
 .PP 
 .SS "RcppParams::RcppParams (SEXP params)"
 .PP
-Definition at line 24 of file Rcpp.cpp.
+Definition at line 25 of file RcppParams.cpp.
 .PP
 References _params, and pmap.
 .SH "Member Function Documentation"
 .PP 
 .SS "void RcppParams::checkNames (char * inputNames[], int len)"
 .PP
-Definition at line 40 of file Rcpp.cpp.
+Definition at line 41 of file RcppParams.cpp.
 .PP
 References pmap.
 .SS "bool RcppParams::exists (std::string name)"
 .PP
-Definition at line 50 of file Rcpp.cpp.
+Definition at line 51 of file RcppParams.cpp.
 .PP
 References pmap.
 .SS "bool RcppParams::getBoolValue (std::string name)"
 .PP
-Definition at line 178 of file Rcpp.cpp.
+Definition at line 123 of file RcppParams.cpp.
 .PP
 References _params, and pmap.
 .SS "\fBRcppDatetime\fP RcppParams::getDatetimeValue (std::string name)"
 .PP
-Definition at line 235 of file Rcpp.cpp.
+Definition at line 163 of file RcppParams.cpp.
 .PP
 References _params, and pmap.
 .SS "\fBRcppDate\fP RcppParams::getDateValue (std::string name)"
 .PP
-Definition at line 212 of file Rcpp.cpp.
+Definition at line 140 of file RcppParams.cpp.
 .PP
 References _params, and pmap.
 .PP
 Referenced by Rcpp_Example(), and RcppParamsExample().
 .SS "double RcppParams::getDoubleValue (std::string name)"
 .PP
-Definition at line 132 of file Rcpp.cpp.
+Definition at line 60 of file RcppParams.cpp.
 .PP
 References _params, and pmap.
 .PP
 Referenced by Rcpp_Example(), and RcppParamsExample().
 .SS "int RcppParams::getIntValue (std::string name)"
 .PP
-Definition at line 155 of file Rcpp.cpp.
+Definition at line 83 of file RcppParams.cpp.
 .PP
 References _params, and pmap.
 .PP
 Referenced by Rcpp_Example(), and RcppParamsExample().
 .SS "std::string RcppParams::getStringValue (std::string name)"
 .PP
-Definition at line 195 of file Rcpp.cpp.
+Definition at line 106 of file RcppParams.cpp.
 .PP
 References _params, and pmap.
 .PP
@@ -113,12 +113,12 @@ Referenced by Rcpp_Example(), and RcppParamsExample().
 .PP 
 .SS "SEXP \fBRcppParams::_params\fP\fC [private]\fP"
 .PP
-Definition at line 164 of file Rcpp.h.
+Definition at line 44 of file RcppParams.h.
 .PP
 Referenced by getBoolValue(), getDatetimeValue(), getDateValue(), getDoubleValue(), getIntValue(), getStringValue(), and RcppParams().
 .SS "std::map<std::string, int> \fBRcppParams::pmap\fP\fC [private]\fP"
 .PP
-Definition at line 163 of file Rcpp.h.
+Definition at line 43 of file RcppParams.h.
 .PP
 Referenced by checkNames(), exists(), getBoolValue(), getDatetimeValue(), getDateValue(), getDoubleValue(), getIntValue(), getStringValue(), and RcppParams().
 

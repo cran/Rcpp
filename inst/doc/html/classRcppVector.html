@@ -26,17 +26,17 @@
 </div>
 <div class="contents">
 <h1>RcppVector&lt; T &gt; Class Template Reference</h1><!-- doxytag: class="RcppVector" -->
-<p><code>#include &lt;<a class="el" href="Rcpp_8h_source.html">Rcpp.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="RcppVector_8h_source.html">RcppVector.h</a>&gt;</code></p>
 
 <p><a href="classRcppVector-members.html">List of all members.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td colspan="2"><h2>Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppVector.html#a0925b350f636a546e58ad0329786500a">RcppVector</a> (SEXP vec)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppVector.html#aeb7797ca2b2ac2d03fee0a543993f17b">RcppVector</a> (int <a class="el" href="classRcppVector.html#a733f5ed23ade0723338904f9f08457d6">len</a>)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppVector.html#a1e2424dc9b91014ba8b2c9351d97eb37">size</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">T &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppVector.html#a66aca1da0563af28e55768d98488a42d">operator()</a> (int i)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">T *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppVector.html#af4660a27a888a51693b02d2f51b47b08">cVector</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; T &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppVector.html#ac650f89b966962b167f3bc42aecf213b">stlVector</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppVector.html#abf02690969a4dfcb8c1abedd7f36814f">size</a> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">T &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppVector.html#ad68c84b52ed7bfcd6c71fe1f2ef92010">operator()</a> (int i) const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">T *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppVector.html#a5cf66a342593e509bb4a545305a1327e">cVector</a> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; T &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppVector.html#af40d2a7f0132330eb8c15ea4e42f4aa9">stlVector</a> () const </td></tr>
 <tr><td colspan="2"><h2>Private Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppVector.html#a733f5ed23ade0723338904f9f08457d6">len</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">T *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppVector.html#ac810c53db4c1b978bada104b38484b26">v</a></td></tr>
@@ -46,7 +46,7 @@
  class RcppVector&lt; T &gt;</h3>
 
 
-<p>Definition at line <a class="el" href="Rcpp_8h_source.html#l00360">360</a> of file <a class="el" href="Rcpp_8h_source.html">Rcpp.h</a>.</p>
+<p>Definition at line <a class="el" href="RcppVector_8h_source.html#l00029">29</a> of file <a class="el" href="RcppVector_8h_source.html">RcppVector.h</a>.</p>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a0925b350f636a546e58ad0329786500a"></a><!-- doxytag: member="RcppVector::RcppVector" ref="a0925b350f636a546e58ad0329786500a" args="(SEXP vec)" -->
 <div class="memitem">
@@ -66,9 +66,9 @@ template&lt;typename T &gt; </div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="Rcpp_8cpp_source.html#l00299">299</a> of file <a class="el" href="Rcpp_8cpp_source.html">Rcpp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="RcppVector_8cpp_source.html#l00026">26</a> of file <a class="el" href="RcppVector_8cpp_source.html">RcppVector.cpp</a>.</p>
 
-<p>References <a class="el" href="Rcpp_8h_source.html#l00376">RcppVector&lt; T &gt;::len</a>, and <a class="el" href="Rcpp_8h_source.html#l00377">RcppVector&lt; T &gt;::v</a>.</p>
+<p>References <a class="el" href="RcppVector_8h_source.html#l00038">RcppVector&lt; T &gt;::len</a>, and <a class="el" href="RcppVector_8h_source.html#l00039">RcppVector&lt; T &gt;::v</a>.</p>
 
 </div>
 </div>
@@ -90,14 +90,14 @@ template&lt;typename T &gt; </div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="Rcpp_8cpp_source.html#l00323">323</a> of file <a class="el" href="Rcpp_8cpp_source.html">Rcpp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="RcppVector_8cpp_source.html#l00050">50</a> of file <a class="el" href="RcppVector_8cpp_source.html">RcppVector.cpp</a>.</p>
 
-<p>References <a class="el" href="Rcpp_8h_source.html#l00376">RcppVector&lt; T &gt;::len</a>, and <a class="el" href="Rcpp_8h_source.html#l00377">RcppVector&lt; T &gt;::v</a>.</p>
+<p>References <a class="el" href="RcppVector_8h_source.html#l00038">RcppVector&lt; T &gt;::len</a>, and <a class="el" href="RcppVector_8h_source.html#l00039">RcppVector&lt; T &gt;::v</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="af4660a27a888a51693b02d2f51b47b08"></a><!-- doxytag: member="RcppVector::cVector" ref="af4660a27a888a51693b02d2f51b47b08" args="()" -->
+<a class="anchor" id="a5cf66a342593e509bb4a545305a1327e"></a><!-- doxytag: member="RcppVector::cVector" ref="a5cf66a342593e509bb4a545305a1327e" args="() const " -->
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -108,68 +108,70 @@ template&lt;typename T &gt; </div>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
+          <td> const<code> [inline]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="Rcpp_8cpp_source.html#l00331">331</a> of file <a class="el" href="Rcpp_8cpp_source.html">Rcpp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="RcppVector_8cpp_source.html#l00073">73</a> of file <a class="el" href="RcppVector_8cpp_source.html">RcppVector.cpp</a>.</p>
 
-<p>References <a class="el" href="Rcpp_8h_source.html#l00376">RcppVector&lt; T &gt;::len</a>, and <a class="el" href="Rcpp_8h_source.html#l00377">RcppVector&lt; T &gt;::v</a>.</p>
+<p>References <a class="el" href="RcppVector_8h_source.html#l00038">RcppVector&lt; T &gt;::len</a>, and <a class="el" href="RcppVector_8h_source.html#l00039">RcppVector&lt; T &gt;::v</a>.</p>
 
-<p>Referenced by <a class="el" href="Rcpp_8cpp_source.html#l00652">RcppResultSet::add()</a>, and <a class="el" href="RcppExample_8cpp_source.html#l00109">Rcpp_Example()</a>.</p>
+<p>Referenced by <a class="el" href="RcppResultSet_8cpp_source.html#l00212">RcppResultSet::add()</a>, and <a class="el" href="RcppExample_8cpp_source.html#l00110">Rcpp_Example()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a66aca1da0563af28e55768d98488a42d"></a><!-- doxytag: member="RcppVector::operator()" ref="a66aca1da0563af28e55768d98488a42d" args="(int i)" -->
+<a class="anchor" id="ad68c84b52ed7bfcd6c71fe1f2ef92010"></a><!-- doxytag: member="RcppVector::operator()" ref="ad68c84b52ed7bfcd6c71fe1f2ef92010" args="(int i) const " -->
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T&gt; </div>
+template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">T&amp; <a class="el" href="classRcppVector.html">RcppVector</a>&lt; T &gt;::operator() </td>
+          <td class="memname">T &amp; <a class="el" href="classRcppVector.html">RcppVector</a>&lt; T &gt;::operator() </td>
           <td>(</td>
           <td class="paramtype">int&nbsp;</td>
           <td class="paramname"> <em>i</em></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
+          <td> const<code> [inline]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="Rcpp_8h_source.html#l00365">365</a> of file <a class="el" href="Rcpp_8h_source.html">Rcpp.h</a>.</p>
+<p>Definition at line <a class="el" href="RcppVector_8cpp_source.html#l00063">63</a> of file <a class="el" href="RcppVector_8cpp_source.html">RcppVector.cpp</a>.</p>
 
-<p>References <a class="el" href="Rcpp_8h_source.html#l00377">RcppVector&lt; T &gt;::v</a>.</p>
+<p>References <a class="el" href="RcppVector_8h_source.html#l00038">RcppVector&lt; T &gt;::len</a>, and <a class="el" href="RcppVector_8h_source.html#l00039">RcppVector&lt; T &gt;::v</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a1e2424dc9b91014ba8b2c9351d97eb37"></a><!-- doxytag: member="RcppVector::size" ref="a1e2424dc9b91014ba8b2c9351d97eb37" args="()" -->
+<a class="anchor" id="abf02690969a4dfcb8c1abedd7f36814f"></a><!-- doxytag: member="RcppVector::size" ref="abf02690969a4dfcb8c1abedd7f36814f" args="() const " -->
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T&gt; </div>
+template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">int <a class="el" href="classRcppVector.html">RcppVector</a>&lt; T &gt;::size </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
+          <td> const<code> [inline]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="Rcpp_8h_source.html#l00364">364</a> of file <a class="el" href="Rcpp_8h_source.html">Rcpp.h</a>.</p>
+<p>Definition at line <a class="el" href="RcppVector_8cpp_source.html#l00058">58</a> of file <a class="el" href="RcppVector_8cpp_source.html">RcppVector.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="Rcpp_8cpp_source.html#l00652">RcppResultSet::add()</a>, <a class="el" href="RcppExample_8cpp_source.html#l00109">Rcpp_Example()</a>, and <a class="el" href="RcppExample_8cpp_source.html#l00423">RcppVectorExample()</a>.</p>
+<p>References <a class="el" href="RcppVector_8h_source.html#l00038">RcppVector&lt; T &gt;::len</a>.</p>
+
+<p>Referenced by <a class="el" href="RcppResultSet_8cpp_source.html#l00212">RcppResultSet::add()</a>, <a class="el" href="RcppExample_8cpp_source.html#l00110">Rcpp_Example()</a>, and <a class="el" href="RcppExample_8cpp_source.html#l00424">RcppVectorExample()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ac650f89b966962b167f3bc42aecf213b"></a><!-- doxytag: member="RcppVector::stlVector" ref="ac650f89b966962b167f3bc42aecf213b" args="()" -->
+<a class="anchor" id="af40d2a7f0132330eb8c15ea4e42f4aa9"></a><!-- doxytag: member="RcppVector::stlVector" ref="af40d2a7f0132330eb8c15ea4e42f4aa9" args="() const " -->
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -180,17 +182,17 @@ template&lt;typename T &gt; </div>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
+          <td> const<code> [inline]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="Rcpp_8cpp_source.html#l00339">339</a> of file <a class="el" href="Rcpp_8cpp_source.html">Rcpp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="RcppVector_8cpp_source.html#l00081">81</a> of file <a class="el" href="RcppVector_8cpp_source.html">RcppVector.cpp</a>.</p>
 
-<p>References <a class="el" href="Rcpp_8h_source.html#l00376">RcppVector&lt; T &gt;::len</a>, and <a class="el" href="Rcpp_8h_source.html#l00377">RcppVector&lt; T &gt;::v</a>.</p>
+<p>References <a class="el" href="RcppVector_8h_source.html#l00038">RcppVector&lt; T &gt;::len</a>, and <a class="el" href="RcppVector_8h_source.html#l00039">RcppVector&lt; T &gt;::v</a>.</p>
 
-<p>Referenced by <a class="el" href="RcppExample_8cpp_source.html#l00109">Rcpp_Example()</a>.</p>
+<p>Referenced by <a class="el" href="RcppExample_8cpp_source.html#l00110">Rcpp_Example()</a>.</p>
 
 </div>
 </div>
@@ -208,9 +210,9 @@ template&lt;typename T&gt; </div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="Rcpp_8h_source.html#l00376">376</a> of file <a class="el" href="Rcpp_8h_source.html">Rcpp.h</a>.</p>
+<p>Definition at line <a class="el" href="RcppVector_8h_source.html#l00038">38</a> of file <a class="el" href="RcppVector_8h_source.html">RcppVector.h</a>.</p>
 
-<p>Referenced by <a class="el" href="Rcpp_8cpp_source.html#l00331">RcppVector&lt; T &gt;::cVector()</a>, <a class="el" href="Rcpp_8cpp_source.html#l00299">RcppVector&lt; T &gt;::RcppVector()</a>, and <a class="el" href="Rcpp_8cpp_source.html#l00339">RcppVector&lt; T &gt;::stlVector()</a>.</p>
+<p>Referenced by <a class="el" href="RcppVector_8cpp_source.html#l00073">RcppVector&lt; T &gt;::cVector()</a>, <a class="el" href="RcppVector_8cpp_source.html#l00063">RcppVector&lt; T &gt;::operator()()</a>, <a class="el" href="RcppVector_8cpp_source.html#l00026">RcppVector&lt; T &gt;::RcppVector()</a>, <a class="el" href="RcppVector_8cpp_source.html#l00058">RcppVector&lt; T &gt;::size()</a>, and <a class="el" href="RcppVector_8cpp_source.html#l00081">RcppVector&lt; T &gt;::stlVector()</a>.</p>
 
 </div>
 </div>
@@ -227,18 +229,18 @@ template&lt;typename T&gt; </div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="Rcpp_8h_source.html#l00377">377</a> of file <a class="el" href="Rcpp_8h_source.html">Rcpp.h</a>.</p>
+<p>Definition at line <a class="el" href="RcppVector_8h_source.html#l00039">39</a> of file <a class="el" href="RcppVector_8h_source.html">RcppVector.h</a>.</p>
 
-<p>Referenced by <a class="el" href="Rcpp_8cpp_source.html#l00331">RcppVector&lt; T &gt;::cVector()</a>, <a class="el" href="Rcpp_8h_source.html#l00365">RcppVector&lt; T &gt;::operator()()</a>, <a class="el" href="Rcpp_8cpp_source.html#l00299">RcppVector&lt; T &gt;::RcppVector()</a>, and <a class="el" href="Rcpp_8cpp_source.html#l00339">RcppVector&lt; T &gt;::stlVector()</a>.</p>
+<p>Referenced by <a class="el" href="RcppVector_8cpp_source.html#l00073">RcppVector&lt; T &gt;::cVector()</a>, <a class="el" href="RcppVector_8cpp_source.html#l00063">RcppVector&lt; T &gt;::operator()()</a>, <a class="el" href="RcppVector_8cpp_source.html#l00026">RcppVector&lt; T &gt;::RcppVector()</a>, and <a class="el" href="RcppVector_8cpp_source.html#l00081">RcppVector&lt; T &gt;::stlVector()</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/<a class="el" href="Rcpp_8h_source.html">Rcpp.h</a></li>
-<li>src/<a class="el" href="Rcpp_8cpp_source.html">Rcpp.cpp</a></li>
+<li>src/<a class="el" href="RcppVector_8h_source.html">RcppVector.h</a></li>
+<li>src/<a class="el" href="RcppVector_8cpp_source.html">RcppVector.cpp</a></li>
 </ul>
 </div>
-<hr size="1"/><address style="text-align: right;"><small>Generated on Fri Nov 6 13:03:18 2009 for Rcpp by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Sat Dec 19 14:01:43 2009 for Rcpp by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>
