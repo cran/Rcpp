@@ -1,4 +1,4 @@
-.TH "src/RcppExample.cpp" 3 "19 Dec 2009" "Rcpp" \" -*- nroff -*-
+.TH "src/RcppExample.cpp" 3 "2 Jan 2010" "Rcpp" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -34,6 +34,12 @@ src/RcppExample.cpp \-
 .ti -1c
 .RI "RcppExport SEXP \fBRcppVectorExample\fP (SEXP vector)"
 .br
+.ti -1c
+.RI "RcppExport SEXP \fBRcppXPtrExample_create_external_pointer\fP ()"
+.br
+.ti -1c
+.RI "RcppExport SEXP \fBRcppXPtrExample_get_external_pointer\fP (SEXP x)"
+.br
 .in -1c
 .SH "Function Documentation"
 .PP 
@@ -57,6 +63,12 @@ References copyMessageToR(), RcppParams::getDateValue(), RcppDate::getDay(), Rcp
 Definition at line 424 of file RcppExample.cpp.
 .PP
 References RcppResultSet::add(), copyMessageToR(), RcppResultSet::getReturnList(), and RcppVector< T >::size().
+.SS "RcppExport SEXP RcppXPtrExample_create_external_pointer ()"
+.PP
+Definition at line 465 of file RcppExample.cpp.
+.SS "RcppExport SEXP RcppXPtrExample_get_external_pointer (SEXP x)"
+.PP
+Definition at line 473 of file RcppExample.cpp.
 .SH "Author"
 .PP 
 Generated automatically by Doxygen for Rcpp from the source code.

@@ -1,6 +1,7 @@
 #!/usr/bin/r
 
 suppressMessages(library(Rcpp))
+suppressMessages(library(inline))
 
 
 foo <- '

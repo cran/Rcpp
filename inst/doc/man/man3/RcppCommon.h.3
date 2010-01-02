@@ -1,4 +1,4 @@
-.TH "src/RcppCommon.h" 3 "19 Dec 2009" "Rcpp" \" -*- nroff -*-
+.TH "src/RcppCommon.h" 3 "2 Jan 2010" "Rcpp" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -6,6 +6,8 @@ src/RcppCommon.h \-
 .SH SYNOPSIS
 .br
 .PP
+\fC#include <exception>\fP
+.br
 \fC#include <iostream>\fP
 .br
 \fC#include <sstream>\fP
@@ -23,6 +25,10 @@ src/RcppCommon.h \-
 \fC#include <R.h>\fP
 .br
 \fC#include <Rinternals.h>\fP
+.br
+\fC#include <R_ext/Callbacks.h>\fP
+.br
+\fC#include <Rversion.h>\fP
 .br
 
 .SS "Defines"
@@ -47,20 +53,26 @@ src/RcppCommon.h \-
 .ti -1c
 .RI "void \fBlogTxtFunction\fP (const char *file, const int line, const char *expression)"
 .br
+.ti -1c
+.RI "void \fBforward_uncaught_exceptions_to_r\fP ()"
+.br
+.ti -1c
+.RI "RcppExport SEXP \fBinitUncaughtExceptionHandler\fP ()"
+.br
 .in -1c
 .SH "Define Documentation"
 .PP 
 .SS "#define logTxt(x)"
 .PP
-Definition at line 52 of file RcppCommon.h.
+Definition at line 56 of file RcppCommon.h.
 .PP
-Referenced by RcppSexp::RcppSexp(), and RcppSexp::~RcppSexp().
+Referenced by Rcpp::wrap().
 .SS "#define R_NO_REMAP"
 .PP
-Definition at line 35 of file RcppCommon.h.
+Definition at line 37 of file RcppCommon.h.
 .SS "#define RcppExport   extern 'C'"
 .PP
-Definition at line 43 of file RcppCommon.h.
+Definition at line 47 of file RcppCommon.h.
 .SH "Function Documentation"
 .PP 
 .SS "char* copyMessageToR (const char *const  mesg)"
@@ -68,6 +80,16 @@ Definition at line 43 of file RcppCommon.h.
 Definition at line 29 of file RcppCommon.cpp.
 .PP
 Referenced by Rcpp_Example(), RcppDateExample(), RcppParamsExample(), and RcppVectorExample().
+.SS "void forward_uncaught_exceptions_to_r ()"
+.PP
+Definition at line 29 of file exceptions.cpp.
+.PP
+Referenced by initUncaughtExceptionHandler().
+.SS "RcppExport SEXP initUncaughtExceptionHandler ()"
+.PP
+Definition at line 77 of file exceptions.cpp.
+.PP
+References forward_uncaught_exceptions_to_r().
 .SS "void logTxtFunction (const char * file, const int line, const char * expression)\fC [inline]\fP"
 .PP
 Definition at line 39 of file RcppCommon.cpp.

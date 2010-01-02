@@ -1,3 +1,205 @@
+2010-01-02  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION: Release 0.7.1
+
+	* debian/*: Similarly updated for new release to Debian
+
+2010-01-02  Romain Francois <francoisromain@free.fr>
+
+	* pkg/src/RcppSexp.h: Added to preserve existing interface,
+	  implementation use the redesigned class src/RObject.h
+
+2010-01-01  Romain Francois <francoisromain@free.fr>
+
+	* pkg/src/Rcpp/RObject.h: RObject::RObject constructors are
+	replaced by the Rcpp::wrap set of functions. Currently the wrap
+	functions make a RObject object but it is likely that as new
+	classes become available in the new API, wrap will return
+	instances of classes that extend RObject.
+
+	* pkg/src/Rcpp/RObject.h: s/protect/preserve/, added methods
+	isPreserved and forgetPreserve
+
+	* ** : adapted examples, code, and unit tests to reflect both
+	above items
+
+2009-12-31  Romain Francois <francoisromain@free.fr>
+
+	* src/Rcpp/Evaluator.h : new class Rcpp::Evaluator that eases
+	evaluation of R expression with error capture. so that we can for example
+	throw C++ exceptions
+
+	* src/Evaluator.cpp : implementation of Rcpp::Evaluator
+
+	* inst/unitTests/runit.evaluator: unit tests of Rcpp::Evaluator
+
+	* inst/Rcpp/RObject.h: RObject::RObject(SEXP) now initializes isProtected
+
+	* inst/src/Environment.cpp: use of exceptions
+
+2009-12-30  Romain Francois <francoisromain@free.fr>
+
+	* src/Rcpp/Environment.h : added support for environment through the
+	Rcpp::Environment class
+
+	* src/Environment.cpp: idem
+
+	* inst/unitTests/runit.environments.R: testing the above
+
+	* src/RcppCommon.h: now includes <R_ext/Callbacks.h>, needed for the
+	environment support
+
+2009-12-30  Romain Francois <francoisromain@free.fr>
+
+	* src/Makevars* : adapt for allowong copy of the Rcpp directory
+
+	* src/Rcpp_RObject.h: replace by src/Rcpp/RObject.h
+
+	* src/Rcpp_XPtr.h: replaced by src/Rcpp/XPtr.h
+
+	* src/*.cpp: adapt to the Rcpp directory
+
+	* cleanup: idem
+
+2009-12-30  Romain Francois <francoisromain@free.fr>
+
+	* inst/unitTests/runit.RObject.R: new unit tests
+
+	* inst/unitTests/runit.exceptions.R: idem
+
+	* inst/unitTests/runit.XPtr.R: idem
+
+	* man/RcppUnitTests.Rd: shows and link unit test reports generated at
+	build time
+
+2009-12-29  Romain Francois <francoisromain@free.fr>
+
+	* src/Rcpp_RObject.{h,cpp}: new namespace Rcpp and new class
+	Rcpp::RObject to replace RcppSexp with the same functionality.
+
+	* src/Rcpp_XPtr.h: replaces RcppXPtr.h and the class is now 
+	Rcpp::XPtr<> and extends Rcpp::RObject
+
+	* inst/examples/RcppInline/external_pointer.r: use the new namespace
+
+	* inst/examples/RcppInline/RcppInlineWithLibsExamples.r: idem
+
+	* inst/examples/RcppInline/RcppSexpTests.r: idem
+
+	* DESCRIPTION: marked as version 0.7.0.5
+
+	* inst/doc/*: fake (empty) vignette and unit test trigger
+
+	* inst/unitTests/*: prepare the space for unit tests
+
+	* tests/doRUnit.R : added the usual RUnit tests trigger
+
+2009-12-29  Romain Francois <francoisromain@free.fr>
+
+	* src/RcppXPtr.h: now RcppXPtr extends RcppSexp and RcppSexp manages
+	garbarge collection, attributes, etc ...
+
+	* src/exceptions.cpp: replaces src/exception_handling.cpp
+
+	* DESCRIPTION: now suggesting RUnit.
+
+2009-12-29  Romain Francois <francoisromain@free.fr>
+
+	* src/RcppXPtr.h: added operator SEXP() to class
+	RcppXPtr to ease implicit conversion from RcppXPtr to SEXP.
+	This means we can directly return the RcppXPtr object to R when the
+	return type of the function is SEXP. (no need to explicitely call
+	asSexp anymore)
+
+	* src/RcppSexp.{h,cpp} : idem
+
+2009-12-29  Romain Francois <francoisromain@free.fr>
+
+	* src/RcppXPtr.h: new smart external pointer wrapper. The RcppXPtr
+	template can be used to wrap a external pointer (SEXP) so that it
+	looks like the dumb pointer it is wrapping (as far as the * and ->
+	operator are concerned). The template parameter controls the type
+	of object that is wrapped by the pointer.
+
+	* src/Rcpp.h: importing the RcppXPtr.h header
+
+	* src/RcppExample.cpp: added an example of RcppXPtr usage
+
+	* inst/examples/RcppInline/external_pointer.r: added example using
+	the RcppXPtr template
+
+	* DESCRIPTION: marking this as 0.7.0.4
+
+2009-12-28  Romain Francois <francoisromain@free.fr>
+
+	* R/exceptions.R: s/uncaught_cpp_exception/cpp_exception/ and added a
+	'class' argument to hold the class name of the C++ exception
+	(range_error, etc ...)
+
+	* inst/examples/RcppInline/UncaughtExceptions.r: extend examples to
+	show how to grab details of the C++ exception
+
+	* src/exception_handling.cpp: factored out from RcppCommon.cpp, now
+	able to grab the class name of the exception and its message.
+
+2009-12-27  Dirk Eddelbuettel  <edd@debian.org>
+
+	* R/RcppInline.R: Removed as we now use cfunction() from inline (>= 0.3.4)
+        * man/{RcppInline,internals}.Rd: idem
+
+	* NAMESPACE: removed entries related to cfunction and methods
+
+	* DESCRIPTION: Added 'Suggests: inline (>= 0.3.4)
+
+	* inst/examples/RcppInline/*R: Add library(inline) or require(inline)
+
+2009-12-27  Romain Francois <francoisromain@free.fr>
+
+	* src/RcppCommon.{h,cpp} : added experimental uncaught exception
+	management
+
+	* R/zzz.R : added .onAttach, used to register the uncaught exception
+	management on package attach
+
+	* R/exceptions.R : added R side of the exception management, unexported
+	as it is only used by internal C++ code
+
+	* inst/examples/RcppInline/UncaughtExceptions.r: demo of the
+	uncaught exception system
+
+	* src/RcppSexp.{h,cpp} : added method isNULL to test if the
+	underlying SEXP is NULL
+
+	* src/RcppSexp.{h,cpp} : added some methods to deal with attributes
+	attributeNames : the names of the attributes as a vector<string>
+	hasAttribute   : test whether the SEXP has the given attribute
+	attr           : extract the attribute (might return NULL)
+
+	* src/RcppSexp.{h,cpp} : added RcppSexp(bool), RcppSexp(vector<bool>)
+	constructors and RcppSexp.asBool(), RcppSexp.asStdVectorBool() methods
+
+	* inst/examples/RcppInline/RcppSexpTests.r: examples/tests of the
+	above items
+
+2009-12-26  Romain Francois <francoisromain@free.fr>
+
+	* src/RcppSexp.{h,cpp} : added std::set<{int,double,Rbyte,string}> as
+	accepted input type for the RcppSexp class (needed by RProtoBuf)
+
+	* inst/examples/RcppInline/RcppSexpTests.r: examples/tests of the above
+
+2009-12-21  Romain Francois <francoisromain@free.fr>
+
+	* src/RcppSexp.{h,cpp} : support for raw vector added into RcppSexp
+
+	* inst/examples/RcppInline/RcppSexpTests.r: examples of raw vector
+	support
+
+2009-12-20  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/examples/RcppInline/RcppInlineWithLibsExamples.r: Minor
+	  simplifications using new RcppSexp types, added third example
+
 2009-12-19  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION: Release 0.7.0
@@ -5,7 +207,7 @@
 	* DESCRIPTION: Descrition fields reworded and expanded to explicitly
 	  mention 'inlining' ability as well as simple SEXP support.
 
-	* src/RcppSexp.{h,cpp}: Switch to R_ProtectObject and R_ReleaseObject
+	* src/RcppSexp.{h,cpp}: Switch to R_PreserveObject and R_ReleaseObject
 	  with a big thanks to Romain for the most appropriate suggestion
 	* src/RcppSexp.{h,cpp}: Added converters for vectors of
 	  int, double, and std::string vectors

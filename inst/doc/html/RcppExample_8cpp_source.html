@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul>
       <li><a href="main.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
@@ -485,8 +486,23 @@
 <a name="l00461"></a>00461 
 <a name="l00462"></a>00462     <span class="keywordflow">return</span> rl;
 <a name="l00463"></a>00463 }
+<a name="l00464"></a>00464 
+<a name="l00465"></a><a class="code" href="RcppExample_8cpp.html#a17afe256d543ac50dd7894801693374a">00465</a> <a class="code" href="RcppCommon_8h.html#adf8c24d3d9680f80efbccf56b0bbcb87">RcppExport</a> SEXP <a class="code" href="RcppExample_8cpp.html#a17afe256d543ac50dd7894801693374a">RcppXPtrExample_create_external_pointer</a>(){
+<a name="l00466"></a>00466         std::vector&lt;int&gt; *v = <span class="keyword">new</span> std::vector&lt;int&gt; ;
+<a name="l00467"></a>00467         v-&gt;push_back( 1 ) ;
+<a name="l00468"></a>00468         v-&gt;push_back( 2 ) ;
+<a name="l00469"></a>00469         Rcpp::XPtr&lt; std::vector&lt;int&gt; &gt; p(v) ;
+<a name="l00470"></a>00470         <span class="keywordflow">return</span> p ;
+<a name="l00471"></a>00471 }
+<a name="l00472"></a>00472 
+<a name="l00473"></a><a class="code" href="RcppExample_8cpp.html#a577f9558171bf15949ee49fc6d72fdfe">00473</a> <a class="code" href="RcppCommon_8h.html#adf8c24d3d9680f80efbccf56b0bbcb87">RcppExport</a> SEXP <a class="code" href="RcppExample_8cpp.html#a577f9558171bf15949ee49fc6d72fdfe">RcppXPtrExample_get_external_pointer</a>(SEXP x){
+<a name="l00474"></a>00474         Rcpp::XPtr&lt; std::vector&lt;int&gt; &gt; p(x) ;
+<a name="l00475"></a>00475         <span class="keywordflow">return</span> Rf_ScalarInteger( p-&gt;back( ) ) ;
+<a name="l00476"></a>00476 }
+<a name="l00477"></a>00477 
+<a name="l00478"></a>00478 
 </pre></div></div>
-<hr size="1"/><address style="text-align: right;"><small>Generated on Sat Dec 19 14:00:50 2009 for Rcpp by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Sat Jan 2 15:41:28 2010 for Rcpp by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>
