@@ -1,13 +1,13 @@
 <map id="G" name="G">
-<area shape="rect" href="$RcppCommon_8h.html" title="RcppCommon.h" alt="" coords="375,237,489,267"/>
-<area shape="rect" href="$RcppDate_8h.html" title="RcppDate.h" alt="" coords="117,160,205,189"/>
-<area shape="rect" href="$RcppDateVector_8h.html" title="RcppDateVector.h" alt="" coords="17,83,143,112"/>
-<area shape="rect" href="$RcppDatetime_8h.html" title="RcppDatetime.h" alt="" coords="280,160,395,189"/>
-<area shape="rect" href="$RcppDatetimeVector_8h.html" title="RcppDatetimeVector.h" alt="" coords="391,83,543,112"/>
-<area shape="rect" href="$RcppStringVector_8h.html" title="RcppStringVector.h" alt="" coords="469,160,603,189"/>
-<area shape="rect" href="$RcppFrame_8h.html" title="RcppFrame.h" alt="" coords="217,83,316,112"/>
-<area shape="rect" href="$RcppList_8h.html" title="RcppList.h" alt="" coords="627,160,709,189"/>
-<area shape="rect" href="$RcppMatrix_8h.html" title="RcppMatrix.h" alt="" coords="733,160,832,189"/>
-<area shape="rect" href="$RcppNumList_8h.html" title="RcppNumList.h" alt="" coords="735,83,844,112"/>
-<area shape="rect" href="$RcppVector_8h.html" title="RcppVector.h" alt="" coords="869,83,968,112"/>
+<area shape="rect" href="$RcppCommon_8h.html" title="RcppCommon.h" alt="" coords="440,237,555,267"/>
+<area shape="rect" href="$RcppDate_8h.html" title="RcppDate.h" alt="" coords="183,160,271,189"/>
+<area shape="rect" href="$RcppDateVector_8h.html" title="RcppDateVector.h" alt="" coords="83,83,208,112"/>
+<area shape="rect" href="$RcppDatetime_8h.html" title="RcppDatetime.h" alt="" coords="345,160,460,189"/>
+<area shape="rect" href="$RcppDatetimeVector_8h.html" title="RcppDatetimeVector.h" alt="" coords="456,83,608,112"/>
+<area shape="rect" href="$RcppStringVector_8h.html" title="RcppStringVector.h" alt="" coords="535,160,668,189"/>
+<area shape="rect" href="$RcppFrame_8h.html" title="RcppFrame.h" alt="" coords="283,83,381,112"/>
+<area shape="rect" href="$RcppList_8h.html" title="RcppList.h" alt="" coords="692,160,775,189"/>
+<area shape="rect" href="$RcppMatrix_8h.html" title="RcppMatrix.h" alt="" coords="799,160,897,189"/>
+<area shape="rect" href="$RcppNumList_8h.html" title="RcppNumList.h" alt="" coords="800,83,909,112"/>
+<area shape="rect" href="$RcppVector_8h.html" title="RcppVector.h" alt="" coords="935,83,1033,112"/>
 </map>

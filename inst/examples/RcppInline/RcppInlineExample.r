@@ -1,6 +1,7 @@
 #!/usr/bin/r
 
 suppressMessages(library(Rcpp))
+suppressMessages(library(inline))
 
 foo <- '
   SEXP  rl = R_NilValue;        // Use this when there is nothing to be returned.

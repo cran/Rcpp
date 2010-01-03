@@ -6,8 +6,9 @@
 <area shape="rect" href="$RcppFrame_8h.html" title="src/RcppFrame.h" alt="" coords="459,83,579,112"/>
 <area shape="rect" href="$RcppFunction_8h.html" title="src/RcppFunction.h" alt="" coords="613,83,747,112"/>
 <area shape="rect" href="$RcppParams_8h.html" title="src/RcppParams.h" alt="" coords="804,83,932,112"/>
-<area shape="rect" href="$RcppCommon_8cpp.html" title="src/RcppCommon.cpp" alt="" coords="303,315,452,344"/>
-<area shape="rect" href="$RcppExample_8cpp.html" title="src/RcppExample.cpp" alt="" coords="476,315,625,344"/>
+<area shape="rect" href="$exceptions_8cpp.html" title="src/exceptions.cpp" alt="" coords="235,315,365,344"/>
+<area shape="rect" href="$RcppCommon_8cpp.html" title="src/RcppCommon.cpp" alt="" coords="389,315,539,344"/>
+<area shape="rect" href="$RcppExample_8cpp.html" title="src/RcppExample.cpp" alt="" coords="563,315,712,344"/>
 <area shape="rect" href="$RcppDateVector_8cpp.html" title="src/RcppDateVector.cpp" alt="" coords="5,160,168,189"/>
 <area shape="rect" href="$RcppResultSet_8cpp.html" title="src/RcppResultSet.cpp" alt="" coords="236,237,391,267"/>
 <area shape="rect" href="$RcppFrame_8cpp.html" title="src/RcppFrame.cpp" alt="" coords="509,160,643,189"/>

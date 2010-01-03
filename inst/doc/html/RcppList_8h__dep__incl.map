@@ -1,8 +1,9 @@
 <map id="G" name="G">
-<area shape="rect" href="$Rcpp_8h.html" title="src/Rcpp.h" alt="" coords="125,160,208,189"/>
-<area shape="rect" href="$RcppList_8cpp.html" title="src/RcppList.cpp" alt="" coords="149,83,269,112"/>
-<area shape="rect" href="$RcppResultSet_8h.html" title="src/RcppResultSet.h" alt="" coords="293,83,435,112"/>
-<area shape="rect" href="$RcppCommon_8cpp.html" title="src/RcppCommon.cpp" alt="" coords="5,237,155,267"/>
-<area shape="rect" href="$RcppExample_8cpp.html" title="src/RcppExample.cpp" alt="" coords="179,237,328,267"/>
-<area shape="rect" href="$RcppResultSet_8cpp.html" title="src/RcppResultSet.cpp" alt="" coords="287,160,441,189"/>
+<area shape="rect" href="$Rcpp_8h.html" title="src/Rcpp.h" alt="" coords="193,160,276,189"/>
+<area shape="rect" href="$RcppList_8cpp.html" title="src/RcppList.cpp" alt="" coords="217,83,337,112"/>
+<area shape="rect" href="$RcppResultSet_8h.html" title="src/RcppResultSet.h" alt="" coords="361,83,503,112"/>
+<area shape="rect" href="$exceptions_8cpp.html" title="src/exceptions.cpp" alt="" coords="5,237,136,267"/>
+<area shape="rect" href="$RcppCommon_8cpp.html" title="src/RcppCommon.cpp" alt="" coords="160,237,309,267"/>
+<area shape="rect" href="$RcppExample_8cpp.html" title="src/RcppExample.cpp" alt="" coords="333,237,483,267"/>
+<area shape="rect" href="$RcppResultSet_8cpp.html" title="src/RcppResultSet.cpp" alt="" coords="355,160,509,189"/>
 </map>

@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul>
       <li><a href="main.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
     </ul>
@@ -31,30 +32,53 @@
 <p><a href="classRcppSexp-members.html">List of all members.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td colspan="2"><h2>Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#ac04b17cce83078dff3bfa9b200e9bbef">RcppSexp</a> (SEXP sexp, int numprot=0)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#a78fc5fb126d388f9c4c3e9febcc95229">RcppSexp</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#a37253a883401c9714dbd3ec50e0f78a1">RcppSexp</a> (SEXP m_sexp=R_NilValue)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#a54cb551beed3570ca0a1aa0566d512cf">~RcppSexp</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#acf6fc00ffd9616dea4926baf40e6f77d">RcppSexp</a> (const double &amp;v)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#a2ddf3900d04a52a59e15faebe83a4e8b">RcppSexp</a> (const int &amp;v)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#a325df76d427552cf1bb2d010311b8d21">RcppSexp</a> (const Rbyte &amp;v)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#a0876ffb6bdb82d6fe2f30a6a73d51dbb">RcppSexp</a> (const std::string &amp;v)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#a57010f894bd69c42720edd71198a266c">RcppSexp</a> (const bool &amp;v)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#ab276f77e2cc03da2d60d8826d095d757">RcppSexp</a> (const std::vector&lt; int &gt; &amp;v)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#addfe0bf529d5adc8cfd3729035676cf1">RcppSexp</a> (const std::vector&lt; double &gt; &amp;v)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#a72d7ac372a23dcb2d8e7752afc7f07ac">RcppSexp</a> (const std::vector&lt; std::string &gt; &amp;v)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#a54cb551beed3570ca0a1aa0566d512cf">~RcppSexp</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#a1cc2afc964adeae614802949199e4383">RcppSexp</a> (const std::vector&lt; Rbyte &gt; &amp;v)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#ad953b65f5ea98d7519b51f1f56c8847a">RcppSexp</a> (const std::vector&lt; bool &gt; &amp;v)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#ab11056882afe3cf2c904003b63f6ac99">RcppSexp</a> (const std::set&lt; int &gt; &amp;v)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#ab7e14928df338b3d0280685bf89c0af4">RcppSexp</a> (const std::set&lt; double &gt; &amp;v)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#a991a6f440c8a294f2dc88530440fc3e3">RcppSexp</a> (const std::set&lt; std::string &gt; &amp;v)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#a429ba2c201e1535e1884d819b25479be">RcppSexp</a> (const std::set&lt; Rbyte &gt; &amp;v)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#ad4ee2b8e4024eded1a8468f627fdd9ca">asBool</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">double&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#a418a55a88fe2161d2bce11dbe1d49153">asDouble</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#abf1d0f9b957e14e1ed3846eac93c7ccd">asInt</a> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Rbyte&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#ad699e452afde5da0170a00b9536c3166">asRaw</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">std::string&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#ade685360b8c743411135def23f229911">asStdString</a> () const </td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#af380f8a164c537a8e99da54660ed5870">asStdVectorInt</a> () const </td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#a44f99ee7521861aff309dc008b788868">asStdVectorDouble</a> () const </td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#a74c199ef6a4a954ebe035a0951d303a3">asStdVectorString</a> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#a52e3a6412053e02416a62d15525b69ae">asStdVectorInt</a> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#ab68e3dc2062d2b336405836ffb0f22c4">asStdVectorDouble</a> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#a7ae15462b92d708a80711bc597d72255">asStdVectorString</a> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; Rbyte &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#a36d997dd386ef298196752f61cd51358">asStdVectorRaw</a> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; bool &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#aacbec90ef55c66fe5e56bdb1c84d76db">asStdVectorBool</a> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#af8089b6667c4d6d5a8d0db5410e3caf9">protect</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#a4ac544b2eb8ab56023f79edbf65415ce">release</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#a5e51f763919d30c1e7cb96da93c677af">operator SEXP</a> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#a2e2c70bec0b9f99c523c364ebccaa4f3">attributeNames</a> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#a26b3bf25f73cc6fb9c4fc7681ed62a6e">hasAttribute</a> (const std::string &amp;attr) const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">SEXP&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#a307406502d249d2fd8ad41d155c87302">attr</a> (const std::string &amp;name) const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#a9c9535a92dacf3efe0c2267a54360ee7">isNULL</a> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#aee3e1880f92d8e4a69d79617813c48c6">sexp_type</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">SEXP&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#ad55b673427e49062e2f3ec493160d1e3">asSexp</a> () const </td></tr>
-<tr><td colspan="2"><h2>Private Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">SEXP&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#ae6b936d1ab1f79174904005a330fd904">m_sexp</a></td></tr>
+<tr><td colspan="2"><h2>Protected Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9">DEPRECATED</a> ()</td></tr>
+<tr><td colspan="2"><h2>Protected Attributes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">Rcpp::RObject&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRcppSexp.html#a9f77d55d1399aa8b7526357bc31204de">object</a></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
+<p>This class is DEPRECATED, will be DEFUNCT in a next version and eventually removed from <a class="el" href="namespaceRcpp.html">Rcpp</a>.</p>
+<p>The alternative is to use the Rcpp::RObject class and the set of functions <a class="el" href="namespaceRcpp.html#aa47be58d105b733ced235de53b5691af">Rcpp::wrap</a>. </p>
 
-<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00027">27</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00035">35</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="ac04b17cce83078dff3bfa9b200e9bbef"></a><!-- doxytag: member="RcppSexp::RcppSexp" ref="ac04b17cce83078dff3bfa9b200e9bbef" args="(SEXP sexp, int numprot=0)" -->
+<a class="anchor" id="a37253a883401c9714dbd3ec50e0f78a1"></a><!-- doxytag: member="RcppSexp::RcppSexp" ref="a37253a883401c9714dbd3ec50e0f78a1" args="(SEXP m_sexp=R_NilValue)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -62,175 +86,27 @@
           <td class="memname">RcppSexp::RcppSexp </td>
           <td>(</td>
           <td class="paramtype">SEXP&nbsp;</td>
-          <td class="paramname"> <em>sexp</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&nbsp;</td>
-          <td class="paramname"> <em>numprot</em> = <code>0</code></td><td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td><td><code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00029">29</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a78fc5fb126d388f9c4c3e9febcc95229"></a><!-- doxytag: member="RcppSexp::RcppSexp" ref="a78fc5fb126d388f9c4c3e9febcc95229" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">RcppSexp::RcppSexp </td>
-          <td>(</td>
-          <td class="paramname"></td>
+          <td class="paramname"> <em>m_sexp</em> = <code>R_NilValue</code></td>
           <td>&nbsp;)&nbsp;</td>
           <td><code> [inline]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
+<p>wraps the SEXP into an Rcpp::RObject. The RObject does not automatically enforce protection of the SEXP, so if you want to preserve the SEXP from R garbage collection, you must call the protect member function </p>
 
-<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00030">30</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00044">44</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
 
+<p>References <a class="el" href="RcppSexp_8h_source.html#l00139">DEPRECATED()</a>.</p>
+
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dynsection">
+<div class="center"><img src="classRcppSexp_a37253a883401c9714dbd3ec50e0f78a1_cgraph.png" border="0" usemap="#classRcppSexp_a37253a883401c9714dbd3ec50e0f78a1_cgraph_map" alt=""></div>
+<map name="classRcppSexp_a37253a883401c9714dbd3ec50e0f78a1_cgraph_map" id="classRcppSexp_a37253a883401c9714dbd3ec50e0f78a1_cgraph">
+<area shape="rect" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9" title="RcppSexp::DEPRECATED" alt="" coords="203,5,379,35"/></map>
 </div>
-</div>
-<a class="anchor" id="acf6fc00ffd9616dea4926baf40e6f77d"></a><!-- doxytag: member="RcppSexp::RcppSexp" ref="acf6fc00ffd9616dea4926baf40e6f77d" args="(const double &amp;v)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">RcppSexp::RcppSexp </td>
-          <td>(</td>
-          <td class="paramtype">const double &amp;&nbsp;</td>
-          <td class="paramname"> <em>v</em></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="RcppSexp_8cpp_source.html#l00024">24</a> of file <a class="el" href="RcppSexp_8cpp_source.html">RcppSexp.cpp</a>.</p>
-
-<p>References <a class="el" href="RcppCommon_8h_source.html#l00052">logTxt</a>, and <a class="el" href="RcppSexp_8h_source.html#l00048">m_sexp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a2ddf3900d04a52a59e15faebe83a4e8b"></a><!-- doxytag: member="RcppSexp::RcppSexp" ref="a2ddf3900d04a52a59e15faebe83a4e8b" args="(const int &amp;v)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">RcppSexp::RcppSexp </td>
-          <td>(</td>
-          <td class="paramtype">const int &amp;&nbsp;</td>
-          <td class="paramname"> <em>v</em></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="RcppSexp_8cpp_source.html#l00031">31</a> of file <a class="el" href="RcppSexp_8cpp_source.html">RcppSexp.cpp</a>.</p>
-
-<p>References <a class="el" href="RcppCommon_8h_source.html#l00052">logTxt</a>, and <a class="el" href="RcppSexp_8h_source.html#l00048">m_sexp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a0876ffb6bdb82d6fe2f30a6a73d51dbb"></a><!-- doxytag: member="RcppSexp::RcppSexp" ref="a0876ffb6bdb82d6fe2f30a6a73d51dbb" args="(const std::string &amp;v)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">RcppSexp::RcppSexp </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&nbsp;</td>
-          <td class="paramname"> <em>v</em></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="RcppSexp_8cpp_source.html#l00038">38</a> of file <a class="el" href="RcppSexp_8cpp_source.html">RcppSexp.cpp</a>.</p>
-
-<p>References <a class="el" href="RcppCommon_8h_source.html#l00052">logTxt</a>, and <a class="el" href="RcppSexp_8h_source.html#l00048">m_sexp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ab276f77e2cc03da2d60d8826d095d757"></a><!-- doxytag: member="RcppSexp::RcppSexp" ref="ab276f77e2cc03da2d60d8826d095d757" args="(const std::vector&lt; int &gt; &amp;v)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">RcppSexp::RcppSexp </td>
-          <td>(</td>
-          <td class="paramtype">const std::vector&lt; int &gt; &amp;&nbsp;</td>
-          <td class="paramname"> <em>v</em></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="RcppSexp_8cpp_source.html#l00045">45</a> of file <a class="el" href="RcppSexp_8cpp_source.html">RcppSexp.cpp</a>.</p>
-
-<p>References <a class="el" href="RcppCommon_8h_source.html#l00052">logTxt</a>, and <a class="el" href="RcppSexp_8h_source.html#l00048">m_sexp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="addfe0bf529d5adc8cfd3729035676cf1"></a><!-- doxytag: member="RcppSexp::RcppSexp" ref="addfe0bf529d5adc8cfd3729035676cf1" args="(const std::vector&lt; double &gt; &amp;v)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">RcppSexp::RcppSexp </td>
-          <td>(</td>
-          <td class="paramtype">const std::vector&lt; double &gt; &amp;&nbsp;</td>
-          <td class="paramname"> <em>v</em></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="RcppSexp_8cpp_source.html#l00055">55</a> of file <a class="el" href="RcppSexp_8cpp_source.html">RcppSexp.cpp</a>.</p>
-
-<p>References <a class="el" href="RcppCommon_8h_source.html#l00052">logTxt</a>, and <a class="el" href="RcppSexp_8h_source.html#l00048">m_sexp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a72d7ac372a23dcb2d8e7752afc7f07ac"></a><!-- doxytag: member="RcppSexp::RcppSexp" ref="a72d7ac372a23dcb2d8e7752afc7f07ac" args="(const std::vector&lt; std::string &gt; &amp;v)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">RcppSexp::RcppSexp </td>
-          <td>(</td>
-          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&nbsp;</td>
-          <td class="paramname"> <em>v</em></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="RcppSexp_8cpp_source.html#l00065">65</a> of file <a class="el" href="RcppSexp_8cpp_source.html">RcppSexp.cpp</a>.</p>
-
-<p>References <a class="el" href="RcppCommon_8h_source.html#l00052">logTxt</a>, and <a class="el" href="RcppSexp_8h_source.html#l00048">m_sexp</a>.</p>
+</p>
 
 </div>
 </div>
@@ -249,13 +125,462 @@
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="RcppSexp_8cpp_source.html#l00075">75</a> of file <a class="el" href="RcppSexp_8cpp_source.html">RcppSexp.cpp</a>.</p>
+</div>
+</div>
+<a class="anchor" id="acf6fc00ffd9616dea4926baf40e6f77d"></a><!-- doxytag: member="RcppSexp::RcppSexp" ref="acf6fc00ffd9616dea4926baf40e6f77d" args="(const double &amp;v)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">RcppSexp::RcppSexp </td>
+          <td>(</td>
+          <td class="paramtype">const double &amp;&nbsp;</td>
+          <td class="paramname"> <em>v</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
 
-<p>References <a class="el" href="RcppCommon_8h_source.html#l00052">logTxt</a>, and <a class="el" href="RcppSexp_8h_source.html#l00048">m_sexp</a>.</p>
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00050">50</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
+
+<p>References <a class="el" href="RcppSexp_8h_source.html#l00139">DEPRECATED()</a>.</p>
+
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dynsection">
+<div class="center"><img src="classRcppSexp_acf6fc00ffd9616dea4926baf40e6f77d_cgraph.png" border="0" usemap="#classRcppSexp_acf6fc00ffd9616dea4926baf40e6f77d_cgraph_map" alt=""></div>
+<map name="classRcppSexp_acf6fc00ffd9616dea4926baf40e6f77d_cgraph_map" id="classRcppSexp_acf6fc00ffd9616dea4926baf40e6f77d_cgraph">
+<area shape="rect" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9" title="RcppSexp::DEPRECATED" alt="" coords="203,5,379,35"/></map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a2ddf3900d04a52a59e15faebe83a4e8b"></a><!-- doxytag: member="RcppSexp::RcppSexp" ref="a2ddf3900d04a52a59e15faebe83a4e8b" args="(const int &amp;v)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">RcppSexp::RcppSexp </td>
+          <td>(</td>
+          <td class="paramtype">const int &amp;&nbsp;</td>
+          <td class="paramname"> <em>v</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00051">51</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
+
+<p>References <a class="el" href="RcppSexp_8h_source.html#l00139">DEPRECATED()</a>.</p>
+
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dynsection">
+<div class="center"><img src="classRcppSexp_a2ddf3900d04a52a59e15faebe83a4e8b_cgraph.png" border="0" usemap="#classRcppSexp_a2ddf3900d04a52a59e15faebe83a4e8b_cgraph_map" alt=""></div>
+<map name="classRcppSexp_a2ddf3900d04a52a59e15faebe83a4e8b_cgraph_map" id="classRcppSexp_a2ddf3900d04a52a59e15faebe83a4e8b_cgraph">
+<area shape="rect" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9" title="RcppSexp::DEPRECATED" alt="" coords="203,5,379,35"/></map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a325df76d427552cf1bb2d010311b8d21"></a><!-- doxytag: member="RcppSexp::RcppSexp" ref="a325df76d427552cf1bb2d010311b8d21" args="(const Rbyte &amp;v)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">RcppSexp::RcppSexp </td>
+          <td>(</td>
+          <td class="paramtype">const Rbyte &amp;&nbsp;</td>
+          <td class="paramname"> <em>v</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00052">52</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
+
+<p>References <a class="el" href="RcppSexp_8h_source.html#l00139">DEPRECATED()</a>.</p>
+
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dynsection">
+<div class="center"><img src="classRcppSexp_a325df76d427552cf1bb2d010311b8d21_cgraph.png" border="0" usemap="#classRcppSexp_a325df76d427552cf1bb2d010311b8d21_cgraph_map" alt=""></div>
+<map name="classRcppSexp_a325df76d427552cf1bb2d010311b8d21_cgraph_map" id="classRcppSexp_a325df76d427552cf1bb2d010311b8d21_cgraph">
+<area shape="rect" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9" title="RcppSexp::DEPRECATED" alt="" coords="203,5,379,35"/></map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a0876ffb6bdb82d6fe2f30a6a73d51dbb"></a><!-- doxytag: member="RcppSexp::RcppSexp" ref="a0876ffb6bdb82d6fe2f30a6a73d51dbb" args="(const std::string &amp;v)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">RcppSexp::RcppSexp </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&nbsp;</td>
+          <td class="paramname"> <em>v</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00053">53</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
+
+<p>References <a class="el" href="RcppSexp_8h_source.html#l00139">DEPRECATED()</a>.</p>
+
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dynsection">
+<div class="center"><img src="classRcppSexp_a0876ffb6bdb82d6fe2f30a6a73d51dbb_cgraph.png" border="0" usemap="#classRcppSexp_a0876ffb6bdb82d6fe2f30a6a73d51dbb_cgraph_map" alt=""></div>
+<map name="classRcppSexp_a0876ffb6bdb82d6fe2f30a6a73d51dbb_cgraph_map" id="classRcppSexp_a0876ffb6bdb82d6fe2f30a6a73d51dbb_cgraph">
+<area shape="rect" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9" title="RcppSexp::DEPRECATED" alt="" coords="203,5,379,35"/></map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a57010f894bd69c42720edd71198a266c"></a><!-- doxytag: member="RcppSexp::RcppSexp" ref="a57010f894bd69c42720edd71198a266c" args="(const bool &amp;v)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">RcppSexp::RcppSexp </td>
+          <td>(</td>
+          <td class="paramtype">const bool &amp;&nbsp;</td>
+          <td class="paramname"> <em>v</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00054">54</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
+
+<p>References <a class="el" href="RcppSexp_8h_source.html#l00139">DEPRECATED()</a>.</p>
+
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dynsection">
+<div class="center"><img src="classRcppSexp_a57010f894bd69c42720edd71198a266c_cgraph.png" border="0" usemap="#classRcppSexp_a57010f894bd69c42720edd71198a266c_cgraph_map" alt=""></div>
+<map name="classRcppSexp_a57010f894bd69c42720edd71198a266c_cgraph_map" id="classRcppSexp_a57010f894bd69c42720edd71198a266c_cgraph">
+<area shape="rect" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9" title="RcppSexp::DEPRECATED" alt="" coords="203,5,379,35"/></map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="ab276f77e2cc03da2d60d8826d095d757"></a><!-- doxytag: member="RcppSexp::RcppSexp" ref="ab276f77e2cc03da2d60d8826d095d757" args="(const std::vector&lt; int &gt; &amp;v)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">RcppSexp::RcppSexp </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; int &gt; &amp;&nbsp;</td>
+          <td class="paramname"> <em>v</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00056">56</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
+
+<p>References <a class="el" href="RcppSexp_8h_source.html#l00139">DEPRECATED()</a>.</p>
+
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dynsection">
+<div class="center"><img src="classRcppSexp_ab276f77e2cc03da2d60d8826d095d757_cgraph.png" border="0" usemap="#classRcppSexp_ab276f77e2cc03da2d60d8826d095d757_cgraph_map" alt=""></div>
+<map name="classRcppSexp_ab276f77e2cc03da2d60d8826d095d757_cgraph_map" id="classRcppSexp_ab276f77e2cc03da2d60d8826d095d757_cgraph">
+<area shape="rect" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9" title="RcppSexp::DEPRECATED" alt="" coords="203,5,379,35"/></map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="addfe0bf529d5adc8cfd3729035676cf1"></a><!-- doxytag: member="RcppSexp::RcppSexp" ref="addfe0bf529d5adc8cfd3729035676cf1" args="(const std::vector&lt; double &gt; &amp;v)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">RcppSexp::RcppSexp </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&nbsp;</td>
+          <td class="paramname"> <em>v</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00057">57</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
+
+<p>References <a class="el" href="RcppSexp_8h_source.html#l00139">DEPRECATED()</a>.</p>
+
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dynsection">
+<div class="center"><img src="classRcppSexp_addfe0bf529d5adc8cfd3729035676cf1_cgraph.png" border="0" usemap="#classRcppSexp_addfe0bf529d5adc8cfd3729035676cf1_cgraph_map" alt=""></div>
+<map name="classRcppSexp_addfe0bf529d5adc8cfd3729035676cf1_cgraph_map" id="classRcppSexp_addfe0bf529d5adc8cfd3729035676cf1_cgraph">
+<area shape="rect" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9" title="RcppSexp::DEPRECATED" alt="" coords="203,5,379,35"/></map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a72d7ac372a23dcb2d8e7752afc7f07ac"></a><!-- doxytag: member="RcppSexp::RcppSexp" ref="a72d7ac372a23dcb2d8e7752afc7f07ac" args="(const std::vector&lt; std::string &gt; &amp;v)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">RcppSexp::RcppSexp </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&nbsp;</td>
+          <td class="paramname"> <em>v</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00058">58</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
+
+<p>References <a class="el" href="RcppSexp_8h_source.html#l00139">DEPRECATED()</a>.</p>
+
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dynsection">
+<div class="center"><img src="classRcppSexp_a72d7ac372a23dcb2d8e7752afc7f07ac_cgraph.png" border="0" usemap="#classRcppSexp_a72d7ac372a23dcb2d8e7752afc7f07ac_cgraph_map" alt=""></div>
+<map name="classRcppSexp_a72d7ac372a23dcb2d8e7752afc7f07ac_cgraph_map" id="classRcppSexp_a72d7ac372a23dcb2d8e7752afc7f07ac_cgraph">
+<area shape="rect" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9" title="RcppSexp::DEPRECATED" alt="" coords="203,5,379,35"/></map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a1cc2afc964adeae614802949199e4383"></a><!-- doxytag: member="RcppSexp::RcppSexp" ref="a1cc2afc964adeae614802949199e4383" args="(const std::vector&lt; Rbyte &gt; &amp;v)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">RcppSexp::RcppSexp </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; Rbyte &gt; &amp;&nbsp;</td>
+          <td class="paramname"> <em>v</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00059">59</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
+
+<p>References <a class="el" href="RcppSexp_8h_source.html#l00139">DEPRECATED()</a>.</p>
+
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dynsection">
+<div class="center"><img src="classRcppSexp_a1cc2afc964adeae614802949199e4383_cgraph.png" border="0" usemap="#classRcppSexp_a1cc2afc964adeae614802949199e4383_cgraph_map" alt=""></div>
+<map name="classRcppSexp_a1cc2afc964adeae614802949199e4383_cgraph_map" id="classRcppSexp_a1cc2afc964adeae614802949199e4383_cgraph">
+<area shape="rect" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9" title="RcppSexp::DEPRECATED" alt="" coords="203,5,379,35"/></map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="ad953b65f5ea98d7519b51f1f56c8847a"></a><!-- doxytag: member="RcppSexp::RcppSexp" ref="ad953b65f5ea98d7519b51f1f56c8847a" args="(const std::vector&lt; bool &gt; &amp;v)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">RcppSexp::RcppSexp </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; bool &gt; &amp;&nbsp;</td>
+          <td class="paramname"> <em>v</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00060">60</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
+
+<p>References <a class="el" href="RcppSexp_8h_source.html#l00139">DEPRECATED()</a>.</p>
+
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dynsection">
+<div class="center"><img src="classRcppSexp_ad953b65f5ea98d7519b51f1f56c8847a_cgraph.png" border="0" usemap="#classRcppSexp_ad953b65f5ea98d7519b51f1f56c8847a_cgraph_map" alt=""></div>
+<map name="classRcppSexp_ad953b65f5ea98d7519b51f1f56c8847a_cgraph_map" id="classRcppSexp_ad953b65f5ea98d7519b51f1f56c8847a_cgraph">
+<area shape="rect" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9" title="RcppSexp::DEPRECATED" alt="" coords="203,5,379,35"/></map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="ab11056882afe3cf2c904003b63f6ac99"></a><!-- doxytag: member="RcppSexp::RcppSexp" ref="ab11056882afe3cf2c904003b63f6ac99" args="(const std::set&lt; int &gt; &amp;v)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">RcppSexp::RcppSexp </td>
+          <td>(</td>
+          <td class="paramtype">const std::set&lt; int &gt; &amp;&nbsp;</td>
+          <td class="paramname"> <em>v</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00062">62</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
+
+<p>References <a class="el" href="RcppSexp_8h_source.html#l00139">DEPRECATED()</a>.</p>
+
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dynsection">
+<div class="center"><img src="classRcppSexp_ab11056882afe3cf2c904003b63f6ac99_cgraph.png" border="0" usemap="#classRcppSexp_ab11056882afe3cf2c904003b63f6ac99_cgraph_map" alt=""></div>
+<map name="classRcppSexp_ab11056882afe3cf2c904003b63f6ac99_cgraph_map" id="classRcppSexp_ab11056882afe3cf2c904003b63f6ac99_cgraph">
+<area shape="rect" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9" title="RcppSexp::DEPRECATED" alt="" coords="203,5,379,35"/></map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="ab7e14928df338b3d0280685bf89c0af4"></a><!-- doxytag: member="RcppSexp::RcppSexp" ref="ab7e14928df338b3d0280685bf89c0af4" args="(const std::set&lt; double &gt; &amp;v)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">RcppSexp::RcppSexp </td>
+          <td>(</td>
+          <td class="paramtype">const std::set&lt; double &gt; &amp;&nbsp;</td>
+          <td class="paramname"> <em>v</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00063">63</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
+
+<p>References <a class="el" href="RcppSexp_8h_source.html#l00139">DEPRECATED()</a>.</p>
+
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dynsection">
+<div class="center"><img src="classRcppSexp_ab7e14928df338b3d0280685bf89c0af4_cgraph.png" border="0" usemap="#classRcppSexp_ab7e14928df338b3d0280685bf89c0af4_cgraph_map" alt=""></div>
+<map name="classRcppSexp_ab7e14928df338b3d0280685bf89c0af4_cgraph_map" id="classRcppSexp_ab7e14928df338b3d0280685bf89c0af4_cgraph">
+<area shape="rect" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9" title="RcppSexp::DEPRECATED" alt="" coords="203,5,379,35"/></map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a991a6f440c8a294f2dc88530440fc3e3"></a><!-- doxytag: member="RcppSexp::RcppSexp" ref="a991a6f440c8a294f2dc88530440fc3e3" args="(const std::set&lt; std::string &gt; &amp;v)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">RcppSexp::RcppSexp </td>
+          <td>(</td>
+          <td class="paramtype">const std::set&lt; std::string &gt; &amp;&nbsp;</td>
+          <td class="paramname"> <em>v</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00064">64</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
+
+<p>References <a class="el" href="RcppSexp_8h_source.html#l00139">DEPRECATED()</a>.</p>
+
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dynsection">
+<div class="center"><img src="classRcppSexp_a991a6f440c8a294f2dc88530440fc3e3_cgraph.png" border="0" usemap="#classRcppSexp_a991a6f440c8a294f2dc88530440fc3e3_cgraph_map" alt=""></div>
+<map name="classRcppSexp_a991a6f440c8a294f2dc88530440fc3e3_cgraph_map" id="classRcppSexp_a991a6f440c8a294f2dc88530440fc3e3_cgraph">
+<area shape="rect" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9" title="RcppSexp::DEPRECATED" alt="" coords="203,5,379,35"/></map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a429ba2c201e1535e1884d819b25479be"></a><!-- doxytag: member="RcppSexp::RcppSexp" ref="a429ba2c201e1535e1884d819b25479be" args="(const std::set&lt; Rbyte &gt; &amp;v)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">RcppSexp::RcppSexp </td>
+          <td>(</td>
+          <td class="paramtype">const std::set&lt; Rbyte &gt; &amp;&nbsp;</td>
+          <td class="paramname"> <em>v</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00065">65</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
+
+<p>References <a class="el" href="RcppSexp_8h_source.html#l00139">DEPRECATED()</a>.</p>
+
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dynsection">
+<div class="center"><img src="classRcppSexp_a429ba2c201e1535e1884d819b25479be_cgraph.png" border="0" usemap="#classRcppSexp_a429ba2c201e1535e1884d819b25479be_cgraph_map" alt=""></div>
+<map name="classRcppSexp_a429ba2c201e1535e1884d819b25479be_cgraph_map" id="classRcppSexp_a429ba2c201e1535e1884d819b25479be_cgraph">
+<area shape="rect" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9" title="RcppSexp::DEPRECATED" alt="" coords="203,5,379,35"/></map>
+</div>
+</p>
 
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="ad4ee2b8e4024eded1a8468f627fdd9ca"></a><!-- doxytag: member="RcppSexp::asBool" ref="ad4ee2b8e4024eded1a8468f627fdd9ca" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool RcppSexp::asBool </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td> const<code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00070">70</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a418a55a88fe2161d2bce11dbe1d49153"></a><!-- doxytag: member="RcppSexp::asDouble" ref="a418a55a88fe2161d2bce11dbe1d49153" args="() const " -->
 <div class="memitem">
 <div class="memproto">
@@ -265,15 +590,13 @@
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td> const</td>
+          <td> const<code> [inline]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="RcppSexp_8cpp_source.html#l00080">80</a> of file <a class="el" href="RcppSexp_8cpp_source.html">RcppSexp.cpp</a>.</p>
-
-<p>References <a class="el" href="RcppSexp_8h_source.html#l00048">m_sexp</a>.</p>
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00071">71</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
 
 </div>
 </div>
@@ -286,15 +609,32 @@
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td> const</td>
+          <td> const<code> [inline]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="RcppSexp_8cpp_source.html#l00097">97</a> of file <a class="el" href="RcppSexp_8cpp_source.html">RcppSexp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00072">72</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
 
-<p>References <a class="el" href="RcppSexp_8h_source.html#l00048">m_sexp</a>.</p>
+</div>
+</div>
+<a class="anchor" id="ad699e452afde5da0170a00b9536c3166"></a><!-- doxytag: member="RcppSexp::asRaw" ref="ad699e452afde5da0170a00b9536c3166" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Rbyte RcppSexp::asRaw </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td> const<code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00073">73</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
 
 </div>
 </div>
@@ -307,15 +647,14 @@
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td> const</td>
+          <td> const<code> [inline]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
+<p>explicit conversion to SEXP </p>
 
-<p>Definition at line <a class="el" href="RcppSexp_8cpp_source.html#l00124">124</a> of file <a class="el" href="RcppSexp_8cpp_source.html">RcppSexp.cpp</a>.</p>
-
-<p>References <a class="el" href="RcppSexp_8h_source.html#l00048">m_sexp</a>.</p>
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00130">130</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
 
 </div>
 </div>
@@ -328,105 +667,316 @@
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td> const</td>
+          <td> const<code> [inline]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="RcppSexp_8cpp_source.html#l00114">114</a> of file <a class="el" href="RcppSexp_8cpp_source.html">RcppSexp.cpp</a>.</p>
-
-<p>References <a class="el" href="RcppSexp_8h_source.html#l00048">m_sexp</a>.</p>
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00074">74</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a44f99ee7521861aff309dc008b788868"></a><!-- doxytag: member="RcppSexp::asStdVectorDouble" ref="a44f99ee7521861aff309dc008b788868" args="() const " -->
+<a class="anchor" id="aacbec90ef55c66fe5e56bdb1c84d76db"></a><!-- doxytag: member="RcppSexp::asStdVectorBool" ref="aacbec90ef55c66fe5e56bdb1c84d76db" args="() const " -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; double &gt; RcppSexp::asStdVectorDouble </td>
+          <td class="memname">std::vector&lt;bool&gt; RcppSexp::asStdVectorBool </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td> const</td>
+          <td> const<code> [inline]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="RcppSexp_8cpp_source.html#l00144">144</a> of file <a class="el" href="RcppSexp_8cpp_source.html">RcppSexp.cpp</a>.</p>
-
-<p>References <a class="el" href="RcppSexp_8h_source.html#l00048">m_sexp</a>.</p>
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00079">79</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="af380f8a164c537a8e99da54660ed5870"></a><!-- doxytag: member="RcppSexp::asStdVectorInt" ref="af380f8a164c537a8e99da54660ed5870" args="() const " -->
+<a class="anchor" id="ab68e3dc2062d2b336405836ffb0f22c4"></a><!-- doxytag: member="RcppSexp::asStdVectorDouble" ref="ab68e3dc2062d2b336405836ffb0f22c4" args="() const " -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; int &gt; RcppSexp::asStdVectorInt </td>
+          <td class="memname">std::vector&lt;double&gt; RcppSexp::asStdVectorDouble </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td> const</td>
+          <td> const<code> [inline]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="RcppSexp_8cpp_source.html#l00128">128</a> of file <a class="el" href="RcppSexp_8cpp_source.html">RcppSexp.cpp</a>.</p>
-
-<p>References <a class="el" href="RcppSexp_8h_source.html#l00048">m_sexp</a>.</p>
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00076">76</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a74c199ef6a4a954ebe035a0951d303a3"></a><!-- doxytag: member="RcppSexp::asStdVectorString" ref="a74c199ef6a4a954ebe035a0951d303a3" args="() const " -->
+<a class="anchor" id="a52e3a6412053e02416a62d15525b69ae"></a><!-- doxytag: member="RcppSexp::asStdVectorInt" ref="a52e3a6412053e02416a62d15525b69ae" args="() const " -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; std::string &gt; RcppSexp::asStdVectorString </td>
+          <td class="memname">std::vector&lt;int&gt; RcppSexp::asStdVectorInt </td>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td> const</td>
+          <td> const<code> [inline]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="RcppSexp_8cpp_source.html#l00160">160</a> of file <a class="el" href="RcppSexp_8cpp_source.html">RcppSexp.cpp</a>.</p>
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00075">75</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
 
-<p>References <a class="el" href="RcppSexp_8h_source.html#l00048">m_sexp</a>.</p>
+</div>
+</div>
+<a class="anchor" id="a36d997dd386ef298196752f61cd51358"></a><!-- doxytag: member="RcppSexp::asStdVectorRaw" ref="a36d997dd386ef298196752f61cd51358" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;Rbyte&gt; RcppSexp::asStdVectorRaw </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td> const<code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00078">78</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a7ae15462b92d708a80711bc597d72255"></a><!-- doxytag: member="RcppSexp::asStdVectorString" ref="a7ae15462b92d708a80711bc597d72255" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::string&gt; RcppSexp::asStdVectorString </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td> const<code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00077">77</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a307406502d249d2fd8ad41d155c87302"></a><!-- doxytag: member="RcppSexp::attr" ref="a307406502d249d2fd8ad41d155c87302" args="(const std::string &amp;name) const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SEXP RcppSexp::attr </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&nbsp;</td>
+          <td class="paramname"> <em>name</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td> const<code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>extract the given attribute </p>
+
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00115">115</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2e2c70bec0b9f99c523c364ebccaa4f3"></a><!-- doxytag: member="RcppSexp::attributeNames" ref="a2e2c70bec0b9f99c523c364ebccaa4f3" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::string&gt; RcppSexp::attributeNames </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td> const<code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>extracts the names of the attributes of the wrapped SEXP </p>
+
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00105">105</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="acb702de59d20b6d4f5a0ca8a8052f1b9"></a><!-- doxytag: member="RcppSexp::DEPRECATED" ref="acb702de59d20b6d4f5a0ca8a8052f1b9" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void RcppSexp::DEPRECATED </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline, protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00139">139</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
+
+<p>Referenced by <a class="el" href="RcppSexp_8h_source.html#l00044">RcppSexp()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a26b3bf25f73cc6fb9c4fc7681ed62a6e"></a><!-- doxytag: member="RcppSexp::hasAttribute" ref="a26b3bf25f73cc6fb9c4fc7681ed62a6e" args="(const std::string &amp;attr) const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool RcppSexp::hasAttribute </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&nbsp;</td>
+          <td class="paramname"> <em>attr</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td> const<code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Identifies if the SEXP has the given attribute </p>
+
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00110">110</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9c9535a92dacf3efe0c2267a54360ee7"></a><!-- doxytag: member="RcppSexp::isNULL" ref="a9c9535a92dacf3efe0c2267a54360ee7" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool RcppSexp::isNULL </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td> const<code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>is this object NULL </p>
+
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00120">120</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5e51f763919d30c1e7cb96da93c677af"></a><!-- doxytag: member="RcppSexp::operator SEXP" ref="a5e51f763919d30c1e7cb96da93c677af" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">RcppSexp::operator SEXP </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td> const<code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>implicit conversion to SEXP </p>
+
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00097">97</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af8089b6667c4d6d5a8d0db5410e3caf9"></a><!-- doxytag: member="RcppSexp::protect" ref="af8089b6667c4d6d5a8d0db5410e3caf9" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void RcppSexp::protect </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Calls the preserve method of the wrapped RObject, which prevents the underlying SEXP from being garbage collected </p>
+
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00086">86</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4ac544b2eb8ab56023f79edbf65415ce"></a><!-- doxytag: member="RcppSexp::release" ref="a4ac544b2eb8ab56023f79edbf65415ce" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void RcppSexp::release </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>calls the release method of the RObject. the underlying SEXP becomes subject of garbage collection </p>
+
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00092">92</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aee3e1880f92d8e4a69d79617813c48c6"></a><!-- doxytag: member="RcppSexp::sexp_type" ref="aee3e1880f92d8e4a69d79617813c48c6" args="() const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int RcppSexp::sexp_type </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td> const<code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>The SEXP typeof, calls TYPEOF on the underlying SEXP </p>
+
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00125">125</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Member Data Documentation</h2>
-<a class="anchor" id="ae6b936d1ab1f79174904005a330fd904"></a><!-- doxytag: member="RcppSexp::m_sexp" ref="ae6b936d1ab1f79174904005a330fd904" args="" -->
+<a class="anchor" id="a9f77d55d1399aa8b7526357bc31204de"></a><!-- doxytag: member="RcppSexp::object" ref="a9f77d55d1399aa8b7526357bc31204de" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">SEXP <a class="el" href="classRcppSexp.html#ae6b936d1ab1f79174904005a330fd904">RcppSexp::m_sexp</a><code> [private]</code></td>
+          <td class="memname">Rcpp::RObject <a class="el" href="classRcppSexp.html#a9f77d55d1399aa8b7526357bc31204de">RcppSexp::object</a><code> [protected]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
+<p>The RObject this wraps </p>
 
-<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00048">48</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
-
-<p>Referenced by <a class="el" href="RcppSexp_8cpp_source.html#l00080">asDouble()</a>, <a class="el" href="RcppSexp_8cpp_source.html#l00097">asInt()</a>, <a class="el" href="RcppSexp_8cpp_source.html#l00124">asSexp()</a>, <a class="el" href="RcppSexp_8cpp_source.html#l00114">asStdString()</a>, <a class="el" href="RcppSexp_8cpp_source.html#l00144">asStdVectorDouble()</a>, <a class="el" href="RcppSexp_8cpp_source.html#l00128">asStdVectorInt()</a>, <a class="el" href="RcppSexp_8cpp_source.html#l00160">asStdVectorString()</a>, <a class="el" href="RcppSexp_8cpp_source.html#l00024">RcppSexp()</a>, and <a class="el" href="RcppSexp_8cpp_source.html#l00075">~RcppSexp()</a>.</p>
+<p>Definition at line <a class="el" href="RcppSexp_8h_source.html#l00137">137</a> of file <a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following files:<ul>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/<a class="el" href="RcppSexp_8h_source.html">RcppSexp.h</a></li>
-<li>src/<a class="el" href="RcppSexp_8cpp_source.html">RcppSexp.cpp</a></li>
 </ul>
 </div>
-<hr size="1"/><address style="text-align: right;"><small>Generated on Sat Dec 19 14:01:43 2009 for Rcpp by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Sat Jan 2 15:42:30 2010 for Rcpp by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>

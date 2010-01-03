@@ -1,0 +1,12 @@
+\documentclass[11pt]{article}
+%\VignetteIndexEntry{Rcpp-unitTests}
+
+\usepackage[colorlinks]{hyperref}
+\author{Dirk Eddelbuettel, Romain Fran\c{c}ois}
+\title{Rcpp : unit test results}
+\begin{document}
+\maketitle
+
+See \url{./Rcpp-unitTests.html}
+
+\end{document}

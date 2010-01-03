@@ -12,6 +12,7 @@
   <div class="tabs">
     <ul>
       <li><a href="main.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
@@ -26,7 +27,7 @@
 <a name="l00002"></a>00002 <span class="comment">//</span>
 <a name="l00003"></a>00003 <span class="comment">// RcppSexp.h: Rcpp R/C++ interface class library -- SEXP support</span>
 <a name="l00004"></a>00004 <span class="comment">//</span>
-<a name="l00005"></a>00005 <span class="comment">// Copyright (C) 2009 Dirk Eddelbuettel</span>
+<a name="l00005"></a>00005 <span class="comment">// Copyright (C) 2009 - 2010    Dirk Eddelbuettel and Romain Francois</span>
 <a name="l00006"></a>00006 <span class="comment">//</span>
 <a name="l00007"></a>00007 <span class="comment">// This file is part of Rcpp.</span>
 <a name="l00008"></a>00008 <span class="comment">//</span>
@@ -47,34 +48,80 @@
 <a name="l00023"></a>00023 <span class="preprocessor"></span><span class="preprocessor">#define RcppSexp_h</span>
 <a name="l00024"></a>00024 <span class="preprocessor"></span>
 <a name="l00025"></a>00025 <span class="preprocessor">#include &lt;<a class="code" href="RcppCommon_8h.html">RcppCommon.h</a>&gt;</span>
-<a name="l00026"></a>00026 
-<a name="l00027"></a><a class="code" href="classRcppSexp.html">00027</a> <span class="keyword">class </span><a class="code" href="classRcppSexp.html">RcppSexp</a> {
-<a name="l00028"></a>00028 <span class="keyword">public</span>:
-<a name="l00029"></a><a class="code" href="classRcppSexp.html#ac04b17cce83078dff3bfa9b200e9bbef">00029</a>     <a class="code" href="classRcppSexp.html#ac04b17cce83078dff3bfa9b200e9bbef">RcppSexp</a>(SEXP sexp, <span class="keywordtype">int</span> numprot=0) : <a class="code" href="classRcppSexp.html#ae6b936d1ab1f79174904005a330fd904">m_sexp</a>(sexp) { }
-<a name="l00030"></a><a class="code" href="classRcppSexp.html#a78fc5fb126d388f9c4c3e9febcc95229">00030</a>     <a class="code" href="classRcppSexp.html#a78fc5fb126d388f9c4c3e9febcc95229">RcppSexp</a>() : <a class="code" href="classRcppSexp.html#ae6b936d1ab1f79174904005a330fd904">m_sexp</a>(R_NilValue) { }
-<a name="l00031"></a>00031     <a class="code" href="classRcppSexp.html#a78fc5fb126d388f9c4c3e9febcc95229">RcppSexp</a>(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp; v);
-<a name="l00032"></a>00032     <a class="code" href="classRcppSexp.html#a78fc5fb126d388f9c4c3e9febcc95229">RcppSexp</a>(<span class="keyword">const</span> <span class="keywordtype">int</span> &amp; v);
-<a name="l00033"></a>00033     <a class="code" href="classRcppSexp.html#a78fc5fb126d388f9c4c3e9febcc95229">RcppSexp</a>(<span class="keyword">const</span> std::string &amp; v);
-<a name="l00034"></a>00034     <a class="code" href="classRcppSexp.html#a78fc5fb126d388f9c4c3e9febcc95229">RcppSexp</a>(<span class="keyword">const</span> std::vector&lt;int&gt; &amp; v);
-<a name="l00035"></a>00035     <a class="code" href="classRcppSexp.html#a78fc5fb126d388f9c4c3e9febcc95229">RcppSexp</a>(<span class="keyword">const</span> std::vector&lt;double&gt; &amp; v);
-<a name="l00036"></a>00036     <a class="code" href="classRcppSexp.html#a78fc5fb126d388f9c4c3e9febcc95229">RcppSexp</a>(<span class="keyword">const</span> std::vector&lt;std::string&gt; &amp; v);
-<a name="l00037"></a>00037     <a class="code" href="classRcppSexp.html#a54cb551beed3570ca0a1aa0566d512cf">~RcppSexp</a>();
-<a name="l00038"></a>00038 
-<a name="l00039"></a>00039     <span class="keywordtype">double</span>                   <a class="code" href="classRcppSexp.html#a418a55a88fe2161d2bce11dbe1d49153">asDouble</a>() <span class="keyword">const</span>;
-<a name="l00040"></a>00040     <span class="keywordtype">int</span>                      <a class="code" href="classRcppSexp.html#abf1d0f9b957e14e1ed3846eac93c7ccd">asInt</a>() <span class="keyword">const</span>;
-<a name="l00041"></a>00041     std::string              <a class="code" href="classRcppSexp.html#ade685360b8c743411135def23f229911">asStdString</a>() <span class="keyword">const</span>;
-<a name="l00042"></a>00042     std::vector&lt;int&gt;         <a class="code" href="classRcppSexp.html#af380f8a164c537a8e99da54660ed5870">asStdVectorInt</a>() <span class="keyword">const</span>;
-<a name="l00043"></a>00043     std::vector&lt;double&gt;      <a class="code" href="classRcppSexp.html#a44f99ee7521861aff309dc008b788868">asStdVectorDouble</a>() <span class="keyword">const</span>;
-<a name="l00044"></a>00044     std::vector&lt;std::string&gt; <a class="code" href="classRcppSexp.html#a74c199ef6a4a954ebe035a0951d303a3">asStdVectorString</a>() <span class="keyword">const</span>;
-<a name="l00045"></a>00045     SEXP                     <a class="code" href="classRcppSexp.html#ad55b673427e49062e2f3ec493160d1e3">asSexp</a>() <span class="keyword">const</span>;
-<a name="l00046"></a>00046     
-<a name="l00047"></a>00047 <span class="keyword">private</span>:
-<a name="l00048"></a><a class="code" href="classRcppSexp.html#ae6b936d1ab1f79174904005a330fd904">00048</a>     SEXP <a class="code" href="classRcppSexp.html#ae6b936d1ab1f79174904005a330fd904">m_sexp</a>;
-<a name="l00049"></a>00049 };
-<a name="l00050"></a>00050 
-<a name="l00051"></a>00051 <span class="preprocessor">#endif</span>
+<a name="l00026"></a>00026 <span class="preprocessor">#include &lt;set&gt;</span>
+<a name="l00027"></a>00027 
+<a name="l00035"></a><a class="code" href="classRcppSexp.html">00035</a> <span class="keyword">class </span><a class="code" href="classRcppSexp.html">RcppSexp</a> {
+<a name="l00036"></a>00036 <span class="keyword">public</span>:
+<a name="l00037"></a>00037         
+<a name="l00044"></a><a class="code" href="classRcppSexp.html#a37253a883401c9714dbd3ec50e0f78a1">00044</a>     <a class="code" href="classRcppSexp.html#a37253a883401c9714dbd3ec50e0f78a1">RcppSexp</a>(SEXP m_sexp = R_NilValue) : <a class="code" href="classRcppSexp.html#a9f77d55d1399aa8b7526357bc31204de">object</a>( Rcpp::<a class="code" href="namespaceRcpp.html#aa47be58d105b733ced235de53b5691af">wrap</a>(m_sexp) ) {
+<a name="l00045"></a>00045             <a class="code" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9">DEPRECATED</a>() ; 
+<a name="l00046"></a>00046     };
+<a name="l00047"></a>00047     
+<a name="l00048"></a>00048     <a class="code" href="classRcppSexp.html#a54cb551beed3570ca0a1aa0566d512cf">~RcppSexp</a>() ;
+<a name="l00049"></a>00049         
+<a name="l00050"></a><a class="code" href="classRcppSexp.html#acf6fc00ffd9616dea4926baf40e6f77d">00050</a>     <a class="code" href="classRcppSexp.html#acf6fc00ffd9616dea4926baf40e6f77d">RcppSexp</a>(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp; v) : <a class="code" href="classRcppSexp.html#a9f77d55d1399aa8b7526357bc31204de">object</a>( Rcpp::<a class="code" href="namespaceRcpp.html#aa47be58d105b733ced235de53b5691af">wrap</a>( v ) ) { <a class="code" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9">DEPRECATED</a>() ; } ;
+<a name="l00051"></a><a class="code" href="classRcppSexp.html#a2ddf3900d04a52a59e15faebe83a4e8b">00051</a>     <a class="code" href="classRcppSexp.html#a2ddf3900d04a52a59e15faebe83a4e8b">RcppSexp</a>(<span class="keyword">const</span> <span class="keywordtype">int</span> &amp; v): <a class="code" href="classRcppSexp.html#a9f77d55d1399aa8b7526357bc31204de">object</a>( Rcpp::<a class="code" href="namespaceRcpp.html#aa47be58d105b733ced235de53b5691af">wrap</a>(v) ){ <a class="code" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9">DEPRECATED</a>() ; } ;
+<a name="l00052"></a><a class="code" href="classRcppSexp.html#a325df76d427552cf1bb2d010311b8d21">00052</a>     <a class="code" href="classRcppSexp.html#a325df76d427552cf1bb2d010311b8d21">RcppSexp</a>(<span class="keyword">const</span> Rbyte &amp; v) : <a class="code" href="classRcppSexp.html#a9f77d55d1399aa8b7526357bc31204de">object</a>( Rcpp::<a class="code" href="namespaceRcpp.html#aa47be58d105b733ced235de53b5691af">wrap</a>(v) ){ <a class="code" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9">DEPRECATED</a>() ;} ;
+<a name="l00053"></a><a class="code" href="classRcppSexp.html#a0876ffb6bdb82d6fe2f30a6a73d51dbb">00053</a>     <a class="code" href="classRcppSexp.html#a0876ffb6bdb82d6fe2f30a6a73d51dbb">RcppSexp</a>(<span class="keyword">const</span> std::string &amp; v) : <a class="code" href="classRcppSexp.html#a9f77d55d1399aa8b7526357bc31204de">object</a>( Rcpp::<a class="code" href="namespaceRcpp.html#aa47be58d105b733ced235de53b5691af">wrap</a>(v) ){ <a class="code" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9">DEPRECATED</a>() ;} ;
+<a name="l00054"></a><a class="code" href="classRcppSexp.html#a57010f894bd69c42720edd71198a266c">00054</a>     <a class="code" href="classRcppSexp.html#a57010f894bd69c42720edd71198a266c">RcppSexp</a>(<span class="keyword">const</span> <span class="keywordtype">bool</span> &amp; v) : <a class="code" href="classRcppSexp.html#a9f77d55d1399aa8b7526357bc31204de">object</a>( Rcpp::<a class="code" href="namespaceRcpp.html#aa47be58d105b733ced235de53b5691af">wrap</a>(v) ){ <a class="code" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9">DEPRECATED</a>() ; };
+<a name="l00055"></a>00055     
+<a name="l00056"></a><a class="code" href="classRcppSexp.html#ab276f77e2cc03da2d60d8826d095d757">00056</a>     <a class="code" href="classRcppSexp.html#ab276f77e2cc03da2d60d8826d095d757">RcppSexp</a>(<span class="keyword">const</span> std::vector&lt;int&gt; &amp; v): <a class="code" href="classRcppSexp.html#a9f77d55d1399aa8b7526357bc31204de">object</a>( Rcpp::<a class="code" href="namespaceRcpp.html#aa47be58d105b733ced235de53b5691af">wrap</a>(v) ){ <a class="code" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9">DEPRECATED</a>() ; };
+<a name="l00057"></a><a class="code" href="classRcppSexp.html#addfe0bf529d5adc8cfd3729035676cf1">00057</a>     <a class="code" href="classRcppSexp.html#addfe0bf529d5adc8cfd3729035676cf1">RcppSexp</a>(<span class="keyword">const</span> std::vector&lt;double&gt; &amp; v): <a class="code" href="classRcppSexp.html#a9f77d55d1399aa8b7526357bc31204de">object</a>( Rcpp::<a class="code" href="namespaceRcpp.html#aa47be58d105b733ced235de53b5691af">wrap</a>(v) ){ <a class="code" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9">DEPRECATED</a>() ; };
+<a name="l00058"></a><a class="code" href="classRcppSexp.html#a72d7ac372a23dcb2d8e7752afc7f07ac">00058</a>     <a class="code" href="classRcppSexp.html#a72d7ac372a23dcb2d8e7752afc7f07ac">RcppSexp</a>(<span class="keyword">const</span> std::vector&lt;std::string&gt; &amp; v): <a class="code" href="classRcppSexp.html#a9f77d55d1399aa8b7526357bc31204de">object</a>( Rcpp::<a class="code" href="namespaceRcpp.html#aa47be58d105b733ced235de53b5691af">wrap</a>(v) ){ <a class="code" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9">DEPRECATED</a>() ;};
+<a name="l00059"></a><a class="code" href="classRcppSexp.html#a1cc2afc964adeae614802949199e4383">00059</a>     <a class="code" href="classRcppSexp.html#a1cc2afc964adeae614802949199e4383">RcppSexp</a>(<span class="keyword">const</span> std::vector&lt;Rbyte&gt; &amp; v): <a class="code" href="classRcppSexp.html#a9f77d55d1399aa8b7526357bc31204de">object</a>( Rcpp::<a class="code" href="namespaceRcpp.html#aa47be58d105b733ced235de53b5691af">wrap</a>(v) ){ <a class="code" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9">DEPRECATED</a>() ;};
+<a name="l00060"></a><a class="code" href="classRcppSexp.html#ad953b65f5ea98d7519b51f1f56c8847a">00060</a>     <a class="code" href="classRcppSexp.html#ad953b65f5ea98d7519b51f1f56c8847a">RcppSexp</a>(<span class="keyword">const</span> std::vector&lt;bool&gt; &amp; v): <a class="code" href="classRcppSexp.html#a9f77d55d1399aa8b7526357bc31204de">object</a>( Rcpp::<a class="code" href="namespaceRcpp.html#aa47be58d105b733ced235de53b5691af">wrap</a>(v) ){ <a class="code" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9">DEPRECATED</a>() ;};
+<a name="l00061"></a>00061     
+<a name="l00062"></a><a class="code" href="classRcppSexp.html#ab11056882afe3cf2c904003b63f6ac99">00062</a>     <a class="code" href="classRcppSexp.html#ab11056882afe3cf2c904003b63f6ac99">RcppSexp</a>(<span class="keyword">const</span> std::set&lt;int&gt; &amp; v): <a class="code" href="classRcppSexp.html#a9f77d55d1399aa8b7526357bc31204de">object</a>( Rcpp::<a class="code" href="namespaceRcpp.html#aa47be58d105b733ced235de53b5691af">wrap</a>(v) ){ <a class="code" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9">DEPRECATED</a>() ;};
+<a name="l00063"></a><a class="code" href="classRcppSexp.html#ab7e14928df338b3d0280685bf89c0af4">00063</a>     <a class="code" href="classRcppSexp.html#ab7e14928df338b3d0280685bf89c0af4">RcppSexp</a>(<span class="keyword">const</span> std::set&lt;double&gt; &amp; v): <a class="code" href="classRcppSexp.html#a9f77d55d1399aa8b7526357bc31204de">object</a>( Rcpp::<a class="code" href="namespaceRcpp.html#aa47be58d105b733ced235de53b5691af">wrap</a>(v) ){ <a class="code" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9">DEPRECATED</a>() ; };
+<a name="l00064"></a><a class="code" href="classRcppSexp.html#a991a6f440c8a294f2dc88530440fc3e3">00064</a>     <a class="code" href="classRcppSexp.html#a991a6f440c8a294f2dc88530440fc3e3">RcppSexp</a>(<span class="keyword">const</span> std::set&lt;std::string&gt; &amp; v): <a class="code" href="classRcppSexp.html#a9f77d55d1399aa8b7526357bc31204de">object</a>( Rcpp::<a class="code" href="namespaceRcpp.html#aa47be58d105b733ced235de53b5691af">wrap</a>(v) ){ <a class="code" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9">DEPRECATED</a>() ; };
+<a name="l00065"></a><a class="code" href="classRcppSexp.html#a429ba2c201e1535e1884d819b25479be">00065</a>     <a class="code" href="classRcppSexp.html#a429ba2c201e1535e1884d819b25479be">RcppSexp</a>(<span class="keyword">const</span> std::set&lt;Rbyte&gt; &amp; v): <a class="code" href="classRcppSexp.html#a9f77d55d1399aa8b7526357bc31204de">object</a>( Rcpp::<a class="code" href="namespaceRcpp.html#aa47be58d105b733ced235de53b5691af">wrap</a>(v) ){ <a class="code" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9">DEPRECATED</a>() ; };
+<a name="l00066"></a>00066     
+<a name="l00067"></a>00067     
+<a name="l00068"></a>00068     <span class="comment">/* we don&apos;t provide implicit converters because </span>
+<a name="l00069"></a>00069 <span class="comment">       of Item 5 in More Effective C++ */</span>
+<a name="l00070"></a><a class="code" href="classRcppSexp.html#ad4ee2b8e4024eded1a8468f627fdd9ca">00070</a>        <span class="keyword">inline</span> <span class="keywordtype">bool</span>                     <a class="code" href="classRcppSexp.html#ad4ee2b8e4024eded1a8468f627fdd9ca">asBool</a>()<span class="keyword"> const  </span>{<span class="keywordflow">return</span> <span class="keywordtype">object</span>.asBool() ; } ;
+<a name="l00071"></a><a class="code" href="classRcppSexp.html#a418a55a88fe2161d2bce11dbe1d49153">00071</a>        <span class="keyword">inline</span> <span class="keywordtype">double</span>                   <a class="code" href="classRcppSexp.html#a418a55a88fe2161d2bce11dbe1d49153">asDouble</a>()<span class="keyword"> const   </span>{ <span class="keywordflow">return</span> <span class="keywordtype">object</span>.asDouble() ; }
+<a name="l00072"></a><a class="code" href="classRcppSexp.html#abf1d0f9b957e14e1ed3846eac93c7ccd">00072</a>        <span class="keyword">inline</span> <span class="keywordtype">int</span>                      <a class="code" href="classRcppSexp.html#abf1d0f9b957e14e1ed3846eac93c7ccd">asInt</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="keywordtype">object</span>.asInt() ; }
+<a name="l00073"></a><a class="code" href="classRcppSexp.html#ad699e452afde5da0170a00b9536c3166">00073</a>        <span class="keyword">inline</span> Rbyte                    <a class="code" href="classRcppSexp.html#ad699e452afde5da0170a00b9536c3166">asRaw</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="keywordtype">object</span>.asRaw() ; }
+<a name="l00074"></a><a class="code" href="classRcppSexp.html#ade685360b8c743411135def23f229911">00074</a>        <span class="keyword">inline</span> std::string              <a class="code" href="classRcppSexp.html#ade685360b8c743411135def23f229911">asStdString</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="keywordtype">object</span>.asStdString() ; }
+<a name="l00075"></a><a class="code" href="classRcppSexp.html#a52e3a6412053e02416a62d15525b69ae">00075</a>        <span class="keyword">inline</span> std::vector&lt;int&gt;         <a class="code" href="classRcppSexp.html#a52e3a6412053e02416a62d15525b69ae">asStdVectorInt</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="keywordtype">object</span>.asStdVectorInt() ; }
+<a name="l00076"></a><a class="code" href="classRcppSexp.html#ab68e3dc2062d2b336405836ffb0f22c4">00076</a>        <span class="keyword">inline</span> std::vector&lt;double&gt;      <a class="code" href="classRcppSexp.html#ab68e3dc2062d2b336405836ffb0f22c4">asStdVectorDouble</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="keywordtype">object</span>.asStdVectorDouble(); }
+<a name="l00077"></a><a class="code" href="classRcppSexp.html#a7ae15462b92d708a80711bc597d72255">00077</a>        <span class="keyword">inline</span> std::vector&lt;std::string&gt; <a class="code" href="classRcppSexp.html#a7ae15462b92d708a80711bc597d72255">asStdVectorString</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="keywordtype">object</span>.asStdVectorString(); }
+<a name="l00078"></a><a class="code" href="classRcppSexp.html#a36d997dd386ef298196752f61cd51358">00078</a>        <span class="keyword">inline</span> std::vector&lt;Rbyte&gt;       <a class="code" href="classRcppSexp.html#a36d997dd386ef298196752f61cd51358">asStdVectorRaw</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="keywordtype">object</span>.asStdVectorRaw() ;}
+<a name="l00079"></a><a class="code" href="classRcppSexp.html#aacbec90ef55c66fe5e56bdb1c84d76db">00079</a>        <span class="keyword">inline</span> std::vector&lt;bool&gt;        <a class="code" href="classRcppSexp.html#aacbec90ef55c66fe5e56bdb1c84d76db">asStdVectorBool</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="keywordtype">object</span>.asStdVectorBool() ; }
+<a name="l00080"></a>00080     
+<a name="l00081"></a>00081     
+<a name="l00086"></a><a class="code" href="classRcppSexp.html#af8089b6667c4d6d5a8d0db5410e3caf9">00086</a>         <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classRcppSexp.html#af8089b6667c4d6d5a8d0db5410e3caf9">protect</a>(){ <span class="keywordtype">object</span>.preserve() ; } 
+<a name="l00087"></a>00087         
+<a name="l00092"></a><a class="code" href="classRcppSexp.html#a4ac544b2eb8ab56023f79edbf65415ce">00092</a>         <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classRcppSexp.html#a4ac544b2eb8ab56023f79edbf65415ce">release</a>() { <span class="keywordtype">object</span>.release() };
+<a name="l00093"></a>00093         
+<a name="l00097"></a><a class="code" href="classRcppSexp.html#a5e51f763919d30c1e7cb96da93c677af">00097</a>         <span class="keyword">inline</span> <a class="code" href="classRcppSexp.html#a5e51f763919d30c1e7cb96da93c677af">operator SEXP</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="keywordtype">object</span>.asSexp() ; }
+<a name="l00098"></a>00098         
+<a name="l00099"></a>00099         
+<a name="l00100"></a>00100         <span class="comment">/* attributes */</span>
+<a name="l00101"></a>00101         
+<a name="l00105"></a><a class="code" href="classRcppSexp.html#a2e2c70bec0b9f99c523c364ebccaa4f3">00105</a>         <span class="keyword">inline</span> std::vector&lt;std::string&gt; <a class="code" href="classRcppSexp.html#a2e2c70bec0b9f99c523c364ebccaa4f3">attributeNames</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="keywordtype">object</span>.attributeNames() };
+<a name="l00106"></a>00106     
+<a name="l00110"></a><a class="code" href="classRcppSexp.html#a26b3bf25f73cc6fb9c4fc7681ed62a6e">00110</a>          <span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="classRcppSexp.html#a26b3bf25f73cc6fb9c4fc7681ed62a6e">hasAttribute</a>( <span class="keyword">const</span> std::string&amp; <a class="code" href="classRcppSexp.html#a307406502d249d2fd8ad41d155c87302">attr</a>)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="keywordtype">object</span>.hasAttribute( attr ) }; 
+<a name="l00111"></a>00111     
+<a name="l00115"></a><a class="code" href="classRcppSexp.html#a307406502d249d2fd8ad41d155c87302">00115</a>         <span class="keyword">inline</span> SEXP <a class="code" href="classRcppSexp.html#a307406502d249d2fd8ad41d155c87302">attr</a>( <span class="keyword">const</span> std::string&amp; name)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="keywordtype">object</span>.attr( name) ; } ;
+<a name="l00116"></a>00116     
+<a name="l00120"></a><a class="code" href="classRcppSexp.html#a9c9535a92dacf3efe0c2267a54360ee7">00120</a>         <span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="classRcppSexp.html#a9c9535a92dacf3efe0c2267a54360ee7">isNULL</a>()<span class="keyword"> const</span>{ <span class="keywordflow">return</span> <span class="keywordtype">object</span>.isNULL() ; }
+<a name="l00121"></a>00121     
+<a name="l00125"></a><a class="code" href="classRcppSexp.html#aee3e1880f92d8e4a69d79617813c48c6">00125</a>          <span class="keyword">inline</span> <span class="keywordtype">int</span> <a class="code" href="classRcppSexp.html#aee3e1880f92d8e4a69d79617813c48c6">sexp_type</a>()<span class="keyword"> const </span>{  <span class="keywordflow">return</span> <span class="keywordtype">object</span>.sexp_type()  ; }
+<a name="l00126"></a>00126     
+<a name="l00130"></a><a class="code" href="classRcppSexp.html#ad55b673427e49062e2f3ec493160d1e3">00130</a>         <span class="keyword">inline</span> SEXP <a class="code" href="classRcppSexp.html#ad55b673427e49062e2f3ec493160d1e3">asSexp</a>()<span class="keyword"> const </span>{  <span class="keywordflow">return</span> <span class="keywordtype">object</span>.asSexp() ; }
+<a name="l00131"></a>00131         
+<a name="l00132"></a>00132 <span class="keyword">protected</span>:
+<a name="l00133"></a>00133         
+<a name="l00137"></a><a class="code" href="classRcppSexp.html#a9f77d55d1399aa8b7526357bc31204de">00137</a>         Rcpp::RObject <a class="code" href="classRcppSexp.html#a9f77d55d1399aa8b7526357bc31204de">object</a> ;
+<a name="l00138"></a>00138         
+<a name="l00139"></a><a class="code" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9">00139</a>         <span class="keywordtype">void</span> <a class="code" href="classRcppSexp.html#acb702de59d20b6d4f5a0ca8a8052f1b9">DEPRECATED</a>(){ Rf_warning( <span class="stringliteral">&quot;The class RcppSexp is deprecated, and will eventually be removed, please consider using Rcpp::RObject instead&quot;</span> ) ; }
+<a name="l00140"></a>00140 };
+<a name="l00141"></a>00141 
+<a name="l00142"></a>00142 <span class="preprocessor">#endif</span>
 </pre></div></div>
-<hr size="1"/><address style="text-align: right;"><small>Generated on Sat Dec 19 14:00:50 2009 for Rcpp by&nbsp;
+<hr size="1"/><address style="text-align: right;"><small>Generated on Sat Jan 2 15:41:28 2010 for Rcpp by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.1 </small></address>
 </body>
