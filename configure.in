@@ -1,0 +1,120 @@
+## -*- mode: autoconf++; autoconf-indentation: 4; -*-
+##
+## configure.in: R/C++ interface class library -- autoconf support
+##
+## Copyright (C) 2010  Dirk Eddelbuettel and Romain Francois
+##
+## This file is part of Rcpp.
+##
+## Rcpp is free software: you can redistribute it and/or modify it
+## under the terms of the GNU General Public License as published by
+## the Free Software Foundation, either version 2 of the License, or
+## (at your option) any later version.
+##
+## Rcpp is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
+
+## This files owes a lot to other configure.in script cobbled together 
+## over the years. Parts of the logic used here were contributed by
+## Kurt Hornik for the RQuantLib package and its compiler and library 
+## detection
+
+## require at least autoconf 2.50
+AC_PREREQ(2.50)
+
+## Process this file with autoconf to produce a configure script.
+AC_INIT(Rcpp, 0.7.1.1)
+
+## We are using C++
+AC_LANG(C++)
+AC_REQUIRE_CPP
+
+
+## Basic check for R itself
+AC_DEFUN(AC_PROG_R, [AC_CHECK_PROG(R,R,yes)])
+AC_PROG_R
+
+## look for Rscript, but use the one found via R_HOME to allow for multiple installations
+AC_DEFUN(AC_PROG_RSCRIPT, [AC_CHECK_PROG(RSCRIPT,Rscript,yes)])
+AC_PROG_RSCRIPT
+if test x"${RSCRIPT}" == x"yes" ; then
+     hasRscript=true
+else
+    echo "
+  Your installation does not appear to have Rscript installed.
+
+  Please make sure that you have a working and complete R installation.
+"
+    exit 1
+fi
+
+## Next segment by Kurt
+: ${R_HOME=`R RHOME`}
+if test -z "${R_HOME}"; then
+   AC_MSG_ERROR([Could not determine R_HOME.])		
+fi
+CXX=`${R_HOME}/bin/R CMD config CXX`
+CXXFLAGS=`"${R_HOME}/bin/R" CMD config CXXFLAGS`
+
+## The grep/sed command could probably be rewritten in Rscript as well
+AC_PROG_CXX
+if test "${GXX}" = yes; then
+    gxx_version=`${CXX} -v 2>&1 | grep "^.*g.. version" | sed -e 's/^.*g.. version *//'`
+    case ${gxx_version} in
+        1.*|2.*)
+	     AC_MSG_WARN([Only g++ version 3.0 or greater can be used with Rcpp.])
+	     AC_MSG_ERROR([Please use a different compiler.])   
+        ;;
+        3.*|4.0.*|4.1.*)
+	     AC_MSG_NOTICE([Only g++ version 4.2 or greater have been used for recent Rcpp development.])
+	     AC_MSG_NOTICE([Please report any errors you may see to the maintainers.])   
+	     has43=no
+	     has44=no
+        ;;
+        4.2.*)
+	     AC_MSG_NOTICE([With g++ version 4.2 core functionality should be stable -- but no C++0x features though].)
+	     has43=no
+	     has44=no
+        ;;
+        4.3.*)
+	     AC_MSG_NOTICE([With g++ version 4.3 parts of the new Cxx0x standard are available.])
+	     has43=yes
+	     has44=no
+        ;;
+        4.*)
+	     AC_MSG_NOTICE([With g++ version 4.4 or newer more parts of the new Cxx0x standard are available.])
+	     has43=yes
+	     has44=yes
+        ;;
+        *)
+	     AC_MSG_NOTICE([Hm, not sure what g++ version you have, so using minimal features and no C++0x.])
+	     has43=no
+	     has44=no
+        ;;
+    esac
+else
+    AC_MSG_NOTICE([Hm, not sure what C++ compiler you have, so using minimal features and no C++0x.])
+    has43=no
+    has44=no
+fi
+
+
+## now use the 'has43' flag to add -std=c++0x to PKG_CXXFLAGS
+if test x"${has43}" == x"yes" ; then
+     cxx_flags="-std=c++0x"
+else
+     cxx_flags=""
+fi
+
+## now use cxx_flags
+AC_SUBST([CXXFLAGS],["${CXXFLAGS} $cxx_flags"])
+AC_OUTPUT(src/Makevars)
+AC_MSG_NOTICE([Completed configuration and ready to build.])
+
+
+

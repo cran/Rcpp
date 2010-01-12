@@ -32,7 +32,7 @@ test.XPtr <- function(){
 		/* wrap the pointer as an external pointer */
 		/* this automatically protected the external pointer from R garbage 
 		   collection until p goes out of scope. */
-		Rcpp::XPtr< std::vector<int> > p(v) ;
+		Rcpp::XPtr< std::vector<int> > p(v, true) ;
 		
 		/* return it back to R, since p goes out of scope after the return 
 		   the external pointer is no more protected by p, but it gets 

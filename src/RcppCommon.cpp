@@ -40,3 +40,100 @@ inline void logTxtFunction(const char* file, const int line, const char* express
     Rprintf("%s:%d %s\n", file, line, expression);
 }
 
+SEXP test_variadic() {
+	SEXP res = PROTECT( Rf_allocVector(INTSXP, 5) ) ; 
+#ifdef HAS_VARIADIC_TEMPLATES
+	INTEGER(res)[0] = variadic_length() ; 
+	INTEGER(res)[1] = variadic_length(1) ;
+	INTEGER(res)[2] = variadic_length(1, 3.3) ;
+	INTEGER(res)[3] = variadic_length(1, "foo", 'f') ;
+	INTEGER(res)[4] = variadic_length(1, 2, 2.3f, "foo", std::string("foobar") ) ;
+#else
+	INTEGER(res)[0] = 0 ; 
+	INTEGER(res)[1] = 1 ;
+	INTEGER(res)[2] = 2 ;
+	INTEGER(res)[3] = 3 ;
+	INTEGER(res)[4] = 4 ;
+#endif
+	UNPROTECT(1) ;
+	return res;
+}
+
+SEXP canUseCXX0X(){
+#ifdef HAS_VARIADIC_TEMPLATES
+	return Rf_ScalarLogical( TRUE ) ;
+#else
+	return Rf_ScalarLogical( FALSE ) ;
+#endif
+}
+
+SEXP capabilities(){
+	SEXP cap = PROTECT( Rf_allocVector( LGLSXP, 3) ) ;
+	SEXP names = PROTECT( Rf_allocVector( STRSXP, 3 ) ) ;
+#ifdef HAS_VARIADIC_TEMPLATES
+	LOGICAL(cap)[0] = TRUE ;
+#else
+	LOGICAL(cap)[0] = FALSE ;
+#endif
+#ifdef HAS_INIT_LISTS
+	LOGICAL(cap)[1] = TRUE ;
+#else
+	LOGICAL(cap)[1] = FALSE ;
+#endif
+#ifdef __GNUC__
+	LOGICAL(cap)[2] = TRUE ;
+#else
+	/* just because I don't know */
+	LOGICAL(cap)[2] = FALSE ;
+#endif
+
+	SET_STRING_ELT(names, 0, Rf_mkChar("variadic templates") ) ;
+	SET_STRING_ELT(names, 1, Rf_mkChar("initializer lists") ) ;
+	SET_STRING_ELT(names, 2, Rf_mkChar("exception handling") ) ;
+	Rf_setAttrib( cap, R_NamesSymbol, names ) ;
+	UNPROTECT(2) ;
+	return cap ;
+}
+
+
+/* this is mainly here so that variadic template errors show up 
+   at compile time */
+SEXP test_named(){
+#ifdef HAS_VARIADIC_TEMPLATES
+	return Rcpp::Language( "foobar", Rcpp::Named("foo", 2 ), 2, Rcpp::Named("bar", 10) ) ;
+#else
+	return R_NilValue ;
+#endif
+}
+
+const char * const sexp_to_name(int sexp_type) {
+    switch (sexp_type) {
+    case NILSXP:	return "NILSXP";
+    case SYMSXP:	return "SYMSXP";
+    case LISTSXP:	return "LISTSXP";
+    case CLOSXP:	return "CLOSXP";
+    case ENVSXP:	return "ENVSXP";
+    case PROMSXP:	return "PROMSXP";
+    case LANGSXP:	return "LANGSXP";
+    case SPECIALSXP:	return "SPECIALSXP";
+    case BUILTINSXP:	return "BUILTINSXP";
+    case CHARSXP:	return "CHARSXP";
+    case LGLSXP:	return "LGLSXP";
+    case INTSXP:	return "INTSXP";
+    case REALSXP:	return "REALSXP";
+    case CPLXSXP:	return "CPLXSXP";
+    case STRSXP:	return "STRSXP";
+    case DOTSXP:	return "DOTSXP";
+    case ANYSXP:	return "ANYSXP";
+    case VECSXP:	return "VECSXP";
+    case EXPRSXP:	return "EXPRSXP";
+    case BCODESXP:	return "BCODESXP";
+    case EXTPTRSXP:	return "EXTPTRSXP";
+    case WEAKREFSXP:	return "WEAKREFSXP";
+    case S4SXP:		return "S4SXP";
+    default:
+	return "<unknown>";
+    }
+}
+
+

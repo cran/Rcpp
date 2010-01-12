@@ -1,9 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" href="$Rcpp_8h.html" title="src/Rcpp.h" alt="" coords="193,160,276,189"/>
-<area shape="rect" href="$RcppFrame_8cpp.html" title="src/RcppFrame.cpp" alt="" coords="211,83,344,112"/>
-<area shape="rect" href="$RcppResultSet_8h.html" title="src/RcppResultSet.h" alt="" coords="368,83,509,112"/>
-<area shape="rect" href="$exceptions_8cpp.html" title="src/exceptions.cpp" alt="" coords="5,237,136,267"/>
-<area shape="rect" href="$RcppCommon_8cpp.html" title="src/RcppCommon.cpp" alt="" coords="160,237,309,267"/>
-<area shape="rect" href="$RcppExample_8cpp.html" title="src/RcppExample.cpp" alt="" coords="333,237,483,267"/>
-<area shape="rect" href="$RcppResultSet_8cpp.html" title="src/RcppResultSet.cpp" alt="" coords="361,160,516,189"/>
-</map>

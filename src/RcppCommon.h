@@ -24,6 +24,16 @@
 #ifndef RcppCommon_h
 #define RcppCommon_h
 
+#ifdef __GNUC__
+	#define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)
+	#if GCC_VERSION >= 40300
+		#define HAS_VARIADIC_TEMPLATES
+	#endif
+	#if GCC_VERSION >= 40400
+		#define HAS_INIT_LISTS
+	#endif
+#endif
+
 #include <exception>
 #include <iostream>
 #include <sstream>
@@ -35,11 +45,12 @@
 
 // include R headers, but set R_NO_REMAP and access everything via Rf_ prefixes
 #define R_NO_REMAP
-
 #include <R.h>
 #include <Rinternals.h>
 #include <R_ext/Callbacks.h>
+#include <R_ext/Complex.h>
 #include <Rversion.h>
+#define RCPP_GET_NAMES(x)	Rf_getAttrib(x, R_NamesSymbol)
 
 // #ifdef BUILDING_DLL
 // #define RcppExport extern "C" __declspec(dllexport)
@@ -52,11 +63,29 @@ char *copyMessageToR(const char* const mesg);
 // simple logging help
 inline void logTxtFunction(const char* file, const int line, const char* expression); 
 
+#ifndef logTxt
 //#define logTxt(x) logTxtFunction(__FILE__, __LINE__, x);
 #define logTxt(x) 
+#endif
 
 /* in exceptions.cpp */
+#ifdef __GNUC__
 void forward_uncaught_exceptions_to_r() ;
+#endif 
+
 RcppExport SEXP initUncaughtExceptionHandler() ; 
+
+/* just testing variadic templates */
+#ifdef HAS_VARIADIC_TEMPLATES
+template<typename... Args>
+int variadic_length( const Args&... args) { return sizeof...(Args) ; }
+#endif
+
+RcppExport SEXP test_variadic() ; 
+RcppExport SEXP canUseCXX0X() ;
+RcppExport SEXP test_named() ;
+RcppExport SEXP capabilities() ;
+
+const char * const sexp_to_name(int sexp_type); 
 
 #endif

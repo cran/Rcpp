@@ -1,6 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" href="$classRcppFunction.html#a0df1a8ff093e21a2a7c6fc80d6645c7e" title="RcppFunction::appendToRList" alt="" coords="223,5,417,35"/>
-<area shape="rect" href="$classRcppFunction.html#a689c914636f0f0e86b90da4425c6e6a3" title="RcppFunction::clearProtectionStack" alt="" coords="205,59,435,88"/>
-<area shape="rect" href="$classRcppFunction.html#a0cc9d29ab7db552494dddefaa78e6578" title="RcppFunction::listCall" alt="" coords="247,112,393,141"/>
-<area shape="rect" href="$classRcppFunction.html#af3dbcf8dcfbdfc49ef566b5efd0ad978" title="RcppFunction::setRListSize" alt="" coords="229,165,411,195"/>
-</map>

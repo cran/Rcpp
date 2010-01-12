@@ -28,4 +28,6 @@ if( file.exists( "/tmp" ) ){
 	file.copy( "Rcpp-unitTests.txt", "/tmp", overwrite = TRUE )
 	file.copy( "Rcpp-unitTests.html", "/tmp", overwrite = TRUE )
 }
-
+Sweave('Rcpp-unitTests.Rnw')
+texi2dvi( 'Rcpp-unitTests.tex', pdf = TRUE, clean = TRUE )
+unlink('RcppUnitTests.tex')

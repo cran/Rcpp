@@ -1,3 +1,322 @@
+2010-01-12  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION: Release 0.7.2
+
+	* debian/*: Similarly updated for new release to Debian
+
+	* .Rbuildignore: Add 'inst/doc/{html,latex,man} as we no
+	  longer ship the voluminous doxygen-generated content
+
+	* inst/doc/examples/ConvolveBenchmarks/convolve2*: Added simple
+	  benchmark on the well-known vector convolution example from
+	  'Writing R Extensions' to compare C and C++ implementations
+	* inst/doc/examples/ConvolveBenchmarks/buildAndRun.sh: idem
+	  inst/doc/examples/ConvolveBenchmarks/exampleRCode.r: idem
+
+2010-01-12  Romain Francois <francoisromain@free.fr>
+
+	* inst/doc/examples/ConvolveBenchmarks/convolve2*: Added additional
+	C++ examples to convolution benchmark highlighting performance gains
+
+2010-01-11  Romain Francois <francoisromain@free.fr>
+
+	* src/Rcpp/CharacterVector.h: StringProxy gains operator+=
+	* src/CharacterVector.cpp: implementation
+
+	* src/Rcpp/*Vector.h: operator[] now throws index out of bounds
+	exception when needed (FR#770)
+	* src/*Vector.cpp: same
+
+	* src/Rcpp/Environment.h: operator[](string) for environment
+	allowing to get/set values of a binding in this environment.
+	The Environment::Binding class has been created to act as
+	a proxy.
+	* src/Environment.cpp: idem
+	* inst/unitTests/runit.environments.R: unit tests for the above
+
+2010-01-10  Romain Francois <francoisromain@free.fr>
+
+	* src/Rcpp/Pairlist.h: operator[] for pairlist using proxies
+	* src/Pairlist.cpp : idem
+	* inst/unitTests/runit.Pairlist.R: new unit tests
+
+	* src/Rcpp/Language.h: same for Language
+	* src/Language.cpp : idem
+	* inst/unitTests/runit.Language.R: new unit tests
+
+	* inst/unitTests/runit.Function.R: added unit test for function
+	throwing exceptions
+
+	* src/Function.cpp: grab the condition message and not the call
+
+2010-01-09  Romain Francois <francoisromain@free.fr>
+
+	* src/Rcpp/RObject.h: attr can now be used to get or set the
+	attribute (used to be read only). This is another manifestation
+	of the proxy pattern. The rhs can be anything wrap can handle
+
+	* inst/unitTests/runit.RObject.R: added test.RObject.attr.set
+	unit test (setting attribute).
+
+	* src/Rcpp/Function.h: Function::operator() now throws an
+	exception if an R error occurs.
+
+2010-01-08  Dirk Eddelbuettel  <edd@debian.org>
+
+	* configure.in: provide basic support for c++ compiler version detection
+ 	  at build-time so that we can add -std=c++0x when applicable;
+	  provide defaults in case we do not use g++
+	* src/Makevars.in: copied from Makevars, set C++ flags from configure
+	* configure.win: simply log what g++ version is being used
+
+2010-01-08  Romain Francois <francoisromain@free.fr>
+
+	* src/Rcpp/wrap.h: added wrap( size_t ) to disambiguate it
+
+	* int/unitTests/runit.XPTr.R: forgot to set the finalizer on the
+	external pointer
+
+	* src/Rcpp/Pairlist.h: Pairlist gains a push_back, replace,
+	length, size, remove and insert methods
+
+	* src/Rcpp/Language.h: idem for Language
+
+2010-01-07  Romain Francois <francoisromain@free.fr>
+
+	* src/Rcpp/Pairlist.h: gains a push_front method
+
+	* src/Rcpp/wrap.h : now the result type of the various wrap
+	functions depends on the parameters. wrap( bool ) makes a
+	LogicalVector, etc ... wrap(SEXP) dispatches to the
+	appropriate Rcpp:: class depending on TYPEOF
+
+	* src/Rcpp/RObject.h: added methods "isS4", "slot"
+	and "hasSlot" to deal with S4 objects
+	* inst/unitTests/runit.S4.R: unit tests
+
+	* src/Rcpp/ComplexVector.h: new class Rcpp::ComplexVector
+	to manage ... complex vectors (CPLXSXP)
+	* src/ComplexVector.cpp: implementation
+	* inst/unitTests/runit.ComplexVector.R: unit tests
+
+	* src/Rcpp/Promise.h: new class Rcpp::Promise to manage
+	promises (PROMSXP). only read access so far (no way to force
+	the promise)
+	* src/Promise.cpp: implementation
+
+	* src/Rcpp/RObject.h: the result of attr is now an RObject
+	rather than a SEXP. This does not change previous behavior
+	because of the implicit conversion
+
+	* src/Rcpp/ExpressionVector.h: new class Rcpp::ExpressionVector
+	which shares a lot with GenericVector.
+	* src/ExpressionVector.cpp: implementation
+	* inst/unitTests/runit.ExpressionVector.R: unit tests
+
+	* src/Rcpp/CharacterVector.h: new class Rcpp::CharacterVector
+	to manage character vectors (STRSXP). StringVector is a
+	convenience typedef equivalent to CharacterVector
+	* src/CharacterVector.cpp: implementation
+	* inst/unitTests/runit.CharacterVector.R: unit tests
+
+	* src/Rcpp/WeakReference.h: new class Rcpp::WeakReference
+	to wrap WEAKREFSXP with accessors to the key and value
+	* src/WeakReference.cpp: implementation
+
+	* src/Rcpp/Rcpp_Rinternals.h: borrowed from Rinternals so that
+	we can use VECTOR_PTR (which R forbids unless we define
+	USE_RINTERNALS, but defining it disables NO_R_REMAP)
+
+	* src/Rcpp/GenericVector.h : added begin and end to allow
+	stl type iteration over generic vectors. Now using the
+	Proxy pattern (from Item 30 of More Effective C++) to
+	allow getting and setting the elements of the list through
+	the operator[].
+
+	* int/unitTests/runit.GenericVector.R: examples are reworked
+	using [] where set and get were used.
+
+2010-01-06  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/RcppCommon.h: Protect definition of logTxt by #ifndef
+	* inst/doc/Rcpp-unitTests.Rnw: Minor LaTeX tweak
+
+2010-01-06  Romain Francois <francoisromain@free.fr>
+
+	* src/Rcpp/wrap.h : wrap can now use initializer lists (available
+	on on GCC >= 4.4).
+	* src/wrap.cpp: implementation
+	* int/unitTests/runit.wrap.R: unit tests
+
+	* src/RObject.cpp : make methods RObject::asFoo
+	calling Rcpp::as<Foo> to avoid code duplication
+
+2010-01-05  Romain Francois <francoisromain@free.fr>
+
+	* src/Rcpp/GenericVector.h : new class Rcpp::GenericVector
+	and an alias Rcpp::List to handle lists (VECSXP), aka generic
+	vectors
+	* src/NumericVector.cpp : implementation
+	* inst/unitTests/runit.NumericVector.R: unit tests
+
+	* src/Rcpp/IntegerVector.h : new class Rcpp::IntegerVector
+	to manage integer vector (INTSXP). IntegerVector can be
+	constructed from SEXP of appropriate type, from an int which
+	simply allocates a vector that big, or using an
+	initialization list (the last is GCC >= 4.4 only).
+	Additionally IntegerVector defines begin() and end() so that
+	they can be used in STL algorithms
+	* src/IntegerVector.cpp : implementation
+	* inst/unitTests/runit.IntegerVector.R: unit tests
+
+	* src/Rcpp/NumericVector.h : same as above, but for numeric
+	vectors (REALSXP)
+	* src/NumericVector.cpp : implementation
+	* inst/unitTests/runit.NumericVector.R: unit tests
+
+	* src/Rcpp/RawVector.h : same as above, but for numeric
+	vectors (RAWSXP)
+	* src/RawVector.cpp : implementation
+	* inst/unitTests/runit.RawVector.R: unit tests
+
+	* src/Rcpp/LogicalVector.h : same as above, but for numeric
+	vectors (RAWSXP)
+	* src/LogicalVector.cpp : implementation
+	* inst/unitTests/runit.LogicalVector.R: unit tests
+
+	* src/RcppCommon.h: improve the conditional compiling logic
+	with macros HAS_VARIADIC_TEMPLATES and HAS_INIT_LISTS instead
+	of CXX0X. This ensures the package can be compiled with
+	older GCC, with lower functionality
+
+	* src/RcppCommon.{h,cpp}: added a capabilities function that
+	can be used to bring the result of the two above macros to R
+
+	* R/RcppLdPaths.R: added unexported function RcppCapabilities
+	to call the internal capabilities. capabilities is an alias
+	to RcppCapabilities so that we can call Rcpp::capabilities()
+
+2010-01-04  Romain Francois <francoisromain@free.fr>
+
+	* src/Rcpp/Function.h: new class Rcpp::Function to manage functions
+	(closures, primitives and builtins) all share the Function class
+	(at least for now). This is implemented as a functor taking
+	variable number of arguments, so it looks pretty similar to the
+	R function
+
+	* src/Function.cpp: implementation
+
+	* inst/unitTests/runit.Function.R: unit tests
+
+	* src/Rcpp/Pairlist.h: new class Rcpp::Pairlist to manage dotted
+	pair lists (LISTSXP). unsurprisingly this shares a lot of
+	similarities with Language class
+
+	* src/Pairlist.cpp: implementation
+
+	* inst/unitTests/runit.Pairlist.R: unit tests for Rcpp::Pairlist
+
+	* src/Rcpp/wrap.h: wrap no more a template. this was not a good
+	idea as it prevented implicit conversion to SEXP behavior when
+	wrap'ing a RObject.
+
+	* src/Rcpp/Environment.h: added the remove method
+
+	* src/unitTests/runit.environments.R: remove unit test
+
+	* src/unitTests/runit.Language.R: remove verbose=TRUE in cfunction
+	call (generated noise)
+
+	* src/wrap.cpp: added a few missing PROTECT
+
+2010-01-04  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/excections.cpp: Get rid of another unused variable
+	* src/RcppCommon.cpp: Idem
+
+2010-01-03  Romain Francois <francoisromain@free.fr>
+
+	* src/Rcpp/Environment.h: Environment gains the parent
+	method that returns the parent environment
+
+	* src/Rcpp/as.h: template as<> to convert SEXP to classic
+	C++ types, fcactored out of RObject
+
+	* src/as.cpp: specific implementations. as<int>, as<bool>
+	as<string>, ...
+
+	* inst/unitTests/runit.as.R: unit tests
+
+	* src/Rcpp/wrap.h : factored out from RObject. there is now a
+	template wrap in addition to the specific implementations. The
+	template generates a warning and return NULL
+
+	* src/wrap.cpp: specific implementations of the wrap template
+	(factored out of RObject)
+
+	* src/Rcpp/pairlist.h : variadic templates to
+	recursively generate a pairlist
+	(CAR and CDR) from any number of "wrap("'able objects.
+	(factored out of Language)
+
+	* src/pairlist.cpp: end of recursion for the above
+
+	* src/Rcpp/grow.h : grow a pairlist with any wrappable
+	object. Used in pairlist
+
+	* src/grow.cpp : specific implementation for Named object
+	to allow tagging the head of the pairlist.
+
+	* src/Rcpp/Named.h : new class Named that is used to specify
+	named elements in a pairlist.
+
+	* src/Named.cpp: implementation
+
+	* src/Rcpp/RObject.h: added wrap(const char* const) RObject factory
+	method
+
+	* src/Rcpp/RObject.h: rework the garbage collection mechanism so that
+	it is automatic and hidden. methods preserve and release are now
+	private to the RObject class and the SEXP may only be changed using
+	the protected setSEXP member function. isPreserved and forgetPreserve
+	are defunct.
+
+	* src/Rcpp/RObject.h: RObject gains assignment operators and copy constructors
+
+	* src/RcppCommon.h: added the CXX0X define that controls whether
+	we can use C++0x features offered by the gcc. currently the define
+	is hardcoded, but this will eventually be a configure guess. The
+	canUseCXX0X function can be called to bring this back to R
+
+	* R/RcppLdPath.R: added the canUseCXX0X R function to query
+	the internal canUseCXX0X function, use this in RcppCxxFlags so that
+	code linking against Rcpp (inline code or packages) can take
+	advantage of it
+
+	* src/Rcpp/Language.h : new class Rcpp::Language to manage calls
+	(LANGSXP SEXP)
+
+	* src/Language.cpp : implementation
+
+	* inst/unitTests/runit.Language.R: unit tests
+
+	* src/Rcpp/Environment.h : added constructors and made the SEXP based
+	constructor smarter (using as.environment)
+
+	* inst/unitTests/runit.environments.R: more unit tests
+
+	* src/Rcpp/Symbol.h: new class Rcpp::Symbol to encapsulate
+	symbols. This allows to use Symbol("rnorm") instead of the most cryptic
+	Rf_install("rnorm")
+
+	* src/Symbol.cpp: implementation
+
+	* inst/unitTests/runit.Symbol.R: unit tests
+
+2010-01-03  Dirk Eddelbuettel  <edd@debian.org>
+
+	* doxyfile: updated to current doxygen standard using -u
+
 2010-01-02  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION: Release 0.7.1

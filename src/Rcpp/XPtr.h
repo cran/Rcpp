@@ -48,15 +48,14 @@ public:
 		
     /**
      * creates a new external pointer wrapping the dumb pointer p. 
-     * This calls R_PreserveObject to prevent the external pointer 
-     * from R garbage collection
      * 
      * @param p dumb pointer to some object
      * @param set_delete_finalizer if set to true, a finalizer will 
      *        be registered for the external pointer. The finalizer
      *        is called when the xp is garbage collected. The finalizer 
      *        is merely a call to the delete operator or the pointer
-     *        so you need to make sure the pointer can be deleted. 
+     *        so you need to make sure the pointer can be "delete" d
+     *        this way (has to be a C++ object)
      */
     explicit XPtr(T* p, bool set_delete_finalizer) ;
 
@@ -92,11 +91,10 @@ public:
 
 template<typename T>
 XPtr<T>::XPtr(T* p, bool set_delete_finalizer = true) : RObject::RObject() {
-    m_sexp = R_MakeExternalPtr( (void*)p , R_NilValue, R_NilValue) ;
+    setSEXP( R_MakeExternalPtr( (void*)p , R_NilValue, R_NilValue) ) ;
     if( set_delete_finalizer ){
 	setDeleteFinalizer() ;
     }
-    preserve() ;
 }
 
 template<typename T>

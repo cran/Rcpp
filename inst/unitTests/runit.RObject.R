@@ -275,6 +275,14 @@ test.RObject.attr <- function(){
 	checkEquals( funx( iris ), 1:150, msg = "RObject.attr" )
 }
 
+test.RObject.attr.set <- function(){
+	funx <- cfunction(signature(), '
+	RObject y = wrap("blabla") ;
+	y.attr("foo") = 10 ;
+	return y ; ', Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;")
+	checkEquals( attr(funx(), "foo"), 10L, msg = "RObject.attr() = " )
+}
+
 test.RObject.isNULL <- function(){
 	funx <- cfunction(signature(x="ANY"), '
 		bool is_null = Rcpp::wrap(x).isNULL() ;
@@ -289,5 +297,4 @@ test.RObject.isNULL <- function(){
 	checkTrue( !funx(funx), msg = "RObject.isNULL(function) -> false" )
 	checkTrue( !funx(.GlobalEnv), msg = "RObject.isNULL(environment) -> false" )
 }
-
 

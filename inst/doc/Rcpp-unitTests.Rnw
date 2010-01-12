@@ -1,12 +1,16 @@
-\documentclass[11pt]{article}
+\documentclass[10pt]{article}
 %\VignetteIndexEntry{Rcpp-unitTests}
+\usepackage{vmargin}
+\setmargrb{0.75in}{0.75in}{0.75in}{0.75in}
 
 \usepackage[colorlinks]{hyperref}
-\author{Dirk Eddelbuettel, Romain Fran\c{c}ois}
-\title{Rcpp : unit test results}
+\author{Dirk Eddelbuettel \and Romain Fran\c{c}ois}
+\title{Rcpp : Unit testing results}
 \begin{document}
 \maketitle
 
-See \url{./Rcpp-unitTests.html}
+<<echo=FALSE>>=
+writeLines( readLines( "Rcpp-unitTests.txt" ) )
+@
 
 \end{document}

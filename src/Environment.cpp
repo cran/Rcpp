@@ -2,7 +2,7 @@
 //
 // Environment.cpp: Rcpp R/C++ interface class library -- Environments
 //
-// Copyright (C) 2009 - 2010	Romain Francois
+// Copyright (C) 2009 - 2010	Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -20,6 +20,10 @@
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <Rcpp/Environment.h>
+#include <Rcpp/Evaluator.h>
+#include <Rcpp/Symbol.h>
+#include <Rcpp/Language.h>
+#include <Rcpp/wrap.h>
 
 namespace Rcpp {
 
@@ -41,13 +45,57 @@ static void safeFindNamespace(void *data) {
     s->val = R_FindNamespace(s->sym);
 }
 
-
-    Environment::Environment( SEXP m_sexp = R_GlobalEnv) : RObject::RObject(m_sexp){
-	if( TYPEOF(m_sexp) != ENVSXP ){
-	    throw std::runtime_error( "not an environment" ) ;
-	}
+    Environment::Environment( SEXP x = R_GlobalEnv) throw(not_compatible) : RObject::RObject(x){
+    	if( ! Rf_isEnvironment(x) ) {
+    		
+    		/* not an environment, but maybe convertible to one using 
+    		   as.environment, try that */
+    		Evaluator evaluator( Rf_lang2(Symbol("as.environment"), x ) ) ;
+    		evaluator.run() ;
+    		if( evaluator.successfull() ){
+    			setSEXP( evaluator.getResult().asSexp() ) ;
+    		} else{
+    			throw not_compatible( "cannot convert to environment"  ) ; 
+    		}
+    	}
     }
-	
+
+    Environment::Environment( const std::string& name) throw(no_such_env) : RObject(R_EmptyEnv){
+    	/* similar to matchEnvir@envir.c */
+    	if( name == ".GlobalEnv" ) {
+    		setSEXP( R_GlobalEnv ) ;
+    	} else if( name == "package:base" ){
+    		setSEXP( R_BaseEnv ) ;
+    	} else{
+    		Evaluator evaluator( Rf_lang2(Symbol("as.environment"), Rf_mkString(name.c_str()) ) ) ;
+    		evaluator.run() ;
+    		if( evaluator.successfull() ){
+    			setSEXP( evaluator.getResult().asSexp() ) ;
+    		} else{
+    			throw no_such_env(name) ; 
+    		}
+    	}
+    }
+    
+    Environment::Environment(int pos) throw(no_such_env) : RObject(R_GlobalEnv){
+    	Evaluator evaluator( Rf_lang2(Symbol("as.environment"), Rf_ScalarInteger(pos) ) ) ;
+    	evaluator.run() ;
+    	if( evaluator.successfull() ){
+    		setSEXP( evaluator.getResult() ) ;
+    	} else{
+    		throw no_such_env(pos) ; 
+    	}
+    }
+    
+    Environment::Environment( const Environment& other ) throw() {
+	setSEXP( other.asSexp() ) ; 
+    }
+    
+    Environment& Environment::operator=(const Environment& other) throw() {
+    	setSEXP( other.asSexp() ) ; 
+	return *this ;
+    }
+    
     Environment::~Environment(){
 	logTxt( "~Environment" ) ;
     }
@@ -98,6 +146,31 @@ static void safeFindNamespace(void *data) {
     	return static_cast<bool>( R_ToplevelExec(safeAssign, (void*) &s) );
     }
     
+    bool Environment::remove( const std::string& name) throw(binding_is_locked){
+    	    if( exists(name) ){
+    	    	    if( bindingIsLocked(name) ){
+    	    	    	    throw binding_is_locked(name) ;
+    	    	    } else{
+    	    	    	    /* unless we want to copy all of do_remove, 
+    	    	    	       we have to go back to R to do this operation */
+    	    	    	    SEXP call = Rf_lang2( 
+    	    	    	    	    Rf_install( ".Internal" ), 
+    	    	    	    	    Rf_lcons( Rf_install( "remove" ), 
+    	    	    	    	    	    Rf_cons( Rf_mkString(name.c_str()), 
+    	    	    	    	    	    	    Rf_cons( m_sexp, 
+    	    	    	    	    	    	    	    Rf_cons( Rf_ScalarLogical( FALSE ), R_NilValue )
+    	    	    	    	    	    	    	    ) 
+    	    	    	    	    	    	    )
+    	    	    	    	    	    )
+    	    	    	    	    ) ;
+    	    	    	    Rf_eval( call, R_GlobalEnv ) ;
+    	    	    }
+    	    } else{
+    	    	throw no_such_binding(name) ;
+    	    }
+	    return true; // to make g++ -Wall happy
+    }
+    
     bool Environment::isLocked() const{
     	return R_EnvironmentIsLocked(m_sexp);
     }
@@ -137,7 +210,7 @@ static void safeFindNamespace(void *data) {
     }
     
     Environment Environment::empty_env() throw() {
-    	return Environment(R_GlobalEnv) ;
+    	return Environment(R_EmptyEnv) ;
     }
     
     Environment Environment::base_env() throw(){
@@ -155,6 +228,10 @@ static void safeFindNamespace(void *data) {
     		throw no_such_namespace(package) ;
     	}
     	return s.val ;
+    }
+    
+    Environment Environment::parent() const throw() {
+    	return Environment( ENCLOS(m_sexp) ) ; 
     }
     
     /* exceptions */
@@ -179,6 +256,66 @@ static void safeFindNamespace(void *data) {
     	return message.c_str() ;
     }
     Environment::no_such_namespace::~no_such_namespace() throw() {}
+    
+    Environment::no_such_env::no_such_env(const std::string& name) : 
+    	message("no environment called : '" + name + "'" ) {}
+    Environment::no_such_env::no_such_env(int pos) : 
+    	message("no environment in the given position" ) {}
+    const char* Environment::no_such_env::what() const throw(){
+    	return message.c_str() ;
+    }
+    Environment::no_such_env::~no_such_env() throw() {}
+    
+    
+    
+    Environment::Binding::Binding( Environment& env, const std::string& name): 
+    	env(env), name(name){}
+    
+    bool Environment::Binding::active() const{
+    	return env.bindingIsActive( name ) ; 
+    }
+    
+    bool Environment::Binding::exists() const{
+    	return env.exists( name ) ; 
+    }
+    
+    bool Environment::Binding::locked() const{
+    	return env.bindingIsLocked( name ) ; 
+    }
+    
+    void Environment::Binding::lock() {
+    	    env.lockBinding( name ) ;
+    }
+    
+    void Environment::Binding::unlock() {
+    	    env.unlockBinding( name ) ;
+    }
+    
+    Environment::Binding& Environment::Binding::operator=( SEXP rhs ){
+    	    env.assign( name, rhs ) ;
+    	    return *this ;
+    }
+    
+    Environment::Binding& Environment::Binding::operator=( const Binding& rhs){
+    	    env.assign( name, rhs.env.get(rhs.name) ) ;
+    	    return *this ;
+    }
+    
+    Environment::Binding::operator SEXP() const{
+    	return env.get( name );    
+    }
+    
+    Environment::Binding::operator RObject() const{
+    	return wrap( env.get( name ) );
+    }
+    
+    const Environment::Binding Environment::operator[]( const std::string& name) const{
+    	return Binding( const_cast<Environment&>(*this), name );
+    }
+    
+    Environment::Binding Environment::operator[]( const std::string& name) {
+    	return Binding( *this, name ) ;
+    }
     
 } // namespace Rcpp
 
