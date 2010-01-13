@@ -83,13 +83,13 @@ public:
 	 * Calls the preserve method of the wrapped RObject, which 
 	 * prevents the underlying SEXP from being garbage collected
 	 */
-	inline void protect(){ object.preserve() ; } 
+	inline void protect(){ /* object.preserve() ; */ } 
 	
 	/**
 	 * calls the release method of the RObject. the underlying SEXP
 	 * becomes subject of garbage collection
 	 */
-	inline void release() { object.release() };
+	inline void release() { /* object.release() */ };
 	
 	/**
 	 * implicit conversion to SEXP

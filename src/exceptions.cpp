@@ -2,7 +2,7 @@
 //
 // exceptions.cpp: R/C++ interface class library -- exception handling
 //
-// Copyright (C) 2009 - 2010 Romain Francois
+// Copyright (C) 2009 - 2010 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -20,6 +20,11 @@
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <Rcpp.h>
+
+/* for now, the fancy exception handling is only available in GCC, 
+   simply because we've not investigated if it is available in other 
+   compilers */
+#ifdef __GNUC__
 #include <typeinfo>
 #include <exception>
 #include <exception_defines.h>
@@ -74,8 +79,17 @@ void forward_uncaught_exceptions_to_r(){
 	     ) ; 
 }
 
+
 SEXP initUncaughtExceptionHandler(){
-    void (*old_terminate)() = std::set_terminate(forward_uncaught_exceptions_to_r);
+    /* FIXME: we might want to restore the original handler as the package
+              gets unloaded */
+    std::set_terminate(forward_uncaught_exceptions_to_r);
     return R_NilValue ;
 }
+#else
+SEXP initUncaughtExceptionHandler(){
+	Rf_warning( "exception handling not supported by your compiler" ) ; 
+	return R_NilValue ;
+}
+#endif
 

@@ -1,9 +1,9 @@
-Rcpp-package            R / C++ interface
 RcppDate                C++ classes for receiving date and datetime R
                         objects in C++
 RcppExample             Rcpp R / C++ interface example
+Rcpp-package            R / C++ interface
 RcppParams              C++ class for receiving (scalar) parameters
                         from R
 RcppResultSet           C++ class for sending C++ objects back to R
-RcppUnitTests			Unit test results for package Rcpp
+RcppUnitTests           Rcpp : unit tests results
 RcppVector              C++ classes for receiving R object in C++

@@ -94,13 +94,194 @@ public:
     		std::string message ;
     } ;
     
+    /**
+     * Exception thrown when attempting to get an environment from a 
+     * name
+     */
+    class no_such_env: public std::exception{
+    	public:
+    		/**
+    		 * @param name name of the environment, e.g "package:Rcpp"
+    		 */
+    		no_such_env( const std::string& name) ;
+    		
+    		/**
+    		 * @paral pos search path position where there is no environment
+    		 */
+    		no_such_env(int pos) ;
+    		
+    		/**
+    		 * The message: no such environment : '{name}' 
+    		 */
+    		const char* what() const throw() ;
+    		
+    		~no_such_env() throw() ;
+    	private:
+    		std::string message ;
+    } ;
+    
+    /**
+     * proxy class to allow read and write access to a binding in
+     * an environment
+     */
+    class Binding {
+    public:
+    	    /**
+    	     * Creates 	a binding
+    	     * 
+    	     * @param env environment in which the binding is
+    	     * @param name name of the binding
+    	     */
+    	    Binding( Environment& env, const std::string& name) ;
+    	    
+    	    /**
+    	     * Is the binding an active binding
+    	     */
+    	    bool active() const ;
+    	    
+    	    /**
+    	     * Is the binding locked
+    	     */
+    	    bool locked() const ;
+    	    
+    	    /**
+    	     * Is the binding defined
+    	     */
+    	    bool exists() const ;
+    	    
+    	    /**
+    	     * lock the binding
+    	     */
+    	    void lock( ) ;
+    	    
+    	    /**
+    	     * unlock the binding
+    	     */
+    	    void unlock() ;
+    	    
+    	    /* lvalue uses */
+    	    
+    	    /**
+    	     * Assigning another binding to this has the effect of 
+    	     * assigning the rhs to the environment. 
+    	     *
+    	     * For example :
+    	     * Environment e = ... // get an environment somehow
+    	     * Environment f = ... // get an environment somehow
+    	     * e["x"] = f["y"] ;
+    	     *
+    	     * after this, the variable x in the environment e will
+    	     * contain the same variable as "y" in the environment "f"
+    	     */
+    	    Binding& operator=(const Binding& rhs) ;
+    	    
+    	    /**
+    	     * Assign the rhs to the binding
+    	     *
+    	     * For example: 
+    	     * Environment e= ... ; // get some environment
+    	     * e["foo"] = SclalarInteger( 10 ) ;
+    	     * 
+    	     * after this e will contain the variable "foo" with the value 
+    	     * 10L
+    	     */
+    	    Binding& operator=(SEXP rhs) ;
+    	    
+    	    /**
+    	     * templated assignement. The rhs if first wrapped using one
+    	     * of the forms of "wrap" and then the wrapped value is
+    	     * assigned to the binding
+    	     *
+    	     * For example: 
+    	     * Environment e = ... ;
+    	     * e[ "foo" ] = 10 ;
+    	     * e[ "bar"] = "foobar" ;
+    	     * 
+    	     * vector<int> v; v.push_back(10); v.push_back(20 );
+    	     * e[ "foo" ] = v ;
+    	     * 
+    	     * with GCC4.4 :
+    	     * e["bla" ] = { 1,2,3};
+    	     */
+    	    template <typename T>
+    	    Binding& operator=(const T& rhs){
+    	    	    env.assign( name, wrap(rhs) ) ;
+    	    	    return *this ;
+    	    }
+    	    
+    	    /* rvalue */
+    	    /**
+    	     * retrieves the value for this binding
+    	     * 
+    	     * Environment stats = Environment::namespace_env( "stats" ) ;
+    	     * Function f = stats["rnorm"] ;
+    	     */
+    	    operator SEXP() const ;
+    	    
+    	    /**
+    	     * retrieves the value for this binding as an RObject
+    	     */
+    	    operator RObject() const ;
+    	    
+    private:
+    	    /**
+    	     * Reference to the environment if the binding
+    	     */
+    	    Environment& env ;
+    	    
+    	    /**
+    	     * name of the binding
+    	     */
+    	    std::string name ;
+    } ;
+    
+    /**
+     * Creates a binding for a variable in this environment
+     *
+     * The Binding class is a proxy class, so depending on how the result
+     * of this operator call is used, the variable is either retrieved 
+     * or modified. See the Binding class for details
+     */
+    const Binding operator[]( const std::string& name) const ;
+    
+    /**
+     * Same as above, but for a non-const Environment
+     */
+    Binding operator[](const std::string& name) ;
+    
+    friend class Binding ;
     
     /**
      * wraps the given environment
      *
      * if the SEXP is not an environment, and exception is thrown
      */
-    Environment(SEXP m_sexp) ;
+    Environment(SEXP x) throw(not_compatible);
+    
+    /**
+     * copy constructor
+     */
+    Environment(const Environment& other) throw() ;
+    
+    /**
+     * assignment
+     */
+    Environment& operator=(const Environment& other) throw(); 
+    
+    /**
+     * Gets the environment associated with the given name
+     *
+     * @param name name of the environment, e.g "package:Rcpp"
+     */
+    Environment( const std::string& name ) throw(no_such_env) ;
+    
+    /**
+     * Gets the environment in the given position of the search path
+     * 
+     * @param pos (1-based) position of the environment, e.g pos=1 gives the
+     *        global environment
+     */
+    Environment( int pos ) throw(no_such_env) ;
     
     /**
      * Nothing specific
@@ -154,6 +335,11 @@ public:
      * see ?environmentIsLocked for details of what this means
      */
     bool isLocked() const ;
+    
+    /**
+     * remove an object from this environment
+     */
+    bool remove( const std::string& name ) throw(binding_is_locked) ;
     
     /**
      * locks this environment. See ?lockEnvironment
@@ -235,6 +421,12 @@ public:
      * @throw no_such_namespace 
      */
     static Environment namespace_env(const std::string& ) throw(no_such_namespace) ;
+    
+    /**
+     * The parent environment of this environment
+     */
+    Environment parent() const throw() ;
+    
 };
 
 } // namespace Rcpp

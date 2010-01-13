@@ -16,7 +16,10 @@ Unit tests are run automatically at build time and reports are included in the
 }
 
 \details{
-\Sexpr[echo=FALSE,results=text]{ if(exists("dumpUnitTestReport", asNamespace("Rcpp"))) Rcpp:::dumpUnitTestReport() else ""}
+\Sexpr[echo=FALSE,results=text]{ 
+txt <- system.file( "doc", "Rcpp-unitTests.txt", package = "Rcpp" )
+if( file.exists( txt ) ) paste( readLines( txt ), collapse = "\n\n" ) else ""
+}
 }
 
 \examples{

@@ -4,6 +4,7 @@
 //
 // Copyright (C) 2005 - 2006 Dominick Samperi
 // Copyright (C) 2008 - 2009 Dirk Eddelbuettel
+// Copyright (C) 2009 - 2010 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -42,9 +43,26 @@
 #include <RcppVectorView.h>
 
 /* new api */
+#include <Rcpp/grow.h>
+#include <Rcpp/wrap.h>
+#include <Rcpp/as.h>
 #include <Rcpp/RObject.h>
 #include <Rcpp/XPtr.h>
 #include <Rcpp/Environment.h>
-#include <Rcpp/Evaluator.h> 
+#include <Rcpp/Evaluator.h>
+#include <Rcpp/Symbol.h>
+#include <Rcpp/Language.h>
+#include <Rcpp/Named.h>
+#include <Rcpp/Pairlist.h>
+#include <Rcpp/Function.h>
+#include <Rcpp/IntegerVector.h>
+#include <Rcpp/NumericVector.h>
+#include <Rcpp/RawVector.h>
+#include <Rcpp/LogicalVector.h>
+#include <Rcpp/GenericVector.h>
+#include <Rcpp/WeakReference.h>
+#include <Rcpp/CharacterVector.h>
+#include <Rcpp/ExpressionVector.h>
+#include <Rcpp/ComplexVector.h>
 
 #endif

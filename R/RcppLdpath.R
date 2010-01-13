@@ -26,12 +26,17 @@ RcppLdFlags <- function(static=FALSE) {
     invisible(flags)
 }
 
+canUseCXX0X <- function() .Call( "canUseCXX0X", PACKAGE = "Rcpp" )
+
 ## Provide compiler flags -- i.e. -I/path/to/Rcpp.h
 RcppCxxFlags <- function() {
-    paste("-I", RcppLdPath(), sep="")
+    paste("-I", RcppLdPath(), if( canUseCXX0X() ) " -std=c++0x" else "", sep="")
 }
 
 ## Shorter names, and call cat() directly
 CxxFlags <- function() cat(RcppCxxFlags())
 LdFlags <- function() cat(RcppLdFlags())
+
+# capabilities
+RcppCapabilities <- capabilities <- function() .Call("capabilities", PACKAGE = "Rcpp")
 

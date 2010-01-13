@@ -1,0 +1,4 @@
+# simple check
+
+gxxversion=`g++ -v 2>&1 | grep "^g.*version" | sed -e 's/^.*g.. version *//'`
+echo "Seeing g++ version ${gxxversion}"
