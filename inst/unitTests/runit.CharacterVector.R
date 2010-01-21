@@ -48,7 +48,9 @@ test.CharacterVector.initializer.list <- function(){
 		funx <- cfunction(signature(), '
 		CharacterVector x = {"foo", "bar"} ;
 		return x ;', 
-			Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;" )
+			Rcpp=TRUE, verbose=FALSE, 
+			includes = "using namespace Rcpp;",
+			cxxargs = "-std=c++0x" )
 		checkEquals( funx(), c("foo","bar"), msg = "CharacterVector( initializer list) " )
 	}
 }

@@ -28,49 +28,46 @@
 
 namespace Rcpp{
 	
-	ExpressionVector::ExpressionVector(SEXP x) throw(not_compatible) : RObject() {
+	ExpressionVector::parse_error::parse_error() throw(){}
+	ExpressionVector::parse_error::~parse_error() throw(){}
+	const char* ExpressionVector::parse_error::what() throw(){ return "parse error" ; }
+	
+	ExpressionVector::ExpressionVector(SEXP x) throw(not_compatible) : VectorBase() {
 		switch( TYPEOF( x ) ){
 			case EXPRSXP:
 				setSEXP( x ) ;
 				break ;
 			default:
 				{
-					Evaluator e( Rf_lang2( Symbol("as.expression"), x ) ) ;
-					e.run() ;
-					if( e.successfull() ){
-						setSEXP( e.getResult() ) ;
-					} else{
+					SEXP res = R_NilValue ;
+					try{
+						res = Evaluator::run( Rf_lang2( Rf_install("as.expression"), x ) ) ;
+					} catch( const Evaluator::eval_error& e){
 						throw not_compatible( "could not convert to an expression vector" ) ;
 					}
+					setSEXP( res ) ;
 				}
 		}
 	}
 	
-	ExpressionVector::ExpressionVector(int size) : RObject() {
+	ExpressionVector::ExpressionVector(int size) : VectorBase() {
 		setSEXP( Rf_allocVector(EXPRSXP, size) ) ;
 	}
 
-#ifdef HAS_INIT_LISTS
-	ExpressionVector::ExpressionVector( std::initializer_list<RObject> list ) {
-		SEXP x = PROTECT( Rf_allocVector( EXPRSXP, list.size() ) ) ;
-		const RObject* p = list.begin() ;
-		for( size_t i=0; i<list.size() ; i++, p++){
-			SET_VECTOR_ELT( x, i, p->asSexp() ) ;
+	ExpressionVector::ExpressionVector(const std::string& code) throw(parse_error){
+		ParseStatus status;
+		SEXP expr = PROTECT( Rf_mkString( code.c_str() ) );
+		SEXP res  = PROTECT( R_ParseVector(expr, -1, &status, R_NilValue));
+		switch( status ){
+		case PARSE_OK:
+			setSEXP( res) ;
+			UNPROTECT( 2) ;
+			break;
+		default:
+			UNPROTECT(2) ;
+			throw parse_error() ;
 		}
-		setSEXP( x ) ;
-		UNPROTECT( 1 ); /* x */
 	}
-#endif
-
-// SEXP* ExpressionVector::begin(){
-// 	return RCPP_VECTOR_PTR(m_sexp) ;
-// }
-// 
-// SEXP* ExpressionVector::end(){
-// 	return RCPP_VECTOR_PTR(m_sexp) + LENGTH(m_sexp) ;
-// }
-
-/* proxy stuff */
 
 ExpressionVector::Proxy::Proxy(ExpressionVector& v, int i) :
 	parent(v), index(i){}
@@ -99,5 +96,12 @@ ExpressionVector::Proxy ExpressionVector::operator[](int i) throw(index_out_of_b
 	return Proxy(*this, i ) ;
 }
 
+SEXP ExpressionVector::eval() throw(Evaluator::eval_error){
+	return Evaluator::run( Rf_lcons( Rf_install( "eval" ) , Rf_cons( m_sexp, R_NilValue) )) ;
+}
+
+SEXP ExpressionVector::eval(const Environment& env) throw(Evaluator::eval_error){
+	return Evaluator::run( Rf_lcons( Rf_install( "eval" ) , Rf_cons( m_sexp, Rf_cons(env.asSexp(), R_NilValue)) ) ) ;
+}
 
 } // namespace 

@@ -12,6 +12,7 @@ rm -f confdefs.h config.log config.status \
 	inst/doc/auto \
 	inst/examples/ConvolveBenchmarks/*.o  \
         inst/examples/ConvolveBenchmarks/*.so \
+        inst/discovery/cxx0x.Rout \
 	src/Makedeps 
 rm -rf	autom4te.cache
 test -d inst/lib/Rcpp && rmdir inst/lib/Rcpp

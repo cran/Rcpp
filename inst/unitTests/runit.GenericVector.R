@@ -52,7 +52,7 @@ test.List.VECSXP <- function(){
 	checkEquals( funx(list(1,2)), list(1,2), msg = "GenericVector( VECSXP) " )
 }
 
-test.IntegerVector.initializer.list <- function(){
+test.List.initializer.list <- function(){
 	if( Rcpp:::capabilities()[["initializer lists"]] ){
 		funx <- cfunction(signature(), '
 		SEXP x0 = PROTECT( Rf_ScalarInteger( 0 ) ) ;
@@ -61,7 +61,7 @@ test.IntegerVector.initializer.list <- function(){
 		List x = { x0, x1, x2} ;
 		UNPROTECT(3) ;
 		return x ;', 
-			Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;" )
+			Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;", cxxargs="-std=c++0x" )
 		checkEquals( funx(), as.list(0:2), msg = "List( initializer list) " )
 	}
 }

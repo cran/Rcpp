@@ -1,8 +1,8 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 8 -*-
 //
-// Evaluator.h: Rcpp R/C++ interface class library -- protected evaluation
+// VectorBase.h: Rcpp R/C++ interface class library -- base class for all vectors
 //
-// Copyright (C) 2009 - 2010	Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2010	Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -19,31 +19,32 @@
 // You should have received a copy of the GNU General Public License
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef Rcpp_Evaluator_h
-#define Rcpp_Evaluator_h
+#ifndef Rcpp_VectorBase_h
+#define Rcpp_VectorBase_h
 
 #include <RcppCommon.h>
 #include <Rcpp/RObject.h>
-#include <Rcpp/wrap.h>
 
 namespace Rcpp{ 
 
-class Evaluator{
+class VectorBase : public RObject {     
 public:
 	
-	class eval_error : public std::exception{
-	public:
-		eval_error( const std::string& message ) throw() ;
-		virtual ~eval_error() throw() ;
-		virtual const char* what() const throw() ;
-	private:
-		std::string message ;
-	} ;
+    VectorBase() ;
+    virtual ~VectorBase() = 0;
 	
-	static SEXP run(SEXP expr) throw(eval_error) ; 
-	static SEXP run(SEXP expr, SEXP env) throw(eval_error) ;
-};
+    /**
+     * the length of the vector, uses Rf_length
+     */
+    inline int length() const { return ::Rf_length( m_sexp ) ; }
+	
+    /**
+     * alias of length
+     */
+    inline int size() const { return ::Rf_length( m_sexp ) ; }
+	
+} ;
 
-} // namespace Rcpp
+} // namespace
 
 #endif

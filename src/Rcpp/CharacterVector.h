@@ -24,6 +24,7 @@
 
 #include <RcppCommon.h>
 #include <Rcpp/RObject.h>
+#include <Rcpp/VectorBase.h>
 
 #ifdef HAS_INIT_LISTS
 #include <initializer_list>
@@ -32,7 +33,7 @@
 
 namespace Rcpp{ 
 
-class CharacterVector : public RObject {     
+class CharacterVector : public VectorBase {     
 public:
 
 	/* much inspired from item 30 of more effective C++ */
@@ -56,37 +57,32 @@ public:
 		int index ;
 	} ;
 
-	
 	CharacterVector(SEXP x) throw(not_compatible);
 	CharacterVector(int size) ;
 	CharacterVector( const std::string& x );
 	CharacterVector( const std::vector<std::string>& x );
 	
 #ifdef HAS_INIT_LISTS
-	CharacterVector( std::initializer_list<std::string> list ) ;
+	CharacterVector( std::initializer_list<std::string> list ) : VectorBase() {
+		fill( list.begin(), list.size() ) ;
+	}
 #endif
-	
-	/**
-	 * the length of the vector, uses Rf_length
-	 */
-	inline int length() const { return Rf_length( m_sexp ) ; }
-	
-	/**
-	 * alias of length
-	 */
-	inline int size() const { return Rf_length( m_sexp ) ; }
-	
-	SEXP get(const int& i) const ;
-	void set(const int& i, const std::string& value ) ;
-	
-	SEXP* begin(); 
-	SEXP* end() ;
-	
+
 	const StringProxy operator[]( int i ) const throw(index_out_of_bounds);
 	StringProxy operator[]( int i ) throw(index_out_of_bounds);
-	
+
 	friend class StringProxy; 
-	
+
+private:
+	template <typename InputIterator>
+	void fill(InputIterator first, size_t size ){
+		SEXP x = PROTECT( Rf_allocVector( STRSXP, size) ) ;
+		for( size_t i=0; i<size; ++i, ++first ){
+			SET_STRING_ELT( x, i, Rf_mkChar(first->c_str()) ) ;
+		}
+		setSEXP( x );
+		UNPROTECT(1) ;
+	}
 } ;
 
 typedef CharacterVector StringVector ;

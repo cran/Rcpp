@@ -26,7 +26,7 @@
 
 namespace Rcpp{
 	
-	RawVector::RawVector(SEXP x) throw(not_compatible) : RObject() {
+	RawVector::RawVector(SEXP x) throw(not_compatible) : VectorBase(), start(0) {
 		switch( TYPEOF( x ) ){
 			case RAWSXP:
 				setSEXP( x ) ;
@@ -41,36 +41,8 @@ namespace Rcpp{
 		}
 	}
 	
-	RawVector::RawVector(int size) : RObject() {
+	RawVector::RawVector(int size) : VectorBase(), start(0) {
 		setSEXP( Rf_allocVector(RAWSXP, size) ) ;
 	}
-
-#ifdef HAS_INIT_LISTS
-	RawVector::RawVector( std::initializer_list<int> list ) {
-		SEXP x = PROTECT( Rf_allocVector( RAWSXP, list.size() ) ) ;
-		std::copy( list.begin(), list.end(), RAW(x) ); 
-		setSEXP(x) ;
-		UNPROTECT( 1 ); /* x */
-	}
-	RawVector::RawVector( std::initializer_list<Rbyte> list ) {
-		/* FIXME: we need to take care of coercion, so 
-		transform is probably better */
-		SEXP x = PROTECT( Rf_allocVector( RAWSXP, list.size() ) ) ;
-		std::copy( list.begin(), list.end(), RAW(x) ); 
-		setSEXP(x) ;
-		UNPROTECT( 1 ); /* x */
-	}
-#endif
-
-Rbyte& RawVector::operator[]( int i ) const throw(index_out_of_bounds){ 
-	if( i<0 || i>= length() ) throw index_out_of_bounds() ;
-	return RAW(m_sexp)[i] ;
-}
-Rbyte* RawVector::begin() const { 
-	return RAW(m_sexp) ;
-}
-Rbyte* RawVector::end() const { 
-	return RAW(m_sexp) + LENGTH(m_sexp);
-}
 
 } // namespace 

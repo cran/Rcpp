@@ -22,11 +22,10 @@
 #include <RcppCommon.h>
 #include <Rcpp/RObject.h>
 #include <Rcpp/IntegerVector.h>
-#include <algorithm>
 
 namespace Rcpp{
 	
-	IntegerVector::IntegerVector(SEXP x) throw(not_compatible) : RObject() {
+	IntegerVector::IntegerVector(SEXP x) throw(not_compatible) : VectorBase(), start(0) {
 		switch( TYPEOF( x ) ){
 			case INTSXP:
 				setSEXP( x ) ;
@@ -41,34 +40,8 @@ namespace Rcpp{
 		}
 	}
 	
-	IntegerVector::IntegerVector(int size) : RObject() {
+	IntegerVector::IntegerVector(int size) : VectorBase(), start(0) {
 		setSEXP( Rf_allocVector(INTSXP, size) ) ;
 	}
-
-#ifdef HAS_INIT_LISTS	
-	IntegerVector::IntegerVector( std::initializer_list<int> list ) {
-		SEXP x = PROTECT( Rf_allocVector( INTSXP, list.size() ) ) ;
-		std::copy( list.begin(), list.end(), INTEGER(x) ); 
-		setSEXP(x) ;
-		UNPROTECT( 1 ); /* x */
-	}
-	IntegerVector::IntegerVector( std::initializer_list<double> list ) {
-		SEXP x = PROTECT( Rf_allocVector( INTSXP, list.size() ) ) ;
-		std::copy( list.begin(), list.end(), INTEGER(x) ); 
-		setSEXP(x) ;
-		UNPROTECT( 1 ); /* x */
-	}
-#endif
-
-int& IntegerVector::operator[]( int i ) const throw(index_out_of_bounds) { 
-	if( i < 0 || i >= length() ) throw index_out_of_bounds() ;
-	return INTEGER(m_sexp)[i] ;
-}
-int* IntegerVector::begin() const { 
-	return INTEGER(m_sexp) ;
-}
-int* IntegerVector::end() const { 
-	return INTEGER(m_sexp) + LENGTH(m_sexp);
-}
 
 } // namespace 

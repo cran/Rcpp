@@ -44,6 +44,9 @@ public:
 	 */
 	Pairlist(SEXP lang) throw(not_compatible) ;
 	
+	
+	Pairlist() ;
+	
 	/**
 	 * Creates a pairlist by wrapping the variable number of arguments
 	 * using the pairlist template
@@ -115,7 +118,7 @@ template<typename... Args>
 			if( index <  0 ) throw index_out_of_bounds() ;
 			if( isNULL( ) ) throw index_out_of_bounds() ;
 			
-			if( index < 0 || index > Rf_length(m_sexp) ) throw index_out_of_bounds() ;
+			if( index < 0 || index > ::Rf_length(m_sexp) ) throw index_out_of_bounds() ;
 			
 			int i=1;
 			SEXP x = m_sexp ;
@@ -137,7 +140,7 @@ template<typename... Args>
 	 */
 	template <typename T>
 	void replace( const int& index, const T& object ) throw(index_out_of_bounds){
-		if( index < 0 || index >= Rf_length(m_sexp) ) throw index_out_of_bounds() ;
+	        if( index < 0 || index >= ::Rf_length(m_sexp) ) throw index_out_of_bounds() ;
 		
 		/* pretend we do a pairlist so that we get Named to work for us */
 		SEXP x = PROTECT(pairlist( object ));
@@ -150,8 +153,8 @@ template<typename... Args>
 		UNPROTECT(1) ;
 	}
 
-	inline size_t length() const { return Rf_length(m_sexp) ; }
-	inline size_t size() const { return Rf_length(m_sexp) ; }
+        inline size_t length() const { return ::Rf_length(m_sexp) ; }
+        inline size_t size() const { return ::Rf_length(m_sexp) ; }
 
 	/**
 	 * Remove the element at the given position

@@ -47,7 +47,8 @@ test.RawVector.initializer.list <- function(){
 		RawVector x = {0,1,2,3} ;
 		for( int i=0; i<x.size(); i++) x[i] = x[i]*2 ;
 		return x ;', 
-			Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;" )
+			Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;",
+			cxxargs = "-std=c++0x" )
 		checkEquals( funx(), as.raw(2*0:3), msg = "RawVector( initializer list) " )
 	}
 }

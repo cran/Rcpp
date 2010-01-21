@@ -27,7 +27,7 @@
 
 namespace Rcpp {
 
-	const char* Promise::unevaluated_promise::what() throw() {
+	const char* Promise::unevaluated_promise::what() const throw() {
 		return "promise not yet evaluated" ;
 	}
 	

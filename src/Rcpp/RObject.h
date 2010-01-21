@@ -36,8 +36,8 @@ public:
    	class not_compatible: public std::exception{
    		public:
    			not_compatible(const std::string& message) throw() : message(message){};
-   			~not_compatible() throw(){} ;
-   			const char* what() const throw() ; 
+   			virtual ~not_compatible() throw(){} ;
+   			virtual const char* what() const throw() ; 
    		private:
    			std::string message ;
    	} ;
@@ -48,15 +48,15 @@ public:
    	class not_s4: public std::exception{
    		public:
    			not_s4() throw(){};
-   			~not_s4() throw(){} ;
-   			const char* what() const throw() ; 
+   			virtual ~not_s4() throw(){} ;
+   			virtual const char* what() const throw() ; 
    	} ;
    	
    	class index_out_of_bounds: public std::exception{
    	public:
    		index_out_of_bounds() throw(){};
-   		~index_out_of_bounds() throw(){};
-   		const char* what() const throw() ;
+   		virtual ~index_out_of_bounds() throw(){};
+   		virtual const char* what() const throw() ;
    	} ;
    	
     /**
@@ -184,12 +184,12 @@ public:
     /**
      * Tests if the SEXP has the object bit set
      */
-    inline bool isObject() const { return Rf_isObject(m_sexp) ;}
+    inline bool isObject() const { return ::Rf_isObject(m_sexp) ;}
 
     /**
      * Tests if the SEXP is an S4 object
      */
-    inline bool isS4() const { return Rf_isS4(m_sexp) ; }
+    inline bool isS4() const { return ::Rf_isS4(m_sexp) ; }
 
     /**
      * Indicates if this S4 object has the given slot
@@ -223,12 +223,12 @@ protected:
      * to change it, use setSEXP
      */
     SEXP m_sexp ;
-
+    
 private:
 
     void preserve(){ if( m_sexp != R_NilValue ) R_PreserveObject(m_sexp) ; } 
     void release() { if( m_sexp != R_NilValue ) R_ReleaseObject(m_sexp) ; } 
-
+    virtual void update() {} ;
 };
 
 } // namespace Rcpp

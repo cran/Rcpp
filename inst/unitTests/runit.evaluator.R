@@ -22,24 +22,18 @@
 }
 
 test.evaluator.error <- function(){
-	funx <- cfunction(signature(x = "expression"),  '
-	Rcpp::Evaluator evaluator( x ) ;
-	evaluator.run( Rcpp::Environment::global_env() ) ;
-	return evaluator.getError() ;
+	funx <- cfunction(signature(),  '
+	return Rcpp::Evaluator::run( Rf_lang2( Rf_install("stop"), Rf_mkString( "boom" ) ) ) ;
 	', Rcpp=TRUE, verbose=FALSE)
 	
-	err <- funx( expression(stop("error")) ) 
-	checkTrue( all( "simpleError" %in% class(err ) ), msg = "error capture" )
+	checkException( funx(), msg = "Evaluator::run( stop() )" )
 }
 
 test.evaluator.ok <- function(){
-	funx <- cfunction(signature(x = "expression"),  '
-	Rcpp::Evaluator evaluator( x ) ;
-	evaluator.run( Rcpp::Environment::global_env() ) ;
-	return evaluator.getResult() ;
+	funx <- cfunction(signature(x="integer"),  '
+	return Rcpp::Evaluator::run( Rf_lang2( Rf_install("sample"), x ) ) ;
 	', Rcpp=TRUE, verbose=FALSE)
 	
-	x <- funx( expression( sample(1:10) ) ) 
-	checkEquals( sort(x), 1:10, msg = "Evaluator running fine" )
+	checkEquals( sort(funx(1:10)), 1:10, msg = "Evaluator running fine" )
 }
-
+             

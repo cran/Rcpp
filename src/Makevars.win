@@ -37,6 +37,7 @@ USERLIB	= 	$(USERDIR)/libRcpp.a
 ## to filter out -Wall which generated a ton with older compilers
 newCXXFLAGS := 	$(filter-out -Wall,$(CXXFLAGS))
 CXXFLAGS := 	$(newCXXFLAGS)
+CLINK_CPPFLAGS := `${R_HOME}/bin/R --slave ../inst/discovery/cxx0x.R`
 
 ## the 'package' library contains both Rcpp.{cpp,h} and the RcppExample used to demonstrate the package
 ## it is loaded via library(Rcpp) but is not used for compiling / linking against

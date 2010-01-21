@@ -4,5 +4,6 @@ export(RcppExample,
        print.RcppExample,
        RcppDateExample,
        RcppParamsExample,
-       RcppVectorExample
+       RcppVectorExample, 
+       Rcpp.package.skeleton
 )

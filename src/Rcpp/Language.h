@@ -143,7 +143,7 @@ template<typename... Args>
 			if( index <  0 ) throw index_out_of_bounds() ;
 			if( isNULL( ) ) throw index_out_of_bounds() ;
 			
-			if( index < 0 || index > Rf_length(m_sexp) ) throw index_out_of_bounds() ;
+			if( index < 0 || index > ::Rf_length(m_sexp) ) throw index_out_of_bounds() ;
 			
 			int i=1;
 			SEXP x = m_sexp ;
@@ -176,7 +176,7 @@ template<typename... Args>
 	 */
 	template <typename T>
 	void replace( const int& index, const T& object ) throw(index_out_of_bounds){
-		if( index < 0 || index >= Rf_length(m_sexp) ) throw index_out_of_bounds() ;
+ 	        if( index < 0 || index >= ::Rf_length(m_sexp) ) throw index_out_of_bounds() ;
 		
 		if( index == 0 ){
 			/* special handling */
@@ -196,8 +196,8 @@ template<typename... Args>
 		}
 	}
 
-	inline size_t length() const { return Rf_length(m_sexp) ; }
-	inline size_t size() const { return Rf_length(m_sexp) ; }
+        inline size_t length() const { return ::Rf_length(m_sexp) ; }
+        inline size_t size() const { return ::Rf_length(m_sexp) ; }
 	
 	/**
 	 * Remove the element at the given position

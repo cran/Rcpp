@@ -40,6 +40,8 @@ void RObject::setSEXP(SEXP x){
 		
 		/* the new SEXP is not NULL, so preserve it */
 		preserve() ;
+			
+		update() ;
 	}
 }
 
@@ -142,7 +144,6 @@ const char* RObject::not_s4::what( ) const throw() {
 const char* RObject::index_out_of_bounds::what( ) const throw() {
 	return "array or list out of bounds" ;
 }
-
 
 } // namespace Rcpp
 

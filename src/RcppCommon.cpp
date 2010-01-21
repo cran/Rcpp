@@ -4,6 +4,7 @@
 //
 // Copyright (C) 2005 - 2006 Dominick Samperi
 // Copyright (C) 2008 - 2009 Dirk Eddelbuettel
+// Copyright (C) 2010 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -40,33 +41,6 @@ inline void logTxtFunction(const char* file, const int line, const char* express
     Rprintf("%s:%d %s\n", file, line, expression);
 }
 
-SEXP test_variadic() {
-	SEXP res = PROTECT( Rf_allocVector(INTSXP, 5) ) ; 
-#ifdef HAS_VARIADIC_TEMPLATES
-	INTEGER(res)[0] = variadic_length() ; 
-	INTEGER(res)[1] = variadic_length(1) ;
-	INTEGER(res)[2] = variadic_length(1, 3.3) ;
-	INTEGER(res)[3] = variadic_length(1, "foo", 'f') ;
-	INTEGER(res)[4] = variadic_length(1, 2, 2.3f, "foo", std::string("foobar") ) ;
-#else
-	INTEGER(res)[0] = 0 ; 
-	INTEGER(res)[1] = 1 ;
-	INTEGER(res)[2] = 2 ;
-	INTEGER(res)[3] = 3 ;
-	INTEGER(res)[4] = 4 ;
-#endif
-	UNPROTECT(1) ;
-	return res;
-}
-
-SEXP canUseCXX0X(){
-#ifdef HAS_VARIADIC_TEMPLATES
-	return Rf_ScalarLogical( TRUE ) ;
-#else
-	return Rf_ScalarLogical( FALSE ) ;
-#endif
-}
-
 SEXP capabilities(){
 	SEXP cap = PROTECT( Rf_allocVector( LGLSXP, 3) ) ;
 	SEXP names = PROTECT( Rf_allocVector( STRSXP, 3 ) ) ;
@@ -80,13 +54,7 @@ SEXP capabilities(){
 #else
 	LOGICAL(cap)[1] = FALSE ;
 #endif
-#ifdef __GNUC__
 	LOGICAL(cap)[2] = TRUE ;
-#else
-	/* just because I don't know */
-	LOGICAL(cap)[2] = FALSE ;
-#endif
-
 	SET_STRING_ELT(names, 0, Rf_mkChar("variadic templates") ) ;
 	SET_STRING_ELT(names, 1, Rf_mkChar("initializer lists") ) ;
 	SET_STRING_ELT(names, 2, Rf_mkChar("exception handling") ) ;
@@ -106,7 +74,7 @@ SEXP test_named(){
 #endif
 }
 
-const char * const sexp_to_name(int sexp_type) {
+const char * sexp_to_name(int sexp_type) {
     switch (sexp_type) {
     case NILSXP:	return "NILSXP";
     case SYMSXP:	return "SYMSXP";
@@ -136,4 +104,8 @@ const char * const sexp_to_name(int sexp_type) {
     }
 }
 
+SEXP initRcpp(){
+	initUncaughtExceptionHandler() ;
+	return R_NilValue ;
+}
 
