@@ -24,6 +24,7 @@
 
 #include <RcppCommon.h>
 #include <Rcpp/RObject.h>
+#include <Rcpp/VectorBase.h>
 
 #ifdef HAS_INIT_LISTS
 #include <initializer_list>
@@ -32,32 +33,36 @@
 
 namespace Rcpp{ 
 
-class ComplexVector : public RObject {     
+class ComplexVector : public VectorBase {     
 public:
 
 	ComplexVector(SEXP x) throw(not_compatible);
 	ComplexVector(int size) ;
 	
 #ifdef HAS_INIT_LISTS	
-	ComplexVector( std::initializer_list<Rcomplex> list ) ;
+	ComplexVector( std::initializer_list<Rcomplex> list ) : VectorBase(){
+		fill( list.begin(), list.end() ) ;
+	};
 #endif
 	
-	/**
-	 * the length of the vector, uses Rf_length
-	 */
-	inline int length() const { return Rf_length( m_sexp ) ; }
-	
-	/**
-	 * alias of length
-	 */
-	inline int size() const { return Rf_length( m_sexp ) ; }
-	
-	Rcomplex& operator[]( int i ) const throw(index_out_of_bounds) ;
-	Rcomplex* begin() const ; 
-	Rcomplex* end() const ;
+	inline Rcomplex& operator[]( int i ) const { return start[i] ; } 
+	inline Rcomplex* begin() const { return start ; } 
+	inline Rcomplex* end() const { return start + LENGTH(m_sexp) ; }
 	
 	typedef Rcomplex* iterator ;
+
+private:
+	Rcomplex* start ;
+	virtual void update(){ start = COMPLEX(m_sexp);}
 	
+	template <typename InputIterator>
+	void fill( InputIterator first, InputIterator last){
+		size_t size = std::distance(first, last) ;
+		SEXP x = PROTECT( Rf_allocVector( CPLXSXP, size ) ) ;
+		std::copy( first, last, COMPLEX(x) ) ;
+		setSEXP(x) ;
+		UNPROTECT( 1 ); /* x */
+	}
 } ;
 
 } // namespace

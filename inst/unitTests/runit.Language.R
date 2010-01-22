@@ -35,16 +35,18 @@ test.Language <- function(){
 }
 
 test.Language.variadic <- function(){
-	if( Rcpp:::canUseCXX0X() ){
+	if( Rcpp:::capabilities()[["variadic templates"]] ){
 		funx <- cfunction(signature(), '
 		return Language( "rnorm", 10, 0.0, 2.0 ) ;
-		', Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;" )
+		', Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;",
+			cxxargs = "-std=c++0x" )
 		checkEquals( funx(), call("rnorm", 10L, 0.0, 2.0 ), 
 			msg = "variadic templates" )
 			
 		funx <- cfunction(signature(), '
 		return Language( "rnorm", 10, Named("mean",0.0), 2.0 ) ;
-		', Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;" )
+		', Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;",
+			cxxargs = "-std=c++0x" )
 		checkEquals( funx(), call("rnorm", 10L, mean = 0.0, 2.0 ), 
 			msg = "variadic templates (with names)" )
 	}

@@ -25,12 +25,14 @@
 #define RcppCommon_h
 
 #ifdef __GNUC__
-	#define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)
-	#if GCC_VERSION >= 40300
-		#define HAS_VARIADIC_TEMPLATES
-	#endif
-	#if GCC_VERSION >= 40400
-		#define HAS_INIT_LISTS
+	#ifdef __GXX_EXPERIMENTAL_CXX0X__
+		#define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)
+		#if GCC_VERSION >= 40300
+			#define HAS_VARIADIC_TEMPLATES
+		#endif
+		#if GCC_VERSION >= 40400
+			#define HAS_INIT_LISTS
+		#endif
 	#endif
 #endif
 
@@ -49,6 +51,7 @@
 #include <Rinternals.h>
 #include <R_ext/Callbacks.h>
 #include <R_ext/Complex.h>
+#include <R_ext/Parse.h>
 #include <Rversion.h>
 #define RCPP_GET_NAMES(x)	Rf_getAttrib(x, R_NamesSymbol)
 
@@ -69,10 +72,7 @@ inline void logTxtFunction(const char* file, const int line, const char* express
 #endif
 
 /* in exceptions.cpp */
-#ifdef __GNUC__
 void forward_uncaught_exceptions_to_r() ;
-#endif 
-
 RcppExport SEXP initUncaughtExceptionHandler() ; 
 
 /* just testing variadic templates */
@@ -81,11 +81,16 @@ template<typename... Args>
 int variadic_length( const Args&... args) { return sizeof...(Args) ; }
 #endif
 
-RcppExport SEXP test_variadic() ; 
-RcppExport SEXP canUseCXX0X() ;
+#ifdef HAS_VARIADIC_TEMPLATES
+RcppExport inline SEXP canUseCXX0X(){ return Rf_ScalarLogical( TRUE ); }
+#else
+RcppExport inline SEXP canUseCXX0X(){ return Rf_ScalarLogical( FALSE ); }
+#endif
+
 RcppExport SEXP test_named() ;
 RcppExport SEXP capabilities() ;
 
-const char * const sexp_to_name(int sexp_type); 
+const char * sexp_to_name(int sexp_type); 
 
+RcppExport SEXP initRcpp() ;
 #endif

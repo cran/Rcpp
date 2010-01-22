@@ -24,42 +24,64 @@
 
 #include <RcppCommon.h>
 #include <Rcpp/RObject.h>
+#include <Rcpp/VectorBase.h>
 
 #ifdef HAS_INIT_LISTS
 #include <initializer_list>
 #include <algorithm>
 #endif
 
-namespace Rcpp{ 
+namespace Rcpp{
 
-class LogicalVector : public RObject {     
+class LogicalVector : public VectorBase {     
 public:
 
 	LogicalVector(SEXP x) throw(not_compatible);
 	LogicalVector( int size) ;
-	
+
 #ifdef HAS_INIT_LISTS	
-	LogicalVector( std::initializer_list<int> list ) ;
-	LogicalVector( std::initializer_list<Rboolean> list ) ;
-	LogicalVector( std::initializer_list<bool> list ) ;
+	LogicalVector( std::initializer_list<Rboolean> list ) : VectorBase(), start(0) {
+		simple_fill( list.begin(), list.end() ) ;
+	}
+	LogicalVector( std::initializer_list<int> list ) : VectorBase(), start(0) {
+		coerce_and_fill( list.begin(), list.end() ) ;
+	}
+	LogicalVector( std::initializer_list<bool> list ) : VectorBase(), start(0) {
+		coerce_and_fill( list.begin(), list.end() ) ;
+	}
 #endif
+
+	typedef int* iterator ;
+
+	inline int& operator[]( int i ) const { return start[i] ;}
+	inline int* begin() const { return start ; }
+	inline int* end() const { return start + LENGTH(m_sexp); }
+
+private:
+	int* start ;
+	virtual void update(){ start=LOGICAL(m_sexp); }
 	
-	/**
-	 * the length of the vector, uses Rf_length
-	 */
-	inline int length() const { return Rf_length( m_sexp ) ; }
+	// called when there is no need for coercion
+	template <typename InputIterator>
+	void simple_fill( InputIterator first, InputIterator last){
+		size_t size = std::distance( first, last ) ;
+		SEXP x = PROTECT( Rf_allocVector( LGLSXP, size ) ) ;
+		std::copy( first, last, LOGICAL(x) ); 
+		setSEXP(x) ;
+		UNPROTECT( 1 ); /* x */
+	}
 	
-	/**
-	 * alias of length
-	 */
-	inline int size() const { return Rf_length( m_sexp ) ; }
+	template <typename InputIterator>
+	void coerce_and_fill( InputIterator first, InputIterator last){
+		size_t size = std::distance( first, last ) ;
+		SEXP x = PROTECT( Rf_allocVector( LGLSXP, size ) ) ;
+		// FIXME : actually coerce
+		// std::transform( first, last, LOGICAL(x), coerce_to_logical ) ;
+		std::copy( first, last, LOGICAL(x) ); 
+		setSEXP(x) ;
+		UNPROTECT( 1 ); /* x */
+	}
 	
-	typedef Rboolean* iterator ;
-	typedef Rboolean value_type ;
-	
-	int& operator[]( int i ) const throw(index_out_of_bounds) ;
-	int* begin() const ; 
-	int* end() const ;
 	
 } ;
 

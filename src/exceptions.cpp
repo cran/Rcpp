@@ -80,16 +80,20 @@ void forward_uncaught_exceptions_to_r(){
 }
 
 
+#else
+void forward_uncaught_exceptions_to_r(){
+	Rf_eval( 
+	    Rf_lang3( 
+		     Rf_install("cpp_exception"), 
+		     Rf_mkString("exception : we don't know how to get the exception message with your compiler, patches welcome"), 
+		     R_NilValue ), R_FindNamespace(Rf_mkString("Rcpp"))
+	     ) ; 
+}
+#endif
 SEXP initUncaughtExceptionHandler(){
     /* FIXME: we might want to restore the original handler as the package
               gets unloaded */
     std::set_terminate(forward_uncaught_exceptions_to_r);
     return R_NilValue ;
 }
-#else
-SEXP initUncaughtExceptionHandler(){
-	Rf_warning( "exception handling not supported by your compiler" ) ; 
-	return R_NilValue ;
-}
-#endif
 

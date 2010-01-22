@@ -25,7 +25,7 @@
 
 namespace Rcpp{
 	
-	NumericVector::NumericVector(SEXP x) throw(not_compatible) : RObject() {
+	NumericVector::NumericVector(SEXP x) throw(not_compatible) : VectorBase(), start(0) {
 		switch( TYPEOF( x ) ){
 			case REALSXP:
 				setSEXP( x ) ;
@@ -40,34 +40,8 @@ namespace Rcpp{
 		}
 	}
 	
-	NumericVector::NumericVector(int size) : RObject() {
+	NumericVector::NumericVector(int size) : VectorBase(), start(0) {
 		setSEXP( Rf_allocVector(REALSXP, size) ) ;
 	}
-
-#ifdef HAS_INIT_LISTS	
-	NumericVector::NumericVector( std::initializer_list<int> list ) {
-		SEXP x = PROTECT( Rf_allocVector( REALSXP, list.size() ) ) ;
-		std::copy( list.begin(), list.end(), REAL(x) ); 
-		setSEXP(x) ;
-		UNPROTECT( 1 ); /* x */
-	}
-	NumericVector::NumericVector( std::initializer_list<double> list ) {
-		SEXP x = PROTECT( Rf_allocVector( REALSXP, list.size() ) ) ;
-		std::copy( list.begin(), list.end(), REAL(x) ); 
-		setSEXP(x) ;
-		UNPROTECT( 1 ); /* x */
-	}
-#endif
-
-double& NumericVector::operator[]( int i ) const throw(index_out_of_bounds){ 
-	if( i<0 || i>=length()) throw index_out_of_bounds() ;
-	return REAL(m_sexp)[i] ;
-}
-double* NumericVector::begin() const { 
-	return REAL(m_sexp) ;
-}
-double* NumericVector::end() const { 
-	return REAL(m_sexp) + LENGTH(m_sexp);
-}
 
 } // namespace 

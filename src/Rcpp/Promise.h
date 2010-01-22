@@ -36,8 +36,8 @@ public:
 	class unevaluated_promise : public std::exception{
 	public:
 		unevaluated_promise() throw(){}; 
-		~unevaluated_promise() throw(){} ;
-		const char* what() throw() ;
+		virtual ~unevaluated_promise() throw(){} ;
+		virtual const char* what() const throw() ;
 	} ;
 
 	Promise( SEXP x) throw(not_compatible) ;

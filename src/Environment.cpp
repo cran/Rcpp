@@ -47,16 +47,15 @@ static void safeFindNamespace(void *data) {
 
     Environment::Environment( SEXP x = R_GlobalEnv) throw(not_compatible) : RObject::RObject(x){
     	if( ! Rf_isEnvironment(x) ) {
-    		
     		/* not an environment, but maybe convertible to one using 
     		   as.environment, try that */
-    		Evaluator evaluator( Rf_lang2(Symbol("as.environment"), x ) ) ;
-    		evaluator.run() ;
-    		if( evaluator.successfull() ){
-    			setSEXP( evaluator.getResult().asSexp() ) ;
-    		} else{
+    		SEXP res ;
+    		try{
+    			res = Evaluator::run( Rf_lang2(Rf_install("as.environment"), x ) ) ;
+    		} catch( const Evaluator::eval_error& ex){
     			throw not_compatible( "cannot convert to environment"  ) ; 
     		}
+    		setSEXP( res ) ;
     	}
     }
 
@@ -67,24 +66,25 @@ static void safeFindNamespace(void *data) {
     	} else if( name == "package:base" ){
     		setSEXP( R_BaseEnv ) ;
     	} else{
-    		Evaluator evaluator( Rf_lang2(Symbol("as.environment"), Rf_mkString(name.c_str()) ) ) ;
-    		evaluator.run() ;
-    		if( evaluator.successfull() ){
-    			setSEXP( evaluator.getResult().asSexp() ) ;
-    		} else{
-    			throw no_such_env(name) ; 
+    		SEXP res = R_NilValue ;
+    		try{
+    			res = Evaluator::run( 
+    				Rf_lang2( Rf_install("as.environment"), Rf_mkString(name.c_str()) ) ) ;
+    		} catch( const Evaluator::eval_error& ex){
+    			throw no_such_env(name) ;
     		}
+    		setSEXP( res ) ;
     	}
     }
     
     Environment::Environment(int pos) throw(no_such_env) : RObject(R_GlobalEnv){
-    	Evaluator evaluator( Rf_lang2(Symbol("as.environment"), Rf_ScalarInteger(pos) ) ) ;
-    	evaluator.run() ;
-    	if( evaluator.successfull() ){
-    		setSEXP( evaluator.getResult() ) ;
-    	} else{
-    		throw no_such_env(pos) ; 
-    	}
+    	   SEXP res ;
+    	   try{
+    	   	   res =  Evaluator::run( Rf_lang2( Rf_install("as.environment"), Rf_ScalarInteger(pos) ) ) ;
+    	   } catch( const Evaluator::eval_error& ex){
+    	   	   throw no_such_env(pos) ;
+    	   }
+    	   setSEXP( res ) ;
     }
     
     Environment::Environment( const Environment& other ) throw() {
@@ -316,6 +316,19 @@ static void safeFindNamespace(void *data) {
     Environment::Binding Environment::operator[]( const std::string& name) {
     	return Binding( *this, name ) ;
     }
+    
+    Environment Environment::RCPP_NAMESPACE = Environment::namespace_env("Rcpp") ;
+    Environment& Environment::Rcpp_namespace() throw() {
+    	    return RCPP_NAMESPACE ;
+    }
+    
+    Environment Environment::new_child(bool hashed) {
+    	    return Environment( Evaluator::run( 
+    	    	    Rf_lcons( Rf_install("new.env"), 
+    	    	    	    Rf_cons(Rf_ScalarLogical(hashed), 
+    	    	    	    	    Rf_cons(m_sexp,R_NilValue)) ) ) );
+    }
+    
     
 } // namespace Rcpp
 

@@ -28,47 +28,27 @@
 
 namespace Rcpp{
 	
-	GenericVector::GenericVector(SEXP x) throw(not_compatible) : RObject() {
+	GenericVector::GenericVector(SEXP x) throw(not_compatible) : VectorBase() {
 		switch( TYPEOF( x ) ){
 			case VECSXP:
 				setSEXP( x ) ;
 				break ;
 			default:
 				{
-					Evaluator e( Rf_lang2( Symbol("as.list"), x ) ) ;
-					e.run() ;
-					if( e.successfull() ){
-						setSEXP( e.getResult() ) ;
-					} else{
+					SEXP res = R_NilValue ; 
+					try{
+						res = Evaluator::run( Rf_lang2( Rf_install( "as.list" ), x ) ) ;
+					} catch( const Evaluator::eval_error& ex){
 						throw not_compatible( "could not convert to a list" ) ;
 					}
+					setSEXP( res ) ;
 				}
 		}
 	}
 	
-	GenericVector::GenericVector(int size) : RObject() {
+	GenericVector::GenericVector(int size) : VectorBase() {
 		setSEXP( Rf_allocVector(VECSXP, size) ) ;
 	}
-
-#ifdef HAS_INIT_LISTS
-	GenericVector::GenericVector( std::initializer_list<RObject> list ) {
-		SEXP x = PROTECT( Rf_allocVector( VECSXP, list.size() ) ) ;
-		const RObject* p = list.begin() ;
-		for( size_t i=0; i<list.size() ; i++, p++){
-			SET_VECTOR_ELT( x, i, p->asSexp() ) ;
-		}
-		setSEXP( x ) ;
-		UNPROTECT( 1 ); /* x */
-	}
-#endif
-
-// SEXP* GenericVector::begin(){
-// 	return RCPP_VECTOR_PTR(m_sexp) ;
-// }
-// 
-// SEXP* GenericVector::end(){
-// 	return RCPP_VECTOR_PTR(m_sexp) + LENGTH(m_sexp) ;
-// }
 
 /* proxy stuff */
 
@@ -85,6 +65,11 @@ GenericVector::Proxy& GenericVector::Proxy::operator=( const Proxy& rhs){
 }
 
 GenericVector::Proxy& GenericVector::Proxy::operator=( SEXP rhs){
+	SET_VECTOR_ELT( parent, index, rhs ) ;
+	return *this ;
+}
+
+GenericVector::Proxy& GenericVector::Proxy::operator=( const Environment::Binding& rhs){
 	SET_VECTOR_ELT( parent, index, rhs ) ;
 	return *this ;
 }

@@ -24,6 +24,8 @@
 
 #include <RcppCommon.h>
 #include <Rcpp/RObject.h>
+#include <Rcpp/Environment.h>
+#include <Rcpp/VectorBase.h>
 
 #ifdef HAS_INIT_LISTS
 #include <initializer_list>
@@ -32,7 +34,7 @@
 
 namespace Rcpp{ 
 
-class GenericVector : public RObject {     
+class GenericVector : public VectorBase {     
 public:
 
 	/* much inspired from item 30 of more effective C++ */
@@ -49,6 +51,7 @@ public:
 			SET_VECTOR_ELT( parent, index, wrap(rhs) ) ;
 			return *this; 
 		}
+		Proxy& operator=( const Environment::Binding& rhs) ;
 		
 		/* rvalue use */
 		operator SEXP() const ;
@@ -63,26 +66,26 @@ public:
 	GenericVector( int size) ;
 	
 #ifdef HAS_INIT_LISTS	
-	GenericVector( std::initializer_list<RObject> list ) ;
+	GenericVector( std::initializer_list<RObject> list ) : VectorBase(){
+		fill( list.begin(), list.end() ) ;
+	};
 #endif
-	
-	/**
-	 * the length of the vector, uses Rf_length
-	 */
-	inline int length() const { return Rf_length( m_sexp ) ; }
-	
-	/**
-	 * alias of length
-	 */
-	inline int size() const { return Rf_length( m_sexp ) ; }
-	
-	// SEXP* begin(); 
-	// SEXP* end() ;
 	
 	const Proxy operator[]( int i ) const throw(index_out_of_bounds);
 	Proxy operator[]( int i ) throw(index_out_of_bounds) ;
 	
 	friend class Proxy; 
+
+	template <typename InputIterator>
+	void fill( InputIterator first, InputIterator last){
+		size_t size = std::distance( first, last );
+		SEXP x = PROTECT( Rf_allocVector( VECSXP, size ) ) ;
+		for( size_t i=0; i<size ; i++, ++first){
+			SET_VECTOR_ELT( x, i, *first ) ;
+		}
+		setSEXP( x ) ;
+		UNPROTECT( 1 ); /* x */
+	}
 	
 } ;
 

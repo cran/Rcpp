@@ -1,0 +1,4 @@
+
+## This assume that we can call Rscript to ask Rcpp about its locations
+PKG_CPPFLAGS=$(shell Rscript.exe -e "Rcpp:::CxxFlags()")
+PKG_LIBS=$(shell Rscript.exe -e "Rcpp:::LdFlags()")

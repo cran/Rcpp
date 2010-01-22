@@ -37,11 +37,12 @@ test.Function <- function(){
 }
 
 test.Function.variadic <- function(){
-	if( Rcpp:::canUseCXX0X() ){
+	if( Rcpp:::capabilities()[["variadic templates"]] ){
 		funx <- cfunction(signature(x="function", y = "ANY"), '
 		Function sort(x) ;
 		return sort( y, Named("decreasing", true) ) ;
-		', Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;" )
+		', Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;",
+			cxxargs = "-std=c++0x" )
 		checkEquals( funx( sort, sample(1:20) ), 
 			20:1, msg = "calling function" )
 		checkException( funx(sort, sort), msg = "Function, R error -> exception" )

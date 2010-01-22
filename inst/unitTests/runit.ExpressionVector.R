@@ -42,11 +42,52 @@ if( Rcpp:::capabilities()[["variadic templates"]] ){
 		x[0] = Symbol( "rnorm" ) ;
 		x[1] = Language( "rnorm", 10.0 ) ;
 		return x ;', 
-			Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;" )
+			Rcpp=TRUE, verbose=FALSE, 
+			includes = "using namespace Rcpp;",
+			cxxargs = "-std=c++0x" )
 		ex <- parse( text = "rnorm; rnorm(10)" )
 		attributes(ex) <- NULL
 		checkEquals( funx(),  ex , msg = "ExpressionVector (using variadic templates) " )
 	}
 }
+
+test.ExpressionVector.parse <- function( ){
+	funx <- cfunction(signature(), '
+	ExpressionVector code( "local( { y <- sample(1:10); sort(y) })" ) ;
+	return code ;', 
+	Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;" )
+	code <- funx()
+	results <- eval( code )
+	checkEquals( results, 1:10, msg = "ExpressionVector parsing" )
+}
+
+test.ExpressionVector.parse.error <- function(){
+	funx <- cfunction(signature(), '
+	ExpressionVector code( "rnorm(" ) ;
+	return code ;', 
+	Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;" )
+	checkException( funx(), msg = "parse error" )
+}
+
+test.ExpressionVector.eval <- function(){
+	funx <- cfunction(signature(), '
+	ExpressionVector code( "local( { y <- sample(1:10); sort(y) })" ) ;
+	return code.eval() ;', 
+	Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;" )
+	checkEquals( funx(), 1:10, msg = "ExpressionVector::eval" )
+}
+
+test.ExpressionVector.eval.env <- function(){
+	funx <- cfunction(signature(env = "environment"), '
+	ExpressionVector code( "sort(x)" ) ;
+	return code.eval(env) ;', 
+	Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;" )
+	
+	e <- new.env()
+	e[["x"]] <- sample(1:10)
+	checkEquals( funx(e), 1:10, msg = "ExpressionVector::eval" )
+}
+
+
 
 

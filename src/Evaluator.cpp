@@ -23,27 +23,39 @@
 #include <Rcpp/Environment.h>
 
 namespace Rcpp {
+
+    Evaluator::eval_error::eval_error( const std::string& message) throw() :
+    	message(message){}
+    Evaluator::eval_error::~eval_error( ) throw(){} ;
+    const char* Evaluator::eval_error::what() const throw(){ return message.c_str() ; }
+
+   SEXP Evaluator::run(SEXP expr, SEXP env) throw(eval_error) {
 	
-    Evaluator::Evaluator( SEXP expression = R_NilValue) : 
-	expression(expression),
-	error_occured(false), 
-	result(),
-	error() {}
+   	/* already protected */
+   	SEXP RCPP = Environment::Rcpp_namespace(); 
+   	   
+	SEXP call = PROTECT( Rf_lang3( Rf_install("rcpp_tryCatch") , expr, env ) ) ;
 	
-    Evaluator::~Evaluator(){} 
+	/* call the tryCatch call */
+	SEXP res = PROTECT( Rf_eval( call, RCPP ) );
 	
-    void Evaluator::run(SEXP env ) throw() {
-	Environment rcpp = Environment::namespace_env("Rcpp") ;
-	SEXP call = Rf_lang3( Rf_install("protectedEval"), expression, env ) ;
-	result = wrap( Rf_eval( call, rcpp ) ); 
-	error_occured = LOGICAL( Rf_eval( Rf_lang1( Rf_install("errorOccured")) , rcpp) )[0] ;
-	if( error_occured ){
-	    error = wrap( Rf_eval( Rf_lang1(Rf_install("getCurrentError")) , rcpp) );
+	/* was there an error ? */
+	int error = LOGICAL( Rf_eval( Rf_lang1( Rf_install("errorOccured") ), RCPP ) )[0];
+	
+	if( error ){
+		SEXP err_msg = PROTECT( Rf_eval( 
+			Rf_lang1( Rf_install("getCurrentErrorMessage")), 
+			RCPP ) );
+		std::string message = CHAR(STRING_ELT(err_msg,0)) ;
+		UNPROTECT( 3 ) ;
+		throw eval_error(message) ;
+	} else {
+		UNPROTECT(2) ;
+		return res ;
 	}
     }
     
-    void Evaluator::run() throw() {
-    	run( R_GlobalEnv) ;
+    SEXP Evaluator::run( SEXP expr) throw(eval_error){
+    	return run(expr, R_GlobalEnv );
     }
-
 } // namespace Rcpp

@@ -53,7 +53,9 @@ test.ComplexVector.initializer.list <- function(){
 		Rcomplex c2 ; c2.r = c2.i = 1.0 ;
 		ComplexVector x = { c1, c2 } ;
 		return x ;', 
-			Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;" )
+			Rcpp=TRUE, verbose=FALSE, 
+			includes = "using namespace Rcpp;", 
+			cxxargs = "-std=c++0x" )
 		checkEquals( funx(), c( 0:1*(1+1i)), msg = "ComplexVector( initializer list) " )
 	}
 }

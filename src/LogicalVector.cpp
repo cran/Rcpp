@@ -26,7 +26,7 @@
 
 namespace Rcpp{
 	
-	LogicalVector::LogicalVector(SEXP x) throw(not_compatible) : RObject() {
+	LogicalVector::LogicalVector(SEXP x) throw(not_compatible) : VectorBase() {
 		switch( TYPEOF( x ) ){
 			case LGLSXP:
 				setSEXP( x ) ;
@@ -41,40 +41,8 @@ namespace Rcpp{
 		}
 	}
 	
-	LogicalVector::LogicalVector(int size) : RObject() {
+	LogicalVector::LogicalVector(int size) : VectorBase() {
 		setSEXP( Rf_allocVector(LGLSXP, size) ) ;
 	}
-
-#ifdef HAS_INIT_LISTS
-	LogicalVector::LogicalVector( std::initializer_list<int> list ) {
-		SEXP x = PROTECT( Rf_allocVector( INTSXP, list.size() ) ) ;
-		std::copy( list.begin(), list.end(), INTEGER(x) ); 
-		setSEXP( Rf_coerceVector( x, LGLSXP ) ) ;
-		UNPROTECT( 1 ); /* x */
-	}
-	LogicalVector::LogicalVector( std::initializer_list<Rboolean> list ) {
-		SEXP x = PROTECT( Rf_allocVector( LGLSXP, list.size() ) ) ;
-		std::copy( list.begin(), list.end(), LOGICAL(x) ); 
-		setSEXP(x) ;
-		UNPROTECT( 1 ); /* x */
-	}
-	LogicalVector::LogicalVector( std::initializer_list<bool> list ) {
-		SEXP x = PROTECT( Rf_allocVector( LGLSXP, list.size() ) ) ;
-		std::copy( list.begin(), list.end(), LOGICAL(x) ); 
-		setSEXP(x) ;
-		UNPROTECT( 1 ); /* x */
-	}
-#endif
-
-int& LogicalVector::operator[]( int i ) const throw(index_out_of_bounds){ 
-	if( i<0 || i>=length()) throw index_out_of_bounds() ;
-	return LOGICAL(m_sexp)[i] ;
-}
-int* LogicalVector::begin() const { 
-	return LOGICAL(m_sexp) ;
-}
-int* LogicalVector::end() const { 
-	return LOGICAL(m_sexp) + LENGTH(m_sexp);
-}
 
 } // namespace 
