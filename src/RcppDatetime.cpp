@@ -31,6 +31,12 @@ RcppDatetime::RcppDatetime(const double d) : m_d(d),
 					     m_us(0) { 
 };
 
+RcppDatetime::RcppDatetime(SEXP ds) { 
+    m_d = REAL(ds)[0]; 
+    m_parsed = false; 
+    m_us = 0;
+};
+
 void RcppDatetime::parseTime() {
     // tt is the nb of seconds, ignores fractional microsec
     time_t tt = static_cast<time_t>(floor(m_d));	

@@ -23,67 +23,37 @@
 #define Rcpp_LogicalVector_h
 
 #include <RcppCommon.h>
-#include <Rcpp/RObject.h>
-#include <Rcpp/VectorBase.h>
-
-#ifdef HAS_INIT_LISTS
-#include <initializer_list>
-#include <algorithm>
-#endif
+#include <Rcpp/SimpleVector.h>
 
 namespace Rcpp{
 
-class LogicalVector : public VectorBase {     
+typedef SimpleVector<LGLSXP,int> LogicalVector_Base ;
+
+class LogicalVector : public LogicalVector_Base{ 
 public:
+	LogicalVector() : LogicalVector_Base(){} ;
+	LogicalVector(SEXP x) : LogicalVector_Base(x){} ;
+	LogicalVector(const size_t& size) : LogicalVector_Base(size){}; 
 
-	LogicalVector(SEXP x) throw(not_compatible);
-	LogicalVector( int size) ;
-
-#ifdef HAS_INIT_LISTS	
-	LogicalVector( std::initializer_list<Rboolean> list ) : VectorBase(), start(0) {
-		simple_fill( list.begin(), list.end() ) ;
-	}
-	LogicalVector( std::initializer_list<int> list ) : VectorBase(), start(0) {
-		coerce_and_fill( list.begin(), list.end() ) ;
-	}
-	LogicalVector( std::initializer_list<bool> list ) : VectorBase(), start(0) {
-		coerce_and_fill( list.begin(), list.end() ) ;
-	}
+#ifdef HAS_INIT_LISTS
+	LogicalVector( std::initializer_list<int> list) : LogicalVector_Base(list){};
+	LogicalVector( std::initializer_list<bool> list) : LogicalVector_Base(){ 
+		bool_fill(list.begin(), list.end());
+	} ;
 #endif
-
-	typedef int* iterator ;
-
-	inline int& operator[]( int i ) const { return start[i] ;}
-	inline int* begin() const { return start ; }
-	inline int* end() const { return start + LENGTH(m_sexp); }
-
+	
 private:
-	int* start ;
-	virtual void update(){ start=LOGICAL(m_sexp); }
-	
-	// called when there is no need for coercion
 	template <typename InputIterator>
-	void simple_fill( InputIterator first, InputIterator last){
-		size_t size = std::distance( first, last ) ;
-		SEXP x = PROTECT( Rf_allocVector( LGLSXP, size ) ) ;
-		std::copy( first, last, LOGICAL(x) ); 
-		setSEXP(x) ;
-		UNPROTECT( 1 ); /* x */
+	void bool_fill( InputIterator first, InputIterator last){
+		size_t size = std::distance( first, last) ;
+		SEXP x = PROTECT( Rf_allocVector( LGLSXP, size ) );
+		std::transform( first, last, get_pointer<LGLSXP,int>(x), bool_to_Rboolean  ) ;
+		setSEXP( x ) ;
+		UNPROTECT(1) ;
 	}
-	
-	template <typename InputIterator>
-	void coerce_and_fill( InputIterator first, InputIterator last){
-		size_t size = std::distance( first, last ) ;
-		SEXP x = PROTECT( Rf_allocVector( LGLSXP, size ) ) ;
-		// FIXME : actually coerce
-		// std::transform( first, last, LOGICAL(x), coerce_to_logical ) ;
-		std::copy( first, last, LOGICAL(x) ); 
-		setSEXP(x) ;
-		UNPROTECT( 1 ); /* x */
-	}
-	
-	
+
 } ;
+
 
 } // namespace
 

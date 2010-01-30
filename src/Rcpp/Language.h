@@ -23,9 +23,11 @@
 #define Rcpp_Language_h
 
 #include <RcppCommon.h>
-#include <Rcpp/RObject.h>
+#include <Rcpp/DottedPair.h>
 #include <Rcpp/Symbol.h>
-#include <Rcpp/Pairlist.h>
+#include <Rcpp/Function.h>
+#include <Rcpp/grow.h>
+#include <Rcpp/r_cast.h>
 
 namespace Rcpp{ 
 
@@ -34,9 +36,11 @@ namespace Rcpp{
  *
  * This represents calls that can be evaluated
  */
-class Language : public RObject{
+class Language : public DottedPair {
 public:
 
+	Language() ;
+	
 	/**
 	 * Attempts to convert the SEXP to a call
 	 *
@@ -67,6 +71,13 @@ public:
 	explicit Language( const Symbol& symbol ); 
 
 	/**
+	 * Creates a call to the function
+	 * 
+	 * @param function function to call
+	 */
+	explicit Language( const Function& function) ;
+	
+	/**
 	 * Creates a call to the given symbol using variable number of 
 	 * arguments
 	 *
@@ -85,78 +96,14 @@ public:
 	 */
 #ifdef HAS_VARIADIC_TEMPLATES
 template<typename... Args> 
-	Language( const std::string& symbol, const Args&... args) : RObject() {
-		/* TODO: should we first allocate and protect the list  ?*/
-		setSEXP( Rf_lcons( Symbol(symbol), pairlist( args... ) ) );
-	}
+Language( const std::string& symbol, const Args&... args) : DottedPair(Rf_install(symbol.c_str()), args...) {
+	update() ;
+}
+template<typename... Args> 
+Language( const Function& function, const Args&... args) : DottedPair(function, args...) {
+	update() ;
+}
 #endif	
-
-	/**
-	 * wraps an object and add it at the end of the pairlist
-	 * (this require traversing the entire pairlist)
-	 *
-	 * @param object anything that can be wrapped by one 
-	 * of the wrap functions, or an object of class Named
-	 */
-	template <typename T>
-	void push_back( const T& object){
-		if( isNULL() ){
-			setSEXP( grow( object, m_sexp ) ) ;
-		} else {
-			SEXP x = m_sexp ;
-			/* traverse the pairlist */
-			while( !Rf_isNull(CDR(x)) ){
-				x = CDR(x) ;
-			}
-			SEXP tail = PROTECT( pairlist( object ) ); 
-			SETCDR( x, tail ) ;
-			UNPROTECT(1) ;
-		}
-	}
-
-	/**
-	 * wraps an object and add it in front of the pairlist. 
-	 * in addition, the tag is set to NULL and the SEXPTYPE to LANGSXP
-	 *
-	 * @param object anything that can be wrapped by one 
-	 * of the wrap functions, or an object of class Named
-	 */
-	template <typename T>
-	void push_front( const T& object){
-		setSEXP( grow(object, m_sexp) ) ;
-		SET_TAG(m_sexp, R_NilValue);
-		SET_TYPEOF(m_sexp, LANGSXP);
-	}
-
-	/**
-	 * insert an object at the given position, pushing other objects
-	 * to the tail of the list
-	 *
-	 * @param index index (0-based) where to insert
-	 * @param object object to wrap
-	 */
-	template <typename T>
-	void insert( const int& index, const T& object) throw(index_out_of_bounds) {
-		if( index == 0 ) {
-			push_front( object ) ;
-		} else{
-			if( index <  0 ) throw index_out_of_bounds() ;
-			if( isNULL( ) ) throw index_out_of_bounds() ;
-			
-			if( index < 0 || index > ::Rf_length(m_sexp) ) throw index_out_of_bounds() ;
-			
-			int i=1;
-			SEXP x = m_sexp ;
-			while( i < index ){
-				x = CDR(x) ;
-				i++; 
-			}
-			SEXP tail = PROTECT( grow( object, CDR(x) ) ) ; 
-			SETCDR( x, tail ) ;
-			UNPROTECT(1) ;
-		}
-	}
-	
 	
 	/**
 	 * sets the symbol of the call
@@ -169,75 +116,25 @@ template<typename... Args>
 	void setSymbol( const Symbol& symbol ) ;
 
 	/**
-	 * replaces an element of the list
-	 *
-	 * @param index position
-	 * @param object object that can be wrapped
+	 * sets the function
 	 */
-	template <typename T>
-	void replace( const int& index, const T& object ) throw(index_out_of_bounds){
- 	        if( index < 0 || index >= ::Rf_length(m_sexp) ) throw index_out_of_bounds() ;
-		
-		if( index == 0 ){
-			/* special handling */
-			SEXP x = PROTECT(pairlist( object ));
-			SETCAR( m_sexp, CAR(x) );
-			UNPROTECT(1) ;
-		} else{
-			/* pretend we do a pairlist so that we get Named to work for us */
-			SEXP x = PROTECT(pairlist( object ));
-			SEXP y = m_sexp ;
-			int i=0;
-			while( i<index ){ y = CDR(y) ; i++; }
-			
-			SETCAR( y, CAR(x) );
-			SET_TAG( y, TAG(x) );
-			UNPROTECT(1) ;
-		}
-	}
-
-        inline size_t length() const { return ::Rf_length(m_sexp) ; }
-        inline size_t size() const { return ::Rf_length(m_sexp) ; }
+	void setFunction( const Function& function) ;
 	
 	/**
-	 * Remove the element at the given position
-	 *
-	 * @param index position where the element is to be removed
+	 * eval this call in the global environment
 	 */
-	void remove( const int& index ) throw(index_out_of_bounds) ; 
+	SEXP eval() ;
 	
-	class Proxy {
-	public:
-		Proxy( Language& v, const size_t& index ) ;
-		
-		/* lvalue uses */
-		Proxy& operator=(const Proxy& rhs) ;
-		Proxy& operator=(SEXP rhs) ;
-		
-		template <typename T>
-		Proxy& operator=(const T& rhs){
-			parent.replace( index, rhs ) ;
-			return *this ;
-		}
-		
-		Proxy& operator=(const Named& rhs) ;
-		
-		/* rvalue use */
-		operator SEXP() const ;
-		operator RObject() const ;
-		
-	private:
-		Language& parent; 
-		size_t index ;
-	} ;
-
-	const Proxy operator[]( int i ) const ;
-	Proxy operator[]( int i ) ;
-	
-	friend class Proxy; 
-	
+	/**
+	 * eval this call in the requested environment
+	 */
+	SEXP eval(SEXP env) ;
 	
 	~Language() ;
+	
+private:	
+	virtual void update() ; 
+		
 };
 
 } // namespace Rcpp

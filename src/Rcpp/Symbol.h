@@ -23,7 +23,6 @@
 #define Rcpp_Symbol_h
 
 #include <RcppCommon.h>
-#include <Rcpp/RObject.h>
 
 namespace Rcpp{ 
 

@@ -88,3 +88,14 @@ test.Language.square <- function(){
 	checkEquals( funx(), call("rnorm", "foobar", 20.0, 20.0) , msg = "Pairlist::operator[] used as lvalue" )
 }
 
+test.Language.function <- function(){
+	funx <- cfunction(signature(g = "function", x = "numeric"), 
+	'
+	Function fun(g) ;
+	Language call( fun );
+	call.push_back(x) ;
+	return Rf_eval( call, R_GlobalEnv ) ;
+	', Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;" )
+	checkEquals( funx(sort, sample(1:10)), 1:10, msg = "Language( Function ) " )
+}
+

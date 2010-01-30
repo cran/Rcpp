@@ -20,7 +20,6 @@
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <Rcpp/Evaluator.h>
-#include <Rcpp/Environment.h>
 
 namespace Rcpp {
 
@@ -31,11 +30,10 @@ namespace Rcpp {
 
    SEXP Evaluator::run(SEXP expr, SEXP env) throw(eval_error) {
 	
-   	/* already protected */
-   	SEXP RCPP = Environment::Rcpp_namespace(); 
-   	   
-	SEXP call = PROTECT( Rf_lang3( Rf_install("rcpp_tryCatch") , expr, env ) ) ;
+   	SEXP call = PROTECT( Rf_lang3( Rf_install("rcpp_tryCatch") , expr, env ) ) ;
 	
+   	Environment RCPP = Environment::Rcpp_namespace(); 
+   	
 	/* call the tryCatch call */
 	SEXP res = PROTECT( Rf_eval( call, RCPP ) );
 	
@@ -58,4 +56,21 @@ namespace Rcpp {
     SEXP Evaluator::run( SEXP expr) throw(eval_error){
     	return run(expr, R_GlobalEnv );
     }
+    
+namespace internal{
+/* this is defined here because we need to be sure that Evaluator is 
+   defined */
+    SEXP convert_using_rfunction(SEXP x, const char* const fun){
+    	    return Evaluator::run( Rf_lcons( Rf_install(fun), Rf_cons(x, R_NilValue) ) ) ; 
+    }
+    
+    SEXP try_catch( SEXP expr, SEXP env ){
+    	    return Evaluator::run(expr, env) ;
+    }
+    SEXP try_catch( SEXP expr ){
+    	    return Evaluator::run(expr) ;
+    }
+    
+} // namespace internal
+    
 } // namespace Rcpp

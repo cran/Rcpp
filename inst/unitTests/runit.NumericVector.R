@@ -53,4 +53,29 @@ test.NumericVector.initializer.list <- function(){
 	}
 }
 
+test.NumericVector.matrix.indexing <- function(){
+	funx <- cfunction(signature(x = "numeric" ), '
+		NumericVector m(x) ;
+		double trace = 0.0 ;
+		for( size_t i=0 ; i<4; i++){
+			trace += m(i,i) ;
+		}
+		return wrap( trace ) ;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;"  )
+	x <- matrix( 1:16 + .5, ncol = 4 )
+	checkEquals( funx(x), sum(diag(x)), msg = "matrix indexing" )
+	
+	y <- as.vector( x )
+	checkException( funx(y) , msg = "not a matrix" )
+	
+	funx <- cfunction(signature(x = "numeric" ), '
+		NumericVector m(x) ;
+		for( size_t i=0 ; i<4; i++){
+			m(i,i) = 2.0 * i ;
+		}
+		return m ;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;"  )
+	checkEquals( diag(funx(x)), 2.0*0:3, msg = "matrix indexing lhs" )
+	
+}
 

@@ -1,4 +1,11 @@
 # simple check
 
-gxxversion=`g++ -v 2>&1 | grep "^g.*version" | sed -e 's/^.*g.. version *//'`
-echo "Seeing g++ version ${gxxversion}"
+gxx_version=`g++ -v 2>&1 | grep "^g.*version" | sed -e 's/^.*g.. version *//'`
+echo "Seeing g++ version ${gxx_version}"
+
+case ${gxx_version} in
+    4.3.*|4.4.*|4.5.*)
+           echo "You can enable support for the C++0x draft by setting the"
+           echo "'RCPP_CXX0X' environment variable to 'yes' "
+    ;;
+esac

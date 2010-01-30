@@ -20,7 +20,6 @@
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <Rcpp/WeakReference.h>
-#include <Rcpp/wrap.h>
 
 namespace Rcpp{
 	
@@ -32,12 +31,12 @@ namespace Rcpp{
 		}
 	}
 	
-	RObject WeakReference::key() const {
-		return isNULL() ? RObject() : wrap( R_WeakRefKey(m_sexp) ) ;
+	SEXP WeakReference::key() {
+		return R_WeakRefKey(m_sexp) ;
 	}
 	
-	RObject WeakReference::value() const {
-		return isNULL() ? RObject() : wrap( R_WeakRefValue(m_sexp) );
+	SEXP WeakReference::value() {
+		return R_WeakRefValue(m_sexp);
 	}
 	
 }

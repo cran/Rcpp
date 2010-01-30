@@ -25,7 +25,7 @@ test.Pairlist <- function(){
 	funx <- cfunction(signature(x="ANY"), 'return Pairlist(x) ;', 
 		Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;" )
 	checkEquals( funx( pairlist("rnorm") ), pairlist("rnorm" ), msg = "Pairlist( LISTSXP )" )
-	checkEquals( funx( call("rnorm") ), call("rnorm" ), msg = "Pairlist( LANGSXP )" )
+	checkEquals( funx( call("rnorm") ), pairlist(as.name("rnorm")), msg = "Pairlist( LANGSXP )" )
 	checkEquals( funx(1:10), as.pairlist(1:10) , msg = "Pairlist( INTSXP) " )
 	checkEquals( funx(TRUE), as.pairlist( TRUE) , msg = "Pairlist( LGLSXP )" )
 	checkEquals( funx(1.3), as.pairlist(1.3), msg = "Pairlist( REALSXP) " )

@@ -20,10 +20,6 @@
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <Rcpp/Promise.h>
-#include <Rcpp/wrap.h>
-#include <Rcpp/RObject.h>
-#include <Rcpp/Environment.h>
-#include <Rcpp/ExpressionVector.h>
 
 namespace Rcpp {
 
@@ -43,10 +39,10 @@ namespace Rcpp {
 		return PRSEEN(m_sexp);
 	}
 
-	RObject Promise::value() const throw(unevaluated_promise) {
+	SEXP Promise::value() const throw(unevaluated_promise) {
 		SEXP val = PRVALUE(m_sexp) ; 
 		if( val == R_UnboundValue ) throw unevaluated_promise() ;
-		return wrap( val ) ;
+		return val ;
 	}
 	
 	bool Promise::was_evaluated() const {

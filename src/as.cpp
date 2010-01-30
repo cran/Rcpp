@@ -19,7 +19,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <Rcpp/as.h>
+#include <RcppCommon.h>
 
 namespace Rcpp{ 
 
@@ -29,13 +29,13 @@ template<> double as<double>(SEXP m_sexp) {
     }
     switch( TYPEOF(m_sexp) ){
     	case LGLSXP:
-    		return LOGICAL(m_sexp)[0] ? 1.0 : 0.0 ; 
+    		return Rboolean_to_double( LOGICAL(m_sexp)[0] ) ; 
     	case REALSXP:
     		return REAL(m_sexp)[0] ; 
     	case INTSXP:
-    		return (double)INTEGER(m_sexp)[0]; 
+    		return int_to_double( INTEGER(m_sexp)[0] ); 
     	case RAWSXP:
-    		return (double)RAW(m_sexp)[0];
+    		return static_cast<double>( RAW(m_sexp)[0] );
     	default:
     		throw std::range_error("as<double> invalid type");
     }
@@ -48,13 +48,13 @@ template<> int as<int>(SEXP m_sexp) {
     }
     switch( TYPEOF(m_sexp)){
     	case LGLSXP:
-    		return LOGICAL(m_sexp)[0] ? 1 : 0 ; 
+    		return Rboolean_to_int( LOGICAL(m_sexp)[0] ) ; 
     	case REALSXP:
-    		return (int)REAL(m_sexp)[0] ; // some of this might be lost
+    		return double_to_int( REAL(m_sexp)[0] ); // some of this might be lost
     	case INTSXP:
     		return INTEGER(m_sexp)[0]; 
     	case RAWSXP:
-    		return (int)RAW(m_sexp)[0];
+    		return static_cast<int>( RAW(m_sexp)[0] );
     	default:
     		throw std::range_error("as<int>");
     }
@@ -67,11 +67,11 @@ template<> Rbyte as<Rbyte>(SEXP m_sexp) {
     }
     switch( TYPEOF(m_sexp) ){
     	case LGLSXP:
-    		return LOGICAL(m_sexp)[0] ? (Rbyte)1 : (Rbyte)0 ; 
+    		return Rboolean_to_Rbyte( LOGICAL(m_sexp)[0] ) ; 
     	case REALSXP:
-    		return (Rbyte)REAL(m_sexp)[0] ;
+    		return double_to_Rbyte( REAL(m_sexp)[0] );
     	case INTSXP:
-    		return (Rbyte)INTEGER(m_sexp)[0] ;
+    		return int_to_Rbyte( INTEGER(m_sexp)[0] );
     	case RAWSXP:
     		return RAW(m_sexp)[0] ;
     	default:
@@ -88,11 +88,11 @@ template<> bool as<bool>(SEXP m_sexp) {
     	case LGLSXP:
     		return LOGICAL(m_sexp)[0] ? true : false ; 
     	case REALSXP:
-    		return (bool)REAL(m_sexp)[0] ;
+    		return double_to_bool( REAL(m_sexp)[0] ) ;
     	case INTSXP:
-    		return (bool)INTEGER(m_sexp)[0] ;
+    		return int_to_bool( INTEGER(m_sexp)[0] ) ;
     	case RAWSXP:
-    		return (bool)RAW(m_sexp)[0] ;
+    		return Rbyte_to_bool( RAW(m_sexp)[0] );
     	default:
     		throw std::range_error("as<bool> expects raw, double or int");
     }
@@ -114,16 +114,16 @@ template<> std::vector<bool> as< std::vector<bool> >(SEXP m_sexp) {
     std::vector<bool> v(n);
     switch( TYPEOF(m_sexp) ){
     case LGLSXP:
-    	v.assign( LOGICAL(m_sexp), LOGICAL(m_sexp)+n ) ;
+    	transform( LOGICAL(m_sexp), LOGICAL(m_sexp)+n, v.begin(), Rboolean_to_bool ) ;
     	break ;
     case INTSXP:
-    	v.assign( INTEGER(m_sexp), INTEGER(m_sexp)+n ) ;
+    	transform( INTEGER(m_sexp), INTEGER(m_sexp)+n, v.begin(), int_to_bool ) ;
     	break;
     case REALSXP:
-    	v.assign( REAL(m_sexp), REAL(m_sexp)+n ) ;
+    	transform( REAL(m_sexp), REAL(m_sexp)+n, v.begin(), double_to_bool ) ;
     	break;
     case RAWSXP:
-    	v.assign( RAW(m_sexp), RAW(m_sexp)+n ) ;
+    	transform( RAW(m_sexp), RAW(m_sexp)+n, v.begin(), Rbyte_to_bool ) ;
     	break;
     default:
     		throw std::range_error( "as< vector<bool> >: invalid R type" ) ; 
@@ -136,17 +136,17 @@ template<> std::vector<int> as< std::vector<int> >(SEXP m_sexp){
     int n = Rf_length(m_sexp);
     std::vector<int> v(n);
     switch( TYPEOF(m_sexp) ){
-    case LGLSXP:
-    	v.assign( LOGICAL(m_sexp), LOGICAL(m_sexp)+n ) ;
-    	break;
     case INTSXP:
     	v.assign( INTEGER(m_sexp), INTEGER(m_sexp)+n ) ;
     	break;
+    case LGLSXP:
+    	transform( LOGICAL(m_sexp), LOGICAL(m_sexp)+n, v.begin(), Rboolean_to_int ) ;
+    	break;
     case REALSXP:
-    	v.assign( REAL(m_sexp), REAL(m_sexp)+n ) ;
+    	transform( REAL(m_sexp), REAL(m_sexp)+n, v.begin(), double_to_int ) ;
     	break;
     case RAWSXP:
-    	v.assign( RAW(m_sexp), RAW(m_sexp)+n ) ;
+    	transform( RAW(m_sexp), RAW(m_sexp)+n, v.begin(), Rbyte_to_int ) ;
     	break;
     default:
     		throw std::range_error( "as< vector<int> >: invalid R type" ) ; 
@@ -159,16 +159,16 @@ template<> std::vector<Rbyte> as< std::vector<Rbyte> >(SEXP m_sexp) {
     std::vector<Rbyte> v(n);
     switch( TYPEOF(m_sexp) ){
     case LGLSXP:
-    	v.assign( LOGICAL(m_sexp), LOGICAL(m_sexp)+n ) ;
+    	transform( LOGICAL(m_sexp), LOGICAL(m_sexp)+n, v.begin(), Rboolean_to_Rbyte ) ;
     	break ;
     case RAWSXP:
     	v.assign( RAW(m_sexp), RAW(m_sexp)+n ) ;
     	break ;
     case REALSXP:
-    	v.assign( REAL(m_sexp), REAL(m_sexp)+n) ;
+    	transform( REAL(m_sexp), REAL(m_sexp)+n, v.begin(), double_to_Rbyte ) ;
     	break;
     case INTSXP:
-    	v.assign( INTEGER(m_sexp), INTEGER(m_sexp)+n) ;
+    	transform( INTEGER(m_sexp), INTEGER(m_sexp)+n, v.begin(), int_to_Rbyte ) ;
     	break;
     default:
     	throw std::range_error("as< vector<Rbyte> > expects raw, double or int");
@@ -181,16 +181,16 @@ template<> std::vector<double> as< std::vector<double> >(SEXP m_sexp){
     std::vector<double> v(n);
     switch( TYPEOF(m_sexp) ){
     case LGLSXP:
-    	v.assign( LOGICAL(m_sexp), LOGICAL(m_sexp)+n ) ;
+    	transform( LOGICAL(m_sexp), LOGICAL(m_sexp)+n, v.begin(), Rboolean_to_double ) ;
     	break ;
     case RAWSXP:
-    	v.assign( RAW(m_sexp), RAW(m_sexp)+n ) ;
+    	transform( RAW(m_sexp), RAW(m_sexp)+n, v.begin(), Rbyte_to_double ) ;
     	break ;
     case REALSXP:
     	v.assign( REAL(m_sexp), REAL(m_sexp)+n) ;
     	break;
     case INTSXP:
-    	v.assign( INTEGER(m_sexp), INTEGER(m_sexp)+n) ;
+    	transform( INTEGER(m_sexp), INTEGER(m_sexp)+n, v.begin(), int_to_double) ;
     	break;
     default:
     	    throw std::range_error("as< vector<double> >:  expects raw, double or int");

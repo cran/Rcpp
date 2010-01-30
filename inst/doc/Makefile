@@ -1,9 +1,9 @@
-all: clean Rcpp-unitTests.html Rcpp-unitTests.pdf
+
+all: clean index.html
 
 clean:
-	rm -fr Rcpp-unitTests.html
-	rm -fr Rcpp-unitTests.pdf
+	rm index.html
 
-Rcpp-unitTests.html: Rcpp-unitTests.R
-	Rscript --default-packages="Rcpp,RUnit,utils,tools" Rcpp-unitTests.R
+index.html: rcpp.index.html
+	cp rcpp.index.html index.html
 

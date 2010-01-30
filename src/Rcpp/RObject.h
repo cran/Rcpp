@@ -23,11 +23,10 @@
 #define Rcpp_RObject_h
 
 #include <RcppCommon.h>
-#include <set>
 
 namespace Rcpp{ 
 
-class RObject{
+class RObject {
 public:
 
 	/**
@@ -111,9 +110,6 @@ public:
     std::vector<Rbyte>       asStdVectorRaw() const;
     std::vector<bool>        asStdVectorBool() const;
 
-    inline bool isPreserved() { DEFUNCT("isPreserved") ; return m_sexp != R_NilValue ; }
-    inline void forgetPreserve() { DEFUNCT("forgetPreserve") ; }
-
     /* attributes */
 
     /**
@@ -129,19 +125,24 @@ public:
     class AttributeProxy {
 	public:
 		AttributeProxy( const RObject& v, const std::string& attr_name) ;
-		
+
 		/* lvalue uses */
 		AttributeProxy& operator=(const AttributeProxy& rhs) ;
-		
+
 		template <typename T>
 		AttributeProxy& operator=(const T& rhs){
 			Rf_setAttrib( parent, Rf_install(attr_name.c_str()), wrap(rhs) ) ;
 			return *this ;
 		}
-		
+
 		/* rvalue use */
 		operator SEXP() const ;
-		operator RObject() const ;
+
+		template <typename T> operator T() const {
+			SEXP att = Rf_getAttrib( parent, Rf_install( attr_name.c_str() ) );
+			T t = Rcpp::as<T>(att) ;
+			return t ;
+		} ;
 		
 	private:
 		const RObject& parent; 
@@ -206,7 +207,7 @@ public:
     RObject slot(const std::string& name) const throw(not_s4) ;
     /* TODO : implement the proxy pattern here so that we can get and 
               set the slot the same way */
-
+                  
 protected:
 
     /**
@@ -215,8 +216,6 @@ protected:
      * @param x new SEXP to attach to this object
      */
     void setSEXP(SEXP x) ;
-
-    inline void DEFUNCT(const std::string& method ){ Rf_warning("method %s is defunct", method.c_str() )  ; }
 
     /**
      * The SEXP this is wrapping. This has to be considered read only.

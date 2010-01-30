@@ -20,30 +20,8 @@
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <Rcpp/Environment.h>
-#include <Rcpp/Evaluator.h>
-#include <Rcpp/Symbol.h>
-#include <Rcpp/Language.h>
-#include <Rcpp/wrap.h>
 
 namespace Rcpp {
-
-/* this comes from JRI, where it was introduced to cope with cases
-   where bindings are locked */
-struct safeAssign_s {
-    SEXP sym, val, rho;
-};
-static void safeAssign(void *data) {
-    struct safeAssign_s *s = (struct safeAssign_s*) data;
-    Rf_defineVar(s->sym, s->val, s->rho);
-}
-
-struct safeFindNamespace_s {
-    SEXP sym, val ;
-};
-static void safeFindNamespace(void *data) {
-    struct safeFindNamespace_s *s = (struct safeFindNamespace_s*) data;
-    s->val = R_FindNamespace(s->sym);
-}
 
     Environment::Environment( SEXP x = R_GlobalEnv) throw(not_compatible) : RObject::RObject(x){
     	if( ! Rf_isEnvironment(x) ) {
@@ -131,19 +109,8 @@ static void safeFindNamespace(void *data) {
     
     bool Environment::assign( const std::string& name, SEXP x = R_NilValue) const throw(binding_is_locked){
     	if( exists( name) && bindingIsLocked(name) ) throw binding_is_locked(name) ;
-    	
-    	/* borrowed from JRI, we cannot just use defineVar since it might 
-    	   crash on locked bindings */
-    	   
-    	/* TODO: we need to modify R_ToplevelExec so that it does not print 
-    	         the error message as it currently does*/
-    	struct safeAssign_s s;
-    	s.sym = Rf_install( name.c_str() ) ;
-    	if( !s.sym || s.sym == R_NilValue ) return false ;
-    	
-    	s.rho = m_sexp ;
-    	s.val = x ;
-    	return static_cast<bool>( R_ToplevelExec(safeAssign, (void*) &s) );
+    	Rf_defineVar( Rf_install( name.c_str() ) , x, m_sexp );
+    	return true ;
     }
     
     bool Environment::remove( const std::string& name) throw(binding_is_locked){
@@ -222,12 +189,14 @@ static void safeFindNamespace(void *data) {
     }
     
     Environment Environment::namespace_env(const std::string& package) throw(no_such_namespace) {
-    	struct safeFindNamespace_s s;
-    	s.sym = Rf_mkString( package.c_str() ) ;
-    	if( !s.sym || s.sym == R_NilValue || !R_ToplevelExec(safeFindNamespace, (void*) &s) ){
-    		throw no_such_namespace(package) ;
+    	
+    	SEXP env = R_NilValue ;
+    	try{
+    		env = Evaluator::run( Rf_lang2(Rf_install("getNamespace"), Rf_mkString(package.c_str()) ) ) ;
+    	} catch( const Evaluator::eval_error& ex){
+    		throw no_such_namespace( package  ) ; 
     	}
-    	return s.val ;
+    	return Environment( env ) ;
     }
     
     Environment Environment::parent() const throw() {
@@ -304,11 +273,7 @@ static void safeFindNamespace(void *data) {
     Environment::Binding::operator SEXP() const{
     	return env.get( name );    
     }
-    
-    Environment::Binding::operator RObject() const{
-    	return wrap( env.get( name ) );
-    }
-    
+
     const Environment::Binding Environment::operator[]( const std::string& name) const{
     	return Binding( const_cast<Environment&>(*this), name );
     }
@@ -317,9 +282,8 @@ static void safeFindNamespace(void *data) {
     	return Binding( *this, name ) ;
     }
     
-    Environment Environment::RCPP_NAMESPACE = Environment::namespace_env("Rcpp") ;
-    Environment& Environment::Rcpp_namespace() throw() {
-    	    return RCPP_NAMESPACE ;
+    Environment Environment::Rcpp_namespace() throw() {
+    	    return Environment( Rf_eval( Rf_lcons( Rf_install("getNamespace"), Rf_cons( Rf_mkString("Rcpp") , R_NilValue) ), R_GlobalEnv ) ) ;
     }
     
     Environment Environment::new_child(bool hashed) {

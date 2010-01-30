@@ -23,47 +23,11 @@
 #define Rcpp_ComplexVector_h
 
 #include <RcppCommon.h>
-#include <Rcpp/RObject.h>
-#include <Rcpp/VectorBase.h>
-
-#ifdef HAS_INIT_LISTS
-#include <initializer_list>
-#include <algorithm>
-#endif
+#include <Rcpp/SimpleVector.h>
 
 namespace Rcpp{ 
 
-class ComplexVector : public VectorBase {     
-public:
-
-	ComplexVector(SEXP x) throw(not_compatible);
-	ComplexVector(int size) ;
-	
-#ifdef HAS_INIT_LISTS	
-	ComplexVector( std::initializer_list<Rcomplex> list ) : VectorBase(){
-		fill( list.begin(), list.end() ) ;
-	};
-#endif
-	
-	inline Rcomplex& operator[]( int i ) const { return start[i] ; } 
-	inline Rcomplex* begin() const { return start ; } 
-	inline Rcomplex* end() const { return start + LENGTH(m_sexp) ; }
-	
-	typedef Rcomplex* iterator ;
-
-private:
-	Rcomplex* start ;
-	virtual void update(){ start = COMPLEX(m_sexp);}
-	
-	template <typename InputIterator>
-	void fill( InputIterator first, InputIterator last){
-		size_t size = std::distance(first, last) ;
-		SEXP x = PROTECT( Rf_allocVector( CPLXSXP, size ) ) ;
-		std::copy( first, last, COMPLEX(x) ) ;
-		setSEXP(x) ;
-		UNPROTECT( 1 ); /* x */
-	}
-} ;
+typedef SimpleVector<CPLXSXP,Rcomplex> ComplexVector ;	
 
 } // namespace
 

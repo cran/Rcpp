@@ -29,7 +29,7 @@
 
 class RcppFunction {
 public:
-    RcppFunction(SEXP fn);
+    RcppFunction(SEXP fn_);
     ~RcppFunction();
     SEXP listCall();
     SEXP vectorCall();

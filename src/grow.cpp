@@ -20,9 +20,10 @@
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <Rcpp/grow.h>
-#include <Rcpp/Named.h>
 
 namespace Rcpp{
+
+SEXP pairlist(){ return R_NilValue ; }
 
 SEXP grow(const Named& head, SEXP tail){
 	SEXP x;

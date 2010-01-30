@@ -23,79 +23,28 @@
 #define Rcpp_ExpressionVector_h
 
 #include <RcppCommon.h>
-#include <Rcpp/RObject.h>
-#include <Rcpp/VectorBase.h>
-#include <Rcpp/Evaluator.h>
-
-#ifdef HAS_INIT_LISTS
-#include <initializer_list>
-#include <algorithm>
-#endif
+#include <Rcpp/SEXP_Vector.h>
 
 namespace Rcpp{ 
 
-class ExpressionVector : public VectorBase {     
-public:
+/* lazyness typedef */
+typedef SEXP_Vector<EXPRSXP> ExpressionVector_Base ;
 
+class ExpressionVector : public ExpressionVector_Base {     
+public:
 	class parse_error : public std::exception{
 	public:
 		parse_error() throw();
 		virtual ~parse_error() throw();
-	        virtual const char* /*const*/ what() throw() ;
+	        virtual const char* what() const throw() ;
 	} ;
 	
-	/* much inspired from item 30 of more effective C++ */
-	class Proxy {
-	public:
-		Proxy( ExpressionVector& v, int index ) ;
-		
-		/* lvalue uses */
-		Proxy& operator=(const Proxy& rhs) ;
-		Proxy& operator=(SEXP rhs) ;
-
-		template <typename T>
-		Proxy& operator=( const T& rhs){
-			SET_VECTOR_ELT( parent, index, wrap(rhs) ) ;
-			return *this; 
-		}
-
-		/* rvalue use */
-		operator SEXP() const ;
-
-	private:
-		ExpressionVector& parent; 
-		int index ;
-	} ;
-
 	ExpressionVector(SEXP x) throw(not_compatible);
-	ExpressionVector(int size) ;
+	ExpressionVector(const size_t& size) ;
 	ExpressionVector(const std::string& code) throw(parse_error) ;
 	
 	SEXP eval() throw(Evaluator::eval_error) ;
 	SEXP eval(const Environment& env) throw(Evaluator::eval_error);
-	
-#ifdef HAS_INIT_LISTS	
-	ExpressionVector( std::initializer_list<SEXP> list ) : VectorBase(){
-		  fill( list.begin(), list.end() ) ;
-	}
-#endif
-
-	const Proxy operator[]( int i ) const throw(index_out_of_bounds);
-	Proxy operator[]( int i ) throw(index_out_of_bounds) ;
-
-	friend class Proxy; 
-
-private:
-	template <typename InputIterator>
-	void fill( InputIterator first, InputIterator last){
-		size_t size = std::distance( first, last );
-		SEXP x = PROTECT( Rf_allocVector( EXPRSXP, size ) ) ;
-		for( size_t i=0; i<size ; i++, ++first){
-			SET_VECTOR_ELT( x, i, *first ) ;
-		}
-		setSEXP( x ) ;
-		UNPROTECT( 1 ); /* x */
-	}
 
 } ;
 

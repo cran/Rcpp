@@ -22,7 +22,7 @@
 
 #include <RcppFunction.h>
 
-RcppFunction::RcppFunction(SEXP fn) : fn(fn) { 
+RcppFunction::RcppFunction(SEXP fn_) : fn(fn_) { 
     if (!Rf_isFunction(fn))
 	throw std::range_error("RcppFunction: non-function where function expected");
     numProtected = 0;

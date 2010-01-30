@@ -23,7 +23,10 @@
 #define Rcpp_Environment_h
 
 #include <RcppCommon.h>
-#include <Rcpp/RObject.h>
+
+#include <Rcpp/Evaluator.h>
+#include <Rcpp/Symbol.h>
+#include <Rcpp/Language.h>
 
 namespace Rcpp{ 
 
@@ -206,9 +209,9 @@ public:
     	     * with GCC4.4 :
     	     * e["bla" ] = { 1,2,3};
     	     */
-    	    template <typename T>
-    	    Binding& operator=(const T& rhs){
-    	    	    env.assign( name, wrap(rhs) ) ;
+    	    template <typename WRAPPABLE>
+    	    Binding& operator=(const WRAPPABLE& rhs){
+    	    	    env.assign( name, rhs ) ;
     	    	    return *this ;
     	    }
     	    
@@ -222,14 +225,16 @@ public:
     	    operator SEXP() const ;
     	    
     	    /**
-    	     * retrieves the value for this binding as an RObject
+    	     * Retrieves the value of the binding as a T object
+    	     *
+    	     * The requirement on the T type is that as<T> makes sense
+    	     * which can either mean that a specialization exists
+    	     * or that T has a T(SEXP) constructor
     	     */
-    	    operator RObject() const ;
-    	    
     	    template <typename T> 
     	    operator T() const{
     	    	    SEXP x = env.get(name) ;
-    	    	    T t(x) ;
+    	    	    T t = as<T>(x) ;
     	    	    return t; 
     	    }
     	    
@@ -342,6 +347,19 @@ public:
     bool assign( const std::string& name, SEXP x ) const throw(binding_is_locked) ;
     
     /**
+     * wrap and assign. If there is a wrap method taking an object 
+     * of WRAPPABLE type, then it is wrapped and the corresponding SEXP
+     * is assigned in the environment
+     *
+     * @param name name of the object to assign
+     * @param x wrappable object. anything that has a wrap( WRAPPABLE ) is fine
+     */
+    template <typename WRAPPABLE>
+    bool assign( const std::string& name, const WRAPPABLE& x) const throw(binding_is_locked){
+    	    return assign( name, wrap( x ) ) ;
+    }
+    
+    /**
      * @return true if this environment is locked
      * see ?environmentIsLocked for details of what this means
      */
@@ -427,7 +445,7 @@ public:
     /**
      * @return the Rcpp namespace
      */
-    static Environment& Rcpp_namespace() throw() ;
+    static Environment Rcpp_namespace() throw() ;
     
     /**
      * @param name the name of the package of which we want the namespace
@@ -447,11 +465,7 @@ public:
      * creates a new environment whose this is the parent
      */
     Environment new_child(bool hashed) ; 
-    
-private:
-	/* we cache the Rcpp namespace environment since
-	it is used many times internally */
-	static Environment RCPP_NAMESPACE ;
+	
 };
 
 } // namespace Rcpp

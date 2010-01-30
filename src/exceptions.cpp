@@ -26,7 +26,6 @@
    compilers */
 #ifdef __GNUC__
 #include <typeinfo>
-#include <exception>
 #include <exception_defines.h>
 #include <cxxabi.h>
 
@@ -78,7 +77,6 @@ void forward_uncaught_exceptions_to_r(){
 		      ), R_FindNamespace(Rf_mkString("Rcpp"))
 	     ) ; 
 }
-
 
 #else
 void forward_uncaught_exceptions_to_r(){

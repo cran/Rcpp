@@ -25,11 +25,11 @@
 
 test.RObject.asDouble <- function(){
 	foo <- '
-	double d = Rcpp::wrap(x).asDouble();
-	return(Rcpp::wrap( 2*d ) );
+	double d = as<double>(x);
+	return(wrap( 2*d ) );
 	'
 	funx <- cfunction(signature(x="numeric"), foo, 
-		Rcpp=TRUE, verbose=FALSE)
+		Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;" )
 	checkEquals( funx(2.123), 4.246, msg = "RObject.asDouble()" )
 	checkEquals( funx(2), 4, msg = "RObject.asDouble()" )
 	checkException( funx(x='2'), msg = "RObject.asDouble() can not convert character" )
@@ -39,10 +39,10 @@ test.RObject.asDouble <- function(){
 
 test.RObject.asInt <- function(){
 	foo <- '
-	int i = Rcpp::wrap(x).asInt();
-	return(Rcpp::wrap( 2*i ) ); '
+	int i = as<int>(x) ;
+	return(wrap( 2*i ) ); '
 	funx <- cfunction(signature(x="numeric"), foo, 
-		Rcpp=TRUE, verbose=FALSE)
+		Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;")
 	checkEquals( funx(2.123), 4L, msg = "RObject.asInt()" )
 	checkEquals( funx(2), 4L, msg = "RObject.asInt()" )
 	checkEquals( funx(2L), 4.0, msg = "RObject.asInt()" )
@@ -54,10 +54,10 @@ test.RObject.asInt <- function(){
 
 test.RObject.asStdString <- function(){
 	foo <- '
-	std::string s = Rcpp::wrap(x).asStdString();
-	return(Rcpp::wrap( s+s ) );'
+	std::string s = as<std::string>(x) ;
+	return(wrap( s+s ) );'
 	funx <- cfunction(signature(x="character"), foo, 
-		Rcpp=TRUE, verbose=FALSE)
+		Rcpp=TRUE, verbose=FALSE , includes = "using namespace Rcpp;")
 	checkEquals( funx("abc"), "abcabc", msg = "RObject.asStdString()" )
 	checkException( funx(NULL), msg = "RObject.asStdString expects string" )
 	checkException( funx(0L), msg = "RObject.asStdString expects string" )
@@ -70,9 +70,10 @@ test.RObject.asStdString <- function(){
 
 test.RObject.asRaw <- function(){
 	foo <- '
-	Rbyte i = Rcpp::wrap(x).asRaw();
-	return(Rcpp::wrap( (Rbyte)(2*i) ) ); '
-	funx <- cfunction(signature(x="raw"), foo, Rcpp=TRUE, verbose=FALSE)
+	Rbyte i = as<Rbyte>(x);
+	return(wrap( (Rbyte)(2*i) ) ); '
+	funx <- cfunction(signature(x="raw"), foo, 
+		Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;")
 	checkEquals( funx(1L), as.raw(2L), msg = "RObject.asRaw(integer)" )
 	checkEquals( funx(1.3), as.raw(2L), msg = "RObject.asRaw(numeric)" )
 	checkEquals( funx(as.raw(1)), as.raw(2L), msg = "RObject.asRaw(raw)" )
@@ -88,9 +89,10 @@ test.RObject.asRaw <- function(){
 
 test.RObject.asLogical <- function(){
 	foo <- '
-	bool b = Rcpp::wrap(x).asBool();
-	return(Rcpp::wrap( !b ));'
-	funx <- cfunction(signature(x="logical"), foo, Rcpp=TRUE, verbose=FALSE)
+	bool b = as<bool>(x);
+	return(wrap( !b ));'
+	funx <- cfunction(signature(x="logical"), foo, 
+		Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;")
 	checkTrue( !funx(TRUE), msg = "RObject::asBool(TRUE) -> true" )
 	checkTrue( funx(FALSE), msg = "RObject::asBool(FALSE) -> false" )
 	checkTrue( !funx(1L), msg = "RObject::asBool(1L) -> true" )
@@ -113,14 +115,15 @@ test.RObject.asLogical <- function(){
 
 test.RObject.asStdVectorIntResultsSet <- function(){
 	foo <- '
-		std::vector<int> iv = Rcpp::wrap(x).asStdVectorInt();
+		std::vector<int> iv = RObject(x).asStdVectorInt();
 		for (size_t i=0; i<iv.size(); i++) {
     	    iv[i] = 2*iv[i];
     	}
     	RcppResultSet rs;
     	rs.add("", iv);
     	return(rs.getSEXP());'
-    funx <- cfunction(signature(x="numeric"), foo, Rcpp=TRUE, verbose=FALSE)
+    funx <- cfunction(signature(x="numeric"), foo, 
+    	Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;")
 	checkEquals( funx(x=2:5), 2:5*2L, msg = "RObject(integer).asStdVectorInt via RcppResultSet" )
     checkEquals( funx(x=2:5+.1), 2:5*2L, msg = "RObject(numeric).asStdVectorInt via RcppResultSet" )
     checkEquals( funx(x=as.raw(2:5)), 2:5*2L, msg = "RObject(raw).asStdVectorInt via RcppResultSet" )
@@ -129,14 +132,15 @@ test.RObject.asStdVectorIntResultsSet <- function(){
 }
 
 test.RObject.asStdVectorInt <- function(){
-	foo <- '
-		std::vector<int> iv = Rcpp::wrap(x).asStdVectorInt();
-		for (size_t i=0; i<iv.size(); i++) {
-    	    iv[i] = 2*iv[i];
-    	}
-		return(Rcpp::wrap( iv ) );'
-	funx <- cfunction(signature(x="numeric"), foo, Rcpp=TRUE, verbose=FALSE)
-	checkEquals( funx(x=2:5), 2:5*2L, msg = "RObject(integer).asStdVectorInt" )
+    foo <- '
+    std::vector<int> iv = RObject(x).asStdVectorInt();
+    for (size_t i=0; i<iv.size(); i++) {
+        iv[i] = 2*iv[i];
+    }
+    return(Rcpp::wrap( iv ) );'
+    funx <- cfunction(signature(x="numeric"), foo, 
+	Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;")
+    checkEquals( funx(x=2:5), 2:5*2L, msg = "RObject(integer).asStdVectorInt" )
     checkEquals( funx(x=2:5+.1), 2:5*2L, msg = "RObject(numeric).asStdVectorInt" )
     checkEquals( funx(x=as.raw(2:5)), 2:5*2L, msg = "RObject(raw).asStdVectorInt" )
     checkException( funx("foo"), msg = "RObject(character).asStdVectorInt -> exception" )
@@ -146,12 +150,13 @@ test.RObject.asStdVectorInt <- function(){
 
 test.RObject.asStdVectorDouble <- function(){
 	foo <- '
-		std::vector<double> iv = Rcpp::wrap(x).asStdVectorDouble();
+		std::vector<double> iv = RObject(x).asStdVectorDouble();
 		for (size_t i=0; i<iv.size(); i++) {
 	        iv[i] = 2*iv[i];
 	    }
 	 	return(Rcpp::wrap( iv ));'
-	funx <- cfunction(signature(x="numeric"), foo, Rcpp=TRUE, verbose=FALSE)
+	funx <- cfunction(signature(x="numeric"), foo,
+		Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;")
 	checkEquals( funx(x=0.1+2:5), 2*(0.1+2:5), msg = "RObject(numeric).asStdVectorDouble" )
 	checkEquals( funx(x=2:5), 2*(2:5), msg = "RObject(integer).asStdVectorDouble" )
 	checkEquals( funx(x=as.raw(2:5)), 2*(2:5), msg = "RObject(raw).asStdVectorDouble" )
@@ -162,12 +167,13 @@ test.RObject.asStdVectorDouble <- function(){
 
 test.RObject.asStdVectorRaw <- function(){
 	foo <- '
-    	std::vector<Rbyte> iv = Rcpp::wrap(x).asStdVectorRaw();
+    	std::vector<Rbyte> iv = RObject(x).asStdVectorRaw();
 		for (size_t i=0; i<iv.size(); i++) {
     	    iv[i] = 2*iv[i];
     	}
  		return(Rcpp::wrap( iv ));'
-	funx <- cfunction(signature(x="raw"), foo, Rcpp=TRUE, verbose=FALSE)
+	funx <- cfunction(signature(x="raw"), foo, 
+		Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;")
 	checkEquals( funx(x=as.raw(0:9)), as.raw(2*(0:9)), msg = "RObject(raw).asStdVectorRaw" )
 	checkEquals( funx(x=0:9), as.raw(2*(0:9)), msg = "RObject(integer).asStdVectorRaw" )
 	checkEquals( funx(x=as.numeric(0:9)), as.raw(2*(0:9)), msg = "RObject(numeric).asStdVectorRaw" )
@@ -178,12 +184,13 @@ test.RObject.asStdVectorRaw <- function(){
 
 test.RObject.asStdVectorBool <- function(){
 	foo <- '
-		std::vector<bool> bv = Rcpp::wrap(x).asStdVectorBool();
+		std::vector<bool> bv = RObject(x).asStdVectorBool();
 		for (size_t i=0; i<bv.size(); i++) {
 		    bv[i].flip() ;
 		}
 		return(Rcpp::wrap( bv ));'
-	funx <- cfunction(signature(x="logical"), foo, Rcpp=TRUE, verbose=FALSE)
+	funx <- cfunction(signature(x="logical"), foo,
+		Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;")
 	checkEquals( funx(x=c(TRUE,FALSE)), c(FALSE, TRUE), msg = "RObject(logical).asStdVectorBool" )
 	checkEquals( funx(x=c(1L, 0L)), c(FALSE, TRUE), msg = "RObject(integer).asStdVectorBool" )
 	checkEquals( funx(x=c(1.0, 0.0)), c(FALSE, TRUE), msg = "RObject(numeric).asStdVectorBool" )
@@ -194,12 +201,13 @@ test.RObject.asStdVectorBool <- function(){
 
 test.RObject.asStdVectorString <- function(){
 	foo <- '
-    	std::vector<std::string> iv = Rcpp::wrap(x).asStdVectorString();
+    	std::vector<std::string> iv = RObject(x).asStdVectorString();
 		for (size_t i=0; i<iv.size(); i++) {
     	    iv[i] = iv[i] + iv[i];
     	}
  	return(Rcpp::wrap( iv ));'
-	funx <- cfunction(signature(x="character"), foo, Rcpp=TRUE, verbose=FALSE)
+	funx <- cfunction(signature(x="character"), foo, 
+		Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;")
 	checkEquals( funx(c("foo", "bar")), c("foofoo", "barbar"), msg = "RObject(character).asStdVectorString" )
 	checkException( funx(1L), msg = "RObject(integer).asStdVectorString -> exception" )
 	checkException( funx(1.0), msg = "RObject(numeric).asStdVectorString -> exception" )
@@ -254,24 +262,25 @@ test.RObject.stdsetstring <- function(){
 
 test.RObject.attributeNames <- function(){
 	funx <- cfunction(signature(x="data.frame"), '
-		std::vector<std::string> iv = Rcpp::wrap(x).attributeNames();
-		return(Rcpp::wrap( iv ));', 
-		Rcpp=TRUE, verbose=FALSE)
+		std::vector<std::string> iv = RObject(x).attributeNames();
+		return(wrap( iv ));', 
+		Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;" )
 	checkTrue( all( c("names","row.names","class") %in% funx(iris)), msg = "RObject.attributeNames" )
 }
 
 test.RObject.hasAttribute <- function(){
 	funx <- cfunction(signature(x="data.frame"), '
-		bool has_class = Rcpp::wrap(x).hasAttribute( "class" ) ;
-		return Rcpp::wrap( has_class ) ;', 
-		Rcpp=TRUE, verbose=FALSE)
+		bool has_class = RObject(x).hasAttribute( "class" ) ;
+		return wrap( has_class ) ;', 
+		Rcpp=TRUE, verbose=FALSE, 
+		includes = "using namespace Rcpp;")
 	checkTrue( funx( iris ), msg = "RObject.hasAttribute" )
 }
 
 test.RObject.attr <- function(){
 	funx <- cfunction(signature(x="data.frame"), '
-		return Rcpp::wrap(x).attr( "row.names" ) ;
-		', Rcpp=TRUE, verbose=FALSE)
+		return RObject(x).attr( "row.names" ) ;
+		', Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;")
 	checkEquals( funx( iris ), 1:150, msg = "RObject.attr" )
 }
 
@@ -285,9 +294,9 @@ test.RObject.attr.set <- function(){
 
 test.RObject.isNULL <- function(){
 	funx <- cfunction(signature(x="ANY"), '
-		bool is_null = Rcpp::wrap(x).isNULL() ;
-		return Rcpp::wrap( is_null ) ;
-		', Rcpp=TRUE, verbose=FALSE)
+		bool is_null = RObject(x).isNULL() ;
+		return wrap( is_null ) ;
+		', Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;" )
 	checkTrue( !funx( iris ), msg = "RObject.isNULL(iris) -> false" )
 	checkTrue( funx(NULL), msg = "RObject.isNULL(NULL) -> true" )
 	checkTrue( !funx(1L), msg = "RObject.isNULL(integer) -> false" )

@@ -1,6 +1,6 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 8 -*-
 //
-// NumericVector.h: Rcpp R/C++ interface class library -- integer vectors
+// clone.h: Rcpp R/C++ interface class library -- clone RObject's
 //
 // Copyright (C) 2010	Dirk Eddelbuettel and Romain Francois
 //
@@ -19,29 +19,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
+#ifndef Rcpp_clone_h
+#define Rcpp_clone_h
+
 #include <RcppCommon.h>
-#include <Rcpp/RObject.h>
-#include <Rcpp/NumericVector.h>
 
-namespace Rcpp{
-	
-	NumericVector::NumericVector(SEXP x) throw(not_compatible) : VectorBase(), start(0) {
-		switch( TYPEOF( x ) ){
-			case REALSXP:
-				setSEXP( x ) ;
-				break ;
-			case INTSXP:
-			case LGLSXP:
-			case RAWSXP:
-				setSEXP( Rf_coerceVector( x, REALSXP) ) ;
-				break ;
-			default:
-				throw not_compatible( "cannot convert to numeric vector" ) ;
-		}
-	}
-	
-	NumericVector::NumericVector(int size) : VectorBase(), start(0) {
-		setSEXP( Rf_allocVector(REALSXP, size) ) ;
-	}
+namespace Rcpp{ 
 
-} // namespace 
+/* cloning type T is possible if : 
+   - T can be converted to SEXP 
+   - T has a SEXP constructor
+*/
+template <typename T> T clone(T object) {
+	SEXP x = object ;
+	return T( Rf_duplicate( x ) ) ; 
+}
+template<> SEXP clone(SEXP object) ;
+
+} // namespace Rcpp
+
+#endif

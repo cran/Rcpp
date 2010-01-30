@@ -19,41 +19,33 @@
 // You should have received a copy of the GNU General Public License
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <RcppCommon.h>
-#include <Rcpp/RObject.h>
 #include <Rcpp/CharacterVector.h>
-#include <algorithm>
 
 namespace Rcpp{
+
+CharacterVector::CharacterVector() : VectorBase(){}
 	
-	CharacterVector::CharacterVector(SEXP x) throw(not_compatible) : VectorBase() {
-		switch( TYPEOF( x ) ){
-			case STRSXP:
-				setSEXP( x ) ;
-				break ;
-			case SYMSXP:
-				setSEXP( Rf_ScalarString(PRINTNAME(x)) ) ;
-				break ;
-			case CHARSXP:
-				setSEXP( Rf_ScalarString( x ) ) ;
-			default:
-				/* TODO: try coercion */
-				throw not_compatible( "not compatible with character vector" ) ;
-		}
-	}
-	
-	CharacterVector::CharacterVector(int size) : VectorBase() {
-		setSEXP( Rf_allocVector(STRSXP, size) ) ;
-	}
-	
-	CharacterVector::CharacterVector( const std::string& x) : VectorBase() {
-		setSEXP( Rf_mkString(x.c_str()) ) ;
-	}
-	
-	CharacterVector::CharacterVector( const std::vector<std::string>& x): VectorBase() {
-		fill( x.begin(), x.size() ) ;
-	}
-	
+CharacterVector::CharacterVector(SEXP x) throw(not_compatible) : VectorBase() {
+	SEXP y = r_cast<STRSXP>( x) ;
+	setSEXP( y ) ;
+}
+
+CharacterVector::CharacterVector(const size_t& size) : VectorBase(){
+	setSEXP( Rf_allocVector( STRSXP, size ) ) ;
+}
+
+CharacterVector::CharacterVector( const std::string& x) : VectorBase() {
+	setSEXP( Rf_mkString(x.c_str()) ) ;
+}
+
+CharacterVector::CharacterVector( const std::vector<std::string>& x): VectorBase() {
+	assign( x.begin(), x.end() ) ;
+}
+
+CharacterVector::CharacterVector( const Dimension& dims): VectorBase(){
+	setSEXP( Rf_allocVector( STRSXP, dims.prod() ) ) ;
+	if( dims.size() > 1 ) attr( "dim" ) = dims ;
+}
 
 /* proxy stuff */
 
@@ -92,17 +84,25 @@ CharacterVector::StringProxy& CharacterVector::StringProxy::operator=( const std
 	return *this ;
 }
 
+std::ostream& operator<<(std::ostream& os, const CharacterVector::StringProxy& proxy) {
+    os << CHAR(STRING_ELT( proxy.parent, proxy.index )) ;
+    return os;
+}
 
 const CharacterVector::StringProxy CharacterVector::operator[](int i) const throw(index_out_of_bounds){
-	if( i<0 || i>=length()) throw index_out_of_bounds() ;
-	return StringProxy(const_cast<CharacterVector&>(*this), i) ;
-}
+	return StringProxy(const_cast<CharacterVector&>(*this), offset(i) ) ;
+}                                          
 
 CharacterVector::StringProxy CharacterVector::operator[](int i) throw(index_out_of_bounds) {
-	if( i<0 || i>=length()) throw index_out_of_bounds() ;
-	return StringProxy(*this, i ) ;
+	return StringProxy(*this, offset(i) ) ;
 }
 
+CharacterVector::StringProxy CharacterVector::operator()( const size_t& i) throw(index_out_of_bounds){
+	return StringProxy(*this, offset(i) ) ;
+}
 
+CharacterVector::StringProxy CharacterVector::operator()( const size_t& i, const size_t&j ) throw(index_out_of_bounds,not_a_matrix){
+	return StringProxy(*this, offset(i,j) ) ;
+}
 
 } // namespace 

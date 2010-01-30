@@ -3,7 +3,8 @@
 // RcppDate.h: Rcpp R/C++ interface class library -- Date type support
 //
 // Copyright (C) 2005 - 2006 Dominick Samperi
-// Copyright (C) 2008 - 2009 Dirk Eddelbuettel
+// Copyright (C) 2008        Dirk Eddelbuettel
+// Copyright (C) 2009 - 2010 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -27,13 +28,13 @@
 
 class RcppDate {
 private:
-    void mdy2jdn(); 						// month/day/year to Julian day number.
-    void jdn2mdy(); 						// Julian day number to month/day/year.
+    void mdy2jdn(); 				// month/day/year to Julian day number.
+    void jdn2mdy(); 				// Julian day number to month/day/year.
     int month, day, year;
-    int jdn; 								// Julian day number
+    int jdn; 					// Julian day number
 
 public:
-    static const int Jan1970Offset;			// offset between Jan 1, 1970 and Julian Day Number
+    static const int Jan1970Offset;		// offset between Jan 1, 1970 and Julian Day Number
     static const int QLtoJan1970Offset;		// offset between Jan 1, 1970 and QuantLib BaseDate
     RcppDate();
     RcppDate(int Rjdn);
@@ -41,7 +42,8 @@ public:
     int getMonth() const { return month; }
     int getDay()  const  { return day; }
     int getYear() const  { return year; }
-    int getJDN()  const  { return jdn; }
+    int getJDN()  const  { return jdn; } 
+    int getJulian()  const  { return jdn - Jan1970Offset; } 
 
     // Minimal set of date operations.
     friend RcppDate operator+(const RcppDate &date, int offset);

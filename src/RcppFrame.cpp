@@ -35,8 +35,8 @@ ColDatum::ColDatum(const ColDatum& datum) {
     d = datum.d;
     if (type == COLTYPE_FACTOR) {
 	levelNames = new std::string[numLevels];
-	for (int i = 0; i < numLevels; i++)
-	    levelNames[i] = datum.levelNames[i];
+	for (int j = 0; j < numLevels; j++)
+	    levelNames[j] = datum.levelNames[j];
     }
 }
 
@@ -89,8 +89,8 @@ void ColDatum::setFactorValue(std::string *names, int numNames, int factorLevel)
     level = factorLevel;
     numLevels = numNames;
     levelNames = new std::string[numLevels];
-    for (int i = 0; i < numLevels; i++)
-	levelNames[i] = names[i];
+    for (int j = 0; j < numLevels; j++)
+	levelNames[j] = names[j];
     type = COLTYPE_FACTOR;
 }
 
@@ -159,7 +159,7 @@ std::string ColDatum::getFactorLevelName() {
     return levelNames[level-1];
 }
 
-RcppFrame::RcppFrame(std::vector<std::string> colNames) : colNames(colNames) {
+RcppFrame::RcppFrame(std::vector<std::string> colNames_) : colNames(colNames_) {
     if (colNames.size() == 0)
 	throw std::range_error("RcppFrame::RcppFrame: zero length colNames");
 }

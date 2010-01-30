@@ -54,4 +54,71 @@ test.IntegerVector.initializer.list <- function(){
 	}
 }
 
+test.IntegerVector.matrix.indexing <- function(){
+	funx <- cfunction(signature(x = "integer" ), '
+		IntegerVector m(x) ;
+		int trace = 0.0 ;
+		for( size_t i=0 ; i<4; i++){
+			trace += m(i,i) ;
+		}
+		return wrap( trace ) ;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;"  )
+	x <- matrix( 1:16, ncol = 4 )
+	checkEquals( funx(x), sum(diag(x)), msg = "matrix indexing" )
+	
+	funx <- cfunction(signature(x = "integer" ), '
+		IntegerVector m(x) ;
+		for( size_t i=0 ; i<4; i++){
+			m(i,i) = 2 * i ;
+		}
+		return m ;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;"  )
+	checkEquals( diag(funx(x)), 2*0:3, msg = "matrix indexing lhs" )
+	
+	
+	y <- as.vector( x )
+	checkException( funx(y) , msg = "not a matrix" )
+}
+
+test.IntegerVector.Dimension.constructor <- function(){
+
+	funx <- cfunction(signature(), '
+		return IntegerVector( Dimension( 5 ) ) ;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;"  )
+	checkEquals( funx(), 
+		integer(5) , 
+		msg = "IntegerVector( Dimension(5))" )
+	
+	funx <- cfunction(signature(), '
+		return IntegerVector( Dimension( 5, 5 ) ) ;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;"  )
+	checkEquals( funx(), 
+		matrix( 0L, ncol = 5, nrow = 5) , 
+		msg = "IntegerVector( Dimension(5,5))" )
+	
+	funx <- cfunction(signature(), '
+		return IntegerVector( Dimension( 2, 3, 4) ) ;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;"  )
+	checkEquals( funx(), 
+		array( 0L, dim = c(2,3,4) ) , 
+		msg = "IntegerVector( Dimension(2,3,4))" )
+}
+
+test.IntegerVector.range.constructors <- function(){
+
+	funx <- cfunction(signature(), '
+		int x[] = { 0, 1, 2, 3 } ;
+		IntegerVector y( x, x+4 ) ;
+		return y;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;"  )
+	checkEquals( funx(), 0:3, msg = "assign(int*, int*)" )
+	
+	funx <- cfunction(signature(), '
+		std::vector<int> vec(4) ;
+		for( size_t i = 0; i<4; i++) vec[i] = i;
+		IntegerVector y( vec.begin(), vec.end() ) ;
+		return y;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;"  )
+	checkEquals( funx(), 0:3, msg = "assign(int*, int*)" )
+}
 
