@@ -1,6 +1,6 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 8 -*-
 //
-// ComplexVector.h: Rcpp R/C++ interface class library -- complex vectors
+// Dimension.h: Rcpp R/C++ interface class library -- dimensions
 //
 // Copyright (C) 2010	Dirk Eddelbuettel and Romain Francois
 //
@@ -19,31 +19,30 @@
 // You should have received a copy of the GNU General Public License
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
+#ifndef Rcpp_Dimension_h
+#define Rcpp_Dimension_h
+
 #include <RcppCommon.h>
-#include <Rcpp/RObject.h>
-#include <Rcpp/ComplexVector.h>
-#include <algorithm>
 
-namespace Rcpp{
-	
-	ComplexVector::ComplexVector(SEXP x) throw(not_compatible) : VectorBase(), start(0) {
-		switch( TYPEOF( x ) ){
-			case CPLXSXP:
-				setSEXP( x ) ;
-				break ;
-			case REALSXP:
-			case LGLSXP:
-			case RAWSXP:
-			case INTSXP:
-				setSEXP( Rf_coerceVector( x, CPLXSXP) ) ;
-				break ;
-			default:
-				throw not_compatible( "cannot convert to complex vector" ) ;
-		}
-	}
-	
-	ComplexVector::ComplexVector(int size) : VectorBase(), start(0) {
-		setSEXP( Rf_allocVector(CPLXSXP, size) ) ;
-	}
+namespace Rcpp{ 
 
-} // namespace 
+class Dimension {
+public:
+	Dimension() ;
+	Dimension(SEXP dims);
+	Dimension(const size_t& n1) ;
+	Dimension(const size_t& n1, const size_t& n2) ;
+	Dimension(const size_t& n1, const size_t& n2, const size_t& n3) ;
+	operator SEXP() const ;
+	
+	int size() const ;
+	int prod() const ;
+	
+	int& operator[](int i) throw(std::range_error) ;
+	
+private:
+	std::vector<int> dims ;
+} ;
+
+}
+#endif

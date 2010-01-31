@@ -68,3 +68,102 @@ test.CharacterVector.plusequals <- function(){
 		msg = "StringProxy::operator+=" )
 }
 
+test.CharacterVector.matrix.indexing <- function(){
+
+	funx <- cfunction(signature(x = "character" ), '
+		CharacterVector m(x) ;
+		std::string trace  ;
+		for( size_t i=0 ; i<4; i++){
+			trace += m(i,i) ;
+		}
+		return wrap( trace ) ;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;"  )
+	x <- matrix( as.character(1:16), ncol = 4 )
+	checkEquals( funx(x), paste(diag(x), collapse = ""), msg = "matrix indexing" )
+	
+	y <- as.vector( x )
+	checkException( funx(y) , msg = "not a matrix" )
+	
+	funx <- cfunction(signature(x = "integer" ), '
+		CharacterVector m(x) ;
+		for( size_t i=0 ; i<4; i++){
+			m(i,i) = "foo" ;
+		}
+		return m ;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;"  )
+	checkEquals( diag(funx(x)), rep("foo", 4) , 
+		msg = "matrix indexing lhs" )
+}
+
+test.CharacterVector.assign <- function(){
+	
+	funx <- cfunction(signature(), '
+		const char* x[] = { "foo", "bar", "bling", "boom" } ;
+		CharacterVector y ;
+		y.assign( x, x+4 ) ;
+		return y;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;"  )
+	checkEquals( funx(), c("foo", "bar", "bling", "boom"), msg = "assign(char**, char**)" )
+	
+	
+	funx <- cfunction(signature(), '
+		std::vector<std::string> vec(4) ;
+		vec[0] = "foo";
+		vec[1] = "bar";
+		vec[2] = "bling";
+		vec[3] = "boom" ;
+		CharacterVector y ;
+		y.assign( vec.begin(), vec.end() ) ;
+		return y;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;"  )
+	checkEquals( funx(), c("foo", "bar", "bling", "boom"), msg = "assign(char**, char**)" )
+	
+}
+
+test.CharacterVector.range.constructors <- function(){
+
+	funx <- cfunction(signature(), '
+		const char* x[] = { "foo", "bar", "bling", "boom" } ;
+		CharacterVector y( x, x+4 ) ;
+		return y;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;"  )
+	checkEquals( funx(), c("foo", "bar", "bling", "boom"), msg = "assign(char**, char**)" )
+	
+	
+	funx <- cfunction(signature(), '
+		std::vector<std::string> vec(4) ;
+		vec[0] = "foo";
+		vec[1] = "bar";
+		vec[2] = "bling";
+		vec[3] = "boom" ;
+		CharacterVector y( vec.begin(), vec.end() ) ;
+		return y;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;"  )
+	checkEquals( funx(), c("foo", "bar", "bling", "boom"), msg = "assign(char**, char**)" )
+}
+
+test.CharacterVector.Dimension.constructor <- function(){
+
+	funx <- cfunction(signature(), '
+		return CharacterVector( Dimension( 5 ) ) ;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;"  )
+	checkEquals( funx(), 
+		character(5) , 
+		msg = "CharacterVector( Dimension(5))" )
+	
+	funx <- cfunction(signature(), '
+		return CharacterVector( Dimension( 5, 5 ) ) ;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;"  )
+	checkEquals( funx(), 
+		matrix( "", ncol = 5, nrow = 5) , 
+		msg = "CharacterVector( Dimension(5,5))" )
+	
+	funx <- cfunction(signature(), '
+		return CharacterVector( Dimension( 2, 3, 4) ) ;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;"  )
+	checkEquals( funx(), 
+		array( "", dim = c(2,3,4) ) , 
+		msg = "CharacterVector( Dimension(2,3,4))" )
+}
+
+

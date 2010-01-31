@@ -27,6 +27,23 @@
 
 namespace Rcpp{
 
+SEXP pairlist() ;
+
+/* end of the recursion, wrap first to make the CAR and use 
+   R_NilValue as the CDR of the list */
+template<typename T>
+SEXP pairlist( const T& first){
+	return grow(first, R_NilValue ) ; 
+}
+
+#ifdef HAS_VARIADIC_TEMPLATES
+template<typename T, typename... Args>
+SEXP pairlist( const T& first, const Args&... args ){
+	return grow(first, pairlist(args...) ) ;
+}
+#endif
+	
+	
 /**
  * grows a pairlist. First wrap the head into a SEXP, then 
  * grow the tail pairlist
@@ -36,6 +53,7 @@ SEXP grow(const T& head, SEXP tail){
 	return Rf_cons( wrap(head), tail ) ;
 }
 SEXP grow(const Named& head, SEXP tail) ;
+
 
 } // namespace Rcpp
 

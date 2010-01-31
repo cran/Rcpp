@@ -20,19 +20,17 @@
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <Rcpp/Function.h>
-#include <Rcpp/RObject.h>
-#include <Rcpp/Language.h>
-#include <Rcpp/Pairlist.h>
-#include <RcppCommon.h>
-#include <Rcpp/as.h>
 
 namespace Rcpp {
 	
 	const char* Function::not_a_closure::what() const throw(){
 		return "not a closure" ; 
 	}
+	const char* Function::no_such_function::what() const throw(){
+		return "no such function" ;
+	}
 	
-	Function::Function( SEXP x = R_NilValue ) throw(not_compatible) : RObject::RObject( ){
+	Function::Function( SEXP x = R_NilValue ) throw(not_compatible) : RObject( ){
 		switch( TYPEOF(x) ){
 		case CLOSXP:
 		case SPECIALSXP:
@@ -44,13 +42,18 @@ namespace Rcpp {
 		}
 	};
 	
+	Function::Function(const std::string& name) throw(no_such_function) : RObject() {
+		SEXP x = PROTECT( Rf_findFun( Rf_install(name.c_str()), R_GlobalEnv ) ) ;
+		setSEXP( x ) ;
+	}
+	
 	Function::~Function(){}	
 	
-	Environment Function::environment() const throw(not_a_closure){
+	SEXP Function::environment() const throw(not_a_closure){
 		if( TYPEOF(m_sexp) != CLOSXP ) {
 			throw not_a_closure() ;
 		}
-		return Environment( CLOENV(m_sexp) ) ;
+		return CLOENV(m_sexp) ;
 	}
 	
 } // namespace Rcpp

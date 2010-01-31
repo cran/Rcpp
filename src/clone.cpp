@@ -1,6 +1,6 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 8 -*-
 //
-// IntegerVector.h: Rcpp R/C++ interface class library -- integer vectors
+// clone.cpp: Rcpp R/C++ interface class library -- clone SEXP
 //
 // Copyright (C) 2010	Dirk Eddelbuettel and Romain Francois
 //
@@ -19,29 +19,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <RcppCommon.h>
-#include <Rcpp/RObject.h>
-#include <Rcpp/IntegerVector.h>
+#include <Rcpp/clone.h>
 
 namespace Rcpp{
-	
-	IntegerVector::IntegerVector(SEXP x) throw(not_compatible) : VectorBase(), start(0) {
-		switch( TYPEOF( x ) ){
-			case INTSXP:
-				setSEXP( x ) ;
-				break ;
-			case REALSXP:
-			case LGLSXP:
-			case RAWSXP:
-				setSEXP( Rf_coerceVector( x, INTSXP) ) ;
-				break ;
-			default:
-				throw not_compatible( "cannot convert to intrger vector" ) ;
-		}
-	}
-	
-	IntegerVector::IntegerVector(int size) : VectorBase(), start(0) {
-		setSEXP( Rf_allocVector(INTSXP, size) ) ;
-	}
 
-} // namespace 
+template<> SEXP clone( SEXP object){
+	return Rf_duplicate( object ) ;
+}
+
+} // namespace Rcpp
+

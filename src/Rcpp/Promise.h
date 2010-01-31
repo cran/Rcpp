@@ -23,10 +23,9 @@
 #define Rcpp_Promise_h
 
 #include <RcppCommon.h>
-#include <Rcpp/RObject.h>
+
 #include <Rcpp/ExpressionVector.h>
 #include <Rcpp/Environment.h>
-
 
 namespace Rcpp{ 
 
@@ -50,7 +49,7 @@ public:
 	/**
 	 * Return the result of the PRVALUE macro on the promise
 	 */
-	RObject value() const throw(unevaluated_promise) ;
+	SEXP value() const throw(unevaluated_promise) ;
 
 	bool was_evaluated() const ;
 	

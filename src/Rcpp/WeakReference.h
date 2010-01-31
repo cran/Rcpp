@@ -23,7 +23,6 @@
 #define Rcpp_WeakReference_h
 
 #include <RcppCommon.h>
-#include <Rcpp/RObject.h>
 
 namespace Rcpp{
 
@@ -46,12 +45,12 @@ public:
 	/** 
 	 * Retrieve the key
 	 */
-	RObject key() const ; 
+	SEXP key() ; 
 
 	/**
 	 * Retrieve the value
 	 */
-	RObject value() const ;
+	SEXP value() ;
 
 } ;
 

@@ -1,6 +1,6 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 8 -*-
 //
-// LogicalVector.h: Rcpp R/C++ interface class library -- integer vectors
+// SimpleVector.h: Rcpp R/C++ interface class library -- simple vectors
 //
 // Copyright (C) 2010	Dirk Eddelbuettel and Romain Francois
 //
@@ -20,29 +20,14 @@
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <RcppCommon.h>
-#include <Rcpp/RObject.h>
-#include <Rcpp/LogicalVector.h>
-#include <algorithm>
+#include <Rcpp/SimpleVector.h>
 
 namespace Rcpp{
-	
-	LogicalVector::LogicalVector(SEXP x) throw(not_compatible) : VectorBase() {
-		switch( TYPEOF( x ) ){
-			case LGLSXP:
-				setSEXP( x ) ;
-				break ;
-			case RAWSXP:
-			case INTSXP:
-			case REALSXP:
-				setSEXP( Rf_coerceVector( x, LGLSXP) ) ;
-				break ;
-			default:
-				throw not_compatible( "cannot convert to intrger vector" ) ;
-		}
-	}
-	
-	LogicalVector::LogicalVector(int size) : VectorBase() {
-		setSEXP( Rf_allocVector(LGLSXP, size) ) ;
-	}
+    	
+	template<> double* get_pointer<REALSXP,double>(SEXP x){ return REAL(x) ; }
+	template<> int* get_pointer<INTSXP,int>(SEXP x){ return INTEGER(x) ; }
+	template<> int* get_pointer<LGLSXP,int>(SEXP x){ return LOGICAL(x) ; }
+	template<> Rcomplex* get_pointer<CPLXSXP,Rcomplex>(SEXP x){ return COMPLEX(x) ; }
+	template<> Rbyte* get_pointer<RAWSXP,Rbyte>(SEXP x){ return RAW(x) ; }
 
 } // namespace 

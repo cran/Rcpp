@@ -23,9 +23,8 @@
 #define Rcpp_Function_h
 
 #include <RcppCommon.h>
-#include <Rcpp/RObject.h>
-#include <Rcpp/Pairlist.h>
-#include <Rcpp/Evaluator.h>
+
+#include <Rcpp/grow.h>
 
 namespace Rcpp{ 
 
@@ -47,14 +46,39 @@ public:
 	} ;
 	
 	/**
+	 * thrown when attempting to find a function that 
+	 * does not exist.
+	 */
+	class no_such_function : public std::exception{
+	public:
+		no_such_function() throw(){};
+		virtual ~no_such_function() throw(){}
+		virtual const char* what() const throw() ;
+	} ;
+	
+	/**
 	 * Attempts to convert the SEXP to a pair list
 	 *
 	 * @throw not_compatible if the SEXP could not be converted
 	 * to a pair list using as.pairlist
 	 */
 	Function(SEXP lang) throw(not_compatible) ;
-
-
+	
+	/**
+	 * Finds a function, searching from the global environment
+	 *
+	 * @param name name of the function
+	 */
+	Function(const std::string& name) throw(no_such_function) ;
+	
+	// /**
+	//  * Finds a function, searching from a specific environment
+	//  *
+	//  * @param name name of the function
+	//  * @param env environment where to find it
+	//  */
+	// Function(const std::string& name, SEXP env ) ;
+	
 	/**
 	 * calls the function with the specified arguments
 	 *
@@ -65,15 +89,15 @@ public:
 	 */
 #ifdef HAS_VARIADIC_TEMPLATES
 template<typename... Args> 
-	SEXP operator()( const Args&... args) throw(Evaluator::eval_error){
-		return Evaluator::run( Rf_lcons( m_sexp, pairlist(args...) ) ) ;
+	SEXP operator()( const Args&... args) /* throw(Evaluator::eval_error) */ {
+		return internal::try_catch( Rf_lcons( m_sexp, pairlist(args...) ) ) ;
 	}
 #endif
 	
 	/**
 	 * Returns the environment of this function
 	 */
-	Environment environment() const throw(not_a_closure) ;
+	SEXP environment() const throw(not_a_closure) ;
 	
 	~Function() ;
 };

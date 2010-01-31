@@ -23,14 +23,15 @@
 #define RcppDatetime_h
 
 #include <RcppCommon.h>
+#include <time.h>
 
 class RcppDatetime {
 private:
-    double m_d;
-    bool m_parsed;
-    int m_us;							// microseconds giving us fractional seconds
-    struct tm m_tm;
-    void parseTime();
+    double m_d;			// fractional seconds since epoch as eg POSIXct
+    bool m_parsed;		// has m_tm been set based on m_d ?
+    int m_us;			// microseconds not in POSIX time structure
+    struct tm m_tm;		// time structure as eg POSIXlt
+    void parseTime();		// sets m_tm and m_us based on m_d
 
 protected:
     friend class ColDatum;
@@ -38,6 +39,7 @@ protected:
 public:
     RcppDatetime(void);
     RcppDatetime(const double d);
+    RcppDatetime(SEXP ds);
 
     double getFractionalTimestamp(void) const { return m_d; }
     int getYear(void)     { if (!m_parsed) parseTime(); return m_tm.tm_year + 1900; }
@@ -49,7 +51,7 @@ public:
     int getSecond(void)   { if (!m_parsed) parseTime(); return m_tm.tm_sec; } 
     int getMicroSec(void) { if (!m_parsed) parseTime(); return m_us; } 
 
-    friend double        operator-(const RcppDatetime& dt1,  const RcppDatetime& dt2) { return dt2.m_d -  dt1.m_d; }
+    friend double        operator-(const RcppDatetime& dt1,  const RcppDatetime& dt2) { return dt1.m_d -  dt2.m_d; }
     friend bool          operator<(const RcppDatetime &dt1,  const RcppDatetime& dt2) { return dt1.m_d <  dt2.m_d; }
     friend bool          operator<=(const RcppDatetime &dt1, const RcppDatetime& dt2) { return dt1.m_d <= dt2.m_d; }
     friend bool          operator>(const RcppDatetime &dt1,  const RcppDatetime& dt2) { return dt1.m_d >  dt2.m_d; }

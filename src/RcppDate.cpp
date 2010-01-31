@@ -3,7 +3,8 @@
 // RcppDate.h: Rcpp R/C++ interface class library -- Date type support
 //
 // Copyright (C) 2005 - 2006 Dominick Samperi
-// Copyright (C) 2008 - 2009 Dirk Eddelbuettel
+// Copyright (C) 2008        Dirk Eddelbuettel
+// Copyright (C) 2009 - 2010 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //

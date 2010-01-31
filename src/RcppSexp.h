@@ -41,7 +41,7 @@ public:
      * preserve the SEXP from R garbage collection, you must call the 
      * protect member function
      */
-    RcppSexp(SEXP m_sexp = R_NilValue) : object( Rcpp::wrap(m_sexp) ) {
+    RcppSexp(SEXP m_sexp = R_NilValue) : object( m_sexp ) {
     	    DEPRECATED() ; 
     };
     

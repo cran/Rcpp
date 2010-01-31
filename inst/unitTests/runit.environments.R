@@ -47,9 +47,9 @@ test.environment.ls <- function(){
 
 test.environment.get <- function(){
 	funx <- cfunction(signature(x="environment", name = "character" ), '
-	Rcpp::Environment env(x) ;
-	return env.get( Rcpp::wrap(name).asStdString() ) ;
-	', Rcpp=TRUE, verbose=FALSE)
+	Environment env(x) ;
+	return env.get( as<std::string>(name) ) ;
+	', Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;")
 	
 	e <- new.env( )
 	e$a <- 1:10
@@ -64,10 +64,10 @@ test.environment.get <- function(){
 
 test.environment.exists <- function(){
 	funx <- cfunction(signature(x="environment", name = "character" ), '
-	Rcpp::Environment env(x) ;
-	std::string st = Rcpp::wrap(name).asStdString() ;
-	return Rcpp::wrap( env.exists(st) ) ;
-	', Rcpp=TRUE, verbose=FALSE)
+	Environment env(x) ;
+	std::string st = as< std::string >(name) ;
+	return wrap( env.exists( st ) ) ;
+	', Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;" )
 	
 	e <- new.env( )
 	e$a <- 1:10
@@ -82,10 +82,10 @@ test.environment.exists <- function(){
 test.environment.assign <- function(){
 	
 	funx <- cfunction(signature(x="environment", name = "character", object = "ANY" ), '
-	Rcpp::Environment env(x) ;
-	std::string st = Rcpp::wrap(name).asStdString() ;
-	return Rcpp::wrap( env.assign(st, object) ) ;
-	', Rcpp=TRUE, verbose=FALSE)
+	Environment env(x) ;
+	std::string st = as< std::string>(name) ;
+	return wrap( env.assign(st, object) ) ;
+	', Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;")
 	
 	e <- new.env( )
 	checkTrue( funx(e, "a", 1:10 ), msg = "Environment::assign" )
@@ -101,25 +101,47 @@ test.environment.assign <- function(){
 
 }
 
+## test.environment.assign.templated <- function(){
+## 	
+## 	funx <- cfunction(signature(x="environment", name = "character", object = "ANY" ), '
+## 	Environment env(x) ;
+## 	std::string st = as<std::string>(name) ;
+## 	return wrap( env.assign(st, object) ) ;
+## 	', Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;" )
+## 	
+## 	e <- new.env( )
+## 	
+## 	
+## }
+
 test.environment.isLocked <- function(){
 	funx <- cfunction(signature(x="environment" ), '
-	Rcpp::Environment env(x) ;
-	return Rcpp::wrap( env.isLocked() ) ;
-	', Rcpp=TRUE, verbose=FALSE)
+	Environment env(x) ;
+	env.assign( "x1", 1 ) ;
+	env.assign( "x2", 10.0 ) ;
+	env.assign( "x3", std::string( "foobar" ) ) ;
+	env.assign( "x4", "foobar" ) ;
+	std::vector< std::string > aa(2) ; aa[0] = "foo" ; aa[1] = "bar" ;
+	env.assign( "x5", aa ) ;
+	return R_NilValue ;
+	', Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;")
 	
 	e <- new.env()
-	checkTrue( !funx(e), msg = "Environment::isLocked( new.env) -> false" )
-	checkTrue( funx(asNamespace("Rcpp")), msg = "Environment::isLocked( namespace:Rcpp ) -> true" )
-	
+	funx(e)
+	checkEquals( e[["x1"]], 1L  , msg = "Environment::assign( int ) " )
+	checkEquals( e[["x2"]], 10.0, msg = "Environment::assign( double ) " )
+	checkEquals( e[["x3"]], "foobar", msg = "Environment::assign( char* ) " )
+	checkEquals( e[["x4"]], "foobar", msg = "Environment::assign( std::string ) " )
+	checkEquals( e[["x5"]], c("foo", "bar" ), msg = "Environment::assign( vector<string> ) " )
 }
 
 test.environment.bindingIsActive <- function(){
 	
 	funx <- cfunction(signature(x="environment", name = "character" ), '
-	Rcpp::Environment env(x) ;
-	std::string st = Rcpp::wrap(name).asStdString() ;
-	return Rcpp::wrap( env.bindingIsActive(st) ) ;
-	', Rcpp=TRUE, verbose=FALSE)
+	Environment env(x) ;
+	std::string st = as<std::string>(name);
+	return wrap( env.bindingIsActive(st) ) ;
+	', Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;" )
 	
 	e <- new.env()
 	e$a <- 1:10
@@ -136,10 +158,10 @@ test.environment.bindingIsActive <- function(){
 test.environment.bindingIsLocked <- function(){
 	
 	funx <- cfunction(signature(x="environment", name = "character" ), '
-	Rcpp::Environment env(x) ;
-	std::string st = Rcpp::wrap(name).asStdString() ;
-	return Rcpp::wrap( env.bindingIsLocked(st) ) ;
-	', Rcpp=TRUE, verbose=FALSE)
+	Environment env(x) ;
+	std::string st = as<std::string>(name) ;
+	return wrap( env.bindingIsLocked(st) ) ;
+	', Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;" )
 	
 	e <- new.env()
 	e$a <- 1:10
@@ -166,11 +188,11 @@ test.environment.NotAnEnvironment <- function(){
 
 test.environment.lockBinding <- function(){
 	funx <- cfunction(signature(x="environment", name = "character" ), '
-	Rcpp::Environment env(x) ;
-	std::string st = Rcpp::wrap(name).asStdString() ;
+	Environment env(x) ;
+	std::string st = as<std::string>(name) ;
 	env.lockBinding( st ) ;
 	return R_NilValue ;
-	', Rcpp=TRUE, verbose=FALSE)
+	', Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;" )
 	
 	e <- new.env()
 	e$a <- 1:10
@@ -185,11 +207,11 @@ test.environment.lockBinding <- function(){
 
 test.environment.unlockBinding <- function(){
 	funx <- cfunction(signature(x="environment", name = "character" ), '
-	Rcpp::Environment env(x) ;
-	std::string st = Rcpp::wrap(name).asStdString() ;
+	Environment env(x) ;
+	std::string st = as<std::string>(name) ;
 	env.unlockBinding( st ) ;
 	return R_NilValue ;
-	', Rcpp=TRUE, verbose=FALSE)
+	', Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;")
 	
 	e <- new.env()
 	e$a <- 1:10
@@ -229,8 +251,9 @@ test.environment.empty.env <- function(){
 
 test.environment.namespace.env <- function(){
 	funx <- cfunction(signature(env = "character" ),  '
-	std::string st = Rcpp::wrap(env).asStdString() ;
-	return Rcpp::Environment::namespace_env(st); ', Rcpp=TRUE, verbose=FALSE)
+	std::string st = as<std::string>(env) ;
+	return Environment::namespace_env(st); ', 
+		Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;")
 	checkEquals( funx("Rcpp"), asNamespace("Rcpp"), msg = "REnvironment::base_namespace" )
 	checkTrue( 
 		tryCatch( { funx("----" ) ; FALSE}, "Rcpp::Environment::no_such_namespace" = function(e) TRUE ), 

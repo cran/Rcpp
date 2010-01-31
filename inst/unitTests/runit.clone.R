@@ -1,7 +1,6 @@
 #!/usr/bin/r -t
 #
-# Copyright (C) 2009 Dirk Eddelbuettel
-# Copyright (C) 2009 Romain Francois
+# Copyright (C) 2010	Dirk Eddelbuettel and Romain Francois
 #
 # This file is part of Rcpp.
 #
@@ -18,16 +17,23 @@
 # You should have received a copy of the GNU General Public License
 # along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-pkg <- "Rcpp"
-path <- system.file("unitTests", package = pkg)
-testSuite <- defineTestSuite(name=paste(pkg, "unit testing"), dirs = path)
-tests <- runTestSuite(testSuite)
-printHTMLProtocol(tests, fileName="Rcpp-unitTests.html" )
-printTextProtocol(tests, fileName="Rcpp-unitTests.txt" )
-if( file.exists( "/tmp" ) ){
-	file.copy( "Rcpp-unitTests.txt", "/tmp", overwrite = TRUE )
-	file.copy( "Rcpp-unitTests.html", "/tmp", overwrite = TRUE )
+
+test.clone <- function(){
+	
+	x <- 1:10
+	funx <- cfunction(signature(x="integer"), '
+	IntegerVector vec(x) ;
+	IntegerVector dolly = clone( vec ) ;
+	for( size_t i=0; i<10; i++){
+		dolly[i] = 10 - i ;
+	}
+	return dolly ;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;" )
+	y <- funx(x)
+	checkEquals( x, 1:10, msg = "clone" )
+	checkEquals( y, 10:1, msg = "clone" )
+	
+	# TODO: add more
+	
 }
-Sweave('Rcpp-unitTests.Rnw')
-texi2dvi( 'Rcpp-unitTests.tex', pdf = TRUE, clean = TRUE )
-unlink('RcppUnitTests.tex')
+

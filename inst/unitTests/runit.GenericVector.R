@@ -66,4 +66,58 @@ test.List.initializer.list <- function(){
 	}
 }
 
+test.List.matrix.indexing <- function(){
+	
+	funx <- cfunction(signature(x = "character" ), '
+		GenericVector m(x) ;
+		GenericVector out(4) ;
+		for( size_t i=0 ; i<4; i++){
+			out[i] = m(i,i) ;
+		}
+		return out ;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;"  )
+	
+	# a matrix of integer vectors
+	x <- structure( lapply( 1:16, function(x) seq.int(x) ), dim = c( 4, 4) )
+	checkEquals( funx(x), diag(x), msg = "matrix indexing" )
+	
+	funx <- cfunction(signature(x = "integer" ), '
+		GenericVector m(x) ;
+		for( size_t i=0 ; i<4; i++){
+			m(i,i) = "foo" ;
+		}
+		return m ;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;"  )
+	checkEquals( diag(funx(x)), rep(list("foo"), 4) , 
+		msg = "matrix indexing lhs" )
+	
+	# drop dimensions
+	dim(x) <- NULL
+	checkException( funx(x) , msg = "not a matrix" )
+}
+
+test.List.Dimension.constructor <- function(){
+
+	funx <- cfunction(signature(), '
+		return List( Dimension( 5 ) ) ;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;"  )
+	checkEquals( funx(), 
+		rep(list(NULL),5) , 
+		msg = "List( Dimension(5))" )
+	
+	funx <- cfunction(signature(), '
+		return List( Dimension( 5, 5 ) ) ;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;"  )
+	checkEquals( funx(), 
+		structure( rep( list(NULL), 25), dim = c(5,5) ),
+		msg = "List( Dimension(5,5))" )
+	
+	funx <- cfunction(signature(), '
+		return List( Dimension( 2, 3, 4) ) ;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;"  )
+	checkEquals( funx(), 
+		array( rep(list(NULL)), dim = c(2,3,4) ) , 
+		msg = "List( Dimension(2,3,4))" )
+}
+
 

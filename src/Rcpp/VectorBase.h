@@ -23,26 +23,46 @@
 #define Rcpp_VectorBase_h
 
 #include <RcppCommon.h>
-#include <Rcpp/RObject.h>
+
+#include <Rcpp/r_cast.h>
 
 namespace Rcpp{ 
 
 class VectorBase : public RObject {     
 public:
-	
+	class not_a_matrix : public std::exception{
+	public:
+		not_a_matrix(){} ;
+		virtual ~not_a_matrix() throw() {} ;
+		virtual const char* what() const throw() { return "not a matrix" ; };
+	} ;
+  
     VectorBase() ;
-    virtual ~VectorBase() = 0;
-	
+    virtual ~VectorBase() ;
+
     /**
      * the length of the vector, uses Rf_length
      */
     inline int length() const { return ::Rf_length( m_sexp ) ; }
-	
+
     /**
      * alias of length
      */
     inline int size() const { return ::Rf_length( m_sexp ) ; }
-	
+
+    /**
+     * offset based on the dimensions of this vector
+     */
+    size_t offset(const size_t& i, const size_t& j) const throw(not_a_matrix,RObject::index_out_of_bounds) ;
+    
+    /**
+     * one dimensional offset doing bounds checking to ensure
+     * it is valid
+     */
+    size_t offset(const size_t& i) const throw(RObject::index_out_of_bounds);
+    
+    /* TODO: 3 dimensions, ... n dimensions through variadic templates */
+    
 } ;
 
 } // namespace

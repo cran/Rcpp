@@ -19,12 +19,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <Rcpp/RObject.h>
-#include <Rcpp/Environment.h>
-#include <Rcpp/Symbol.h>
-#include <algorithm>
-#include <Rcpp/as.h>
-#include <Rcpp/wrap.h>
+#include <RcppCommon.h>
 
 namespace Rcpp {
 
@@ -112,10 +107,6 @@ RObject::AttributeProxy& RObject::AttributeProxy::operator=(const AttributeProxy
 
 RObject::AttributeProxy::operator SEXP() const {
 	return Rf_getAttrib( parent , Rf_install( attr_name.c_str() ) ) ;
-}
-
-RObject::AttributeProxy::operator RObject() const {
-	return wrap( Rf_getAttrib( parent, Rf_install( attr_name.c_str() ) ) ) ;
 }
 
 RObject::AttributeProxy RObject::attr( const std::string& name) const{

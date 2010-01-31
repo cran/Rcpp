@@ -23,13 +23,9 @@
 #define Rcpp_CharacterVector_h
 
 #include <RcppCommon.h>
-#include <Rcpp/RObject.h>
 #include <Rcpp/VectorBase.h>
-
-#ifdef HAS_INIT_LISTS
-#include <initializer_list>
-#include <algorithm>
-#endif
+#include <Rcpp/Dimension.h>
+#include <Rcpp/r_cast.h>
 
 namespace Rcpp{ 
 
@@ -52,37 +48,59 @@ public:
 		operator SEXP() const ;
 		operator char*() const ;
 		
+		/* printing */
+		friend std::ostream& operator<<(std::ostream& os, const StringProxy& proxy);
+		
 	private:
 		CharacterVector& parent; 
 		int index ;
 	} ;
 
+	CharacterVector() ;
 	CharacterVector(SEXP x) throw(not_compatible);
-	CharacterVector(int size) ;
+	CharacterVector( const size_t& size) ;
 	CharacterVector( const std::string& x );
 	CharacterVector( const std::vector<std::string>& x );
 	
+	CharacterVector( const Dimension& dims) ;
+	
+	template <typename InputIterator>
+	CharacterVector( InputIterator first, InputIterator last): VectorBase() {
+		assign( first, last ) ;
+	}
+	
 #ifdef HAS_INIT_LISTS
 	CharacterVector( std::initializer_list<std::string> list ) : VectorBase() {
-		fill( list.begin(), list.size() ) ;
+		assign( list.begin(), list.end() ) ;
 	}
 #endif
 
 	const StringProxy operator[]( int i ) const throw(index_out_of_bounds);
 	StringProxy operator[]( int i ) throw(index_out_of_bounds);
 
-	friend class StringProxy; 
+	friend class StringProxy;
+	
+	/* '(' indexing */
+	StringProxy operator()( const size_t& i) throw(index_out_of_bounds) ;
+	StringProxy operator()( const size_t& i, const size_t& j) throw(index_out_of_bounds,not_a_matrix) ;
 
-private:
 	template <typename InputIterator>
-	void fill(InputIterator first, size_t size ){
-		SEXP x = PROTECT( Rf_allocVector( STRSXP, size) ) ;
-		for( size_t i=0; i<size; ++i, ++first ){
-			SET_STRING_ELT( x, i, Rf_mkChar(first->c_str()) ) ;
+	void assign( InputIterator first, InputIterator last){
+		size_t size = std::distance( first, last ) ;
+		SEXP x = m_sexp ;
+		bool update = false ;
+		if( Rf_isNull(m_sexp) || static_cast<size_t>(length()) != size ){
+			x = Rf_allocVector( STRSXP, size ) ;
+			update = true ;
 		}
-		setSEXP( x );
-		UNPROTECT(1) ;
+		std::string y ;
+		for( size_t i=0; i<size; i++, ++first){
+			y.assign( *first ) ;
+			SET_STRING_ELT( x, i, Rf_mkChar(y.c_str())) ;
+		}
+		if( update ) setSEXP(x) ;
 	}
+
 } ;
 
 typedef CharacterVector StringVector ;

@@ -24,7 +24,10 @@
 #ifndef Rcpp_hpp
 #define Rcpp_hpp
 
+/* it is important that this comes first */
 #include <RcppCommon.h>
+
+/* classic api */
 #include <RcppDate.h>
 #include <RcppDateVector.h>
 #include <RcppDatetime.h>
@@ -43,16 +46,21 @@
 #include <RcppVectorView.h>
 
 /* new api */
+
+#include <Rcpp/clone.h>
+#include <Rcpp/r_cast.h>
 #include <Rcpp/grow.h>
-#include <Rcpp/wrap.h>
-#include <Rcpp/as.h>
-#include <Rcpp/RObject.h>
+#include <Rcpp/Dimension.h>
+#include <Rcpp/VectorBase.h>
+#include <Rcpp/SimpleVector.h>
+#include <Rcpp/SEXP_Vector.h>
 #include <Rcpp/XPtr.h>
 #include <Rcpp/Environment.h>
 #include <Rcpp/Evaluator.h>
 #include <Rcpp/Symbol.h>
 #include <Rcpp/Language.h>
 #include <Rcpp/Named.h>
+#include <Rcpp/DottedPair.h>
 #include <Rcpp/Pairlist.h>
 #include <Rcpp/Function.h>
 #include <Rcpp/IntegerVector.h>
