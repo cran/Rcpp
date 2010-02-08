@@ -42,6 +42,8 @@ public:
 	ExpressionVector(SEXP x) throw(not_compatible);
 	ExpressionVector(const size_t& size) ;
 	ExpressionVector(const std::string& code) throw(parse_error) ;
+	ExpressionVector(const ExpressionVector& other) ;
+	ExpressionVector& operator=(const ExpressionVector& other) ;
 	
 	SEXP eval() throw(Evaluator::eval_error) ;
 	SEXP eval(const Environment& env) throw(Evaluator::eval_error);

@@ -38,8 +38,35 @@ namespace Rcpp{
 	}
 
 	size_t VectorBase::offset(const size_t& i) const throw(RObject::index_out_of_bounds){
-    	    if( i >= static_cast<size_t>(Rf_length(m_sexp)) ) throw RObject::index_out_of_bounds() ;
+    	    if( static_cast<R_len_t>(i) >= Rf_length(m_sexp) ) throw RObject::index_out_of_bounds() ;
     	    return i ;
     	}
 
-} // namespace 
+    	VectorBase::NamesProxy::NamesProxy( const VectorBase& v) : parent(v){} ;
+    	VectorBase::NamesProxy& VectorBase::NamesProxy::operator=( const NamesProxy& rhs){
+    		set( rhs.get() ) ;
+    		return *this ;
+    	}
+    	
+    	SEXP VectorBase::NamesProxy::get() const {
+    		return RCPP_GET_NAMES(parent) ;
+    	}
+    	void VectorBase::NamesProxy::set(SEXP x) const {
+    		SEXP new_vec = PROTECT( internal::try_catch( 
+			Rf_lcons( Rf_install("names<-"), 
+					Rf_cons( parent, Rf_cons( x , R_NilValue) )))) ;
+		/* names<- makes a new vector, so we have to change 
+		   the SEXP of the parent of this proxy, it might be 
+		   worth to work directly with the names attribute instead
+		   of using the names<- R function, but then we need to 
+		   take care of coercion, recycling, etc ... we cannot just 
+		   brutally assign the names attribute */
+		const_cast<VectorBase&>(parent).setSEXP( new_vec ) ;
+		UNPROTECT(1) ; /* new_vec */
+    	}
+    	
+    	VectorBase::NamesProxy VectorBase::names() const{
+    		return NamesProxy(*this) ;
+    	}
+    	
+} // namespace )

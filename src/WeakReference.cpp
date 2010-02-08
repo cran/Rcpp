@@ -39,5 +39,12 @@ namespace Rcpp{
 		return R_WeakRefValue(m_sexp);
 	}
 	
+	WeakReference::WeakReference( const WeakReference& other ) : RObject( other.asSexp() ){}
+	
+	WeakReference& WeakReference::operator=(const WeakReference& other){
+		setSEXP( other.asSexp() );
+		return *this;
+	}
+	
 }
 // namesapce

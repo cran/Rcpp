@@ -24,7 +24,16 @@
 namespace Rcpp{
 
 CharacterVector::CharacterVector() : VectorBase(){}
-	
+
+CharacterVector::CharacterVector(const CharacterVector& other) : VectorBase(){
+	setSEXP( other.asSexp() ); 
+}
+
+CharacterVector& CharacterVector::operator=(const CharacterVector& other ){
+	setSEXP( other.asSexp() ) ;
+	return *this ;
+}
+
 CharacterVector::CharacterVector(SEXP x) throw(not_compatible) : VectorBase() {
 	SEXP y = r_cast<STRSXP>( x) ;
 	setSEXP( y ) ;

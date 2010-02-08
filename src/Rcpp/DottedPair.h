@@ -35,11 +35,40 @@ public:
 
 	DottedPair() ;
 	
+	DottedPair( const DottedPair& other) : RObject(){
+		setSEXP( other.asSexp() ) ;
+	}
+	
+	DottedPair& operator=( const DottedPair& other) ; 
+	
 #ifdef HAS_VARIADIC_TEMPLATES
 template<typename... Args> 
 	DottedPair( const Args&... args) : RObject() {
 		setSEXP( pairlist(args...) ) ;
 	}
+#else
+/* <code-bloat> */
+template <typename T1>
+DottedPair( const T1& t1) : RObject() {
+	setSEXP( pairlist(t1) );
+}
+template <typename T1, typename T2>
+DottedPair( const T1& t1, const T2& t2) : RObject(){
+	setSEXP( pairlist(t1,t2) ); 
+}
+template <typename T1, typename T2, typename T3>
+DottedPair( const T1& t1, const T2& t2, const T3& t3): RObject() {
+	setSEXP( pairlist(t1,t2,t3) );
+}
+template <typename T1, typename T2, typename T3, typename T4>
+DottedPair( const T1& t1, const T2& t2, const T3& t3, const T4& t4): RObject(){
+	setSEXP( pairlist(t1,t2,t3,t4) );
+}
+template <typename T1, typename T2, typename T3, typename T4, typename T5>
+DottedPair( const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5) : RObject() {
+	setSEXP( pairlist(t1,t2,t3,t4,t5) );
+}
+/* </code-bloat> */
 #endif	
 
 	/**
@@ -84,16 +113,16 @@ template<typename... Args>
 	 * @param object object to wrap
 	 */
 	template <typename T>
-	void insert( const int& index, const T& object) throw(index_out_of_bounds) {
+	void insert( const size_t& index, const T& object) throw(index_out_of_bounds) {
 		if( index == 0 ) {
 			push_front( object ) ;
 		} else{
 			if( index <  0 ) throw index_out_of_bounds() ;
 			if( isNULL( ) ) throw index_out_of_bounds() ;
 			
-			if( index < 0 || index > ::Rf_length(m_sexp) ) throw index_out_of_bounds() ;
+			if( static_cast<R_len_t>(index) > ::Rf_length(m_sexp) ) throw index_out_of_bounds() ;
 			
-			int i=1;
+			size_t i=1;
 			SEXP x = m_sexp ;
 			while( i < index ){
 				x = CDR(x) ;
@@ -113,7 +142,7 @@ template<typename... Args>
 	 */
 	template <typename T>
 	void replace( const int& index, const T& object ) throw(index_out_of_bounds){
- 	        if( index < 0 || index >= ::Rf_length(m_sexp) ) throw index_out_of_bounds() ;
+ 	        if( static_cast<R_len_t>(index) >= ::Rf_length(m_sexp) ) throw index_out_of_bounds() ;
 		
 		/* pretend we do a pairlist so that we get Named to work for us */
 		SEXP x = PROTECT(pairlist( object ));
@@ -126,8 +155,8 @@ template<typename... Args>
 		UNPROTECT(1) ;
 	}
 
-        inline size_t length() const { return ::Rf_length(m_sexp) ; }
-        inline size_t size() const { return ::Rf_length(m_sexp) ; }
+        inline R_len_t length() const { return ::Rf_length(m_sexp) ; }
+        inline R_len_t size() const { return ::Rf_length(m_sexp) ; }
 	
 	/**
 	 * Remove the element at the given position
@@ -151,9 +180,6 @@ template<typename... Args>
 		}
 		Proxy& operator=(const Named& rhs) ;
 		
-		/* rvalue use */
-		operator SEXP() ;
-		
 		template <typename T> operator T() const {
 			return as<T>( CAR(node) ) ;
 		}
@@ -167,7 +193,21 @@ template<typename... Args>
 	
 	friend class Proxy; 
 	
+	
+	
 	virtual ~DottedPair() = 0 ;
+	
+	template <typename T>
+	friend DottedPair& operator<<(DottedPair& os, const T& t){
+		os.push_back( t ) ;
+		return os ;
+	}
+	
+	template <typename T>
+	friend DottedPair& operator>>( const T& t, DottedPair& s){
+		s.push_front(t);
+		return s ;
+	}
 	
 };
 

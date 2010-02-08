@@ -62,17 +62,6 @@ RObject::~RObject() {
 	logTxt("~RObject");
 }
 
-double RObject::asDouble() const { return as<double>( m_sexp ) ; }
-int RObject::asInt() const { return as<int>( m_sexp ) ; }
-Rbyte RObject::asRaw() const { return as<Rbyte>( m_sexp ) ; }
-bool RObject::asBool() const { return as<bool>(m_sexp) ; }
-std::string RObject::asStdString() const { return as< std::string >( m_sexp ) ; }
-std::vector<bool> RObject::asStdVectorBool() const { return as< std::vector<bool> >( m_sexp ) ; }
-std::vector<int> RObject::asStdVectorInt() const { return as< std::vector<int> >( m_sexp ) ; }
-std::vector<Rbyte> RObject::asStdVectorRaw() const { return as< std::vector<Rbyte> >( m_sexp ) ; }
-std::vector<double> RObject::asStdVectorDouble() const { return as< std::vector<double> >( m_sexp ) ; }
-std::vector<std::string> RObject::asStdVectorString() const { return as< std::vector<std::string> >( m_sexp ) ; }
-
 std::vector<std::string> RObject::attributeNames() const {
 	/* inspired from do_attributes@attrib.c */
 	
@@ -96,17 +85,52 @@ bool RObject::hasAttribute( const std::string& attr) const {
     return false; /* give up */
 }
 
+RObject::SlotProxy::SlotProxy( const RObject& v, const std::string& name) : 
+	parent(v), slot_name(name)
+{
+	if( !R_has_slot( v, Rf_install(name.c_str())) ){
+		throw no_such_slot() ; 
+	}
+} ;
+
+RObject::SlotProxy& RObject::SlotProxy::operator=(const SlotProxy& rhs){
+	set( rhs.get() ) ;
+	return *this ;
+}
+
+const char* RObject::no_such_slot::what( ) const throw() {
+	return "no such slot" ;
+}
+
+SEXP RObject::SlotProxy::get() const {
+	return internal::try_catch( 
+		Rf_lcons( Rf_install("slot"), Rf_cons( parent , 
+			Rf_cons( Rf_mkString(slot_name.c_str()) , R_NilValue)))) ; 
+			
+}
+
+void RObject::SlotProxy::set( SEXP x) const {
+	internal::try_catch( 
+		Rf_lcons( Rf_install("slot<-"), 
+				Rf_cons( parent, Rf_cons( Rf_mkString(slot_name.c_str()), 
+					Rf_cons( Rf_ScalarLogical(TRUE) , 
+						Rf_cons( x , R_NilValue)  ) )))) ; 
+}
+
+SEXP RObject::AttributeProxy::get() const {
+	return Rf_getAttrib( parent, Rf_install( attr_name.c_str() ) ) ;
+}
+
+void RObject::AttributeProxy::set(SEXP x) const{
+	Rf_setAttrib( parent, Rf_install(attr_name.c_str()), x ) ;
+}
 
 RObject::AttributeProxy::AttributeProxy( const RObject& v, const std::string& name) :
 	parent(v), attr_name(name) {};
 
 RObject::AttributeProxy& RObject::AttributeProxy::operator=(const AttributeProxy& rhs){
-	Rf_setAttrib( parent, Rf_install(attr_name.c_str()), parent.asSexp() ) ;
+	set( rhs.get() ) ;
 	return *this ;
-}
-
-RObject::AttributeProxy::operator SEXP() const {
-	return Rf_getAttrib( parent , Rf_install( attr_name.c_str() ) ) ;
 }
 
 RObject::AttributeProxy RObject::attr( const std::string& name) const{
@@ -120,9 +144,9 @@ bool RObject::hasSlot(const std::string& name) const throw(not_s4){
 	return R_has_slot( m_sexp, Rf_mkString(name.c_str()) ) ;
 }
 
-RObject RObject::slot(const std::string& name) const throw(not_s4){
+RObject::SlotProxy RObject::slot(const std::string& name) const throw(not_s4){
 	if( !Rf_isS4(m_sexp) ) throw not_s4() ;
-	return R_do_slot( m_sexp, Rf_mkString(name.c_str()) ) ;
+	return SlotProxy( *this, name ) ;
 }
 
 

@@ -1,4 +1,11 @@
 
+A much simpler version of the example is provided in the file newApiExample.r.
+With littler installed, it can be run 'as is' as a shell script; else it can
+be sourced into R.
+
+ -- Dirk Eddelbuettel and Romain Francois,  06 Feb 2010
+
+
 This directory provides a simple example of how an R function 
 can be passed back and forth between R and C++.  
 

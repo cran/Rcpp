@@ -22,7 +22,7 @@ suppressMessages(library(inline))
 
 cat("===Doubles\n")
 foo <- '
-        double d = Rcpp::wrap(x).asDouble();
+        double d = Rcpp::as<double>(x);
 	std::cout << "Returning twice the value of " << d << " : ";
 	return(Rcpp::wrap( 2*d ) );
         '
@@ -35,7 +35,7 @@ cat(funx(x=2), "\n")
 
 cat("\n===Int\n")
 foo <- '
-        int i = Rcpp::wrap(x).asInt();
+        int i = Rcpp::as<int>(x);
 	std::cout << "Returning twice the value of " << i << " : ";
 	return(Rcpp::wrap( 2*i ) );
         '
@@ -47,7 +47,7 @@ cat(funx(x=as.raw(2)), "\n")
 
 cat("\n===String\n")
 foo <- '
-        std::string s = Rcpp::wrap(x).asStdString();
+        std::string s = Rcpp::as<std::string>(x);
 	std::cout << "Returning twice the value of " << s << " : ";
 	return(Rcpp::wrap( s+s ) );
         '
@@ -56,7 +56,7 @@ cat(funx(x="abc"), "\n")
 
 cat("\n===Raw (bytes)\n")
 foo <- '
-        Rbyte i = Rcpp::wrap(x).asRaw();
+        Rbyte i = Rcpp::as<Rbyte>(x) ;
 	std::cout << "Returning twice the value of " << (int)i << " : ";
 	return(Rcpp::wrap( (Rbyte)(2*i) ) );
         '
@@ -69,7 +69,7 @@ cat( funx(x=as.raw(2)), "\n")
 
 cat("\n=== logical \n")
 foo <- '
-bool b = Rcpp::wrap(x).asBool();
+bool b = Rcpp::as<bool>(x);
 std::cout << "flip  " << ( b ? "TRUE" : "FALSE" ) << " : ";
 return(Rcpp::wrap( !b ));
 '
@@ -90,7 +90,7 @@ cat( res <- funx(x=as.raw(0)), "\n") ; stopifnot( res)
 
 cat("\n===Int Vector via RcppResultSet.getSEXP\n")
 foo <- '
-        std::vector<int> iv = Rcpp::wrap(x).asStdVectorInt();
+        std::vector<int> iv = Rcpp::as< std::vector<int> >(x) ;
 	std::cout << "Returning twice the value of vector : ";
         for (size_t i=0; i<iv.size(); i++) {
             iv[i] = 2*iv[i];
@@ -108,7 +108,7 @@ print(funx(x=as.raw(2:5)))
 
 cat("\n===Int Vector\n")
 foo <- '
-        std::vector<int> iv = Rcpp::wrap(x).asStdVectorInt();
+        std::vector<int> iv = Rcpp::as< std::vector<int> >(x) ;
 	std::cout << "Returning twice the value of vector : ";
         for (size_t i=0; i<iv.size(); i++) {
             iv[i] = 2*iv[i];
@@ -125,7 +125,7 @@ print(funx(x=as.raw(2:5)))
 
 cat("\n===Double Vector\n")
 foo <- '
-        std::vector<double> iv = Rcpp::wrap(x).asStdVectorDouble();
+        std::vector<double> iv = Rcpp::as< std::vector<double> >(x) ;
 	std::cout << "Returning twice the value of vector : ";
         for (size_t i=0; i<iv.size(); i++) {
             iv[i] = 2*iv[i];
@@ -141,7 +141,7 @@ print(funx(x=as.raw(2:5)))
 
 cat("\n===Raw Vector\n")
 foo <- '
-        std::vector<Rbyte> iv = Rcpp::wrap(x).asStdVectorRaw();
+        std::vector<Rbyte> iv = Rcpp::as< std::vector<Rbyte> >(x) ;
 	std::cout << "Returning twice the value of vector : ";
         for (size_t i=0; i<iv.size(); i++) {
             iv[i] = 2*iv[i];
@@ -157,7 +157,7 @@ print(funx(x=0:9+.1))
 
 cat("\n=== vector<bool>\n")
 foo <- '
-std::vector<bool> bv = Rcpp::wrap(x).asStdVectorBool();
+std::vector<bool> bv = Rcpp::as< std::vector<bool> >(x) ;
 std::cout << "Flip the value of vector : ";
 for (size_t i=0; i<bv.size(); i++) {
     bv[i].flip() ;
@@ -176,7 +176,7 @@ print(funx(x=as.numeric(0:9)))
 
 cat("\n===String Vector\n")
 foo <- '
-        std::vector<std::string> iv = Rcpp::wrap(x).asStdVectorString();
+        std::vector<std::string> iv = Rcpp::as< std::vector<std::string> >(x);
 	std::cout << "Returning twice the value of vector : ";
         for (size_t i=0; i<iv.size(); i++) {
             iv[i] = iv[i] + iv[i];
@@ -236,28 +236,28 @@ stopifnot( identical( res, c("bar","foo")) )
 
 funx <- cfunction(
 	signature(x="data.frame"), '
-std::vector<std::string> iv = Rcpp::wrap(x).attributeNames();
+std::vector<std::string> iv = Rcpp::RObject(x).attributeNames();
 return(Rcpp::wrap( iv ));
 ', Rcpp=TRUE, verbose=FALSE)
 res <- funx( iris )
 stopifnot( all( c("names", "row.names", "class" ) %in% res ) )
 
 funx <- cfunction(signature(x="data.frame"), '
-bool has_class = Rcpp::wrap(x).hasAttribute( "class" ) ;
+bool has_class = Rcpp::RObject(x).hasAttribute( "class" ) ;
 return Rcpp::wrap( has_class ) ;
 ', Rcpp=TRUE, verbose=FALSE)
 res <- funx( iris )
 stopifnot( res )
 
 funx <- cfunction(signature(x="data.frame"), '
-return Rcpp::wrap(x).attr( "row.names" ) ;
+return Rcpp::RObject(x).attr( "row.names" ) ;
 ', Rcpp=TRUE, verbose=FALSE)
 res <- funx( iris )
 stopifnot( identical(res, 1:150) )
 
 #============ NULL
 funx <- cfunction(signature(x="ANY"), '
-bool is_null = Rcpp::wrap(x).isNULL() ;
+bool is_null = Rcpp::RObject(x).isNULL() ;
 return Rcpp::wrap( is_null ) ;
 ', Rcpp=TRUE, verbose=FALSE)
 res <- funx( iris )

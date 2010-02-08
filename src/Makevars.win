@@ -31,7 +31,7 @@ OBJECTS =	$(SOURCES:.cpp=.o)
 ## users need for their projects -- RcppExample is used by the package library
 ## we place it inside the inst/ directory so that it gets installed by the package
 USEROBJ	=	$(filter-out RcppExample.o,$(OBJECTS))
-USERDIR	= 	../inst/lib
+USERDIR	= 	../inst/lib$(R_ARCH)
 USERLIB	= 	$(USERDIR)/libRcpp.a
 
 ## to filter out -Wall which generated a ton with older compilers
@@ -64,11 +64,12 @@ $(PKGLIB): 	$(PKGOBJ)
 
 $(USERLIB):	$(USEROBJ)
 		-mkdir -p $(USERDIR)/Rcpp/internal 2>/dev/null
-		ar r $(USERLIB) $(USEROBJ)
-		ranlib $(USERLIB)
+		$(AR) r $(USERLIB) $(USEROBJ)
+		$(RANLIB) $(USERLIB)
 		cp -vax *.h $(USERDIR)
 		cp -vax Rcpp/*.h $(USERDIR)/Rcpp
 		cp -vax Rcpp/internal/*.h $(USERDIR)/Rcpp/internal
+		cp -vax Rcpp/traits/*.h $(USERDIR)/Rcpp/traits
 
 
 

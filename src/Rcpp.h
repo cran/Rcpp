@@ -63,14 +63,8 @@
 #include <Rcpp/DottedPair.h>
 #include <Rcpp/Pairlist.h>
 #include <Rcpp/Function.h>
-#include <Rcpp/IntegerVector.h>
-#include <Rcpp/NumericVector.h>
-#include <Rcpp/RawVector.h>
-#include <Rcpp/LogicalVector.h>
-#include <Rcpp/GenericVector.h>
 #include <Rcpp/WeakReference.h>
 #include <Rcpp/CharacterVector.h>
 #include <Rcpp/ExpressionVector.h>
-#include <Rcpp/ComplexVector.h>
 
 #endif

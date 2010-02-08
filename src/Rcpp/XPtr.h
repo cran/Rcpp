@@ -43,7 +43,7 @@ public:
      *
      * @param xp external pointer to wrap
      */
-    explicit XPtr(SEXP m_sexp) : RObject::RObject(m_sexp){} ;
+    explicit XPtr(SEXP m_sexp) : RObject(m_sexp){} ;
 		
     /**
      * creates a new external pointer wrapping the dumb pointer p. 
@@ -58,6 +58,13 @@ public:
      */
     explicit XPtr(T* p, bool set_delete_finalizer) ;
 
+    XPtr( const XPtr& other ) : RObject( other.asSexp() ) {}
+    
+    XPtr& operator=(const XPtr& other){
+    	    setSEXP( other.asSexp() ) ;
+    	    return *this ;
+    }
+    
     /**
      * Returns a reference to the object wrapped. This allows this
      * object to look and feel like a dumb pointer to T

@@ -1,3 +1,122 @@
+2010-02-08  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION: Release 0.7.5
+
+	* debian/*: Similarly updated for new release to Debian
+
+2010-02-07  Romain Francois <francoisromain@free.fr>
+
+	* src/RcppSexp.h: class RcppSexp removed (was deprecated)
+
+	* src/Rcpp/*.h: defaults copy constructors and assignment
+	operators have been added for all classes extending RObject.
+	Otherwise the compiler generates default versions that circumvent
+	the garbage collection management
+
+2010-02-06  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/examples/functionCallback/newApiExamples.r: Added simpler
+	  version using the new API
+	* inst/examples/functionCallback/newApiExamples.r: Updated
+
+	* inst/unitTests/runit.RcppVector.R: added test for NA/NaN
+	* inst/unitTests/runit.RcppMatrix.R: idem
+
+2010-02-06  Romain Francois <francoisromain@free.fr>
+
+	* src/Rcpp/RObject.h : asFoo methods are deprecated.
+
+	* src/Rcpp/DottedPair.h : using R_len_t instead of int
+	to anticipate future changes in R
+	* src/Rcpp/VectorBase.h: idem
+	* src/DottedPair.cpp: idem
+	* src/VectorBase.cpp: idem
+	* src/as.cpp: idem
+
+	* src/Rcpp/SimpleVector.h: SimpleVector is now only parameterized
+	by the SEXP type. The c type is automatically retrieved using
+	the storage_type trait class.
+
+2010-02-05  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/THANKS: Added in order to show our appreciation
+
+2010-02-04  Romain Francois <francoisromain@free.fr>
+
+	* src/Rcpp/DottedPair.h: code bloat to allow creation of
+	DottedPair containing up to 5 objects without variadic templates
+	RInside for example needs this.
+	* src/Rcpp/Language.h: same
+	* src/Rcpp/Pairlist.h: same
+	* src/Rcpp/grow.h: same
+
+	* src/Rcpp/internal/wrap.h : one more level of dispatch to
+	identify if there needs a cast between the primitive
+	iterated over and the target storage type. For example
+	size_t needs a cast to be stored in an integer vector. This
+	will be useful for the RProtoBuf package with e.g. types like
+	google::protobuf::int64 which needs to be cast to double.
+	Consequently the special handling of bool has been withdrawn
+	as bool can now be assimilated to a primitive type that does
+	require casting (to int)
+
+2010-02-03  Romain Francois <francoisromain@free.fr>
+
+	* src/Rcpp/VectorBase.h: VectorBase gains a names method that
+	uses the proxy pattern to get or set the names of a vector
+
+	* src/Rcpp/DottedPair.h: DottedPair gains a << operator to
+	add an object to the queue of the list. this is much useful
+	when variadic templates are not available
+
+	* src/Rcpp/RObject.h: support for slot assignment. The slot
+	method now uses the proxy pattern.
+
+	* inst/unitTests/runit.S4.R: unit test for slot assignment
+
+2010-02-02  Romain Francois <francoisromain@free.fr>
+
+	* src/internal/r_coerce.h : coercion is now handled by a templated
+	function r_coerce<int,int>, for example r_coerce<INTSXP,REALSXP>
+	takes an int, performs coercion and returns a double
+
+	* src/traits/has_iterator.h : introduce a trait that uses the
+	SFINAE idiom to check if a class T has a nested type called
+	"iterator". This helps wrap dispatch which now uses the
+	range based wrap implementation in that case
+
+	* src/Rcpp/wrap.h: The range based wrap function is exposed
+	at the Rcpp:: level. The interface is
+	wrap( InputIterator first, InputIterator last )
+	and dispatch is performed internally using iterator traits
+
+2010-02-01  Romain Francois <francoisromain@free.fr>
+
+	* src/traits/wrap_type_traits.h: new namespace Rcpp::traits::
+	to host Rcpp type traits used by the template meta programming 
+	dispatching of wrap
+
+2010-01-31  Dirk Eddelbuettel  <edd@debian.org>
+
+	* doxyfile: several updates plus improvements related to examples/
+        * src/RcppDoxygenExamples.h: A phony empty file needed mainly to
+	  define a few \example tags for Doxygen
+
+2010-01-31  Romain Francois <francoisromain@free.fr>
+
+	* src/Rcpp/internal/wrap.h: more wrap for stl templates are
+	candidate for wrap (when T can be wrapped)
+	std::list<T>	                      -> vector or list
+	std::multiset<T>                   -> vector or list
+	std::map<std::string,T>                 -> named vector or named list
+	std::multimap<std::string,T>            -> named vector or named list
+	std::tr1::unordered_map<std::string,T>  -> named vector or named list
+	std::tr1::unordered_set<T>         -> vector or list
+	std::tr1::unordered_multiset<T>    -> vector or list
+
+	* inst/unitTests/runit.wrap.R : unit tests for the new
+	wrappable types
+
 2010-01-30  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION: Release 0.7.4
@@ -228,8 +347,8 @@
 
 	* src/RcppFrame.cpp: listen to some suncc warnings
 
-	* src/as.cpp: use transform instead of assign, which should 
-	make the code more portable (particularly suncc) and also 
+	* src/as.cpp: use transform instead of assign, which should
+	make the code more portable (particularly suncc) and also
 	deal with coercion
 
 2010-01-21  Dirk Eddelbuettel  <edd@debian.org>
@@ -334,7 +453,7 @@
 	code that uses Rcpp, also the generated Makevars contains
 	a hack so that the generated package can pass check (after
 	edition of Rd files, NAMESPACE, etc ...)
-	* inst/skeleton: added example code used by the skeleton 
+	* inst/skeleton: added example code used by the skeleton
 	generator
 
 2010-01-15  Romain Francois <francoisromain@free.fr>
@@ -367,11 +486,11 @@
 
 	* src/Rcpp/Environment.h: Environment::Binding gains a templated
 	conversion operator, to facilitate distance 2 implicit conversion
-	making this possible: 
+	making this possible:
 	Environment env("package:stats") ;
 	Function f = env["rnorm"] ;
 
-	* src/Rcpp/GenericVector.h: GenericVector::Proxy gains an 
+	* src/Rcpp/GenericVector.h: GenericVector::Proxy gains an
 	assignement operator to deal with Environment::Binding. This is
 	to work around distance 1 implicit conversion restrictions
 
@@ -779,7 +898,7 @@
 	* src/Rcpp_RObject.{h,cpp}: new namespace Rcpp and new class
 	Rcpp::RObject to replace RcppSexp with the same functionality.
 
-	* src/Rcpp_XPtr.h: replaces RcppXPtr.h and the class is now 
+	* src/Rcpp_XPtr.h: replaces RcppXPtr.h and the class is now
 	Rcpp::XPtr<> and extends Rcpp::RObject
 
 	* inst/examples/RcppInline/external_pointer.r: use the new namespace

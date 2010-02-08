@@ -25,7 +25,7 @@ namespace Rcpp{
 
 SEXP pairlist(){ return R_NilValue ; }
 
-SEXP grow(const Named& head, SEXP tail){
+template<> SEXP grow<Named>(const Named& head, SEXP tail){
 	SEXP x;
 	x = PROTECT( Rf_cons( head.getSEXP(), tail) ) ;
 	SET_TAG( x, Rf_install( head.getTag().c_str() ) ); 

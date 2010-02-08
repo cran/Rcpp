@@ -29,6 +29,15 @@ namespace Rcpp{
 		dims = as< std::vector<int> >(x) ;
 	}
 	
+	Dimension::Dimension( const Dimension& other ) : dims(){
+		dims = other.dims ; /* copy */
+	}
+	
+	Dimension& Dimension::operator=(const Dimension& other){
+		dims = other.dims ; /* copy */
+		return *this ;
+	}
+	
 	Dimension::Dimension(const size_t& n1) : dims(1){
 		dims[0] = n1 ;
 	}
@@ -45,10 +54,7 @@ namespace Rcpp{
 	}
 	
 	Dimension::operator SEXP() const {
-		SEXP x = PROTECT(Rf_allocVector(INTSXP,dims.size())) ;
-		std::copy( dims.begin(), dims.end(), INTEGER(x) ) ;
-		UNPROTECT(1) ; /* x */
-		return x ;
+		return wrap( dims.begin(), dims.end() ) ;
 	}
 	
 	int Dimension::size() const {

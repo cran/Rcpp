@@ -277,7 +277,7 @@ test.environment.constructor.SEXP <- function(){
 
 test.environment.constructor.stdstring <- function(){
 	funx <- cfunction(signature( env = "character" ), '
-	std::string st = RObject(env).asStdString() ;
+	std::string st = as<std::string>( env ) ;
 	return Environment( st ) ; ', 
 	Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;" )
 	
@@ -290,7 +290,7 @@ test.environment.constructor.stdstring <- function(){
 
 test.environment.constructor.int <- function(){
 	funx <- cfunction(signature( env = "integer" ), '
-	int pos = RObject(env).asInt() ;
+	int pos = as<int>(env) ;
 	return Environment( pos ) ;', 
 	Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;" )
 	for( i in 1:length(search())){

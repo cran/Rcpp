@@ -29,26 +29,71 @@
 
 namespace Rcpp{ 
 
+/**
+ * Representation of character vectors (STRSXP)
+ */
 class CharacterVector : public VectorBase {     
 public:
 
-	/* much inspired from item 30 of more effective C++ */
+	/**
+	 * Proxy object that can be used to get or set the value
+	 * a single value of the character vector
+	 */
 	class StringProxy {
 	public:
+		/**
+		 * Creates a proxy
+		 *
+		 * @param v reference to the associated character vector
+		 * @param index index 
+		 */
 		StringProxy( CharacterVector& v, int index ) ;
 		
-		/* lvalue uses */
+		/**
+		 * lhs use. Assign the value of the referred element to 
+		 * the current content of the element referred by the 
+		 * rhs proxy
+		 *
+		 * @param rhs another proxy, possibly from another vector
+		 */
 		StringProxy& operator=(const StringProxy& rhs) ;
+		
+		/**
+		 * lhs use. Assigns the value of the referred element
+		 * of the character vector
+		 *
+		 * @param rhs new content for the element referred by this proxy
+		 */
 		StringProxy& operator=(const std::string& rhs) ;
 		
+		/**
+		 * lhs use. Adds the content of the rhs proxy to the 
+		 * element this proxy refers to.
+		 */
 		StringProxy& operator+=(const StringProxy& rhs) ;
+		
+		/**
+		 * lhs use. Adds the string to the element this proxy refers to
+		 */
 		StringProxy& operator+=(const std::string& rhs) ;
 		
-		/* rvalue use */
+		/**
+		 * rhs use. Retrieves the current value of the 
+		 * element this proxy refers to.
+		 */
 		operator SEXP() const ;
+		
+		/**
+		 * rhs use. Retrieves the current value of the 
+		 * element this proxy refers to and convert it to a 
+		 * C string
+		 */
 		operator char*() const ;
 		
-		/* printing */
+		/**
+		 * Prints the element this proxy refers to to an 
+		 * output stream
+		 */
 		friend std::ostream& operator<<(std::ostream& os, const StringProxy& proxy);
 		
 	private:
@@ -56,32 +101,106 @@ public:
 		int index ;
 	} ;
 
+	/**
+	 * Default constructor. Sets the underlying object to NULL
+	 */
 	CharacterVector() ;
-	CharacterVector(SEXP x) throw(not_compatible);
+	
+	/**
+	 * Copy constructor. Grab the underlying SEXP from the copied
+	 * object. This does not make a copy of the SEXP.
+	 */
+	CharacterVector( const CharacterVector& other ) ;
+	
+	/**
+	 * Assign the underlying object to be the same as the copied object
+	 * This does not make a copy of the object
+	 */
+	CharacterVector& operator=( const CharacterVector& other ) ;
+	
+	/**
+	 * encapsulates an R object
+	 *
+	 * @param x R object, presumably a character vector (STRSXP)
+	 *
+	 * @throw not_compatible if the R object can not be converted
+	 *        to a character vector
+	 */
+	CharacterVector( SEXP x) throw(not_compatible);
+	
+	/**
+	 * Creates a new character vector of the requested length
+	 */
 	CharacterVector( const size_t& size) ;
+	
+	/** 
+	 * Creates a new character vector of length 1 containing the 
+	 * given string
+	 */
 	CharacterVector( const std::string& x );
+	
+	/**
+	 * Creates a character vector by copying the strings of the input vector
+	 */
 	CharacterVector( const std::vector<std::string>& x );
 	
+	/**
+	 * Creates a character vector of the requested dimensions
+	 */
 	CharacterVector( const Dimension& dims) ;
 	
+	/**
+	 * Range based constructor. InputIterator must be an iterator 
+	 * over std::string
+	 */
 	template <typename InputIterator>
 	CharacterVector( InputIterator first, InputIterator last): VectorBase() {
 		assign( first, last ) ;
 	}
 	
 #ifdef HAS_INIT_LISTS
+	/**
+	 * Initializer list constructor. Copies the strings
+	 *
+	 * Example: CharacterVector x = { "foo", "bar" } ;
+	 */
 	CharacterVector( std::initializer_list<std::string> list ) : VectorBase() {
 		assign( list.begin(), list.end() ) ;
 	}
 #endif
-
+	
+	/**
+	 * Returns a proxy to the given element of the character vector
+	 * The proxy can then be used to get or set the undelting value
+	 */
 	const StringProxy operator[]( int i ) const throw(index_out_of_bounds);
+	
+	/**
+	 * Returns a proxy to the given element of the character vector
+	 * The proxy can then be used to get or set the undelting value
+	 */
 	StringProxy operator[]( int i ) throw(index_out_of_bounds);
 
 	friend class StringProxy;
 	
 	/* '(' indexing */
+	/**
+	 * Returns a proxy to the given element of the character vector
+	 * The proxy can then be used to get or set the undelting value
+	 *
+	 * @throw index_out_of_bounds when the given index is invalid
+	 */
 	StringProxy operator()( const size_t& i) throw(index_out_of_bounds) ;
+	
+	/**
+	 * Returns a proxy to the given element of the character vector, 
+	 * expressed in terms of matrix-style indexing. 
+	 * 
+	 * The proxy can then be used to get or set the undelting value
+	 *
+	 * @throw not_a_matrix if the underlying object is not a matrix
+	 * @throw index_out_of_bounds when the given indices do not produce a valid offset
+	 */
 	StringProxy operator()( const size_t& i, const size_t& j) throw(index_out_of_bounds,not_a_matrix) ;
 
 	template <typename InputIterator>

@@ -41,6 +41,9 @@ public:
 
 	Promise( SEXP x) throw(not_compatible) ;
 	
+	Promise( const Promise& other) ;
+	Promise& operator=(const Promise& other ) ;
+	
 	/** 
 	 * Return the result of the PRSEEN macro
 	 */

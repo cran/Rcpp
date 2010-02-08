@@ -1,6 +1,7 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 8 -*-
+/* :tabSize=4:indentSize=4:noTabs=false:folding=explicit:collapseFolds=1: */
 //
-// IntegerVector.h: Rcpp R/C++ interface class library -- integer vectors
+// has_na.h: Rcpp R/C++ interface class library -- NA handling
 //
 // Copyright (C) 2010	Dirk Eddelbuettel and Romain Francois
 //
@@ -18,17 +19,25 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
+   
+#ifndef Rcpp__traits__integral_constant__h
+#define Rcpp__traits__integral_constant__h
 
-#ifndef Rcpp_IntegerVector_h
-#define Rcpp_IntegerVector_h
+namespace Rcpp{
+namespace traits{
+	
+template <typename _T, _T _V> struct integral_constant {
+    static  const _T                value = _V;
+    typedef _T                      value_type;
+    typedef integral_constant<_T,_V> type;
+ };
+ typedef integral_constant<bool, true> true_type;
+ typedef integral_constant<bool, false> false_type;
 
-#include <RcppCommon.h>
-#include <Rcpp/SimpleVector.h>
-
-namespace Rcpp{ 
-
-typedef SimpleVector<INTSXP,int> IntegerVector ;
-
-} // namespace
+template <typename T, typename U> struct both : 
+	public integral_constant<bool, T::value && U::value>{};
+ 
+}
+}
 
 #endif

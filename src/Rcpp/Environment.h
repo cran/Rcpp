@@ -216,15 +216,7 @@ public:
     	    }
     	    
     	    /* rvalue */
-    	    /**
-    	     * retrieves the value for this binding
-    	     * 
-    	     * Environment stats = Environment::namespace_env( "stats" ) ;
-    	     * Function f = stats["rnorm"] ;
-    	     */
-    	    operator SEXP() const ;
-    	    
-    	    /**
+     	    /**
     	     * Retrieves the value of the binding as a T object
     	     *
     	     * The requirement on the T type is that as<T> makes sense
@@ -234,8 +226,7 @@ public:
     	    template <typename T> 
     	    operator T() const{
     	    	    SEXP x = env.get(name) ;
-    	    	    T t = as<T>(x) ;
-    	    	    return t; 
+    	    	    return as<T>(x) ;
     	    }
     	    
     	    

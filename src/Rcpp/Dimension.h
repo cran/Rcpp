@@ -30,6 +30,8 @@ class Dimension {
 public:
 	Dimension() ;
 	Dimension(SEXP dims);
+	Dimension( const Dimension& other ) ;
+	Dimension& operator=( const Dimension& other ) ;
 	Dimension(const size_t& n1) ;
 	Dimension(const size_t& n1, const size_t& n2) ;
 	Dimension(const size_t& n1, const size_t& n2, const size_t& n3) ;

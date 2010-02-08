@@ -26,8 +26,13 @@ namespace Rcpp {
 	DottedPair::~DottedPair(){}
 	DottedPair::DottedPair() : RObject(){}
 	
+	DottedPair& DottedPair::operator=(const DottedPair& other){
+		setSEXP( other.asSexp() ) ;
+		return *this ;
+	}
+	
 	void DottedPair::remove( const size_t& index ) throw(index_out_of_bounds) {
-		if( index < 0 || index >= static_cast<size_t>(Rf_length(m_sexp)) ) throw index_out_of_bounds() ;
+		if( static_cast<R_len_t>(index) >= Rf_length(m_sexp) ) throw index_out_of_bounds() ;
 		if( index == 0 ){
 			setSEXP( CDR( m_sexp) ) ;
 		} else{
@@ -39,7 +44,7 @@ namespace Rcpp {
 	}
 	
 	DottedPair::Proxy::Proxy( DottedPair& v, const size_t& index_ ) throw(index_out_of_bounds) : node(){
-		if( index_ >= v.length() ) throw index_out_of_bounds() ;
+		if( static_cast<R_len_t>(index_) >= v.length() ) throw index_out_of_bounds() ;
 		SEXP x = v ; /* implicit conversion */
 		size_t i = 0 ;
 		while( i<index_) {
@@ -65,11 +70,7 @@ namespace Rcpp {
 		SET_TAG( node, Rf_install( rhs.getTag().c_str() ) ) ;
 		return *this ;
 	}
-		
-	DottedPair::Proxy::operator SEXP() {
-		return CAR(node) ;
-	}
-		
+	
 	const DottedPair::Proxy DottedPair::operator[]( int i ) const {
 		return Proxy( const_cast<DottedPair&>(*this), i) ;
 	}
