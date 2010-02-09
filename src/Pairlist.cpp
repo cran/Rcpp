@@ -28,6 +28,12 @@ namespace Rcpp {
 		setSEXP( r_cast<LISTSXP>(x) );
 	};
 	Pairlist::~Pairlist(){}
-	
+	Pairlist::Pairlist( const Pairlist& other): DottedPair(){
+		setSEXP( other.asSexp() ) ;
+	}
+	Pairlist& Pairlist::operator=(const Pairlist& other){
+		setSEXP( other.asSexp() ) ;
+		return *this ;
+	}
 	
 } // namespace Rcpp

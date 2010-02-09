@@ -1,7 +1,59 @@
 
+0.7.5	(under development)
+
+    o 	wrap has been much improved. wrappable types now are :
+    	- primitive types : int, double, Rbyte, Rcomplex, float, bool
+    	- std::string
+    	- STL containers which have iterators over wrappable types:
+    	  (e.g. std::vector<T>, std::deque<T>, std::list<T>, etc ...). 
+    	- STL maps keyed by std::string, e.g std::map<std::string,T>
+    	- classes that have implicit conversion to SEXP
+    	- classes for which the wrap template if fully or partly specialized
+    	This allows composition, so for example this class is wrappable: 
+    	std::vector< std::map<std::string,T> > (if T is wrappable)
+    	
+    o 	The range based version of wrap is now exposed at the Rcpp::
+    	level with the following interface : 
+    	Rcpp::wrap( InputIterator first, InputIterator last )
+    	This is dispatched internally to the most appropriate implementation
+    	using traits
+
+    o	a new namespace Rcpp::traits has been added to host the various
+    	type traits used by wrap
+
+    o 	The doxygen documentation now shows the examples
+
+    o 	A new file inst/THANKS acknowledges the kind help we got from others
+
+    o	The RcppSexp has been removed from the library.
+    
+    o 	The methods RObject::asFoo are deprecated and will be removed
+    	in the next version. The alternative is to use as<Foo>.
+
+    o	The method RObject::slot can now be used to get or set the 
+    	associated slot. This is one more example of the proxy pattern
+    	
+    o	Rcpp::VectorBase gains a names() method that allows getting/setting
+    	the names of a vector. This is yet another example of the 
+    	proxy pattern.
+    	
+    o	Rcpp::DottedPair gains templated operator<< and operator>> that 
+    	allow wrap and push_back or wrap and push_front of an object
+    	
+    o	Rcpp::DottedPair, Rcpp::Language, Rcpp::Pairlist are less
+    	dependent on C++0x features. They gain constructors with up
+    	to 5 templated arguments. 5 was choosed arbitrarily and might 
+    	be updated upon request.
+    	
+    o	function calls by the Rcpp::Function class is less dependent
+    	on C++0x. It is now possible to call a function with up to 
+    	5 templated arguments (candidate for implicit wrap)
+    	
+    o	added support for 64-bit Windows (thanks to Brian Ripley and Uwe Ligges)
+	
 0.7.4	2010-01-30
 
-    o	matrix matrix-like indexing using operator() for all vector 
+    o	matrix-like indexing using operator() for all vector 
     	types : IntegerVector, NumericVector, RawVector, CharacterVector
     	LogicalVector, GenericVector and ExpressionVector. 
 
@@ -52,7 +104,7 @@
     	sense then one can insert a Bar directly into the environment. 
     	Foo foo = env["x"] ;  /* as<Foo> is used */
 	Bar bar ;
-	env["y"] = bar ;      /* wrap<Foo> is used */    	
+	env["y"] = bar ;      /* wrap<Bar> is used */    	
 
     o	Environment::assign becomes a template and also uses wrap to 
     	create a suitable SEXP

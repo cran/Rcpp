@@ -7,3 +7,6 @@ export(RcppExample,
        RcppVectorExample, 
        Rcpp.package.skeleton
 )
+
+importFrom( utils, capture.output )
+

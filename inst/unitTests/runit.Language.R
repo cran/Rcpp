@@ -99,3 +99,13 @@ test.Language.function <- function(){
 	checkEquals( funx(sort, sample(1:10)), 1:10, msg = "Language( Function ) " )
 }
 
+test.Language.inputoperator <- function(){
+	funx <- cfunction(signature(), 
+	'
+	Language call( "rnorm" );
+	call << 10 << Named( "sd", 10 ) ;
+	return call ;
+	', Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;" )
+	checkEquals( funx(), call("rnorm", 10L, sd = 10L ) , msg = "Language<<" )
+}
+

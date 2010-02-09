@@ -49,6 +49,9 @@ public:
 	 */
 	Language(SEXP lang) throw(not_compatible) ;
 
+	Language(const Language& other) ;
+	Language& operator=(const Language& other) ;
+	
 	/**
 	 * Creates a call using the given symbol as the function name
 	 *
@@ -86,7 +89,7 @@ public:
 	 *        argument must be wrappable, meaning there need to be 
 	 *        a wrap function that takes this type as its parameter
 	 * 
-	 * @example Language( "rnorm", 10, 0.0 ) 
+	 * For example, Language( "rnorm", 10, 0.0 ) 
 	 * will create the same call as 
 	 * > call( "rnorm", 10L, 0.0 )
 	 *
@@ -103,6 +106,33 @@ template<typename... Args>
 Language( const Function& function, const Args&... args) : DottedPair(function, args...) {
 	update() ;
 }
+#else
+/* <code-bloat> */
+template <typename T1> 
+Language( const std::string& symbol, const T1& t1) : DottedPair(symbol, t1) {} 
+
+template <typename T1, typename T2>
+Language( const std::string& symbol, const T1& t1, const T2& t2) : DottedPair(symbol, t1,t2){}
+
+template <typename T1, typename T2, typename T3>
+Language( const std::string& symbol, const T1& t1, const T2& t2, const T3& t3): DottedPair(symbol, t1,t2,t3) {}
+
+template <typename T1, typename T2, typename T3, typename T4>
+Language( const std::string& symbol, const T1& t1, const T2& t2, const T3& t3, const T4& t4): DottedPair(symbol, t1,t2,t3,t4){}
+
+
+template <typename T1> 
+Language( const Function& function, const T1& t1) : DottedPair(function, t1) {} 
+
+template <typename T1, typename T2>
+Language( const Function& function, const T1& t1, const T2& t2) : DottedPair(function, t1,t2){}
+
+template <typename T1, typename T2, typename T3>
+Language( const Function& function, const T1& t1, const T2& t2, const T3& t3): DottedPair(function, t1,t2,t3) {}
+
+template <typename T1, typename T2, typename T3, typename T4>
+Language( const Function& function, const T1& t1, const T2& t2, const T3& t3, const T4& t4): DottedPair(function, t1,t2,t3,t4){}
+/* </code-bloat> */
 #endif	
 	
 	/**

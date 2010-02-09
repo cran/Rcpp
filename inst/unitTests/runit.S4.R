@@ -38,5 +38,31 @@ test.S4 <- function(){
 	checkEquals( funx(tr),
 		list( TRUE, TRUE, FALSE, 2.0, 2.0 )
 	, msg = "slot management" )
+	
+	funx <- cfunction(signature(x = "ANY" ), '
+	RObject y(x) ;
+	y.slot( "x" ) = 10.0 ;
+	y.slot( "y" ) = 20.0 ;
+	return R_NilValue ;
+	', Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;" )
+	funx( tr )
+	checkEquals( tr@x, 10.0 , msg = "slot('x') = 10" )
+	checkEquals( tr@y, 20.0 , msg = "slot('y') = 20" )
+	
+	funx <- cfunction(signature(x = "ANY" ), '
+	RObject y(x) ;
+	y.slot( "foo" ) = 10.0 ;
+	return R_NilValue ;
+	', Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;" )
+	checkException( funx( tr ), msg = "slot does not exist" )
+	
+	funx <- cfunction(signature(x = "ANY" ), '
+	RObject y(x) ;
+	y.slot( "foo" ) ;
+	return R_NilValue ;
+	', Rcpp=TRUE, verbose=FALSE, includes = "using namespace Rcpp;" )
+	checkException( funx( tr ), msg = "slot does not exist" )
+	
+	
 }
 

@@ -23,7 +23,7 @@
 
 namespace Rcpp {
 
-	Symbol::Symbol( SEXP x ) throw(not_compatible) : RObject::RObject() {
+	Symbol::Symbol( SEXP x ) throw(not_compatible) : RObject() {
 		if( x != R_NilValue ){
 			int type = TYPEOF(x) ;
 			switch( type ){
@@ -45,8 +45,17 @@ namespace Rcpp {
 		} 
 	}
 	
-	Symbol::Symbol(const std::string& symbol){
+	Symbol::Symbol(const std::string& symbol): RObject(){
 		setSEXP( Rf_install(symbol.c_str()) );
+	}
+	
+	Symbol::Symbol( const Symbol& other) : RObject() {
+		setSEXP( other.asSexp() );
+	}
+	
+	Symbol& Symbol::operator=(const Symbol& other){
+		setSEXP( other.asSexp() );
+		return *this;
 	}
 	
 	Symbol::~Symbol(){}

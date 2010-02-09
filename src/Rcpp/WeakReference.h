@@ -39,6 +39,9 @@ public:
 	 */
 	WeakReference( SEXP x) throw(not_compatible) ; 
 
+	WeakReference( const WeakReference& other) ;
+	WeakReference& operator=(const WeakReference& other) ;
+	
 	/* TODO: constructor that makes a new weak reference based
 		on key, value, finalizer (C and R) */
 	

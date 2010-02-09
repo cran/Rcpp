@@ -45,6 +45,23 @@ test.RcppVector.double <- function() {
     checkEquals(funx(x=c(1:6)), list(size=6, p2=2, v=c(1:6)), msg="RcppVector.double")
 }
 
+test.RcppVector.double.na.nan <- function() {
+    src <- 'RcppVector<double> m(x);
+            RcppResultSet rs;
+            rs.add("na_2",  R_IsNA(m(1)));
+            rs.add("na_3",  R_IsNA(m(2)));
+            rs.add("nan_4", R_IsNaN(m(3)));
+            rs.add("nan_5", R_IsNaN(m(4)));
+	    return rs.getReturnList();';
+    funx <- cfunction(signature(x="numeric"), src, Rcpp=TRUE)
+    x <- 1:6
+    x[2] <- NA
+    x[4] <- NaN
+    checkEquals(funx(x=x),
+                list(na_2=1, na_3=0, nan_4=1, nan_5=0),
+                msg = "RcppMatrix.double.na.nan")
+}
+
 
 
 

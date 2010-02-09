@@ -23,7 +23,7 @@
 
 namespace Rcpp {
 
-    Environment::Environment( SEXP x = R_GlobalEnv) throw(not_compatible) : RObject::RObject(x){
+    Environment::Environment( SEXP x = R_GlobalEnv) throw(not_compatible) : RObject(x){
     	if( ! Rf_isEnvironment(x) ) {
     		/* not an environment, but maybe convertible to one using 
     		   as.environment, try that */
@@ -268,10 +268,6 @@ namespace Rcpp {
     Environment::Binding& Environment::Binding::operator=( const Binding& rhs){
     	    env.assign( name, rhs.env.get(rhs.name) ) ;
     	    return *this ;
-    }
-    
-    Environment::Binding::operator SEXP() const{
-    	return env.get( name );    
     }
 
     const Environment::Binding Environment::operator[]( const std::string& name) const{

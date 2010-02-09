@@ -51,6 +51,16 @@ public:
    			virtual const char* what() const throw() ; 
    	} ;
    	
+   	/**
+   	 * Exception thrown when attempting to convert a SEXP
+   	 */
+   	class no_such_slot : public std::exception{
+   		public:
+   			no_such_slot() throw(){};
+   			virtual ~no_such_slot() throw(){} ;
+   			virtual const char* what() const throw() ;
+   	} ;
+   	
    	class index_out_of_bounds: public std::exception{
    	public:
    		index_out_of_bounds() throw(){};
@@ -86,9 +96,8 @@ public:
     RObject& operator=( SEXP other ) ;
 
     /**
-     * if this object is protected rom R's GC, then it is released
-     * and become subject to garbage collection. See preserve 
-     * and release member functions.
+     * Removes the protection. The enclosed SEXP becomes subject
+     * to garbage collection, if not otherwise protected
      */
     virtual ~RObject() ;
 
@@ -99,16 +108,16 @@ public:
 
     /* we don't provide implicit converters because 
        of Item 5 in More Effective C++ */
-    bool                     asBool() const;
-    double                   asDouble() const;
-    int                      asInt() const;
-    Rbyte                    asRaw() const;
-    std::string              asStdString() const;
-    std::vector<int>         asStdVectorInt() const;
-    std::vector<double>      asStdVectorDouble() const;
-    std::vector<std::string> asStdVectorString() const;
-    std::vector<Rbyte>       asStdVectorRaw() const;
-    std::vector<bool>        asStdVectorBool() const;
+    inline bool                     asBool()            { DEPRECATED_AS("asBool") ; return as<bool>(m_sexp) ; } ;
+    inline double                   asDouble()          { DEPRECATED_AS("asDouble") ; return as<double>(m_sexp) ; } ;
+    inline int                      asInt()             { DEPRECATED_AS("asInt") ; return as<int>(m_sexp) ; } ;
+    inline Rbyte                    asRaw()             { DEPRECATED_AS("asRaw") ; return as<Rbyte>(m_sexp) ; } ;
+    inline std::string              asStdString()       { DEPRECATED_AS("asStdString") ; return as<std::string>(m_sexp) ; } ;
+    inline std::vector<int>         asStdVectorInt()    { DEPRECATED_AS("asStdVectorInt") ; return as< std::vector<int> >(m_sexp) ; } ;
+    inline std::vector<double>      asStdVectorDouble() { DEPRECATED_AS("asStdVectorDouble") ; return as< std::vector<double> >(m_sexp) ; } ;
+    inline std::vector<std::string> asStdVectorString() { DEPRECATED_AS("asStdVectorString") ; return as< std::vector<std::string> >(m_sexp) ; } ;
+    inline std::vector<Rbyte>       asStdVectorRaw()    { DEPRECATED_AS("asStdVectorRaw") ; return as< std::vector<Rbyte> >(m_sexp) ; } ;
+    inline std::vector<bool>        asStdVectorBool()   { DEPRECATED_AS("asStdVectorBool") ; return as< std::vector<bool> >(m_sexp) ; } ;
 
     /* attributes */
 
@@ -122,33 +131,113 @@ public:
      */
     bool hasAttribute( const std::string& attr) const ; 
 
+    /**
+     * Proxy for an object's attribute. Instances of this class
+     * are created by the attr member function of RObject.
+     *
+     * When the proxy is used on the lhs of an assignment it 
+     * forwards the object it is assigned to to the attribute, 
+     * outsourcing to wrap the job of creating the SEXP from the 
+     * input type
+     *
+     * When the proxy is used on the rhs of the assignment, it retrieves
+     * the current value of the attribute and outsources to as the job
+     * of making an object of the appropriate type
+     */
     class AttributeProxy {
 	public:
+		
+		/** 
+		 * @param v object of which we manipulate the attributes
+		 * @param attr_name name of the attribute the proxy manipulates
+		 */
 		AttributeProxy( const RObject& v, const std::string& attr_name) ;
 
-		/* lvalue uses */
+		/**
+		 * lhs use. This assigns the target attribute by using the 
+		 * current attribute referred by another proxy
+		 */
 		AttributeProxy& operator=(const AttributeProxy& rhs) ;
-
-		template <typename T>
-		AttributeProxy& operator=(const T& rhs){
-			Rf_setAttrib( parent, Rf_install(attr_name.c_str()), wrap(rhs) ) ;
+		
+		/**
+		 * lhs use. assigns the target attribute by wrapping 
+		 * the rhs object
+		 *
+		 * @param rhs wrappable object
+		 */
+		template <typename T> AttributeProxy& operator=(const T& rhs){
+			set( wrap(rhs) ) ;
 			return *this ;
 		}
-
-		/* rvalue use */
-		operator SEXP() const ;
-
+		
+		/**
+		 * rhs use. Retrieves the current value for the target
+		 * attribute and structure it as a T object using as
+		 */
 		template <typename T> operator T() const {
-			SEXP att = Rf_getAttrib( parent, Rf_install( attr_name.c_str() ) );
-			T t = Rcpp::as<T>(att) ;
-			return t ;
+			return as<T>(get()) ;
 		} ;
 		
 	private:
 		const RObject& parent; 
 		std::string attr_name ;
+		
+		SEXP get() const ;
+		void set(SEXP x) const ;
 	} ;
-    
+	
+	/**
+	 * Proxy for objects slots. 
+	 */
+	class SlotProxy {
+	public:
+		/**
+		 * Creates a slot proxy. This throws an exception 
+		 * if the parent object is not an S4 object or if the 
+		 * class of parent object does not have the requested 
+		 * slot
+		 *
+		 * @param v parent object of which we get/set a slot
+		 * @param name slot name
+		 */
+		SlotProxy( const RObject& v, const std::string& name) ;
+
+		/**
+		 * lhs use. Assigns the target slot using the current 
+		 * value of another slot proxy.
+		 *
+		 * @param rhs another slot proxy
+		 */
+		SlotProxy& operator=(const SlotProxy& rhs) ;
+		
+		/**
+		 * lhs use. Assigns the slot by wrapping the rhs object
+		 *
+		 * @param rhs wrappable object
+		 */
+		template <typename T> SlotProxy& operator=(const T& rhs){
+			set( wrap(rhs) ) ;
+			return *this ;
+		} ;
+		
+		/**
+		 * rhs use. Retrieves the current value of the slot
+		 * and structures it as a T object. This only works 
+		 * when as<T> makes sense
+		 */ 
+		template <typename T> operator T() const {
+			return as<T>(get()) ;
+		} ;
+		
+	private:
+		const RObject& parent; 
+		std::string slot_name ;
+		
+		SEXP get() const ;
+		void set(SEXP x ) const;
+	} ;
+    	
+	
     /**
      * extract or set the given attribute
      *
@@ -204,10 +293,8 @@ public:
      *
      * @throw not_s4 if this is not an S4 object
      */
-    RObject slot(const std::string& name) const throw(not_s4) ;
-    /* TODO : implement the proxy pattern here so that we can get and 
-              set the slot the same way */
-                  
+    SlotProxy slot(const std::string& name) const throw(not_s4) ;
+    
 protected:
 
     /**
@@ -228,6 +315,9 @@ private:
     void preserve(){ if( m_sexp != R_NilValue ) R_PreserveObject(m_sexp) ; } 
     void release() { if( m_sexp != R_NilValue ) R_ReleaseObject(m_sexp) ; } 
     virtual void update() {} ;
+    inline void DEPRECATED_AS( const std::string& method ){ 
+    	Rf_warning( "The %s method is deprecated, and will eventually be removed, please use the as<> template function instead", method.c_str() ) ;
+    }
 };
 
 } // namespace Rcpp

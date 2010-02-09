@@ -43,12 +43,12 @@ public:
     /**
      * the length of the vector, uses Rf_length
      */
-    inline int length() const { return ::Rf_length( m_sexp ) ; }
+    inline R_len_t length() const { return ::Rf_length( m_sexp ) ; }
 
     /**
      * alias of length
      */
-    inline int size() const { return ::Rf_length( m_sexp ) ; }
+    inline R_len_t size() const { return ::Rf_length( m_sexp ) ; }
 
     /**
      * offset based on the dimensions of this vector
@@ -63,6 +63,31 @@ public:
     
     /* TODO: 3 dimensions, ... n dimensions through variadic templates */
     
+    class NamesProxy {
+	public:
+		NamesProxy( const VectorBase& v) ;
+	
+		/* lvalue uses */
+		NamesProxy& operator=(const NamesProxy& rhs) ;
+	
+		template <typename T>
+		NamesProxy& operator=(const T& rhs){
+			set( wrap(rhs) ) ;
+			return *this ;
+		}
+	
+		template <typename T> operator T() const {
+			return Rcpp::as<T>(get()) ;
+		} ;
+		
+	private:
+		const VectorBase& parent; 
+		
+		SEXP get() const ;
+		void set(SEXP x) const;
+	} ;
+    	
+    NamesProxy names() const ;
 } ;
 
 } // namespace

@@ -32,11 +32,31 @@ class Pairlist : public DottedPair {
 public:		
 	Pairlist();
 	Pairlist(SEXP x) throw(not_compatible) ;
+	Pairlist(const Pairlist& other) ;
+	Pairlist& operator=(const Pairlist& other) ;
 		
 #ifdef HAS_VARIADIC_TEMPLATES
 template<typename... Args> 
 	Pairlist( const Args&... args) : DottedPair(args...) {}
-#endif	
+#else
+/* <code-bloat> */
+template <typename T1> 
+Pairlist( const T1& t1) : DottedPair(t1) {} 
+
+template <typename T1, typename T2>
+Pairlist( const T1& t1, const T2& t2) : DottedPair(t1,t2){}
+
+template <typename T1, typename T2, typename T3>
+Pairlist( const T1& t1, const T2& t2, const T3& t3): DottedPair(t1,t2,t3) {}
+
+template <typename T1, typename T2, typename T3, typename T4>
+Pairlist( const T1& t1, const T2& t2, const T3& t3, const T4& t4): DottedPair(t1,t2,t3,t4){}
+
+template <typename T1, typename T2, typename T3, typename T4, typename T5>
+Pairlist( const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5) : DottedPair(t1,t2,t3,t4,t5) {}
+/* </code-bloat> */
+#endif
+
 	~Pairlist() ;
 		
 } ;

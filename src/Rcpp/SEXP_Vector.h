@@ -55,11 +55,6 @@ public:
 			return *this; 
 		}
 		
-		/* rvalue use */
-		operator SEXP() {
-			return VECTOR_ELT( parent, index ) ; 
-		}
-		
 		template <typename U> operator U(){
 			SEXP xx = VECTOR_ELT( parent, index) ;
 			return as<U>( xx ) ;
@@ -72,6 +67,13 @@ public:
 	} ;
 
 	SEXP_Vector(): VectorBase(){}
+	
+	SEXP_Vector(const SEXP_Vector& other) : VectorBase(other.asSexp()) {} ;
+	
+	SEXP_Vector& operator=(const SEXP_Vector& other){
+		setSEXP( other.asSexp() ) ;
+		return *this ;
+	}
 	
 	SEXP_Vector(SEXP x) : VectorBase() {
 		SEXP y = r_cast<RTYPE>(x) ;
@@ -130,7 +132,11 @@ public:
 	}
 	
 } ;
-	
+
+typedef SEXP_Vector<VECSXP> GenericVector ;
+typedef GenericVector List ;
+
+
 } //namespace Rcpp
 
 #endif

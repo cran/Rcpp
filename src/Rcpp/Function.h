@@ -71,6 +71,9 @@ public:
 	 */
 	Function(const std::string& name) throw(no_such_function) ;
 	
+	Function(const Function& other) ;
+	Function& operator=(const Function& other );
+	
 	// /**
 	//  * Finds a function, searching from a specific environment
 	//  *
@@ -92,6 +95,29 @@ template<typename... Args>
 	SEXP operator()( const Args&... args) /* throw(Evaluator::eval_error) */ {
 		return internal::try_catch( Rf_lcons( m_sexp, pairlist(args...) ) ) ;
 	}
+#else
+/* <code-bloat> */
+template <typename T1>
+SEXP operator()( const T1& t1){
+	return internal::try_catch( Rf_lcons( m_sexp, pairlist(t1) ) ) ;
+}
+template <typename T1, typename T2>
+SEXP operator()( const T1& t1, const T2& t2){
+	return internal::try_catch( Rf_lcons( m_sexp, pairlist(t1,t2) ) ) ;
+}
+template <typename T1, typename T2, typename T3>
+SEXP operator()( const T1& t1, const T2& t2, const T3& t3){
+		return internal::try_catch( Rf_lcons( m_sexp, pairlist(t1, t2, t3) ) ) ;
+}
+template <typename T1, typename T2, typename T3, typename T4>
+SEXP operator()( const T1& t1, const T2& t2, const T3& t3, const T4& t4){
+		return internal::try_catch( Rf_lcons( m_sexp, pairlist(t1,t2,t3,t4) ) ) ;
+}
+template <typename T1, typename T2, typename T3, typename T4, typename T5>
+SEXP operator()( const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5){
+		return internal::try_catch( Rf_lcons( m_sexp, pairlist(t1,t2,t3,t4,t5) ) ) ;
+}
+/* </code-bloat> */
 #endif
 	
 	/**

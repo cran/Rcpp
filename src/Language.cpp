@@ -29,6 +29,15 @@ namespace Rcpp {
 		setSEXP( r_cast<LANGSXP>(x) ) ;
 	};
 	
+	Language::Language( const Language& other): DottedPair(){
+		setSEXP( other.asSexp() ) ;
+	}
+	
+	Language& Language::operator=(const Language& other){
+		setSEXP( other.asSexp() ) ;
+		return *this ;
+	}
+	
 	Language::Language( const std::string& symbol ): DottedPair() {
 		setSEXP( Rf_lcons( Symbol(symbol), R_NilValue ) );
 	}

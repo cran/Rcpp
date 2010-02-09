@@ -35,6 +35,15 @@ namespace Rcpp {
 		}
 	}
 
+	Promise::Promise(const Promise& other) : RObject() {
+		setSEXP( other.asSexp() );
+	}
+	
+	Promise& Promise::operator=(const Promise& other){
+		setSEXP( other.asSexp() );
+		return *this ;
+	}
+	
 	int Promise::seen() const {
 		return PRSEEN(m_sexp);
 	}

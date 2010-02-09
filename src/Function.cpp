@@ -45,6 +45,16 @@ namespace Rcpp {
 	Function::Function(const std::string& name) throw(no_such_function) : RObject() {
 		SEXP x = PROTECT( Rf_findFun( Rf_install(name.c_str()), R_GlobalEnv ) ) ;
 		setSEXP( x ) ;
+		UNPROTECT(1) ;
+	}
+	
+	Function::Function(const Function& other) : RObject(){
+		setSEXP( other.asSexp() );
+	}
+	
+	Function& Function::operator=(const Function& other){
+		setSEXP( other.asSexp() );
+		return *this ;
 	}
 	
 	Function::~Function(){}	

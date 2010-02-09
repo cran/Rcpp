@@ -122,3 +122,25 @@ test.IntegerVector.range.constructors <- function(){
 	checkEquals( funx(), 0:3, msg = "assign(int*, int*)" )
 }
 
+test.IntegerVector.names.set <- function(){
+	funx <- cfunction(signature(), '
+		IntegerVector y(2) ;
+		std::vector<std::string> names(2)  ;
+		names[0] = "foo" ;
+		names[1] = "bar" ; 
+		y.names() = names ;
+		return y ;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;"  )
+	checkEquals( names(funx()), c("foo", "bar"), 
+		msg = "Vector::names" )
+}
+
+test.IntegerVector.names.get <- function(){
+	funx <- cfunction(signature(x = "integer"), '
+		IntegerVector y(x) ;
+		return y.names() ;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;"  )
+	checkEquals( funx( c("foo" = 1L, "bar" = 2L) ), c("foo", "bar"), 
+		msg = "Vector::names get" )
+}
+

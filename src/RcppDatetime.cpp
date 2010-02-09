@@ -20,6 +20,7 @@
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <RcppDatetime.h>
+#include <time.h> // for strftime
 
 RcppDatetime::RcppDatetime(void) : m_d(0), 
 				   m_parsed(false), 

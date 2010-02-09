@@ -30,16 +30,14 @@
 
 namespace Rcpp{
 
-template <int sexptype, typename T> T* get_pointer(SEXP x){ throw std::exception( "not implemented" ) ; return static_cast<T*>(0); }
-template<> double* get_pointer<REALSXP,double>(SEXP x) ;
-template<> int* get_pointer<INTSXP,int>(SEXP x) ;
-template<> int* get_pointer<LGLSXP,int>(SEXP x) ;
-template<> Rcomplex* get_pointer<CPLXSXP,Rcomplex>(SEXP x) ;
-template<> Rbyte* get_pointer<RAWSXP,Rbyte>(SEXP x) ;
-
-template <int RTYPE, typename CTYPE>
+template <int RTYPE>
 class SimpleVector : public VectorBase {
 public:
+	
+	typedef typename traits::storage_type<RTYPE>::type value_type ;
+	typedef value_type* iterator ;
+	typedef value_type& reference ;
+	
 	SimpleVector() : VectorBase(), start(0){}
 	
 	SimpleVector(SEXP x) throw(RObject::not_compatible) : VectorBase(), start(0){
@@ -60,54 +58,66 @@ public:
 		}
 	}
 	
+	SimpleVector( const SimpleVector& other) : VectorBase() {
+		setSEXP( other.asSexp() ) ;
+	}
+	
+	SimpleVector& operator=(const SimpleVector& other){
+		setSEXP( other.asSexp() ) ;
+		return *this ;
+	}
+	
 	template <typename InputIterator>
 	SimpleVector( InputIterator first, InputIterator last) : VectorBase(), start(){
 		assign( first, last ) ;
 	}
 	
 #ifdef HAS_INIT_LISTS
-	SimpleVector( std::initializer_list<CTYPE> list ) : VectorBase(), start(0){
+	SimpleVector( std::initializer_list<value_type> list ) : VectorBase(), start(0){
 		assign( list.begin() , list.end() ) ;
 	}
 #endif
 
-	inline CTYPE& operator[]( const int& i ){ return start[i] ; }
-	inline CTYPE* begin() const{ return start ; }
-	inline CTYPE* end() const{ return start+Rf_length(m_sexp); }
+	inline reference operator[]( const int& i ){ return start[i] ; }
+	inline iterator begin() const{ return start ; }
+	inline iterator end() const{ return start+Rf_length(m_sexp); }
 	
-	inline CTYPE& operator()( const size_t& i) throw(RObject::index_out_of_bounds){
+	inline reference operator()( const size_t& i) throw(RObject::index_out_of_bounds){
 		return start[ offset(i) ] ;
 	}
 	
-	inline CTYPE& operator()( const size_t& i, const size_t& j) throw(VectorBase::not_a_matrix,RObject::index_out_of_bounds){
+	inline reference operator()( const size_t& i, const size_t& j) throw(VectorBase::not_a_matrix,RObject::index_out_of_bounds){
 		return start[ offset(i,j) ] ;
 	}
 	
-	// TODO : deal with coercion by dispatching the call using 
-	//        the iterator traits, but for this we need a smart 
-	//        coerce template
 	template <typename InputIterator>
 	void assign( InputIterator first, InputIterator last){
-		size_t size = std::distance( first, last ) ;
-		SEXP x = PROTECT(Rf_allocVector( RTYPE, size )) ;
-		std::copy( first, last, get_pointer<RTYPE,CTYPE>(x) ) ;
-		setSEXP(x) ;
+		/* FIXME: we can do better than this r_cast to avoid 
+		          allocating an unnecessary temporary object
+		 */
+		SEXP x = PROTECT( r_cast<RTYPE>( wrap( first, last ) ) );
+		setSEXP( x) ;
 		UNPROTECT(1) ;
 	}
 
 private:
-	CTYPE* start ;
+	value_type* start ;
 	
-	virtual void update(){ start = get_pointer<RTYPE,CTYPE>(m_sexp) ; }
+	virtual void update(){ 
+		start = internal::r_vector_start<RTYPE,value_type>(m_sexp) ;
+	}
 	
 	void init(){
-		CTYPE zero = internal::get_zero<RTYPE,CTYPE>() ;
-		init( zero ) ;
+		internal::r_init_vector<RTYPE>(m_sexp) ;
 	}
-	void init( const CTYPE& value){
-		std::fill( start, start+length(), value ) ;
-	}
+	
 } ;
+
+typedef SimpleVector<CPLXSXP> ComplexVector ;
+typedef SimpleVector<INTSXP> IntegerVector ;
+typedef SimpleVector<LGLSXP> LogicalVector ;
+typedef SimpleVector<REALSXP> NumericVector ;
+typedef SimpleVector<RAWSXP> RawVector ;
 
 }// namespace Rcpp
 

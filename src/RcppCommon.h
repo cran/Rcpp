@@ -24,15 +24,39 @@
 #ifndef RcppCommon_h
 #define RcppCommon_h
 
+/**
+ * \brief Rcpp API
+ */
+namespace Rcpp{
+/**
+ * \brief traits used to dispatch wrap
+ */
+namespace traits{
+} // traits
+/**
+ * \brief internal implementation details
+ */
+namespace internal{	
+} // internal 
+} // Rcpp
+
 #ifdef __GNUC__
+	#define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)
 	#ifdef __GXX_EXPERIMENTAL_CXX0X__
-		#define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)
+		#define HAS_CXX0X
 		#if GCC_VERSION >= 40300
 			#define HAS_VARIADIC_TEMPLATES
 		#endif
 		#if GCC_VERSION >= 40400
 			#define HAS_INIT_LISTS
 		#endif
+	#endif
+	// FIXME: [romain] I did not actually check, tr1::unordered_map was 
+	// probably introduced before GCC 4.3
+	#if GCC_VERSION >= 40300
+		#define HAS_TR1
+		#define HAS_TR1_UNORDERED_MAP
+		#define HAS_TR1_UNORDERED_SET
 	#endif
 #endif
 
@@ -52,6 +76,14 @@
 
 #ifdef HAS_INIT_LISTS
 #include <initializer_list>
+#endif
+
+#ifdef HAS_TR1_UNORDERED_MAP
+#include <tr1/unordered_map>
+#endif
+
+#ifdef HAS_TR1_UNORDERED_SET
+#include <tr1/unordered_set>
 #endif
 
 // include R headers, but set R_NO_REMAP and access everything via Rf_ prefixes
@@ -116,84 +148,30 @@ namespace internal{
 	
 } // namespace internal 
 
-/** 
- * Generic converted from SEXP to the typename. T can be any type that 
- * has a constructor taking a SEXP, which is the case for all our 
- * RObject and derived classes. 
- *
- * If it is not possible to add the SEXP constructor, e.g you don't control
- * the type, you can overload the as template to perform the 
- * requested conversion
- *
- * This is used for example in Environment, so that for example the code
- * below will work as long as there is a way to as<> the Foo type
- *
- * Environment x = ... ; // some environment
- * Foo y = x["bla"] ;    // if as<Foo> makes sense then this works !!
- */
-template <typename T> T as( SEXP m_sexp) {
-	T t(m_sexp);
-	return t ;
-}
-template<> bool 			as<bool>(SEXP m_sexp) ;
-template<> double                   	as<double>(SEXP m_sexp) ;
-template<> int                      	as<int>(SEXP m_sexp) ;
-template<> Rbyte                    	as<Rbyte>(SEXP m_sexp) ;
-template<> std::string              	as<std::string>(SEXP m_sexp) ;
-template<> std::vector<int>         	as< std::vector<int> >(SEXP m_sexp) ;
-template<> std::vector<double>      	as< std::vector<double> >(SEXP m_sexp) ;
-template<> std::vector<std::string> 	as< std::vector<std::string> >(SEXP m_sexp) ;
-template<> std::vector<Rbyte>       	as< std::vector<Rbyte> >(SEXP m_sexp) ;
-template<> std::vector<bool>        	as< std::vector<bool> >(SEXP m_sexp) ;
-
-
-/* FIXME: turn the functions below into a template */
-
-/* these do not take care of coercion*/
 inline bool Rboolean_to_bool( int x){ return x == TRUE ; }
 inline bool int_to_bool(int x){ return x != 0 ; }
 inline bool double_to_bool(double x){ return x != 0.0 ; }
 inline bool Rbyte_to_bool(Rbyte x){ return x != static_cast<Rbyte>(0) ; }
 
-/* these take care of coercion */
-inline int bool_to_Rboolean(bool x){ return x ? TRUE : FALSE ; }
-
-inline int Rboolean_to_int(int x){ return (x==NA_LOGICAL) ? NA_INTEGER : x ; }
-inline int double_to_int(double x){ 
-	if (ISNAN(x)) return NA_INTEGER;
-	else if (x > INT_MAX || x <= INT_MIN ) {
-		return NA_INTEGER;
-	}
-	return static_cast<int>(x);
-}
-inline int Rbyte_to_int(Rbyte x){ return static_cast<int>(x); }
-
-inline Rbyte Rboolean_to_Rbyte(int x){ return x == TRUE ? static_cast<Rbyte>(1) : static_cast<Rbyte>(0) ;}
-inline Rbyte double_to_Rbyte(double x){ 
-	if( x == NA_REAL) return (Rbyte)0 ; 
-	int y = static_cast<int>(x) ;
-	return (y < 0 || y > 255) ? (Rbyte)0 : (Rbyte)y ;
-} 
-inline Rbyte int_to_Rbyte(int x){
-	return (x < 0 || x > 255) ? static_cast<Rbyte>(0) : static_cast<Rbyte>(x) ;
-}
-
-inline double Rbyte_to_double(Rbyte x){
-	return static_cast<double>(x) ;
-}
-inline double int_to_double(int x){
-	return x == NA_INTEGER ? NA_REAL : static_cast<double>(x) ;
-}
-inline double Rboolean_to_double(int x){
-	return x == NA_LOGICAL ? NA_REAL : static_cast<double>(x) ;
-}
-
-inline int int_to_RBoolean(int x){ return ( x == NA_INTEGER ) ? NA_LOGICAL : (x!=0); }
-
 } // namespace Rcpp
 
-#include <Rcpp/internal/wrap.h>
 
+// DO NOT CHANGE THE ORDER OF THESE INCLUDES
+#include <Rcpp/traits/integral_constant.h>
+#include <Rcpp/traits/has_iterator.h>
+#include <Rcpp/traits/has_na.h>
+#include <Rcpp/traits/storage_type.h>
+#include <Rcpp/traits/r_sexptype_traits.h>
+#include <Rcpp/traits/storage_type.h>
+#include <Rcpp/traits/r_type_traits.h>
+#include <Rcpp/traits/wrap_type_traits.h>
+
+#include <Rcpp/internal/r_coerce.h>
+#include <Rcpp/as.h>
+
+#include <Rcpp/internal/r_vector.h>
+#include <Rcpp/internal/convertible.h>
+#include <Rcpp/internal/wrap.h>
 #include <Rcpp/RObject.h>
 
 #endif

@@ -41,6 +41,25 @@ template<typename T, typename... Args>
 SEXP pairlist( const T& first, const Args&... args ){
 	return grow(first, pairlist(args...) ) ;
 }
+#else
+/* <code-bloat> */
+template <typename T1, typename T2>
+SEXP pairlist( const T1& t1, const T2& t2){
+	return grow(t1, grow(t2, R_NilValue) );
+}
+template <typename T1, typename T2, typename T3>
+SEXP pairlist( const T1& t1, const T2& t2, const T3& t3){
+	return grow(t1, grow(t2, grow(t3,R_NilValue)));
+}
+template <typename T1, typename T2, typename T3, typename T4>
+SEXP pairlist( const T1& t1, const T2& t2, const T3& t3, const T4& t4){
+	return grow(t1, grow(t2, grow(t3,grow(t4,R_NilValue))));
+}
+template <typename T1, typename T2, typename T3, typename T4, typename T5>
+SEXP pairlist( const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5){
+	return grow(t1, grow(t2, grow(t3,grow(t4, grow(t5,R_NilValue)))));
+}
+/* </code-bloat> */
 #endif
 	
 	
@@ -52,7 +71,7 @@ template<typename T>
 SEXP grow(const T& head, SEXP tail){
 	return Rf_cons( wrap(head), tail ) ;
 }
-SEXP grow(const Named& head, SEXP tail) ;
+template<> SEXP grow<Named>(const Named& head, SEXP tail) ;
 
 
 } // namespace Rcpp

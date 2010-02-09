@@ -44,13 +44,22 @@ namespace Rcpp{
 			throw parse_error() ;
 		}
 	}
-
-SEXP ExpressionVector::eval() throw(Evaluator::eval_error){
-	return Evaluator::run( Rf_lcons( Rf_install( "eval" ) , Rf_cons( m_sexp, R_NilValue) )) ;
-}
-
-SEXP ExpressionVector::eval(const Environment& env) throw(Evaluator::eval_error){
-	return Evaluator::run( Rf_lcons( Rf_install( "eval" ) , Rf_cons( m_sexp, Rf_cons(env.asSexp(), R_NilValue)) ) ) ;
-}
+        
+	ExpressionVector::ExpressionVector( const ExpressionVector& other ) : ExpressionVector_Base() {
+		setSEXP( other.asSexp() ) ;
+	}
+	
+	ExpressionVector& ExpressionVector::operator=( const ExpressionVector& other){
+		setSEXP( other.asSexp() ) ;
+		return *this ;
+	}
+	
+	SEXP ExpressionVector::eval() throw(Evaluator::eval_error){
+		return Evaluator::run( Rf_lcons( Rf_install( "eval" ) , Rf_cons( m_sexp, R_NilValue) )) ;
+	}
+	
+	SEXP ExpressionVector::eval(const Environment& env) throw(Evaluator::eval_error){
+		return Evaluator::run( Rf_lcons( Rf_install( "eval" ) , Rf_cons( m_sexp, Rf_cons(env.asSexp(), R_NilValue)) ) ) ;
+	}
 
 } // namespace 

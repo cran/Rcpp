@@ -43,6 +43,9 @@ public:
      */
     Symbol(const std::string& symbol) ;
     
+    Symbol( const Symbol& other) ;
+    Symbol& operator=(const Symbol& other) ;
+    
     /**
      * Nothing specific
      */ 
