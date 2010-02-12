@@ -166,4 +166,61 @@ test.CharacterVector.Dimension.constructor <- function(){
 		msg = "CharacterVector( Dimension(2,3,4))" )
 }
 
+test.CharacterVector.iterator <- function(){
+	funx <- cfunction(signature(x = "character"), '
+		CharacterVector letters(x) ;
+		std::string res ;
+		CharacterVector::iterator first = letters.begin() ;
+		CharacterVector::iterator last = letters.end() ;
+		while( first != last ){
+			res += *first ;
+			++first ;
+		}
+		return wrap(res) ;
+	;
+		', Rcpp = TRUE, includes = "using namespace Rcpp;"  )
+	checkEquals( 
+		funx(letters), 
+		paste(letters, collapse=""), 
+		msg = "CharacterVector::iterator explicit looping" )
+	
+	funx <- cfunction(signature(x = "character"), '
+		CharacterVector letters(x) ;
+		std::string res( 
+			std::accumulate( 
+				letters.begin(), letters.end(), std::string() ) ) ;
+		return wrap(res) ;
+	;
+		', Rcpp = TRUE, includes = "using namespace Rcpp;" )
+	checkEquals( 
+		funx(letters), 
+		paste(letters, collapse=""), 
+		msg = "CharacterVector::iterator using std::accumulate" )
+	
+}
+
+test.CharacterVector.reverse <- function(){
+	funx <- cfunction(signature(x = "character"), '
+		CharacterVector y(x) ;
+		std::reverse( y.begin(), y.end() ) ;
+		return y ;
+	;
+		', Rcpp = TRUE, includes = "using namespace Rcpp;" )
+	x <- c("foo", "bar", "bling")
+	funx(x)
+	checkEquals( x, c("bling", "bar", "foo"), msg = "reverse" )
+	funx(x)
+	checkEquals( x, c("foo", "bar", "bling"), msg = "reverse" )
+}
+
+test.CharacterVector.names.indexing <- function(){
+	funx <- cfunction(signature(x = "character"), '
+		CharacterVector y(x) ;
+		std::string foo( y["foo"] ) ;
+		return wrap(foo) ;
+	;', Rcpp = TRUE, includes = "using namespace Rcpp;" )
+	x <- c( foo = "foo", bar = "bar" )
+	checkEquals( funx(x), "foo", msg = "CharacterVector names based indexing" )
+}
+
 

@@ -23,6 +23,8 @@
 
 namespace Rcpp {
 
+    Environment::Environment() : RObject(R_NilValue){}
+
     Environment::Environment( SEXP x = R_GlobalEnv) throw(not_compatible) : RObject(x){
     	if( ! Rf_isEnvironment(x) ) {
     		/* not an environment, but maybe convertible to one using 
@@ -237,8 +239,8 @@ namespace Rcpp {
     
     
     
-    Environment::Binding::Binding( Environment& env, const std::string& name): 
-    	env(env), name(name){}
+    Environment::Binding::Binding( Environment& env_, const std::string& name_): 
+    	env(env_), name(name_){}
     
     bool Environment::Binding::active() const{
     	return env.bindingIsActive( name ) ; 

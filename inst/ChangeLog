@@ -1,3 +1,73 @@
+2010-02-12  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION: Release 0.7.5
+
+	* NEWS: Updated
+	
+	* debian/*: Similarly updated for new release to Debian
+
+2010-02-12  Romain Francois <romain@r-enthusiasts.com>
+
+	* src/Rcpp/Environment.h: Environment gains a default
+	constructor. This is needed for RInside.
+
+2010-02-10  Romain Francois <romain@r-enthusiasts.com>
+
+	* src/Rcpp/SEXP_Vector.h: SEXP_Vector (and therefore
+	ExpressionVector and GenericVector, a.k.a List) gain
+	methods push_front, push_back and insert that are templated and
+	use the 'implicit wrap idiom' to add an element to the front
+	or, the back or an arbitrary (valid) position of the list,
+	pushing other elements. Internally the SEXP is actually copied.
+
+	* src/Rcpp/SEXP_Vector.h: SEXP_Vector gains an erase method
+	modelled after std::vector<>::erase to remove elements from
+	a list. erase has a single iterator (or int) form that removes
+	one element, and a range based version
+	erase(iterator first, iterator last) that erases all elements
+	between first and last.
+
+	* src/Rcpp/VectorBase.h: VectorBase gains a version of
+	offset to support retrieving the offset of a given name of a
+	vector: offset( const std::string& name)
+
+	* src/Rcpp/SimpleVector.h : uses the new offset to perform
+	names based indexing (FR #808)
+	* src/Rcpp/SEXP_Vector.h: same
+	* src/Rcpp/CharacterVector.h: same
+
+	* inst/unitTests/runit.GenericVector.R: unit tests for names
+	based indexing
+	* inst/unitTests/runit.IntegerVector.R: same
+	* inst/unitTests/runit.CharacterVector.R: same
+
+2010-02-09  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/skeleton/Makevars: Use $R_HOME/bin indirection
+	* inst/skeleton/Makevars.win: Idem
+
+2010-02-09  Romain Francois <romain@r-enthusiasts.com>
+
+	* src/Rcpp/SEXP_Vector.h: The functionality of SEXP_Vector
+	that was independent of the template parameter was factored out
+	into a new base class SEXP_Vector_Base. This follows the advice
+	of item 44 of Effective C++.
+
+	* src/Rcpp/SEXP_Vector.h: SEXP_Vector_Base::iterator is introduced
+	as well as methods begin() and end() to support use of stl
+	algorithms on lists.
+
+	* inst/unitTests/runit.GenericVector.R: new unit test for
+	testing SEXP_Vector_Base::iterator and illustrating a c++
+	version of lapply using std::transform
+
+	* src/Rcpp/CharacterVector.h: CharacterVector gains a random
+	access iterator, begin() and end() to support STL algorithms.
+	The iterator dereferences to a StringProxy
+
+	* src/Rcpp/RObject.h: remove RObject::asFoo methods which were
+	deprecated in Rcpp 0.7.5. The alternative is to use Rcpp::as<Foo>
+
 2010-02-08  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION: Release 0.7.5

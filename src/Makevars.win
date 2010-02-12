@@ -64,6 +64,7 @@ $(PKGLIB): 	$(PKGOBJ)
 
 $(USERLIB):	$(USEROBJ)
 		-mkdir -p $(USERDIR)/Rcpp/internal 2>/dev/null
+		-mkdir -p $(USERDIR)/Rcpp/traits 2>/dev/null
 		$(AR) r $(USERLIB) $(USEROBJ)
 		$(RANLIB) $(USERLIB)
 		cp -vax *.h $(USERDIR)
