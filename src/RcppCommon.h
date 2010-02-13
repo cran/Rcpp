@@ -60,6 +60,7 @@ namespace internal{
 	#endif
 #endif
 
+#include <iterator>
 #include <exception>
 #include <iostream>
 #include <sstream>

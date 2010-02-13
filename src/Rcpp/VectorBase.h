@@ -61,6 +61,8 @@ public:
      */
     size_t offset(const size_t& i) const throw(RObject::index_out_of_bounds);
     
+    R_len_t offset(const std::string& name) const throw(RObject::index_out_of_bounds) ;
+    
     /* TODO: 3 dimensions, ... n dimensions through variadic templates */
     
     class NamesProxy {

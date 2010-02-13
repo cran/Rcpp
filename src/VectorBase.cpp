@@ -41,6 +41,20 @@ namespace Rcpp{
     	    if( static_cast<R_len_t>(i) >= Rf_length(m_sexp) ) throw RObject::index_out_of_bounds() ;
     	    return i ;
     	}
+    	
+    	R_len_t VectorBase::offset(const std::string& name) const throw(RObject::index_out_of_bounds){
+    		SEXP names = RCPP_GET_NAMES( m_sexp ) ;
+    		if( names == R_NilValue ) throw RObject::index_out_of_bounds(); 
+    		R_len_t n=size() ;
+    		for( R_len_t i=0; i<n; ++i){
+    			if( ! name.compare( CHAR(STRING_ELT(names, i)) ) ){
+    				return i ;
+    			}
+    		}
+    		throw RObject::index_out_of_bounds() ;
+    		return -1 ; /* -Wall */
+    	}
+    	
 
     	VectorBase::NamesProxy::NamesProxy( const VectorBase& v) : parent(v){} ;
     	VectorBase::NamesProxy& VectorBase::NamesProxy::operator=( const NamesProxy& rhs){

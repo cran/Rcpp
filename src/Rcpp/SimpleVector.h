@@ -79,13 +79,18 @@ public:
 #endif
 
 	inline reference operator[]( const int& i ){ return start[i] ; }
+	inline reference operator[]( const std::string& name) {
+		return start[ offset(name) ];
+	}
 	inline iterator begin() const{ return start ; }
 	inline iterator end() const{ return start+Rf_length(m_sexp); }
 	
 	inline reference operator()( const size_t& i) throw(RObject::index_out_of_bounds){
 		return start[ offset(i) ] ;
 	}
-	
+	inline reference operator()( const std::string& name) {
+		return start[ offset(name) ];
+	}
 	inline reference operator()( const size_t& i, const size_t& j) throw(VectorBase::not_a_matrix,RObject::index_out_of_bounds){
 		return start[ offset(i,j) ] ;
 	}

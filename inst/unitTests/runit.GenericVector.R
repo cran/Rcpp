@@ -120,4 +120,117 @@ test.List.Dimension.constructor <- function(){
 		msg = "List( Dimension(2,3,4))" )
 }
 
+test.List.iterator <- function(){
+	
+	cpp_lapply <- cfunction(signature(x = "list", g = "function" ), '
+		Function fun(g) ;
+		List input(x) ;
+		List output( input.size() ) ;
+		std::transform( input.begin(), input.end(), output.begin(), fun ) ;
+		output.names() = input.names() ;
+		return output ;
+	
+	', Rcpp = TRUE, includes = "using namespace Rcpp;"  )
+	
+	data <- list( x = letters, y = LETTERS, z = 1:4 )
+	checkEquals( 
+		cpp_lapply( data, length ), 
+		list( x = 26L, y = 26L, z = 4L), 
+		msg = "c++ version of lapply" )
+	
+}
+
+test.List.name.indexing <- function(){
+	
+	funx <- cfunction( signature(x = "data.frame"), 
+	'
+	List df(x) ;
+	IntegerVector df_x = df["x"] ;
+	int res = std::accumulate( df_x.begin(), df_x.end(), 0 ) ;
+	return wrap(res);
+	', Rcpp = TRUE, includes = "using namespace Rcpp;" )
+	d <- data.frame( x = 1:10, y = letters[1:10] )
+	checkEquals( funx( d ), sum(1:10), msg = "List names based indexing" )
+}
+
+test.List.push.back <- function(){
+	
+	funx <- cfunction( signature(x = "list"), 
+	'
+	List list(x) ;
+	list.push_back( 10 ) ;
+	list.push_back( Named( "foo", "bar" ) ) ;
+	return list ;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;" )
+	d <- list( x = 1:10, y = letters[1:10] )
+	res <- funx( d )
+	checkEquals( res,
+		list( x = 1:10, y = letters[1:10], 10L, foo = "bar" ), 
+		msg = "List.push_back" )
+}
+
+test.List.push.front <- function(){
+	
+	funx <- cfunction( signature(x = "list"), 
+	'
+	List list(x) ;
+	list.push_front( 10 ) ;
+	list.push_front( Named( "foo", "bar" ) ) ;
+	return list ;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;" )
+	d <- list( x = 1:10, y = letters[1:10] )
+	res <- funx( d )
+	checkEquals( res,
+		list( foo = "bar", 10L, x = 1:10, y = letters[1:10] ), 
+		msg = "List.push_front" )
+}
+
+test.List.insert <- function(){
+	
+	funx <- cfunction( signature(x = "list"), 
+	'
+	List list(x) ;
+	list.insert( list.begin(), 10 ) ;
+	list.insert( list.end(), Named("foo", "bar" ) ) ;
+	return list ;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;" )
+	d <- list( x = 1:10, y = letters[1:10] )
+	res <- funx( d )
+	checkEquals( res,
+		list( 10L, x = 1:10, y = letters[1:10], foo = "bar" ), 
+		msg = "List.insert" )
+}
+
+test.List.erase <- function(){
+	
+	funx <- cfunction( signature(x = "list"), 
+	'
+	List list(x) ;
+	list.erase( list.begin() ) ;
+	return list ;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;" )
+	d <- list( x = 1:10, y = letters[1:10] )
+	res <- funx( d )
+	checkEquals( res,
+		list( y = letters[1:10] ), 
+		msg = "List.erase" )
+}
+
+test.List.erase.range <- function(){
+	
+	funx <- cfunction( signature(x = "list"), 
+	'
+	List list(x) ;
+	list.erase( 0, 1 ) ;
+	return list ;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;" )
+	d <- list( x = 1:10, y = letters[1:10], z = 1:10 )
+	res <- funx( d )
+	checkEquals( res,
+		list( z = 1:10 ), 
+		msg = "List.erase (range version)" )
+}
+
+
+
 

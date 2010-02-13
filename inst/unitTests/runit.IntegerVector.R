@@ -144,3 +144,13 @@ test.IntegerVector.names.get <- function(){
 		msg = "Vector::names get" )
 }
 
+test.IntegerVector.names.indexing <- function(){
+	funx <- cfunction(signature(x = "integer"), '
+		IntegerVector y(x) ;
+		return wrap( y["foo"]) ;
+	', Rcpp = TRUE, includes = "using namespace Rcpp;"  )
+	x <- c( "foo" = 1L, "bar" = 2L )
+	checkEquals( funx( x ), 1L, msg = "IntegerVector names based indexing" )
+	
+}
+

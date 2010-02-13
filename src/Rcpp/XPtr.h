@@ -96,7 +96,7 @@ public:
 };
 
 template<typename T>
-XPtr<T>::XPtr(T* p, bool set_delete_finalizer = true) : RObject::RObject() {
+XPtr<T>::XPtr(T* p, bool set_delete_finalizer = true) : RObject() {
     setSEXP( R_MakeExternalPtr( (void*)p , R_NilValue, R_NilValue) ) ;
     if( set_delete_finalizer ){
 	setDeleteFinalizer() ;

@@ -1,5 +1,27 @@
+0.7.6   2010-02-12
 
-0.7.5	(under development)
+    o   SEXP_Vector (and ExpressionVector and GenericVector, a.k.a List) now
+	have methods push_front, push_back and insert that are templated
+
+    o   SEXP_Vector now has int- and range-valued erase() members
+
+    o   Environment class has a default constructor (for RInside)
+
+    o   SEXP_Vector_Base factored out of SEXP_Vector (Effect. C++ #44)
+
+    o   SEXP_Vector_Base::iterator added as well as begin() and end()
+        so that STL algorithms can be applied to Rcpp objects
+
+    o   CharacterVector gains a random access iterator, begin() and end() to
+	support STL algorithmsl; iterator dereferences to a StringProxy
+
+    o   Restore Windows build; successfully tested on 32 and 64 bit;
+
+    o   Small fixes to inst/skeleton files for bootstrapping a ackage
+
+    o   RObject::asFoo deprecated in favour of Rcpp::as<Foo>
+
+0.7.5	2010-02-08
 
     o 	wrap has been much improved. wrappable types now are :
     	- primitive types : int, double, Rbyte, Rcomplex, float, bool
