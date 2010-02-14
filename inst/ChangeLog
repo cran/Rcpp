@@ -1,9 +1,28 @@
+2010-02-14  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION: Release 0.7.7
+
+	* debian/*: Similarly updated for new release to Debian
+
+2010-02-14  Romain Francois <romain@r-enthusiasts.com>
+
+	* src/Rcpp/Language.h: fixing serious bug. The 'code bloat'
+	constructors taking a std::string did not explicitely
+	create a symbol, so the created calls were wrong.
+
+	* src/Rcpp/Language.h: new template classes Rcpp::unary_call
+	and Rcpp::binary_call to allow use of Language objects
+	in STL algorithms.
+
+	* inst/unitTests/runit.Language.R: unit test and example
+	of using unary_call and binary_call
+
 2010-02-12  Dirk Eddelbuettel  <edd@debian.org>
 
-	* DESCRIPTION: Release 0.7.5
+	* DESCRIPTION: Release 0.7.6
 
 	* NEWS: Updated
-	
+
 	* debian/*: Similarly updated for new release to Debian
 
 2010-02-12  Romain Francois <romain@r-enthusiasts.com>

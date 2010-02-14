@@ -1,3 +1,12 @@
+0.7.7	2010-02-14
+
+    o	new template classes Rcpp::unary_call and Rcpp::binary_call
+    	that facilitates using R language calls together 
+    	with STL algorithms.
+    	
+    o	fixed a bug in Language constructors taking a string as their
+    	first argument. The created call was wrong.
+
 0.7.6   2010-02-12
 
     o   SEXP_Vector (and ExpressionVector and GenericVector, a.k.a List) now
@@ -13,11 +22,11 @@
         so that STL algorithms can be applied to Rcpp objects
 
     o   CharacterVector gains a random access iterator, begin() and end() to
-	support STL algorithmsl; iterator dereferences to a StringProxy
+	support STL algorithms; iterator dereferences to a StringProxy
 
     o   Restore Windows build; successfully tested on 32 and 64 bit;
 
-    o   Small fixes to inst/skeleton files for bootstrapping a ackage
+    o   Small fixes to inst/skeleton files for bootstrapping a package
 
     o   RObject::asFoo deprecated in favour of Rcpp::as<Foo>
 
