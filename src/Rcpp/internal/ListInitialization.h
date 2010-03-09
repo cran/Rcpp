@@ -1,6 +1,7 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 8 -*-
+/* :tabSize=4:indentSize=4:noTabs=false:folding=explicit:collapseFolds=1: */
 //
-// Named.cpp: Rcpp R/C++ interface class library -- named object 
+// ListInitialization.h: Rcpp R/C++ interface class library -- 
 //
 // Copyright (C) 2010	Dirk Eddelbuettel and Romain Francois
 //
@@ -19,16 +20,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <Rcpp/Named.h> 
+#ifndef Rcpp__internal__ListInitialization__h
+#define Rcpp__internal__ListInitialization__h
 
 namespace Rcpp{
+namespace internal{
 	
-	SEXP Named::getSEXP() const {
-		return object.asSexp() ;
+template <typename iterator, typename value_type> class ListInitialization {
+public:
+	ListInitialization( iterator iter_ ) : iter(iter_) {} ;
+	ListInitialization<iterator,value_type> operator,( value_type x ){
+		*iter = x ;
+		return ListInitialization<iterator,value_type>( iter + 1 );
 	}
 	
-	std::string Named::getTag() const{
-		return tag ;
-	}
-	
-} // namespace Rcpp
+private:	
+	iterator iter ;
+} ;
+
+} // internal
+} // Rcpp
+
+#endif

@@ -24,6 +24,36 @@
 
 namespace Rcpp{
 
+namespace internal{
+	
+	template <typename T> T as( SEXP x, ::Rcpp::traits::r_type_primitive_tag ){
+		if( ::Rf_length(x) != 1 ) throw std::range_error( "expecting a single value" ) ;
+		const int RTYPE = ::Rcpp::traits::r_sexptype_traits<T>::rtype ;
+		SEXP y = PROTECT( r_cast<RTYPE>(x) );
+		typedef typename ::Rcpp::traits::storage_type<RTYPE>::type STORAGE;
+		T res = caster<STORAGE,T>( *r_vector_start<RTYPE,STORAGE>( y ) ) ;
+		UNPROTECT(1) ;
+		return res ; 
+	}
+	
+	template <typename T> T as(SEXP x, ::Rcpp::traits::r_type_string_tag ){
+		if( ! ::Rf_isString(x) ){
+			throw std::range_error( "expecting a string" ) ;
+		}
+		if (Rf_length(x) != 1) {
+    			throw std::range_error( "expecting a single value");
+    		}
+    		return T( CHAR( STRING_ELT(x,0 ) ) ) ;
+	}
+	
+	template <typename T> T as(SEXP x, ::Rcpp::traits::r_type_generic_tag ){
+		::Rcpp::traits::Exporter<T> exporter(x);
+		return exporter.get() ;
+	}
+	
+}
+	
+	
 /** 
  * Generic converted from SEXP to the typename. T can be any type that 
  * has a constructor taking a SEXP, which is the case for all our 
@@ -40,90 +70,10 @@ namespace Rcpp{
  * Foo y = x["bla"] ;    // if as<Foo> makes sense then this works !!
  */
 template <typename T> T as( SEXP m_sexp) {
-	T t(m_sexp);
-	return t ;
+	return internal::as<T>( m_sexp, typename traits::r_type_traits<T>::r_category() ) ;
 }
 
-template<> SEXP as(SEXP m_sexp) ;
-
-/**
- * Converts the R object to a bool. 
- * 
- * The R object must be either a logical, integer, raw or numeric vector
- * and must have only one element. An exception is thrown otherwise
- *
- * bool can not handle missing values, so NA are converted to false
- */
-template<> bool 			as<bool>(SEXP m_sexp) ;
-
-/**
- * Converts the R object to a double
- * 
- * The R object must be either a logical, integer, raw or numeric vector
- * and must have only one element. An exception is thrown otherwise
- */
-template<> double                   	as<double>(SEXP m_sexp) ;
-
-/**
- * Converts the R object to an int
- * 
- * The R object must be either a logical, integer, raw or numeric vector
- * and must have only one element. An exception is thrown otherwise
- */
-template<> int                      	as<int>(SEXP m_sexp) ;
-
-/**
- * Converts the R object to a Rbyte
- * 
- * The R object must be either a logical, integer, raw or numeric vector
- * and must have only one element. An exception is thrown otherwise
- */
-template<> Rbyte                    	as<Rbyte>(SEXP m_sexp) ;
-
-/**
- * Converts the R object to a std::string
- * 
- * The R object must be a character vector of length 1. 
- * An exception is thrown otherwise
- */
-template<> std::string              	as<std::string>(SEXP m_sexp) ;
-
-/**
- * Converts the R object to a std::vector<int>
- *
- * The R object must be a logical, integer, raw or numeric vector
- */
-template<> std::vector<int>         	as< std::vector<int> >(SEXP m_sexp) ;
-
-/**
- * Converts the R object to a std::vector<double>
- *
- * The R object must be a logical, integer, raw ornumeric vector
- */
-template<> std::vector<double>      	as< std::vector<double> >(SEXP m_sexp) ;
-
-/**
- * Converts the R object to a std::vector<std::string>
- *
- * The R object must be a character vector
- */
-template<> std::vector<std::string> 	as< std::vector<std::string> >(SEXP m_sexp) ;
-
-/**
- * Converts the R object to a std::vector<Rbyte>
- *
- * The R object must be a logical, integer, raw or numeric vector
- */
-template<> std::vector<Rbyte>       	as< std::vector<Rbyte> >(SEXP m_sexp) ;
-
-/**
- * Converts the R object to a std::vector<Rbyte>
- *
- * The R object must be a logical, integer, raw or numeric vector
- *
- * since bool can not handle missing values, they are converted to false
- */
-template<> std::vector<bool>        	as< std::vector<bool> >(SEXP m_sexp) ;
+template<> inline SEXP as(SEXP m_sexp) { return m_sexp ; } ;
 
 } // Rcpp 
 

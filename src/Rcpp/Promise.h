@@ -23,9 +23,9 @@
 #define Rcpp_Promise_h
 
 #include <RcppCommon.h>
-
-#include <Rcpp/ExpressionVector.h>
+#include <Rcpp/Vector.h>
 #include <Rcpp/Environment.h>
+#include <Rcpp/RObject.h>
 
 namespace Rcpp{ 
 

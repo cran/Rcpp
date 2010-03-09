@@ -147,7 +147,7 @@ test.Language.unary.call.index <- function(){
 	
 	checkEquals( 
 		funx( 1:10 ), 
-		lapply( 1:10, function(n) seq(from=n, to = 0 ) ), 
+		lapply( 1:10, function(n) seq(from=10, to = n ) ), 
 		msg = "c++ lapply using calls" )
 	
 }
@@ -175,4 +175,23 @@ test.Language.binary.call <- function(){
 	
 }
 
+test.Language.fixed.call <- function(){
+	
+	funx <- cfunction(signature(), '
+	
+	Language call( Function("rnorm"), 10 ) ;
+	std::vector< std::vector<double> > result(10) ;
+	std::generate( 
+		result.begin(), result.end(), 
+		fixed_call< std::vector<double> >(call)
+		) ;
+	return wrap( result );
+	', Rcpp = TRUE, verbose = FALSE, includes = "using namespace Rcpp;" )
+	
+	set.seed(123)
+	res <- funx()
+	set.seed(123)
+	exp <- lapply( 1:10, function(n) rnorm(10) )
+	checkEquals( res, exp, msg = "std::generate" )
+}
 

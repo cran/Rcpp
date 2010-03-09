@@ -62,3 +62,50 @@ test.Function.env <- function(){
 		msg = "Function::environment( special) : exception" )
 }
 
+test.Function.unary.call <- function(){
+	
+	funx <- cfunction(signature(y = "list" ), '
+	Function len( "length" ) ;
+	List x(y) ;
+	IntegerVector output( x.size() ) ;
+	std::transform( 
+		x.begin(), x.end(), 
+		output.begin(),
+		unary_call<IntegerVector,int>(len)
+		) ;
+	return output ;
+	', Rcpp = TRUE, verbose = FALSE, includes = "using namespace Rcpp;" )
+	
+	checkEquals( 
+		funx( lapply( 1:10, function(n) seq(from=n, to = 0 ) ) ), 
+		2:11 , 
+		msg = "unary_call(Fcuntion)" )
+	
+}
+
+test.Function.binary.call <- function(){
+	
+	funx <- cfunction(signature(x1 = "list", x2 = "integer" ), '
+	Function pmin( "pmin" ) ;
+	List list(x1) ;
+	IntegerVector vec(x2) ;
+	List output( list.size() ) ;
+	std::transform( 
+		list.begin(), list.end(),
+		vec.begin(), 
+		output.begin(),
+		binary_call<IntegerVector,int,IntegerVector>(pmin)
+		) ;
+	return output ;
+	', Rcpp = TRUE, verbose = FALSE, includes = "using namespace Rcpp;" )
+	
+	data <- lapply( 1:10, function(n) seq(from=n, to = 0 ) )
+	res <- funx( data , rep(5L,10) )
+	expected <- lapply( data, pmin, 5 )
+	
+	checkEquals( res, expected, 
+		msg = "binary_call(Function)" )
+	
+}
+
+

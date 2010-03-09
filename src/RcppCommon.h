@@ -24,6 +24,28 @@
 #ifndef RcppCommon_h
 #define RcppCommon_h
 
+#define ___RCPP_HANDLE_CASE___( ___RTYPE___ , ___FUN___ , ___OBJECT___ , ___RCPPTYPE___ )	\
+	case ___RTYPE___ :																	\
+		return ___FUN___( ::Rcpp::___RCPPTYPE___< ___RTYPE___ >( ___OBJECT___ ) ) ;	
+		         
+#define ___RCPP_RETURN___( __FUN__, __SEXP__ , __RCPPTYPE__ )						\
+	SEXP __TMP__ = __SEXP__ ;															\
+	switch( TYPEOF( __TMP__ ) ){														\
+		___RCPP_HANDLE_CASE___( INTSXP  , __FUN__ , __TMP__ , __RCPPTYPE__ )			\
+		___RCPP_HANDLE_CASE___( REALSXP , __FUN__ , __TMP__ , __RCPPTYPE__ )			\
+		___RCPP_HANDLE_CASE___( RAWSXP  , __FUN__ , __TMP__ , __RCPPTYPE__ )			\
+		___RCPP_HANDLE_CASE___( LGLSXP  , __FUN__ , __TMP__ , __RCPPTYPE__ )			\
+		___RCPP_HANDLE_CASE___( CPLXSXP , __FUN__ , __TMP__ , __RCPPTYPE__ )			\
+		___RCPP_HANDLE_CASE___( STRSXP  , __FUN__ , __TMP__ , __RCPPTYPE__ )			\
+		___RCPP_HANDLE_CASE___( VECSXP  , __FUN__ , __TMP__ , __RCPPTYPE__ )			\
+		___RCPP_HANDLE_CASE___( EXPRSXP , __FUN__ , __TMP__ , __RCPPTYPE__ )			\
+	default:																			\
+		throw std::range_error( "not a vector" ) ;									\
+	}
+
+#define RCPP_RETURN_VECTOR( _FUN_, _SEXP_ )  ___RCPP_RETURN___( _FUN_, _SEXP_ , Vector ) 
+#define RCPP_RETURN_MATRIX( _FUN_, _SEXP_ )  ___RCPP_RETURN___( _FUN_, _SEXP_ , Matrix )
+
 /**
  * \brief Rcpp API
  */
@@ -74,6 +96,7 @@ namespace internal{
 #include <functional>
 #include <numeric>
 #include <algorithm>
+#include <complex>
 
 #ifdef HAS_INIT_LISTS
 #include <initializer_list>
@@ -102,6 +125,18 @@ namespace internal{
 // #else
 #define RcppExport extern "C"
 // #endif
+
+
+namespace Rcpp{
+namespace internal{
+template <typename T> int rcpp_call_test(T t){
+	return T::r_type::value ;
+}
+int rcpp_call_test_(SEXP) ;
+}
+}
+
+extern "C" SEXP rcpp_call_test(SEXP x) ;
 
 char *copyMessageToR(const char* const mesg);
 
@@ -167,12 +202,21 @@ inline bool Rbyte_to_bool(Rbyte x){ return x != static_cast<Rbyte>(0) ; }
 #include <Rcpp/traits/r_type_traits.h>
 #include <Rcpp/traits/wrap_type_traits.h>
 
-#include <Rcpp/internal/r_coerce.h>
-#include <Rcpp/as.h>
-
+#include <Rcpp/internal/caster.h>
 #include <Rcpp/internal/r_vector.h>
 #include <Rcpp/internal/convertible.h>
+#include <Rcpp/r_cast.h>
+
+#include <Rcpp/internal/export.h>
+#include <Rcpp/traits/Exporter.h>
+#include <Rcpp/internal/r_coerce.h>
+#include <Rcpp/as.h>
 #include <Rcpp/internal/wrap.h>
-#include <Rcpp/RObject.h>
+
+#include <Rcpp/internal/ListInitialization.h>
+#include <Rcpp/internal/Proxy_Iterator.h>
+
+RcppExport SEXP RcppXPtrExample_create_external_pointer() ;
+RcppExport SEXP RcppXPtrExample_get_external_pointer(SEXP ); 
 
 #endif
