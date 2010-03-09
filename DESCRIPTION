@@ -1,11 +1,12 @@
 Package: Rcpp
 Title: Rcpp R/C++ interface package
-Version: 0.7.7
-Date: $Date: 2010-02-14 12:22:43 -0600 (Sun, 14 Feb 2010) $
+Version: 0.7.8
+Date: $Date: 2010-03-09 13:09:50 -0600 (Tue, 09 Mar 2010) $
 Author: Dirk Eddelbuettel and Romain Francois, with contributions by
         Simon Urbanek and David Reiss; based on code written during
         2005 and 2006 by Dominick Samperi
-Maintainer: Dirk Eddelbuettel <edd@debian.org>
+Maintainer: Dirk Eddelbuettel and Romain Francois
+        <RomainAndDirk@r-enthusiasts.com>
 Description: Seamless R and C++ integration The Rcpp package contains a
         C++ library that facilitates the integration of R and C++ in
         various ways.
@@ -57,6 +58,6 @@ SystemRequirements: None
 URL: http://dirk.eddelbuettel.com/code/rcpp.html,
         http://romainfrancois.blog.free.fr/index.php?category/R-package/Rcpp
 License: GPL (>= 2)
-Packaged: 2010-02-14 18:27:43 UTC; edd
+Packaged: 2010-03-09 19:44:59 UTC; edd
 Repository: CRAN
-Date/Publication: 2010-02-14 19:43:36
+Date/Publication: 2010-03-09 20:05:31

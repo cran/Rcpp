@@ -25,6 +25,7 @@
 #include <RcppCommon.h>
 
 #include <Rcpp/Symbol.h>
+#include <Rcpp/RObject.h>
 
 namespace Rcpp{  
 
@@ -35,7 +36,7 @@ namespace Rcpp{
 class Named{
 public:
 	/** default constructor */
-	Named( ) : object(R_NilValue), tag("") {} ;
+	Named( ) : object(R_MissingArg), tag("") {} ;
 	
 	/**
 	 * @param tag name to give to the object 
@@ -47,21 +48,47 @@ public:
 	 * uses NULL as the value
 	 * @param tag name to give to the object
 	 */
-	Named( const std::string& tag ) : object(R_NilValue), tag(tag){} ;
+	Named( const std::string& tag ) : object(R_MissingArg), tag(tag){} ;
 	
 	template<typename T>
-	Named( const std::string& tag, const T& value ) : object(), tag(tag) {
-		object = wrap( value ) ;
+	Named( const std::string& tag, const T& value ) : object(wrap(value)), tag(tag) {}
+	
+	/**
+	 * This allows the syntax : 
+	 * Language( "rnorm", Named( "mean" ) = 10 ) ;
+	 */
+	template <typename T>
+	Named& operator=( const T& o ){
+		object = wrap( o ) ;
+		return *this ;
 	}
 	
-	SEXP getSEXP() const ; 
+	inline SEXP getSEXP() const { return object.asSexp() ; }
 	
-	std::string getTag() const ;
+	inline std::string getTag() const { return tag ; }
 	
 private:
 	RObject object ;
 	std::string tag ;
 } ;
+
+namespace internal{
+	
+class NamedPlaceHolder {
+public:
+	NamedPlaceHolder(){}
+	~NamedPlaceHolder(){}
+	Named operator[]( const std::string& arg) const {
+		return Named( arg ) ;
+	}
+	Named operator()(const std::string& arg) const {
+		return Named( arg ) ;
+	}
+	operator SEXP() const { return R_MissingArg ; }
+} ;
+} // internal
+
+static internal::NamedPlaceHolder _ ;
 
 } // namespace Rcpp
 

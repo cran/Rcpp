@@ -167,11 +167,28 @@ private:
 
 };
 
+template <typename OUT=SEXP>
+class fixed_call {
+public:
+	typedef OUT result_type ;
+	
+	fixed_call( Language call_ ) : call(call_){}
+	fixed_call( Function fun ) : call(fun){}
+	
+	OUT operator()(){
+		return as<OUT>( call.eval() ) ;
+	}
+	
+private:
+	Language call ;
+} ;
+
 template <typename T, typename OUT = SEXP>
 class unary_call : public std::unary_function<T,OUT> {
 public:
 	unary_call( Language call_ ) : call(call_), proxy(call_,1) {}
 	unary_call( Language call_, int index ) : call(call_), proxy(call_,index){}
+	unary_call( Function fun ) : call( fun, R_NilValue), proxy(call,1) {}
 	
 	OUT operator()( const T& object ){
 		proxy = object ;
@@ -188,6 +205,7 @@ class binary_call : public std::binary_function<T1,T2,OUT> {
 public:
 	binary_call( Language call_ ) : call(call_), proxy1(call_,1), proxy2(call_,2) {}
 	binary_call( Language call_, int index1, int index2 ) : call(call_), proxy1(call_,index1), proxy2(call_,index2){}
+	binary_call( Function fun) : call(fun, R_NilValue, R_NilValue), proxy1(call,1), proxy2(call,2){}
 	
 	OUT operator()( const T1& o1, const T2& o2 ){
 		proxy1 = o1 ;
@@ -200,7 +218,6 @@ private:
 	Language::Proxy proxy1 ;
 	Language::Proxy proxy2 ;
 } ;
-
 
 } // namespace Rcpp
 

@@ -3,40 +3,22 @@
 # Makefile.win for Rcpp
 #
 # Copyright (C) 2008 - 2009 Dirk Eddelbuettel <edd@debian.org>
+# Copyright (C) 2010        Dirk Eddelbuettel and Romain Francois
 #
 # Contributions from an older Makefile.win are
 # (C) Dominick Samperi and Uwe Ligges and gratefully acknowledged
+#
+# Contributions from Brian D Ripley are also gratefully acknowledged 
 
-## ask R about compiler flags and libraries
-#RCPPFLAGS = 	`${R_HOME}/bin/R CMD config --cppflags`
-#RLDFLAGS := 	`${R_HOME}/bin/R CMD config --ldflags`
-
-# or just set it directly
-#RCPPFLAGS =	-I$(R_HOME)/include -I.
-RLDFLAGS =	-L$(R_HOME)/bin -lR
-
-# or just copy defaults (cf $R_HOME/etc/Makeconf)
-#RCPPFLAGS = $(ALL_CXXFLAGS)
-#RLDFLAGS = $(LIBR) $(LIBM)
-
-## and pass this on to the implicit build rules
-PKG_CPPFLAGS +=	-I.
-PKG_LIBS +=	-s $(RLDFLAGS)
+PKG_CPPFLAGS =	-I.
 
 ## all sources and objects
 SOURCES =	$(wildcard *.cpp)
 OBJECTS =	$(SOURCES:.cpp=.o)
 
-## the 'user' library contains all source apart from RcppExample.o and is what
-## users need for their projects -- RcppExample is used by the package library
 ## we place it inside the inst/ directory so that it gets installed by the package
-USEROBJ	=	$(filter-out RcppExample.o,$(OBJECTS))
 USERDIR	= 	../inst/lib$(R_ARCH)
 USERLIB	= 	$(USERDIR)/libRcpp.a
-
-## to filter out -Wall which generated a ton with older compilers
-newCXXFLAGS := 	$(filter-out -Wall,$(CXXFLAGS))
-CXXFLAGS := 	$(newCXXFLAGS)
 
 ## C++0X support enabled if 
 ## - the RCPP_CXX0X environment variable is set to "yes"
@@ -47,30 +29,25 @@ endif
 
 ## the 'package' library contains both Rcpp.{cpp,h} and the RcppExample used to demonstrate the package
 ## it is loaded via library(Rcpp) but is not used for compiling / linking against
-PKGLIB = 	Rcpp.dll
-PKGOBJ = 	$(OBJECTS)
 
 RM = 		rm -f
 
-.PHONY: 	all clean
+.PHONY: 	all clean userdir
 
-all: 		$(USERLIB) $(PKGLIB)
+all: 		userdir $(USERLIB) $(SHLIB)
 
 clean:
-		${RM} $(PKGOBJ) $(PKGLIB)
+		${RM} $(OBJECTS) $(SHLIB)
 
-$(PKGLIB): 	$(PKGOBJ)
-		$(CXX) -shared -o $(PKGLIB) $(PKGOBJ) $(PKG_LIBS)
-
-$(USERLIB):	$(USEROBJ)
+userdir:
 		-mkdir -p $(USERDIR)/Rcpp/internal 2>/dev/null
 		-mkdir -p $(USERDIR)/Rcpp/traits 2>/dev/null
-		$(AR) r $(USERLIB) $(USEROBJ)
-		$(RANLIB) $(USERLIB)
 		cp -vax *.h $(USERDIR)
 		cp -vax Rcpp/*.h $(USERDIR)/Rcpp
 		cp -vax Rcpp/internal/*.h $(USERDIR)/Rcpp/internal
 		cp -vax Rcpp/traits/*.h $(USERDIR)/Rcpp/traits
+
+$(USERLIB):	$(OBJECTS)
 
 
 

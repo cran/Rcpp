@@ -127,6 +127,7 @@ SEXP initRcpp(){
    
 namespace Rcpp{
 namespace internal{
+
 	template<> int* r_vector_start<INTSXP,int>(SEXP x){ return INTEGER(x) ; } ; 
 	template<> int* r_vector_start<LGLSXP,int>(SEXP x){ return LOGICAL(x) ; };
 	template<> double* r_vector_start<REALSXP,double>(SEXP x){ return REAL(x) ; } ;
@@ -144,5 +145,49 @@ namespace internal{
 		return x ;
 	}
 
+	template<> Rcomplex caster<std::complex<double>, Rcomplex>( std::complex<double> from){
+		Rcomplex cx ;
+		cx.r = from.real() ; 
+		cx.i = from.imag() ;
+		return cx ;
+	}
+	template<> Rcomplex caster<std::complex<float>, Rcomplex>( std::complex<float> from){
+		Rcomplex cx ;
+		cx.r = static_cast<double>( from.real() ); 
+		cx.i = static_cast<double>( from.imag() );
+		return cx ;
+	}
+
+	template<> std::complex<double> caster<Rcomplex,std::complex<double> >( Rcomplex from){
+		return std::complex<double>(from.r, from.i ) ;
+	}
+	template<> std::complex<float> caster<Rcomplex,std::complex<float> >( Rcomplex from){
+		return std::complex<float>(static_cast<float>(from.r), static_cast<float>(from.i) ) ;
+	}
+
+	int rcpp_call_test_(SEXP x){
+		RCPP_RETURN_VECTOR( rcpp_call_test, x );
+	}
+	
+	
 } // internal
 } // Rcpp
+
+SEXP rcpp_call_test(SEXP x){
+	return Rf_ScalarInteger( ::Rcpp::internal::rcpp_call_test_(x) ) ;
+}
+
+
+SEXP RcppXPtrExample_create_external_pointer(){
+	std::vector<int> *v = new std::vector<int> ;
+	v->push_back( 1 ) ;
+	v->push_back( 2 ) ;
+	Rcpp::XPtr< std::vector<int> > p(v) ;
+	return p ;
+}
+
+SEXP RcppXPtrExample_get_external_pointer(SEXP x){
+	Rcpp::XPtr< std::vector<int> > p(x) ;
+	return Rf_ScalarInteger( p->back( ) ) ;
+}
+

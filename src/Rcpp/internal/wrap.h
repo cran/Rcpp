@@ -23,6 +23,8 @@
 #ifndef Rcpp_internal_wrap_h
 #define Rcpp_internal_wrap_h
 
+#include <iterator>
+
 // this is a private header, included in RcppCommon.h
 // don't include it directly
 
@@ -41,10 +43,6 @@ template <typename InputIterator> SEXP range_wrap(InputIterator first, InputIter
 
 // {{{ range wrap 
 // {{{ unnamed range wrap
-
-template <typename FROM, typename TO> TO caster(FROM from){
-	return static_cast<TO>(from) ;
-}
 
 /**
  * Range based primitive wrap implementation. used when 
@@ -416,6 +414,73 @@ SEXP wrap_dispatch_unknown_iterable(const T& object, ::Rcpp::traits::true_type){
 	return range_wrap( object.begin(), object.end() ) ;
 }
 
+template <typename T, typename elem_type>
+SEXP wrap_dispatch_importer__impl__prim( const T& object, ::Rcpp::traits::false_type ){
+	int size = object.size() ;
+	const int RTYPE = ::Rcpp::traits::r_sexptype_traits<elem_type>::rtype ;
+	SEXP x = PROTECT( Rf_allocVector( RTYPE, size ) );
+	typedef typename ::Rcpp::traits::storage_type<RTYPE>::type CTYPE ;
+	CTYPE* start = r_vector_start<RTYPE,CTYPE>(x) ;
+	for( int i=0; i<size; i++){
+		start[i] = object.get(i) ;
+	}
+	UNPROTECT(1) ;
+	return x ;
+
+}
+
+template <typename T, typename elem_type>
+SEXP wrap_dispatch_importer__impl__prim( const T& object, ::Rcpp::traits::true_type ){
+	int size = object.size() ;
+	const int RTYPE = ::Rcpp::traits::r_sexptype_traits<elem_type>::rtype ;
+	SEXP x = PROTECT( Rf_allocVector( RTYPE, size ) );
+	typedef typename ::Rcpp::traits::storage_type<RTYPE>::type CTYPE ;
+	CTYPE* start = r_vector_start<RTYPE,CTYPE>(x) ;
+	for( int i=0; i<size; i++){
+		start[i] = caster<elem_type,CTYPE>( object.get(i) );
+	}
+	UNPROTECT(1) ;
+	return x ;
+}
+
+template <typename T, typename elem_type>
+SEXP wrap_dispatch_importer__impl( const T& object, ::Rcpp::traits::r_type_primitive_tag ){
+	return wrap_dispatch_importer__impl__prim<T,elem_type>( object, 
+		typename ::Rcpp::traits::r_sexptype_needscast<elem_type>() ) ;
+}
+
+template <typename T, typename elem_type>
+SEXP wrap_dispatch_importer__impl( const T& object, ::Rcpp::traits::r_type_string_tag ){
+	int size = object.size() ;
+	SEXP x = PROTECT( Rf_allocVector( STRSXP, size ) );
+	std::string buf ;
+	for( int i=0; i<size; i++){
+		buf = object.get(i) ;
+		SET_STRING_ELT( x, i, Rf_mkChar( buf.c_str() ) ) ;
+	}
+	UNPROTECT(1) ;
+	return x ;
+}
+
+template <typename T, typename elem_type>
+SEXP wrap_dispatch_importer__impl( const T& object, ::Rcpp::traits::r_type_generic_tag ){
+	int size = object.size() ;
+	SEXP x = PROTECT( Rf_allocVector( VECSXP, size ) );
+	for( int i=0; i<size; i++){
+		SET_VECTOR_ELT( x, i, object.wrap(i) ) ;
+	}
+	UNPROTECT(1) ;
+	return x ;
+}
+
+
+template <typename T, typename elem_type>
+SEXP wrap_dispatch_importer( const T& object ){
+	return wrap_dispatch_importer__impl<T,elem_type>( object, 
+		typename ::Rcpp::traits::r_type_traits<elem_type>::r_category() 
+		 ) ;
+}
+
 /** 
  * Called when no implicit conversion to SEXP is possible and this is 
  * not tagged as a primitive type, checks whether the type is 
@@ -436,16 +501,31 @@ template <typename T> SEXP wrap_dispatch( const T& object, ::Rcpp::traits::wrap_
 	return primitive_wrap( object ) ;
 }
 
-/** 
- * This is called by wrap when the wrap_type_traits is wrap_type_unknown_tag
- * This tries to identify is an implicit conversion to SEXP is possible
- * ( the type T defines operator SEXP() ) and uses it, otherwise generates
- * a compile error
+/**
+ * called when T is wrap_type_unknown_tag and is not an Importer class
+ * The next step is to try implicit conversion to SEXP
  */
-template <typename T> SEXP wrap_dispatch( const T& object, ::Rcpp::traits::wrap_type_unknown_tag ){
+template <typename T> SEXP wrap_dispatch_unknown_importable( const T& object, ::Rcpp::traits::false_type){
 	return wrap_dispatch_unknown( object, typename is_convertible<T,SEXP>::type() ) ;
 }
-// }}}
+
+/**
+ * called when T is an Importer
+ */
+template <typename T> SEXP wrap_dispatch_unknown_importable( const T& object, ::Rcpp::traits::true_type){
+	return wrap_dispatch_importer<T,typename T::r_import_type>( object ) ;
+}
+ 
+ 
+/** 
+ * This is called by wrap when the wrap_type_traits is wrap_type_unknown_tag
+ * 
+ * This tries to identify if the object conforms to the Importer class
+ */
+template <typename T> SEXP wrap_dispatch( const T& object, ::Rcpp::traits::wrap_type_unknown_tag ){
+	return wrap_dispatch_unknown_importable( object, typename ::Rcpp::traits::is_importer<T>::type() ) ;
+}
+	// }}}
 
 } // internal
 
@@ -456,9 +536,6 @@ template <typename T> SEXP wrap_dispatch( const T& object, ::Rcpp::traits::wrap_
  * class to dispatch to the appropriate internal implementation 
  * method
  * 
- * If your type has a begin and end method returning stl-like iterator
- * you should specialize the wrap_type_traits template so that it 
- * defines wrap_category to be ::Rcpp::traits::wrap_type_stl_container_tag
  */
 template <typename T> SEXP wrap(const T& object){
 	return internal::wrap_dispatch( object, typename ::Rcpp::traits::wrap_type_traits<T>::wrap_category() ) ;
