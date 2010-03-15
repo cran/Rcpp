@@ -1,6 +1,6 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 8 -*-
 //
-// clone.h: Rcpp R/C++ interface class library -- clone RObject's
+// S4.h: Rcpp R/C++ interface class library -- S4 objects
 //
 // Copyright (C) 2010	Dirk Eddelbuettel and Romain Francois
 //
@@ -19,35 +19,50 @@
 // You should have received a copy of the GNU General Public License
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef Rcpp__StringTransformer_h
-#define Rcpp__StringTransformer_h
+#ifndef Rcpp_S4_h
+#define Rcpp_S4_h                     
 
 #include <RcppCommon.h>
+#include <Rcpp/RObject.h>
 
-namespace Rcpp{
+namespace Rcpp{ 
 
-	template <typename UnaryOperator>
-	class StringTransformer : public std::unary_function<const char*, const char*>{
-		public:
-		StringTransformer( const UnaryOperator& op_ ): op(op_), buffer(){}
-		~StringTransformer(){}
-		
-		const char* operator()(const char* input ) {
-			buffer = input ;
-			std::transform( buffer.begin(), buffer.end(), buffer.begin(), op ) ;
-			return buffer.c_str() ;
-		}
-		
-	private:	
-		const UnaryOperator& op ;
-		std::string buffer ;
-	} ;
+/**
+ * S4 object
+ */
+class S4 : public RObject{
+public:
+	S4() ;
 	
-	template <typename UnaryOperator>
-	StringTransformer<UnaryOperator> make_string_transformer( const UnaryOperator& fun){
-		return StringTransformer<UnaryOperator>( fun ) ;
-	}
+	/**
+	 * checks that x is an S4 object and wrap it.
+	 *
+	 * @param x must be an S4 object
+	 */
+	S4(SEXP x); 
 	
-}
+	/**
+	 * copy constructor
+	 *
+	 * @param other other S4 object
+	 */
+	S4(const S4& other) ;
+	
+	/**
+	 * assignment operator. 
+	 */
+	S4& operator=( const S4& other);
+	
+	/**
+	 * Creates an S4 object of the requested class. 
+	 *
+	 * @param klass name of the target S4 class
+	 * @throw not_s4 if klass does not map to a known S4 class
+	 */
+	S4( const std::string& klass ) ;
+	
+} ;
+
+} // namespace Rcpp
 
 #endif

@@ -1,3 +1,30 @@
+2010-03-15  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION: Release 0.7.10
+
+	* debian/*: Similarly updated for new release to Debian
+
+	* RcppLdpath.R: Use shQuote() to protect spaces in Windows pathnames
+
+2010-03-15  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/codebloat/codebloat.R: script to generate code (creating a
+	pairlist with up to n arguments).
+
+	* src/Rcpp/Function.h : Function gains a body method to retrieve
+	the body of the function (using the BODY macro from Rinternals.h)
+
+2010-03-14  Romain Francois <romain@r-enthusiasts.com>
+
+	* src/Rcpp/S4.h : Rcpp::S4 gains a new constructor taking a string
+	reference and building a new S4 object of that type. This throws an
+	exception if the object is not successfully created (e.g the class
+	is not a known S4 class)
+
+2010-03-13  Romain Francois <romain@r-enthusiasts.com>
+
+	* src/Rcpp/S4.h : new class Rcpp::S4
+
 2010-03-12  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION: Release 0.7.9
