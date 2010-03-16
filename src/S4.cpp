@@ -1,6 +1,6 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 8 -*-
 //
-// Pairlist.cpp: Rcpp R/C++ interface class library -- Pairlist objects
+// S4.cpp: Rcpp R/C++ interface class library -- S4 objects
 //
 // Copyright (C) 2010	Dirk Eddelbuettel and Romain Francois
 //
@@ -19,21 +19,38 @@
 // You should have received a copy of the GNU General Public License
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <Rcpp/Pairlist.h>
+#include <Rcpp/S4.h>
+#include <Rcpp/exceptions.h>
 
 namespace Rcpp {
+
+	S4::S4() : RObject(){}
 	
-	Pairlist::Pairlist() : DottedPair() {}
-	Pairlist::Pairlist( SEXP x ) throw(not_compatible) : DottedPair(){
-		setSEXP( r_cast<LISTSXP>(x) );
+	S4::S4(SEXP x) : RObject(){
+		if( ! ::Rf_isS4(x) ){
+			throw not_s4() ;
+		} else{
+			setSEXP( x) ;
+		}
 	}
-	Pairlist::~Pairlist(){}
-	Pairlist::Pairlist( const Pairlist& other): DottedPair(){
-		setSEXP( other.asSexp() ) ;
+	
+	S4::S4( const S4& other) : RObject(){
+		setSEXP( other.asSexp() ) ;	
 	}
-	Pairlist& Pairlist::operator=(const Pairlist& other){
+	
+	S4& S4::operator=( const S4& other){
 		setSEXP( other.asSexp() ) ;
 		return *this ;
+	}
+	
+	S4::S4( const std::string& klass ) {
+		SEXP oo = PROTECT( R_do_new_object(R_do_MAKE_CLASS(klass.c_str())) ) ;
+  		if (!Rf_inherits(oo, klass.c_str())) {
+  			UNPROTECT( 1) ;
+  			throw S4_creation_error( klass ) ;
+  		}
+  		setSEXP( oo ) ;
+  		UNPROTECT( 1) ; /* oo */
 	}
 	
 } // namespace Rcpp
