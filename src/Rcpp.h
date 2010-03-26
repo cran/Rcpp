@@ -46,11 +46,12 @@
 #include <RcppVectorView.h>
 
 /* new api */
+#include <Rcpp/exceptions.h>
 
 #include <Rcpp/RObject.h>
+#include <Rcpp/Named.h>
 
 #include <Rcpp/S4.h>
-#include <Rcpp/exceptions.h>
 #include <Rcpp/clone.h>
 #include <Rcpp/grow.h>
 #include <Rcpp/Dimension.h>
@@ -60,7 +61,6 @@
 #include <Rcpp/XPtr.h>
 #include <Rcpp/Symbol.h>
 #include <Rcpp/Language.h>
-#include <Rcpp/Named.h>
 #include <Rcpp/DottedPair.h>
 #include <Rcpp/Pairlist.h>
 #include <Rcpp/Function.h>

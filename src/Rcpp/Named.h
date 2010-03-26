@@ -27,62 +27,41 @@
 #include <Rcpp/Symbol.h>
 #include <Rcpp/RObject.h>
 
-namespace Rcpp{  
+namespace Rcpp{ 
 
-/** 
- * Facility to have named arguments in pairlist, such 
- * as Language objects
- */
-class Named{
+class Argument {
 public:
-	/** default constructor */
-	Named( ) : object(R_MissingArg), tag("") {} ;
-	
-	/**
-	 * @param tag name to give to the object 
-	 * @param value value of the object
-	 */
-	Named( const std::string& tag, SEXP value ) : object(value), tag(tag) {}; 
-	
-	/**
-	 * uses NULL as the value
-	 * @param tag name to give to the object
-	 */
-	Named( const std::string& tag ) : object(R_MissingArg), tag(tag){} ;
+	Argument() : name(){} ;
+	Argument( const std::string& name_) : name(name_){} 
 	
 	template<typename T>
-	Named( const std::string& tag, const T& value ) : object(wrap(value)), tag(tag) {}
-	
-	/**
-	 * This allows the syntax : 
-	 * Language( "rnorm", Named( "mean" ) = 10 ) ;
-	 */
-	template <typename T>
-	Named& operator=( const T& o ){
-		object = wrap( o ) ;
-		return *this ;
+	traits::named_object<T> operator=( const T& t){
+		return traits::named_object<T>( name, t ) ;	
 	}
 	
-	inline SEXP getSEXP() const { return object.asSexp() ; }
-	
-	inline std::string getTag() const { return tag ; }
-	
 private:
-	RObject object ;
-	std::string tag ;
+	std::string name ;	
 } ;
 
+inline Argument Named( const std::string& name){
+	return Argument( name );	
+}
+template <typename T>
+traits::named_object<T> Named( const std::string& name, const T& o){
+	return traits::named_object<T>( name, o );	
+}
+
 namespace internal{
-	
+
 class NamedPlaceHolder {
 public:
 	NamedPlaceHolder(){}
 	~NamedPlaceHolder(){}
-	Named operator[]( const std::string& arg) const {
-		return Named( arg ) ;
+	Argument operator[]( const std::string& arg) const {
+		return Argument( arg ) ;
 	}
-	Named operator()(const std::string& arg) const {
-		return Named( arg ) ;
+	Argument operator()(const std::string& arg) const {
+		return Argument( arg ) ;
 	}
 	operator SEXP() const { return R_MissingArg ; }
 } ;

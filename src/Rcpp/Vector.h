@@ -149,7 +149,9 @@ namespace internal{
 	public:
 		typedef ::Rcpp::Vector<RTYPE> VECTOR ;
 		generic_name_proxy( VECTOR& v, const std::string& name_) :
-			parent(v), name(name_){} ;
+			parent(v), name(name_){
+				RCPP_DEBUG( "generic_name_proxy( VECTOR& = %p, const string& = %s)", v.asSexp(), name_.c_str() );
+		} ;
 		generic_name_proxy( const generic_name_proxy& other ) : 
 			parent(other.parent), name(other.name){} ;
 		~generic_name_proxy(){} ;
@@ -177,7 +179,13 @@ namespace internal{
 		
 		template <typename T>
 		operator T(){
+			#if RCPP_DEBUG_LEVEL > 0
+			SEXP res = get() ;
+			RCPP_DEBUG( "generic_name_proxy::get() = <%p> ", res ) ;
+			return ::Rcpp::as<T>( res ) ;
+			#else
 			return ::Rcpp::as<T>( get() ) ;
+			#endif
 		}
 		
 	private:
@@ -201,14 +209,13 @@ namespace internal{
 	class element_converter{
 	public:
 		typedef typename ::Rcpp::traits::storage_type<RTYPE>::type target ;
-		element_converter(){}
 		
 		template <typename T>
-		target get( const T& input ){
+		static target get( const T& input ){
 			return caster<T,target>(input) ;
 		}
 		
-		target get( const target& input ){
+		static target get( const target& input ){
 			return input ;
 		}
 	} ;
@@ -216,35 +223,38 @@ namespace internal{
 	template <int RTYPE>
 	class string_element_converter {
 	public:
-		// typedef typename ::Rcpp::traits::storage_typ
-		string_element_converter(){};
+		typedef SEXP target ;
 		
 		template <typename T>
-		SEXP get( const T& input){
+		static SEXP get( const T& input){
 			std::string out(input) ;
 			return Rf_mkChar( out.c_str() ) ;
 		}
 		
-		SEXP get(const std::string& input){
+		static SEXP get(const std::string& input){
 			return Rf_mkChar( input.c_str() ) ;
+		}
+		
+		static SEXP get(const char& input){
+			return Rf_mkChar( &input ) ;
 		}
 	} ;
 	
 	template <int RTYPE>
 	class generic_element_converter {
 	public:
-		generic_element_converter(){};
+		typedef SEXP target ;
 		
 		template <typename T>
-		SEXP get( const T& input){
+		static SEXP get( const T& input){
 			return ::Rcpp::wrap( input ) ;
 		}
 		
-		SEXP get( const char* input){
+		static SEXP get( const char* input){
 			return ::Rcpp::wrap( input );
 		}
 		
-		SEXP get(SEXP input){
+		static SEXP get(SEXP input){
 			return input ;
 		}
 	} ;
@@ -411,15 +421,29 @@ namespace traits{
 		typedef bool type ;
 	} ;
 	
+	template <int RTYPE> struct is_trivial  : public true_type{} ;
+	template <> struct is_trivial<VECSXP>   : public false_type{} ;
+	template <> struct is_trivial<EXPRSXP>  : public false_type{} ;
+
 } // traits 
 
 template <typename VECTOR>
 class VectorBase : public RObject{
 public:
-	VectorBase() : RObject(){}
-	VectorBase(SEXP x) : RObject(x){}
-	~VectorBase(){}
-	VectorBase(const VectorBase& v) : RObject( v.asSexp() ){}
+	VectorBase() : RObject(){
+		RCPP_DEBUG( "VectorBase()", 0 ) ;
+	}
+	VectorBase(SEXP x) : RObject(x){
+		update() ;
+		RCPP_DEBUG( "VectorBase( SEXP = <%p> ) = <%p>", x, asSexp() ) ;
+	}
+	~VectorBase(){
+		RCPP_DEBUG( "~VectorBase", 0 ) ;
+	}
+	VectorBase(const VectorBase& v) : RObject( v.asSexp() ){
+		update() ;
+		RCPP_DEBUG( "VectorBase( const VectorBase& = <%p> ) ) = <%p>", v.asSexp(), asSexp() ) ;
+	}
 	VectorBase& operator=(const VectorBase& v) {
 		setSEXP( v.asSexp() ) ;
 		return *this ;
@@ -428,6 +452,7 @@ public:
 		return static_cast<VECTOR&>(*this) ;
 	}
 	virtual void update(){
+		RCPP_DEBUG( "%s::update", DEMANGLE(VectorBase) ) ;
 		(static_cast<VECTOR&>(*this)).update_vector() ;
 	}
 } ;
@@ -449,18 +474,37 @@ public:
 	struct r_type : traits::integral_constant<int,RTYPE>{} ;
 	
 	Vector() : Base() {
+		RCPP_DEBUG( "Vector()", 0 ) ;
 		Base::setSEXP( Rf_allocVector( RTYPE, 0 ) ) ;
 		init() ;
 	} ;
-    ~Vector(){};
+    ~Vector(){
+    	RCPP_DEBUG( "~Vector()", 0 ) ;
+	};
     
+	Vector( const Vector& other) : Base() {
+		Base::setSEXP(other.asSexp()) ;
+	}
+	
+	Vector& operator=( const Vector& other ){
+		Base::setSEXP( other.asSexp() ) ;	
+	}
+	
     Vector( SEXP x ) : Base() {
+    	RCPP_DEBUG( "Vector<%d>( SEXP = <%p> )", RTYPE, x) ;
     	Base::setSEXP( r_cast<RTYPE>( x ) ) ;
+    	RCPP_DEBUG( "===========", 0) ;
     }
     
     Vector( const size_t& size ) : Base()  {
     	Base::setSEXP( Rf_allocVector( RTYPE, size) ) ;
 		init() ;
+    }
+    
+    template <typename U>
+    Vector( const size_t& size, const U& u){
+    	Base::setSEXP( Rf_allocVector( RTYPE, size) ) ;
+		fill( u ) ;	
     }
     
     Vector( const Dimension& dims) : Base() {
@@ -470,6 +514,16 @@ public:
 			Base::attr( "dim" ) = dims;
 		}
     }
+    
+    template <typename U>
+    Vector( const Dimension& dims, const U& u) : Base() {
+    	Base::setSEXP( Rf_allocVector( RTYPE, dims.prod() ) ) ;
+		fill(u) ;
+		if( dims.size() > 1 ){
+			Base::attr( "dim" ) = dims;
+		}
+    }
+    
     
     internal::ListInitialization<iterator,init_type> operator=( init_type x){
 		iterator start = begin() ; *start = x; 
@@ -550,6 +604,32 @@ public:
     	throw index_out_of_bounds() ;
     	return -1 ; /* -Wall */
     }
+    
+    private:
+	
+	template <typename U>
+	void fill_dispatch( traits::false_type, const U& u){
+		// when this is not trivial, this is SEXP
+		SEXP elem = PROTECT( converter_type::get( u ) ); 
+		iterator it(begin());
+		for( int i=0; i<size ; i++, ++it){
+			*it = ::Rf_duplicate( elem ) ;
+		}
+		UNPROTECT(1) ; /* elem */
+	}
+	
+	template <typename U>
+	void fill__dispatch( traits::true_type, const U& u){
+		std::fill( begin(), end(), converter_type::get( u ) ) ;
+	}
+	
+	public:	
+	
+	template <typename U>
+	void fill( const U& u){
+		fill__dispatch( typename traits::is_trivial<RTYPE>::type(), u ) ;
+	}
+
     
     /* TODO: 3 dimensions, ... n dimensions through variadic templates */
     
@@ -632,33 +712,33 @@ public:
 	
 	template <typename T>
 	void push_back( const T& object){
-		push_back__impl( converter.get(object) ) ;
+		push_back__impl( converter_type::get(object) ) ;
 	}
 	
 	template <typename T>
 	void push_back( const T& object, const std::string& name ){
-		push_back_name__impl( converter.get(object), name ) ;
+		push_back_name__impl( converter_type::get(object), name ) ;
 	}
 	
 	template <typename T>
 	void push_front( const T& object){
-		push_front__impl( converter.get(object) ) ;
+		push_front__impl( converter_type::get(object) ) ;
 	}
 	
 	template <typename T>
 	void push_front( const T& object, const std::string& name){
-		push_front_name__impl( converter.get(object), name ) ;
+		push_front_name__impl( converter_type::get(object), name ) ;
 	}
 	
 	
 	template <typename T>
 	iterator insert( iterator position, const T& object){
-		return insert__impl( position, converter.get(object) ) ;
+		return insert__impl( position, converter_type::get(object) ) ;
 	}
 	
 	template <typename T>
 	iterator insert( int position, const T& object){
-		return insert__impl( cache.get(position), converter.get(object) ); 
+		return insert__impl( cache.get(position), converter_type::get(object) ); 
 	}
 	
 	iterator erase( int position){
@@ -677,11 +757,1232 @@ public:
 		return erase_range__impl( first, last ) ;
 	}
 	
-	void update_vector(){ 
+	void update_vector(){
+		RCPP_DEBUG(  "update_vector, VECTOR = %s", DEMANGLE(Vector) ) ;
 		cache.update(*this) ;
+	}
+		
+/* <code-bloat>
+
+public:
+	
+	template <TYPENAMES>
+	static Vector create(ARGUMENTS){
+		return create__dispatch( typename traits::integral_constant<bool, 
+			__OR__{{  traits::is_named<___T___>::value  }}
+		>::type(), PARAMETERS ) ;  		
 	}
 	
 private:
+	
+	template <TYPENAMES>
+	static Vector create__dispatch( traits::false_type, ARGUMENTS ){
+		Vector res(___N___) ;
+		iterator it( res.begin() );
+		
+		////
+		__FOR_EACH__{{ *it = converter_type::get(___X___) ; ++it ; }}
+		////
+		
+		return res ;
+	}
+	
+	template <TYPENAMES>
+	static Vector create__dispatch( traits::true_type, ARGUMENTS){
+		Vector res( ___N___ ) ;                                                                      
+		SEXP names = PROTECT( ::Rf_allocVector( STRSXP, ___N___ ) ) ;
+		int index = 0 ;
+		iterator it( res.begin() );
+		
+		////
+		__FOR_EACH__{{ replace_element( it, names, index, ___X___ ) ; ++it; ++index ; }}
+		////
+		
+		res.attr("names") = names ;
+		UNPROTECT(1); // names
+		return res ;
+	}
+
+*/
+public:
+	
+	template <typename T1>
+	static Vector create(const T1& t1){
+		return create__dispatch( typename traits::integral_constant<bool, 
+  traits::is_named<T1>::value  
+		>::type(), t1 ) ;  		
+	}
+	
+private:
+	
+	template <typename T1>
+	static Vector create__dispatch( traits::false_type, const T1& t1 ){
+		Vector res(1) ;
+		iterator it( res.begin() );
+		
+		////
+ *it = converter_type::get(t1) ; ++it ; 
+		////
+		
+		return res ;
+	}
+	
+	template <typename T1>
+	static Vector create__dispatch( traits::true_type, const T1& t1){
+		Vector res( 1 ) ;                                                                      
+		SEXP names = PROTECT( ::Rf_allocVector( STRSXP, 1 ) ) ;
+		int index = 0 ;
+		iterator it( res.begin() );
+		
+		////
+ replace_element( it, names, index, t1 ) ; ++it; ++index ; 
+		////
+		
+		res.attr("names") = names ;
+		UNPROTECT(1); // names
+		return res ;
+	}
+
+public:
+	
+	template <typename T1, typename T2>
+	static Vector create(const T1& t1, const T2& t2){
+		return create__dispatch( typename traits::integral_constant<bool, 
+  traits::is_named<T1>::value  ||  traits::is_named<T2>::value  
+		>::type(), t1, t2 ) ;  		
+	}
+	
+private:
+	
+	template <typename T1, typename T2>
+	static Vector create__dispatch( traits::false_type, const T1& t1, const T2& t2 ){
+		Vector res(2) ;
+		iterator it( res.begin() );
+		
+		////
+ *it = converter_type::get(t1) ; ++it ; 
+ *it = converter_type::get(t2) ; ++it ; 
+		////
+		
+		return res ;
+	}
+	
+	template <typename T1, typename T2>
+	static Vector create__dispatch( traits::true_type, const T1& t1, const T2& t2){
+		Vector res( 2 ) ;                                                                      
+		SEXP names = PROTECT( ::Rf_allocVector( STRSXP, 2 ) ) ;
+		int index = 0 ;
+		iterator it( res.begin() );
+		
+		////
+ replace_element( it, names, index, t1 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t2 ) ; ++it; ++index ; 
+		////
+		
+		res.attr("names") = names ;
+		UNPROTECT(1); // names
+		return res ;
+	}
+
+public:
+	
+	template <typename T1, typename T2, typename T3>
+	static Vector create(const T1& t1, const T2& t2, const T3& t3){
+		return create__dispatch( typename traits::integral_constant<bool, 
+  traits::is_named<T1>::value  ||  traits::is_named<T2>::value  ||  traits::is_named<T3>::value  
+		>::type(), t1, t2, t3 ) ;  		
+	}
+	
+private:
+	
+	template <typename T1, typename T2, typename T3>
+	static Vector create__dispatch( traits::false_type, const T1& t1, const T2& t2, const T3& t3 ){
+		Vector res(3) ;
+		iterator it( res.begin() );
+		
+		////
+ *it = converter_type::get(t1) ; ++it ; 
+ *it = converter_type::get(t2) ; ++it ; 
+ *it = converter_type::get(t3) ; ++it ; 
+		////
+		
+		return res ;
+	}
+	
+	template <typename T1, typename T2, typename T3>
+	static Vector create__dispatch( traits::true_type, const T1& t1, const T2& t2, const T3& t3){
+		Vector res( 3 ) ;                                                                      
+		SEXP names = PROTECT( ::Rf_allocVector( STRSXP, 3 ) ) ;
+		int index = 0 ;
+		iterator it( res.begin() );
+		
+		////
+ replace_element( it, names, index, t1 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t2 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t3 ) ; ++it; ++index ; 
+		////
+		
+		res.attr("names") = names ;
+		UNPROTECT(1); // names
+		return res ;
+	}
+
+public:
+	
+	template <typename T1, typename T2, typename T3, typename T4>
+	static Vector create(const T1& t1, const T2& t2, const T3& t3, const T4& t4){
+		return create__dispatch( typename traits::integral_constant<bool, 
+  traits::is_named<T1>::value  ||  traits::is_named<T2>::value  ||  traits::is_named<T3>::value  ||  traits::is_named<T4>::value  
+		>::type(), t1, t2, t3, t4 ) ;  		
+	}
+	
+private:
+	
+	template <typename T1, typename T2, typename T3, typename T4>
+	static Vector create__dispatch( traits::false_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4 ){
+		Vector res(4) ;
+		iterator it( res.begin() );
+		
+		////
+ *it = converter_type::get(t1) ; ++it ; 
+ *it = converter_type::get(t2) ; ++it ; 
+ *it = converter_type::get(t3) ; ++it ; 
+ *it = converter_type::get(t4) ; ++it ; 
+		////
+		
+		return res ;
+	}
+	
+	template <typename T1, typename T2, typename T3, typename T4>
+	static Vector create__dispatch( traits::true_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4){
+		Vector res( 4 ) ;                                                                      
+		SEXP names = PROTECT( ::Rf_allocVector( STRSXP, 4 ) ) ;
+		int index = 0 ;
+		iterator it( res.begin() );
+		
+		////
+ replace_element( it, names, index, t1 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t2 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t3 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t4 ) ; ++it; ++index ; 
+		////
+		
+		res.attr("names") = names ;
+		UNPROTECT(1); // names
+		return res ;
+	}
+
+public:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5>
+	static Vector create(const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5){
+		return create__dispatch( typename traits::integral_constant<bool, 
+  traits::is_named<T1>::value  ||  traits::is_named<T2>::value  ||  traits::is_named<T3>::value  ||  traits::is_named<T4>::value  ||  traits::is_named<T5>::value  
+		>::type(), t1, t2, t3, t4, t5 ) ;  		
+	}
+	
+private:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5>
+	static Vector create__dispatch( traits::false_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5 ){
+		Vector res(5) ;
+		iterator it( res.begin() );
+		
+		////
+ *it = converter_type::get(t1) ; ++it ; 
+ *it = converter_type::get(t2) ; ++it ; 
+ *it = converter_type::get(t3) ; ++it ; 
+ *it = converter_type::get(t4) ; ++it ; 
+ *it = converter_type::get(t5) ; ++it ; 
+		////
+		
+		return res ;
+	}
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5>
+	static Vector create__dispatch( traits::true_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5){
+		Vector res( 5 ) ;                                                                      
+		SEXP names = PROTECT( ::Rf_allocVector( STRSXP, 5 ) ) ;
+		int index = 0 ;
+		iterator it( res.begin() );
+		
+		////
+ replace_element( it, names, index, t1 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t2 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t3 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t4 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t5 ) ; ++it; ++index ; 
+		////
+		
+		res.attr("names") = names ;
+		UNPROTECT(1); // names
+		return res ;
+	}
+
+public:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
+	static Vector create(const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6){
+		return create__dispatch( typename traits::integral_constant<bool, 
+  traits::is_named<T1>::value  ||  traits::is_named<T2>::value  ||  traits::is_named<T3>::value  ||  traits::is_named<T4>::value  ||  traits::is_named<T5>::value  ||  traits::is_named<T6>::value  
+		>::type(), t1, t2, t3, t4, t5, t6 ) ;  		
+	}
+	
+private:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
+	static Vector create__dispatch( traits::false_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6 ){
+		Vector res(6) ;
+		iterator it( res.begin() );
+		
+		////
+ *it = converter_type::get(t1) ; ++it ; 
+ *it = converter_type::get(t2) ; ++it ; 
+ *it = converter_type::get(t3) ; ++it ; 
+ *it = converter_type::get(t4) ; ++it ; 
+ *it = converter_type::get(t5) ; ++it ; 
+ *it = converter_type::get(t6) ; ++it ; 
+		////
+		
+		return res ;
+	}
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
+	static Vector create__dispatch( traits::true_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6){
+		Vector res( 6 ) ;                                                                      
+		SEXP names = PROTECT( ::Rf_allocVector( STRSXP, 6 ) ) ;
+		int index = 0 ;
+		iterator it( res.begin() );
+		
+		////
+ replace_element( it, names, index, t1 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t2 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t3 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t4 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t5 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t6 ) ; ++it; ++index ; 
+		////
+		
+		res.attr("names") = names ;
+		UNPROTECT(1); // names
+		return res ;
+	}
+
+public:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7>
+	static Vector create(const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7){
+		return create__dispatch( typename traits::integral_constant<bool, 
+  traits::is_named<T1>::value  ||  traits::is_named<T2>::value  ||  traits::is_named<T3>::value  ||  traits::is_named<T4>::value  ||  traits::is_named<T5>::value  ||  traits::is_named<T6>::value  ||  traits::is_named<T7>::value  
+		>::type(), t1, t2, t3, t4, t5, t6, t7 ) ;  		
+	}
+	
+private:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7>
+	static Vector create__dispatch( traits::false_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7 ){
+		Vector res(7) ;
+		iterator it( res.begin() );
+		
+		////
+ *it = converter_type::get(t1) ; ++it ; 
+ *it = converter_type::get(t2) ; ++it ; 
+ *it = converter_type::get(t3) ; ++it ; 
+ *it = converter_type::get(t4) ; ++it ; 
+ *it = converter_type::get(t5) ; ++it ; 
+ *it = converter_type::get(t6) ; ++it ; 
+ *it = converter_type::get(t7) ; ++it ; 
+		////
+		
+		return res ;
+	}
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7>
+	static Vector create__dispatch( traits::true_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7){
+		Vector res( 7 ) ;                                                                      
+		SEXP names = PROTECT( ::Rf_allocVector( STRSXP, 7 ) ) ;
+		int index = 0 ;
+		iterator it( res.begin() );
+		
+		////
+ replace_element( it, names, index, t1 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t2 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t3 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t4 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t5 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t6 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t7 ) ; ++it; ++index ; 
+		////
+		
+		res.attr("names") = names ;
+		UNPROTECT(1); // names
+		return res ;
+	}
+
+public:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
+	static Vector create(const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8){
+		return create__dispatch( typename traits::integral_constant<bool, 
+  traits::is_named<T1>::value  ||  traits::is_named<T2>::value  ||  traits::is_named<T3>::value  ||  traits::is_named<T4>::value  ||  traits::is_named<T5>::value  ||  traits::is_named<T6>::value  ||  traits::is_named<T7>::value  ||  traits::is_named<T8>::value  
+		>::type(), t1, t2, t3, t4, t5, t6, t7, t8 ) ;  		
+	}
+	
+private:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
+	static Vector create__dispatch( traits::false_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8 ){
+		Vector res(8) ;
+		iterator it( res.begin() );
+		
+		////
+ *it = converter_type::get(t1) ; ++it ; 
+ *it = converter_type::get(t2) ; ++it ; 
+ *it = converter_type::get(t3) ; ++it ; 
+ *it = converter_type::get(t4) ; ++it ; 
+ *it = converter_type::get(t5) ; ++it ; 
+ *it = converter_type::get(t6) ; ++it ; 
+ *it = converter_type::get(t7) ; ++it ; 
+ *it = converter_type::get(t8) ; ++it ; 
+		////
+		
+		return res ;
+	}
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
+	static Vector create__dispatch( traits::true_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8){
+		Vector res( 8 ) ;                                                                      
+		SEXP names = PROTECT( ::Rf_allocVector( STRSXP, 8 ) ) ;
+		int index = 0 ;
+		iterator it( res.begin() );
+		
+		////
+ replace_element( it, names, index, t1 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t2 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t3 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t4 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t5 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t6 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t7 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t8 ) ; ++it; ++index ; 
+		////
+		
+		res.attr("names") = names ;
+		UNPROTECT(1); // names
+		return res ;
+	}
+
+public:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9>
+	static Vector create(const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9){
+		return create__dispatch( typename traits::integral_constant<bool, 
+  traits::is_named<T1>::value  ||  traits::is_named<T2>::value  ||  traits::is_named<T3>::value  ||  traits::is_named<T4>::value  ||  traits::is_named<T5>::value  ||  traits::is_named<T6>::value  ||  traits::is_named<T7>::value  ||  traits::is_named<T8>::value  ||  traits::is_named<T9>::value  
+		>::type(), t1, t2, t3, t4, t5, t6, t7, t8, t9 ) ;  		
+	}
+	
+private:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9>
+	static Vector create__dispatch( traits::false_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9 ){
+		Vector res(9) ;
+		iterator it( res.begin() );
+		
+		////
+ *it = converter_type::get(t1) ; ++it ; 
+ *it = converter_type::get(t2) ; ++it ; 
+ *it = converter_type::get(t3) ; ++it ; 
+ *it = converter_type::get(t4) ; ++it ; 
+ *it = converter_type::get(t5) ; ++it ; 
+ *it = converter_type::get(t6) ; ++it ; 
+ *it = converter_type::get(t7) ; ++it ; 
+ *it = converter_type::get(t8) ; ++it ; 
+ *it = converter_type::get(t9) ; ++it ; 
+		////
+		
+		return res ;
+	}
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9>
+	static Vector create__dispatch( traits::true_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9){
+		Vector res( 9 ) ;                                                                      
+		SEXP names = PROTECT( ::Rf_allocVector( STRSXP, 9 ) ) ;
+		int index = 0 ;
+		iterator it( res.begin() );
+		
+		////
+ replace_element( it, names, index, t1 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t2 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t3 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t4 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t5 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t6 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t7 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t8 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t9 ) ; ++it; ++index ; 
+		////
+		
+		res.attr("names") = names ;
+		UNPROTECT(1); // names
+		return res ;
+	}
+
+public:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10>
+	static Vector create(const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10){
+		return create__dispatch( typename traits::integral_constant<bool, 
+  traits::is_named<T1>::value  ||  traits::is_named<T2>::value  ||  traits::is_named<T3>::value  ||  traits::is_named<T4>::value  ||  traits::is_named<T5>::value  ||  traits::is_named<T6>::value  ||  traits::is_named<T7>::value  ||  traits::is_named<T8>::value  ||  traits::is_named<T9>::value  ||  traits::is_named<T10>::value  
+		>::type(), t1, t2, t3, t4, t5, t6, t7, t8, t9, t10 ) ;  		
+	}
+	
+private:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10>
+	static Vector create__dispatch( traits::false_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10 ){
+		Vector res(10) ;
+		iterator it( res.begin() );
+		
+		////
+ *it = converter_type::get(t1) ; ++it ; 
+ *it = converter_type::get(t2) ; ++it ; 
+ *it = converter_type::get(t3) ; ++it ; 
+ *it = converter_type::get(t4) ; ++it ; 
+ *it = converter_type::get(t5) ; ++it ; 
+ *it = converter_type::get(t6) ; ++it ; 
+ *it = converter_type::get(t7) ; ++it ; 
+ *it = converter_type::get(t8) ; ++it ; 
+ *it = converter_type::get(t9) ; ++it ; 
+ *it = converter_type::get(t10) ; ++it ; 
+		////
+		
+		return res ;
+	}
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10>
+	static Vector create__dispatch( traits::true_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10){
+		Vector res( 10 ) ;                                                                      
+		SEXP names = PROTECT( ::Rf_allocVector( STRSXP, 10 ) ) ;
+		int index = 0 ;
+		iterator it( res.begin() );
+		
+		////
+ replace_element( it, names, index, t1 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t2 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t3 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t4 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t5 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t6 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t7 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t8 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t9 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t10 ) ; ++it; ++index ; 
+		////
+		
+		res.attr("names") = names ;
+		UNPROTECT(1); // names
+		return res ;
+	}
+
+public:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11>
+	static Vector create(const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10, const T11& t11){
+		return create__dispatch( typename traits::integral_constant<bool, 
+  traits::is_named<T1>::value  ||  traits::is_named<T2>::value  ||  traits::is_named<T3>::value  ||  traits::is_named<T4>::value  ||  traits::is_named<T5>::value  ||  traits::is_named<T6>::value  ||  traits::is_named<T7>::value  ||  traits::is_named<T8>::value  ||  traits::is_named<T9>::value  ||  traits::is_named<T10>::value  ||  traits::is_named<T11>::value  
+		>::type(), t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11 ) ;  		
+	}
+	
+private:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11>
+	static Vector create__dispatch( traits::false_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10, const T11& t11 ){
+		Vector res(11) ;
+		iterator it( res.begin() );
+		
+		////
+ *it = converter_type::get(t1) ; ++it ; 
+ *it = converter_type::get(t2) ; ++it ; 
+ *it = converter_type::get(t3) ; ++it ; 
+ *it = converter_type::get(t4) ; ++it ; 
+ *it = converter_type::get(t5) ; ++it ; 
+ *it = converter_type::get(t6) ; ++it ; 
+ *it = converter_type::get(t7) ; ++it ; 
+ *it = converter_type::get(t8) ; ++it ; 
+ *it = converter_type::get(t9) ; ++it ; 
+ *it = converter_type::get(t10) ; ++it ; 
+ *it = converter_type::get(t11) ; ++it ; 
+		////
+		
+		return res ;
+	}
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11>
+	static Vector create__dispatch( traits::true_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10, const T11& t11){
+		Vector res( 11 ) ;                                                                      
+		SEXP names = PROTECT( ::Rf_allocVector( STRSXP, 11 ) ) ;
+		int index = 0 ;
+		iterator it( res.begin() );
+		
+		////
+ replace_element( it, names, index, t1 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t2 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t3 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t4 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t5 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t6 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t7 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t8 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t9 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t10 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t11 ) ; ++it; ++index ; 
+		////
+		
+		res.attr("names") = names ;
+		UNPROTECT(1); // names
+		return res ;
+	}
+
+public:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11, typename T12>
+	static Vector create(const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10, const T11& t11, const T12& t12){
+		return create__dispatch( typename traits::integral_constant<bool, 
+  traits::is_named<T1>::value  ||  traits::is_named<T2>::value  ||  traits::is_named<T3>::value  ||  traits::is_named<T4>::value  ||  traits::is_named<T5>::value  ||  traits::is_named<T6>::value  ||  traits::is_named<T7>::value  ||  traits::is_named<T8>::value  ||  traits::is_named<T9>::value  ||  traits::is_named<T10>::value  ||  traits::is_named<T11>::value  ||  traits::is_named<T12>::value  
+		>::type(), t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12 ) ;  		
+	}
+	
+private:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11, typename T12>
+	static Vector create__dispatch( traits::false_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10, const T11& t11, const T12& t12 ){
+		Vector res(12) ;
+		iterator it( res.begin() );
+		
+		////
+ *it = converter_type::get(t1) ; ++it ; 
+ *it = converter_type::get(t2) ; ++it ; 
+ *it = converter_type::get(t3) ; ++it ; 
+ *it = converter_type::get(t4) ; ++it ; 
+ *it = converter_type::get(t5) ; ++it ; 
+ *it = converter_type::get(t6) ; ++it ; 
+ *it = converter_type::get(t7) ; ++it ; 
+ *it = converter_type::get(t8) ; ++it ; 
+ *it = converter_type::get(t9) ; ++it ; 
+ *it = converter_type::get(t10) ; ++it ; 
+ *it = converter_type::get(t11) ; ++it ; 
+ *it = converter_type::get(t12) ; ++it ; 
+		////
+		
+		return res ;
+	}
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11, typename T12>
+	static Vector create__dispatch( traits::true_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10, const T11& t11, const T12& t12){
+		Vector res( 12 ) ;                                                                      
+		SEXP names = PROTECT( ::Rf_allocVector( STRSXP, 12 ) ) ;
+		int index = 0 ;
+		iterator it( res.begin() );
+		
+		////
+ replace_element( it, names, index, t1 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t2 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t3 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t4 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t5 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t6 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t7 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t8 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t9 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t10 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t11 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t12 ) ; ++it; ++index ; 
+		////
+		
+		res.attr("names") = names ;
+		UNPROTECT(1); // names
+		return res ;
+	}
+
+public:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11, typename T12, typename T13>
+	static Vector create(const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10, const T11& t11, const T12& t12, const T13& t13){
+		return create__dispatch( typename traits::integral_constant<bool, 
+  traits::is_named<T1>::value  ||  traits::is_named<T2>::value  ||  traits::is_named<T3>::value  ||  traits::is_named<T4>::value  ||  traits::is_named<T5>::value  ||  traits::is_named<T6>::value  ||  traits::is_named<T7>::value  ||  traits::is_named<T8>::value  ||  traits::is_named<T9>::value  ||  traits::is_named<T10>::value  ||  traits::is_named<T11>::value  ||  traits::is_named<T12>::value  ||  traits::is_named<T13>::value  
+		>::type(), t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13 ) ;  		
+	}
+	
+private:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11, typename T12, typename T13>
+	static Vector create__dispatch( traits::false_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10, const T11& t11, const T12& t12, const T13& t13 ){
+		Vector res(13) ;
+		iterator it( res.begin() );
+		
+		////
+ *it = converter_type::get(t1) ; ++it ; 
+ *it = converter_type::get(t2) ; ++it ; 
+ *it = converter_type::get(t3) ; ++it ; 
+ *it = converter_type::get(t4) ; ++it ; 
+ *it = converter_type::get(t5) ; ++it ; 
+ *it = converter_type::get(t6) ; ++it ; 
+ *it = converter_type::get(t7) ; ++it ; 
+ *it = converter_type::get(t8) ; ++it ; 
+ *it = converter_type::get(t9) ; ++it ; 
+ *it = converter_type::get(t10) ; ++it ; 
+ *it = converter_type::get(t11) ; ++it ; 
+ *it = converter_type::get(t12) ; ++it ; 
+ *it = converter_type::get(t13) ; ++it ; 
+		////
+		
+		return res ;
+	}
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11, typename T12, typename T13>
+	static Vector create__dispatch( traits::true_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10, const T11& t11, const T12& t12, const T13& t13){
+		Vector res( 13 ) ;                                                                      
+		SEXP names = PROTECT( ::Rf_allocVector( STRSXP, 13 ) ) ;
+		int index = 0 ;
+		iterator it( res.begin() );
+		
+		////
+ replace_element( it, names, index, t1 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t2 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t3 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t4 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t5 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t6 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t7 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t8 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t9 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t10 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t11 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t12 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t13 ) ; ++it; ++index ; 
+		////
+		
+		res.attr("names") = names ;
+		UNPROTECT(1); // names
+		return res ;
+	}
+
+public:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11, typename T12, typename T13, typename T14>
+	static Vector create(const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10, const T11& t11, const T12& t12, const T13& t13, const T14& t14){
+		return create__dispatch( typename traits::integral_constant<bool, 
+  traits::is_named<T1>::value  ||  traits::is_named<T2>::value  ||  traits::is_named<T3>::value  ||  traits::is_named<T4>::value  ||  traits::is_named<T5>::value  ||  traits::is_named<T6>::value  ||  traits::is_named<T7>::value  ||  traits::is_named<T8>::value  ||  traits::is_named<T9>::value  ||  traits::is_named<T10>::value  ||  traits::is_named<T11>::value  ||  traits::is_named<T12>::value  ||  traits::is_named<T13>::value  ||  traits::is_named<T14>::value  
+		>::type(), t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14 ) ;  		
+	}
+	
+private:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11, typename T12, typename T13, typename T14>
+	static Vector create__dispatch( traits::false_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10, const T11& t11, const T12& t12, const T13& t13, const T14& t14 ){
+		Vector res(14) ;
+		iterator it( res.begin() );
+		
+		////
+ *it = converter_type::get(t1) ; ++it ; 
+ *it = converter_type::get(t2) ; ++it ; 
+ *it = converter_type::get(t3) ; ++it ; 
+ *it = converter_type::get(t4) ; ++it ; 
+ *it = converter_type::get(t5) ; ++it ; 
+ *it = converter_type::get(t6) ; ++it ; 
+ *it = converter_type::get(t7) ; ++it ; 
+ *it = converter_type::get(t8) ; ++it ; 
+ *it = converter_type::get(t9) ; ++it ; 
+ *it = converter_type::get(t10) ; ++it ; 
+ *it = converter_type::get(t11) ; ++it ; 
+ *it = converter_type::get(t12) ; ++it ; 
+ *it = converter_type::get(t13) ; ++it ; 
+ *it = converter_type::get(t14) ; ++it ; 
+		////
+		
+		return res ;
+	}
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11, typename T12, typename T13, typename T14>
+	static Vector create__dispatch( traits::true_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10, const T11& t11, const T12& t12, const T13& t13, const T14& t14){
+		Vector res( 14 ) ;                                                                      
+		SEXP names = PROTECT( ::Rf_allocVector( STRSXP, 14 ) ) ;
+		int index = 0 ;
+		iterator it( res.begin() );
+		
+		////
+ replace_element( it, names, index, t1 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t2 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t3 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t4 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t5 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t6 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t7 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t8 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t9 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t10 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t11 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t12 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t13 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t14 ) ; ++it; ++index ; 
+		////
+		
+		res.attr("names") = names ;
+		UNPROTECT(1); // names
+		return res ;
+	}
+
+public:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11, typename T12, typename T13, typename T14, typename T15>
+	static Vector create(const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10, const T11& t11, const T12& t12, const T13& t13, const T14& t14, const T15& t15){
+		return create__dispatch( typename traits::integral_constant<bool, 
+  traits::is_named<T1>::value  ||  traits::is_named<T2>::value  ||  traits::is_named<T3>::value  ||  traits::is_named<T4>::value  ||  traits::is_named<T5>::value  ||  traits::is_named<T6>::value  ||  traits::is_named<T7>::value  ||  traits::is_named<T8>::value  ||  traits::is_named<T9>::value  ||  traits::is_named<T10>::value  ||  traits::is_named<T11>::value  ||  traits::is_named<T12>::value  ||  traits::is_named<T13>::value  ||  traits::is_named<T14>::value  ||  traits::is_named<T15>::value  
+		>::type(), t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15 ) ;  		
+	}
+	
+private:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11, typename T12, typename T13, typename T14, typename T15>
+	static Vector create__dispatch( traits::false_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10, const T11& t11, const T12& t12, const T13& t13, const T14& t14, const T15& t15 ){
+		Vector res(15) ;
+		iterator it( res.begin() );
+		
+		////
+ *it = converter_type::get(t1) ; ++it ; 
+ *it = converter_type::get(t2) ; ++it ; 
+ *it = converter_type::get(t3) ; ++it ; 
+ *it = converter_type::get(t4) ; ++it ; 
+ *it = converter_type::get(t5) ; ++it ; 
+ *it = converter_type::get(t6) ; ++it ; 
+ *it = converter_type::get(t7) ; ++it ; 
+ *it = converter_type::get(t8) ; ++it ; 
+ *it = converter_type::get(t9) ; ++it ; 
+ *it = converter_type::get(t10) ; ++it ; 
+ *it = converter_type::get(t11) ; ++it ; 
+ *it = converter_type::get(t12) ; ++it ; 
+ *it = converter_type::get(t13) ; ++it ; 
+ *it = converter_type::get(t14) ; ++it ; 
+ *it = converter_type::get(t15) ; ++it ; 
+		////
+		
+		return res ;
+	}
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11, typename T12, typename T13, typename T14, typename T15>
+	static Vector create__dispatch( traits::true_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10, const T11& t11, const T12& t12, const T13& t13, const T14& t14, const T15& t15){
+		Vector res( 15 ) ;                                                                      
+		SEXP names = PROTECT( ::Rf_allocVector( STRSXP, 15 ) ) ;
+		int index = 0 ;
+		iterator it( res.begin() );
+		
+		////
+ replace_element( it, names, index, t1 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t2 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t3 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t4 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t5 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t6 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t7 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t8 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t9 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t10 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t11 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t12 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t13 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t14 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t15 ) ; ++it; ++index ; 
+		////
+		
+		res.attr("names") = names ;
+		UNPROTECT(1); // names
+		return res ;
+	}
+
+public:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11, typename T12, typename T13, typename T14, typename T15, typename T16>
+	static Vector create(const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10, const T11& t11, const T12& t12, const T13& t13, const T14& t14, const T15& t15, const T16& t16){
+		return create__dispatch( typename traits::integral_constant<bool, 
+  traits::is_named<T1>::value  ||  traits::is_named<T2>::value  ||  traits::is_named<T3>::value  ||  traits::is_named<T4>::value  ||  traits::is_named<T5>::value  ||  traits::is_named<T6>::value  ||  traits::is_named<T7>::value  ||  traits::is_named<T8>::value  ||  traits::is_named<T9>::value  ||  traits::is_named<T10>::value  ||  traits::is_named<T11>::value  ||  traits::is_named<T12>::value  ||  traits::is_named<T13>::value  ||  traits::is_named<T14>::value  ||  traits::is_named<T15>::value  ||  traits::is_named<T16>::value  
+		>::type(), t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16 ) ;  		
+	}
+	
+private:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11, typename T12, typename T13, typename T14, typename T15, typename T16>
+	static Vector create__dispatch( traits::false_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10, const T11& t11, const T12& t12, const T13& t13, const T14& t14, const T15& t15, const T16& t16 ){
+		Vector res(16) ;
+		iterator it( res.begin() );
+		
+		////
+ *it = converter_type::get(t1) ; ++it ; 
+ *it = converter_type::get(t2) ; ++it ; 
+ *it = converter_type::get(t3) ; ++it ; 
+ *it = converter_type::get(t4) ; ++it ; 
+ *it = converter_type::get(t5) ; ++it ; 
+ *it = converter_type::get(t6) ; ++it ; 
+ *it = converter_type::get(t7) ; ++it ; 
+ *it = converter_type::get(t8) ; ++it ; 
+ *it = converter_type::get(t9) ; ++it ; 
+ *it = converter_type::get(t10) ; ++it ; 
+ *it = converter_type::get(t11) ; ++it ; 
+ *it = converter_type::get(t12) ; ++it ; 
+ *it = converter_type::get(t13) ; ++it ; 
+ *it = converter_type::get(t14) ; ++it ; 
+ *it = converter_type::get(t15) ; ++it ; 
+ *it = converter_type::get(t16) ; ++it ; 
+		////
+		
+		return res ;
+	}
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11, typename T12, typename T13, typename T14, typename T15, typename T16>
+	static Vector create__dispatch( traits::true_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10, const T11& t11, const T12& t12, const T13& t13, const T14& t14, const T15& t15, const T16& t16){
+		Vector res( 16 ) ;                                                                      
+		SEXP names = PROTECT( ::Rf_allocVector( STRSXP, 16 ) ) ;
+		int index = 0 ;
+		iterator it( res.begin() );
+		
+		////
+ replace_element( it, names, index, t1 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t2 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t3 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t4 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t5 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t6 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t7 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t8 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t9 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t10 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t11 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t12 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t13 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t14 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t15 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t16 ) ; ++it; ++index ; 
+		////
+		
+		res.attr("names") = names ;
+		UNPROTECT(1); // names
+		return res ;
+	}
+
+public:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11, typename T12, typename T13, typename T14, typename T15, typename T16, typename T17>
+	static Vector create(const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10, const T11& t11, const T12& t12, const T13& t13, const T14& t14, const T15& t15, const T16& t16, const T17& t17){
+		return create__dispatch( typename traits::integral_constant<bool, 
+  traits::is_named<T1>::value  ||  traits::is_named<T2>::value  ||  traits::is_named<T3>::value  ||  traits::is_named<T4>::value  ||  traits::is_named<T5>::value  ||  traits::is_named<T6>::value  ||  traits::is_named<T7>::value  ||  traits::is_named<T8>::value  ||  traits::is_named<T9>::value  ||  traits::is_named<T10>::value  ||  traits::is_named<T11>::value  ||  traits::is_named<T12>::value  ||  traits::is_named<T13>::value  ||  traits::is_named<T14>::value  ||  traits::is_named<T15>::value  ||  traits::is_named<T16>::value  ||  traits::is_named<T17>::value  
+		>::type(), t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17 ) ;  		
+	}
+	
+private:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11, typename T12, typename T13, typename T14, typename T15, typename T16, typename T17>
+	static Vector create__dispatch( traits::false_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10, const T11& t11, const T12& t12, const T13& t13, const T14& t14, const T15& t15, const T16& t16, const T17& t17 ){
+		Vector res(17) ;
+		iterator it( res.begin() );
+		
+		////
+ *it = converter_type::get(t1) ; ++it ; 
+ *it = converter_type::get(t2) ; ++it ; 
+ *it = converter_type::get(t3) ; ++it ; 
+ *it = converter_type::get(t4) ; ++it ; 
+ *it = converter_type::get(t5) ; ++it ; 
+ *it = converter_type::get(t6) ; ++it ; 
+ *it = converter_type::get(t7) ; ++it ; 
+ *it = converter_type::get(t8) ; ++it ; 
+ *it = converter_type::get(t9) ; ++it ; 
+ *it = converter_type::get(t10) ; ++it ; 
+ *it = converter_type::get(t11) ; ++it ; 
+ *it = converter_type::get(t12) ; ++it ; 
+ *it = converter_type::get(t13) ; ++it ; 
+ *it = converter_type::get(t14) ; ++it ; 
+ *it = converter_type::get(t15) ; ++it ; 
+ *it = converter_type::get(t16) ; ++it ; 
+ *it = converter_type::get(t17) ; ++it ; 
+		////
+		
+		return res ;
+	}
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11, typename T12, typename T13, typename T14, typename T15, typename T16, typename T17>
+	static Vector create__dispatch( traits::true_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10, const T11& t11, const T12& t12, const T13& t13, const T14& t14, const T15& t15, const T16& t16, const T17& t17){
+		Vector res( 17 ) ;                                                                      
+		SEXP names = PROTECT( ::Rf_allocVector( STRSXP, 17 ) ) ;
+		int index = 0 ;
+		iterator it( res.begin() );
+		
+		////
+ replace_element( it, names, index, t1 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t2 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t3 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t4 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t5 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t6 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t7 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t8 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t9 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t10 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t11 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t12 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t13 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t14 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t15 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t16 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t17 ) ; ++it; ++index ; 
+		////
+		
+		res.attr("names") = names ;
+		UNPROTECT(1); // names
+		return res ;
+	}
+
+public:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11, typename T12, typename T13, typename T14, typename T15, typename T16, typename T17, typename T18>
+	static Vector create(const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10, const T11& t11, const T12& t12, const T13& t13, const T14& t14, const T15& t15, const T16& t16, const T17& t17, const T18& t18){
+		return create__dispatch( typename traits::integral_constant<bool, 
+  traits::is_named<T1>::value  ||  traits::is_named<T2>::value  ||  traits::is_named<T3>::value  ||  traits::is_named<T4>::value  ||  traits::is_named<T5>::value  ||  traits::is_named<T6>::value  ||  traits::is_named<T7>::value  ||  traits::is_named<T8>::value  ||  traits::is_named<T9>::value  ||  traits::is_named<T10>::value  ||  traits::is_named<T11>::value  ||  traits::is_named<T12>::value  ||  traits::is_named<T13>::value  ||  traits::is_named<T14>::value  ||  traits::is_named<T15>::value  ||  traits::is_named<T16>::value  ||  traits::is_named<T17>::value  ||  traits::is_named<T18>::value  
+		>::type(), t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18 ) ;  		
+	}
+	
+private:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11, typename T12, typename T13, typename T14, typename T15, typename T16, typename T17, typename T18>
+	static Vector create__dispatch( traits::false_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10, const T11& t11, const T12& t12, const T13& t13, const T14& t14, const T15& t15, const T16& t16, const T17& t17, const T18& t18 ){
+		Vector res(18) ;
+		iterator it( res.begin() );
+		
+		////
+ *it = converter_type::get(t1) ; ++it ; 
+ *it = converter_type::get(t2) ; ++it ; 
+ *it = converter_type::get(t3) ; ++it ; 
+ *it = converter_type::get(t4) ; ++it ; 
+ *it = converter_type::get(t5) ; ++it ; 
+ *it = converter_type::get(t6) ; ++it ; 
+ *it = converter_type::get(t7) ; ++it ; 
+ *it = converter_type::get(t8) ; ++it ; 
+ *it = converter_type::get(t9) ; ++it ; 
+ *it = converter_type::get(t10) ; ++it ; 
+ *it = converter_type::get(t11) ; ++it ; 
+ *it = converter_type::get(t12) ; ++it ; 
+ *it = converter_type::get(t13) ; ++it ; 
+ *it = converter_type::get(t14) ; ++it ; 
+ *it = converter_type::get(t15) ; ++it ; 
+ *it = converter_type::get(t16) ; ++it ; 
+ *it = converter_type::get(t17) ; ++it ; 
+ *it = converter_type::get(t18) ; ++it ; 
+		////
+		
+		return res ;
+	}
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11, typename T12, typename T13, typename T14, typename T15, typename T16, typename T17, typename T18>
+	static Vector create__dispatch( traits::true_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10, const T11& t11, const T12& t12, const T13& t13, const T14& t14, const T15& t15, const T16& t16, const T17& t17, const T18& t18){
+		Vector res( 18 ) ;                                                                      
+		SEXP names = PROTECT( ::Rf_allocVector( STRSXP, 18 ) ) ;
+		int index = 0 ;
+		iterator it( res.begin() );
+		
+		////
+ replace_element( it, names, index, t1 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t2 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t3 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t4 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t5 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t6 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t7 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t8 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t9 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t10 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t11 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t12 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t13 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t14 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t15 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t16 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t17 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t18 ) ; ++it; ++index ; 
+		////
+		
+		res.attr("names") = names ;
+		UNPROTECT(1); // names
+		return res ;
+	}
+
+public:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11, typename T12, typename T13, typename T14, typename T15, typename T16, typename T17, typename T18, typename T19>
+	static Vector create(const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10, const T11& t11, const T12& t12, const T13& t13, const T14& t14, const T15& t15, const T16& t16, const T17& t17, const T18& t18, const T19& t19){
+		return create__dispatch( typename traits::integral_constant<bool, 
+  traits::is_named<T1>::value  ||  traits::is_named<T2>::value  ||  traits::is_named<T3>::value  ||  traits::is_named<T4>::value  ||  traits::is_named<T5>::value  ||  traits::is_named<T6>::value  ||  traits::is_named<T7>::value  ||  traits::is_named<T8>::value  ||  traits::is_named<T9>::value  ||  traits::is_named<T10>::value  ||  traits::is_named<T11>::value  ||  traits::is_named<T12>::value  ||  traits::is_named<T13>::value  ||  traits::is_named<T14>::value  ||  traits::is_named<T15>::value  ||  traits::is_named<T16>::value  ||  traits::is_named<T17>::value  ||  traits::is_named<T18>::value  ||  traits::is_named<T19>::value  
+		>::type(), t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19 ) ;  		
+	}
+	
+private:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11, typename T12, typename T13, typename T14, typename T15, typename T16, typename T17, typename T18, typename T19>
+	static Vector create__dispatch( traits::false_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10, const T11& t11, const T12& t12, const T13& t13, const T14& t14, const T15& t15, const T16& t16, const T17& t17, const T18& t18, const T19& t19 ){
+		Vector res(19) ;
+		iterator it( res.begin() );
+		
+		////
+ *it = converter_type::get(t1) ; ++it ; 
+ *it = converter_type::get(t2) ; ++it ; 
+ *it = converter_type::get(t3) ; ++it ; 
+ *it = converter_type::get(t4) ; ++it ; 
+ *it = converter_type::get(t5) ; ++it ; 
+ *it = converter_type::get(t6) ; ++it ; 
+ *it = converter_type::get(t7) ; ++it ; 
+ *it = converter_type::get(t8) ; ++it ; 
+ *it = converter_type::get(t9) ; ++it ; 
+ *it = converter_type::get(t10) ; ++it ; 
+ *it = converter_type::get(t11) ; ++it ; 
+ *it = converter_type::get(t12) ; ++it ; 
+ *it = converter_type::get(t13) ; ++it ; 
+ *it = converter_type::get(t14) ; ++it ; 
+ *it = converter_type::get(t15) ; ++it ; 
+ *it = converter_type::get(t16) ; ++it ; 
+ *it = converter_type::get(t17) ; ++it ; 
+ *it = converter_type::get(t18) ; ++it ; 
+ *it = converter_type::get(t19) ; ++it ; 
+		////
+		
+		return res ;
+	}
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11, typename T12, typename T13, typename T14, typename T15, typename T16, typename T17, typename T18, typename T19>
+	static Vector create__dispatch( traits::true_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10, const T11& t11, const T12& t12, const T13& t13, const T14& t14, const T15& t15, const T16& t16, const T17& t17, const T18& t18, const T19& t19){
+		Vector res( 19 ) ;                                                                      
+		SEXP names = PROTECT( ::Rf_allocVector( STRSXP, 19 ) ) ;
+		int index = 0 ;
+		iterator it( res.begin() );
+		
+		////
+ replace_element( it, names, index, t1 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t2 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t3 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t4 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t5 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t6 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t7 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t8 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t9 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t10 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t11 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t12 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t13 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t14 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t15 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t16 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t17 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t18 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t19 ) ; ++it; ++index ; 
+		////
+		
+		res.attr("names") = names ;
+		UNPROTECT(1); // names
+		return res ;
+	}
+
+public:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11, typename T12, typename T13, typename T14, typename T15, typename T16, typename T17, typename T18, typename T19, typename T20>
+	static Vector create(const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10, const T11& t11, const T12& t12, const T13& t13, const T14& t14, const T15& t15, const T16& t16, const T17& t17, const T18& t18, const T19& t19, const T20& t20){
+		return create__dispatch( typename traits::integral_constant<bool, 
+  traits::is_named<T1>::value  ||  traits::is_named<T2>::value  ||  traits::is_named<T3>::value  ||  traits::is_named<T4>::value  ||  traits::is_named<T5>::value  ||  traits::is_named<T6>::value  ||  traits::is_named<T7>::value  ||  traits::is_named<T8>::value  ||  traits::is_named<T9>::value  ||  traits::is_named<T10>::value  ||  traits::is_named<T11>::value  ||  traits::is_named<T12>::value  ||  traits::is_named<T13>::value  ||  traits::is_named<T14>::value  ||  traits::is_named<T15>::value  ||  traits::is_named<T16>::value  ||  traits::is_named<T17>::value  ||  traits::is_named<T18>::value  ||  traits::is_named<T19>::value  ||  traits::is_named<T20>::value  
+		>::type(), t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20 ) ;  		
+	}
+	
+private:
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11, typename T12, typename T13, typename T14, typename T15, typename T16, typename T17, typename T18, typename T19, typename T20>
+	static Vector create__dispatch( traits::false_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10, const T11& t11, const T12& t12, const T13& t13, const T14& t14, const T15& t15, const T16& t16, const T17& t17, const T18& t18, const T19& t19, const T20& t20 ){
+		Vector res(20) ;
+		iterator it( res.begin() );
+		
+		////
+ *it = converter_type::get(t1) ; ++it ; 
+ *it = converter_type::get(t2) ; ++it ; 
+ *it = converter_type::get(t3) ; ++it ; 
+ *it = converter_type::get(t4) ; ++it ; 
+ *it = converter_type::get(t5) ; ++it ; 
+ *it = converter_type::get(t6) ; ++it ; 
+ *it = converter_type::get(t7) ; ++it ; 
+ *it = converter_type::get(t8) ; ++it ; 
+ *it = converter_type::get(t9) ; ++it ; 
+ *it = converter_type::get(t10) ; ++it ; 
+ *it = converter_type::get(t11) ; ++it ; 
+ *it = converter_type::get(t12) ; ++it ; 
+ *it = converter_type::get(t13) ; ++it ; 
+ *it = converter_type::get(t14) ; ++it ; 
+ *it = converter_type::get(t15) ; ++it ; 
+ *it = converter_type::get(t16) ; ++it ; 
+ *it = converter_type::get(t17) ; ++it ; 
+ *it = converter_type::get(t18) ; ++it ; 
+ *it = converter_type::get(t19) ; ++it ; 
+ *it = converter_type::get(t20) ; ++it ; 
+		////
+		
+		return res ;
+	}
+	
+	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9, typename T10, typename T11, typename T12, typename T13, typename T14, typename T15, typename T16, typename T17, typename T18, typename T19, typename T20>
+	static Vector create__dispatch( traits::true_type, const T1& t1, const T2& t2, const T3& t3, const T4& t4, const T5& t5, const T6& t6, const T7& t7, const T8& t8, const T9& t9, const T10& t10, const T11& t11, const T12& t12, const T13& t13, const T14& t14, const T15& t15, const T16& t16, const T17& t17, const T18& t18, const T19& t19, const T20& t20){
+		Vector res( 20 ) ;                                                                      
+		SEXP names = PROTECT( ::Rf_allocVector( STRSXP, 20 ) ) ;
+		int index = 0 ;
+		iterator it( res.begin() );
+		
+		////
+ replace_element( it, names, index, t1 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t2 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t3 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t4 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t5 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t6 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t7 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t8 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t9 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t10 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t11 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t12 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t13 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t14 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t15 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t16 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t17 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t18 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t19 ) ; ++it; ++index ; 
+ replace_element( it, names, index, t20 ) ; ++it; ++index ; 
+		////
+		
+		res.attr("names") = names ;
+		UNPROTECT(1); // names
+		return res ;
+	}
+
+/* </code-bloat> */	
+
+	template <typename U>
+	static void replace_element( iterator it, SEXP names, int index, const U& u){
+		replace_element__dispatch( typename traits::is_named<U>::type(), 
+			it, names, index, u ) ;
+	}
+	
+	template <typename U>
+	static void replace_element__dispatch( traits::false_type, iterator it, SEXP names, int index, const U& u){
+		*it = converter_type::get(u);
+	}
+	
+	template <typename U>
+	static void replace_element__dispatch( traits::true_type, iterator it, SEXP names, int index, const U& u){
+		*it = converter_type::get(u.object ) ;
+		SET_STRING_ELT( names, index, ::Rf_mkChar( u.name.c_str() ) ) ;
+	}
+	
 	
 	void set_sexp(SEXP x){
 		Base::setSEXP( x) ;
@@ -808,8 +2109,8 @@ private:
 	
 	iterator insert__impl( iterator position, const stored_type& object){
 		int n = size() ;
-		iterator start = begin() ;
-		int pos = position - start ;
+		// iterator start = begin() ;
+		// int pos = position - start ;
 		Vector target( n+1 ) ;
 		iterator target_it = target.begin();
 		iterator it = begin() ;
@@ -938,19 +2239,23 @@ private:
 		internal::r_init_vector<RTYPE>(Base::m_sexp) ;
 	}
 
-	virtual void update(){ 
+	virtual void update(){
+		RCPP_DEBUG( "%s::update", DEMANGLE(Vector) ) ;
 		update_vector() ;
 	}
 	
 	traits::r_vector_cache<RTYPE> cache ;
-	static converter_type converter ;
-	
+
 } ; /* Vector */
 
 template <int RTYPE> 
 class Matrix : public Vector<RTYPE> {
 public:
 	typedef Vector<RTYPE> VECTOR ;
+	typedef typename VECTOR::iterator iterator ;
+    typedef typename VECTOR::converter_type converter_type ;
+    typedef typename VECTOR::stored_type stored_type ;
+    	
 	Matrix() : VECTOR() {}
 	
 	Matrix(SEXP x) throw(RObject::not_compatible) : VECTOR(){
@@ -967,6 +2272,7 @@ public:
 	}
 	
 	Matrix( const int& nrows, const int& ncols) : VECTOR( Dimension( nrows, ncols ) ) {}
+	Matrix( const int& n) : VECTOR( Dimension( n, n ) ) {}
 	
 	Matrix( const Matrix& other) : VECTOR() {
 		SEXP x = other.asSexp() ;
@@ -974,17 +2280,55 @@ public:
 		VECTOR::setSEXP( x ) ;
 	}
 	
-	Matrix& operator=(const Matrix& other) {
+	Matrix& operator=(const Matrix& other) {                                                         
 		SEXP x = other.asSexp() ;
 		if( ! ::Rf_isMatrix(x) ) throw RObject::not_compatible("not a matrix") ;
 		VECTOR::setSEXP( x ) ;
 		return *this ;
 	}
 	
+	template <typename U>
+    void fill_diag( const U& u){
+    	fill_diag__dispatch( typename traits::is_trivial<RTYPE>::type(), u ) ;	
+    }
+	
+	template <typename U>
+    static Matrix diag( int size, const U& diag_value ){
+    	Matrix res(size,size) ;
+    	res.fill_diag( diag_value ) ;
+    	return res ;
+    }
+    
 private:
 	virtual void update(){
+		RCPP_DEBUG( "%s::update", DEMANGLE(Matrix) ) ;
 		VECTOR::update_vector() ;
 	}
+	
+	template <typename U>
+	void fill_diag__dispatch( traits::false_type, const U& u){
+		SEXP elem = PROTECT( converter_type::get( u ) ) ;
+		int n = Matrix::ncol() ;
+		int offset = n +1 ;
+		iterator it( Matrix::begin()) ;
+		for( int i=0; i<n; i++){
+    		*it = ::Rf_duplicate( elem );
+    		it += offset; 
+    	}
+    	UNPROTECT(1); // elem
+	}
+	
+	template <typename U>
+	void fill_diag__dispatch( traits::true_type, const U& u){
+		stored_type elem = converter_type::get( u ) ;
+		int n = Matrix::ncol() ;
+		int offset = n + 1 ;
+		iterator it( Matrix::begin()) ;
+		for( int i=0; i<n; i++){
+    		*it = elem ;
+    		it += offset; 
+    	}
+    }
 	    
 } ;
 
@@ -1175,7 +2519,9 @@ namespace internal{
 		 * @param index index 
 		 */
 		string_proxy( VECTOR& v, int index_ ) : 
-			parent(&v), index(index_){}
+			parent(&v), index(index_){
+				RCPP_DEBUG( "string_proxy( VECTOR& = <%p>, index_ = %d) ", v.asSexp(), index_ ) ;
+		}
 			
 		string_proxy( const string_proxy& other ) : 
 			parent(other.parent), index(other.index){} ;
@@ -1200,6 +2546,17 @@ namespace internal{
 		 */
 		string_proxy& operator=(const std::string& rhs){
 			set( Rf_mkChar( rhs.c_str() ) ) ;
+			return *this ;
+		}
+		
+		string_proxy& operator=(const char& rhs){
+			set( Rf_mkChar( &rhs ) ) ;
+			return *this ;	
+		}
+		
+		string_proxy& operator=(SEXP rhs){
+			// TODO: check this is a CHARSXP
+			set( rhs ) ;
 			return *this ;
 		}
 		
@@ -1238,7 +2595,7 @@ namespace internal{
 		 * C string
 		 */
 		 operator /*const */ char*() const {
-		 	 return const_cast<char*>( CHAR(STRING_ELT( *parent, index )) );
+		 	 return const_cast<char*>( CHAR(get()) );
 		 }
 		
 		/**
