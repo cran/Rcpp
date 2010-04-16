@@ -1,3 +1,12 @@
+2010-04-16  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION: Release 0.7.12
+
+	* debian/*: Similarly updated for new release to Debian
+
+	* RcppLdpath.R: Remove shQuote() from trying to protect spaces in
+ 	  Windows pathnames as it breaks backticks expansion usage
+
 2010-03-26  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION: Release 0.7.11
