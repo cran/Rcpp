@@ -28,6 +28,35 @@ namespace Rcpp{
 		UNPROTECT(1) ;
 	}
 	exception::~exception() throw(){}
+
+#define RCPP_EXCEPTION_WHAT(__CLASS__) \
+const char* __CLASS__::what() const throw(){ return message.c_str(); }
+
+RCPP_EXCEPTION_WHAT(exception)
+
+RCPP_EXCEPTION_WHAT(not_compatible)
+RCPP_EXCEPTION_WHAT(S4_creation_error)
+RCPP_EXCEPTION_WHAT(no_such_binding)
+RCPP_EXCEPTION_WHAT(binding_not_found)
+RCPP_EXCEPTION_WHAT(binding_is_locked)
+RCPP_EXCEPTION_WHAT(no_such_namespace)
+RCPP_EXCEPTION_WHAT(eval_error)
+
+#undef RCPP_EXCEPTION_WHAT
+
+#define RCPP_SIMPLE_EXCEPTION_WHAT(__CLASS__,__MESSAGE__)  \
+const char* __CLASS__::what() const throw(){ return __MESSAGE__ ; }
+
+RCPP_SIMPLE_EXCEPTION_WHAT(not_a_matrix, "not a matrix" )
+RCPP_SIMPLE_EXCEPTION_WHAT(index_out_of_bounds, "index out of bounds" )
+RCPP_SIMPLE_EXCEPTION_WHAT(parse_error, "parse error") 
+RCPP_SIMPLE_EXCEPTION_WHAT(not_s4, "not an S4 object" )
+RCPP_SIMPLE_EXCEPTION_WHAT(no_such_slot, "no such slot" )
+RCPP_SIMPLE_EXCEPTION_WHAT(not_a_closure, "not a closure" )
+RCPP_SIMPLE_EXCEPTION_WHAT(no_such_function, "no such function" )
+RCPP_SIMPLE_EXCEPTION_WHAT(unevaluated_promise, "promise not yet evaluated" )
+
+#undef RCPP_SIMPLE_EXCEPTION_WHAT
 }
 
 /* for now, the fancy exception handling is only available in GCC, 
@@ -98,7 +127,30 @@ void forward_uncaught_exceptions_to_r(){
 		R_FindNamespace(Rf_mkString("Rcpp"))
 	     ) ; 
 }
-
+void forward_exception_to_r( const std::exception& ex){
+	std::string exception_class ;
+    std::string exception_what  = ex.what();
+   	const char *name = typeid(ex).name() ;
+   	// now we need to demangle "name"
+   	{
+		int status = -1;
+		char *dem = 0;
+		dem = abi::__cxa_demangle(name, 0, 0, &status);
+		if( status == 0){
+			exception_class = dem ; /* great we can use the demangled name */
+			free(dem);
+		} else{
+			exception_class = name ; /* just using the mangled name */
+		}
+   }
+   Rf_eval( 
+	    Rf_lang3( 
+		     Rf_install("cpp_exception"), 
+		     Rf_mkString(exception_what.c_str()), 
+		     Rf_mkString(exception_class.c_str())
+		), R_FindNamespace(Rf_mkString("Rcpp"))
+	) ; 
+}
 #else
 void forward_uncaught_exceptions_to_r(){
 	Rf_eval( 
@@ -108,6 +160,16 @@ void forward_uncaught_exceptions_to_r(){
 		     R_NilValue), 
 		R_FindNamespace(Rf_mkString("Rcpp"))
 	     ) ; 
+}
+void forward_exception_to_r( const std::exception& ex){
+	Rf_eval( 
+	    Rf_lang3( 
+		     Rf_install("cpp_exception"), 
+		     Rf_mkString(ex.what()), 
+		     R_NilValue), 
+		R_FindNamespace(Rf_mkString("Rcpp"))
+	     ) ; 
+	
 }
 std::string demangle( const std::string& name ){
 	return name ;	

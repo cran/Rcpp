@@ -3,6 +3,7 @@
 // RcppDatetime.h: Rcpp R/C++ interface class library -- Datetime type support
 //
 // Copyright (C) 2008 - 2009 Dirk Eddelbuettel
+// Copyright (C) 2010	     Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -21,6 +22,7 @@
 
 #include <RcppDatetime.h>
 #include <time.h> // for strftime
+#include <Rmath.h> // for Rf_fround
 
 RcppDatetime::RcppDatetime(void) : m_d(0), 
 				   m_parsed(false), 
@@ -44,7 +46,7 @@ void RcppDatetime::parseTime() {
     m_tm = *localtime(&tt);			// parse time type into time structure 
 
     // m_us is fractional (micro)secs is diff. between (fractional) m_d and m_tm
-    m_us = static_cast<int>(round( (m_d - tt) * 1.0e6));	
+    m_us = static_cast<int>( ::Rf_fround( (m_d - tt) * 1.0e6, 0.0 ) );	
 
     m_parsed = true;				// and note that we parsed the time type
 }
