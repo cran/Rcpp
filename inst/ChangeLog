@@ -1,3 +1,101 @@
+2010-05-17  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION: Release 0.8.0
+
+	* debian/*: Similarly updated for new release to Debian
+
+2010-05-11  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/traits/*.h: added support for long long int and
+	unsigned long long int, which is size_t on win64
+
+2010-05-10  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/Dimension.h: added a const operator[], requested
+	in the Rcpp-devel thread : http://article.gmane.org/gmane.comp.lang.r.rcpp/327
+
+	* inst/include/Rcpp/preprocessor.h: added __rcpp_info__ pseudo reflection information
+	to RCPP_XP_FIELD
+
+	* inst/unitTests/runit.macros.R: testing RCPP_XP_FIELD
+
+2010-05-06  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/DataFrame.h: DataFrame( RObject::SlotProxy ) and
+	DataFrame( RObject::AttributeProxy ) constructors
+
+	* inst/include/Rcpp/DataFrame.h: DataFrame::create now uses the R
+	function data.frame and not as.data.frame, which respects the
+	stringsAsFactors argument.
+
+	* inst/include/Rcpp/preprocessor.h: added RCPP_XP_FIELD_SET and
+	RCPP_XP_FIELD_SET macros to generate getter and setter for a field of
+	a class handled by an external pointer. RCPP_XP_FIELD is modified to
+	generate both getter and setter
+
+2010-05-05  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/S4.h: S4 gains a "is" method to identify if an
+	object is of a given S4 class, following Doug's advice in lme4a
+
+	* inst/include/Rcpp/algo.h: new STL-like algorithms Rcpp::any and
+	Rcpp::any_if
+
+	* inst/include/Rcpp/Vector.h: Vector gains a constructor taking an
+	RObject::SlotProxy and a constructor taking an RObject::AttributeProxy,
+	allowing this construct NumericVector x( y.slot( "foo" ) )
+
+2010-05-04  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/preprocessor_generated.h: new macros to hide most of
+	the boiler plate code
+	  RCPP_FUNCTION_0, ..., RCPP_FUNCTION_1
+	  RCPP_FUNCTION_VOID_0, ...
+	  RCPP_XP_METHOD_0, ...
+	  RCPP_XP_METHOD_CAST_0, ...
+	  RCPP_XP_METHOD_VOID_0, ...
+
+2010-05-03  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/unitTests/runit.DataFrame.R: unit tests for Rcpp::DataFrame
+
+2010-05-03  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/exceptions.h : move the what methods of exception
+	classes so that the symbol is defined for sure in the shared
+	library. This seems to make a difference due to vague linkage
+	issues. Decrypted from http://gcc.gnu.org/wiki/Visibility
+
+2010-05-02  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/as.h: add throw(not_compatible) in Rcpp::as
+
+	* inst/include/Rcpp/clone.h: the clone(SEXP) moves to the headers
+
+2010-04-28  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/Vector.h: changed Vector( size_t ) to Vector( int )
+	to allow Vector( 0 ) and Vector::create()
+
+2010-04-27  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/preprocessor.h: new macro RCPP_ENUM_TRAITS to
+	generate traits needed to support wrap for an enum type (used in
+	RProtoBuf)
+
+	* R/Rcpp.package.skeleton.R: correctly handle the example_code
+	argument
+
+2010-04-26  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/DataFrame_*.h: new class Rcpp::DataFrame
+
+	* inst/include/Rcpp/preprocessor.h: added RCPP_XP_FIELD macro
+
+	* inst/include/Rcpp/preprocessor_generated.h: added the set of macros
+	RCPP_WRAPPER_0, ..., RCPP_WRAPPER_65 to help wrapping existing
+	C functions into .Call callables functions
+
 2010-04-16  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION: Release 0.7.12
@@ -6,6 +104,30 @@
 
 	* RcppLdpath.R: Remove shQuote() from trying to protect spaces in
  	  Windows pathnames as it breaks backticks expansion usage
+
+2010-04-06  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/traits/*.h: added support for long
+
+2010-04-04  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/* : headers are moved to inst/include so that they are
+	are not duplicated on multi arch platforms
+
+	* R/RcppLdPath.R: RcppCxxFlags is updated to reflect the above change
+
+	* src/Makevars: simplified as the headers don't need to be copied to each
+	arch lib directory anymore
+
+	* src/Makevars.win: same
+
+	* inst/include/Rcpp/Vector.h : Vector<> gains a templated assignment
+	operator
+
+2010-04-02  Romain Francois <romain@r-enthusiasts.com>
+
+	* src/Rcpp/Formula.h: new Rcpp::Formula class
+	* inst/unitTests/runit.Formula.R: unit test for Rcpp::Formula
 
 2010-03-26  Dirk Eddelbuettel  <edd@debian.org>
 
@@ -23,7 +145,7 @@
 
 2010-03-23  Dirk Eddelbuettel  <edd@debian.org>
 
-        * inst/unitTests/runit.CharacterVector.R: New unit test or bug found by Doug
+        * inst/unitTests/runit.CharacterVector.R: New unit test for bug found by Doug
 
 2010-03-23  Romain Francois <romain@r-enthusiasts.com>
 

@@ -1,7 +1,7 @@
 Package: Rcpp
 Title: Rcpp R/C++ interface package
-Version: 0.7.12
-Date: $Date: 2010-04-16 06:09:23 -0500 (Fri, 16 Apr 2010) $
+Version: 0.8.0
+Date: $Date: 2010-05-12 19:36:26 -0500 (Wed, 12 May 2010) $
 Author: Dirk Eddelbuettel and Romain Francois, with contributions by
         Simon Urbanek, David Reiss and Douglas Bates; based on code
         written during 2005 and 2006 by Dominick Samperi
@@ -50,14 +50,16 @@ Description: Seamless R and C++ integration The Rcpp package contains a
         'inlined' character argument which makes C++ integration very
         easy.
  .
- Several examples are included, and over 150 unit tests provide
-        addtional usage examples.
-Depends: R (>= 2.10.0)
-Suggests: inline (>= 0.3.4), RUnit
-SystemRequirements: None
+ Several examples are included, and over 530 unit tests in over 240 unit
+        test functions provide addtional usage examples.
+Depends: R (>= 2.10.0), inline (>= 0.3.4)
+Suggests: RUnit
+SystemRequirements: GNU make
 URL: http://dirk.eddelbuettel.com/code/rcpp.html,
         http://romainfrancois.blog.free.fr/index.php?category/R-package/Rcpp
 License: GPL (>= 2)
-Packaged: 2010-04-16 11:19:54 UTC; edd
+BugReports:
+        http://r-forge.r-project.org/tracker/?atid=637&group_id=155&func=browse
+Packaged: 2010-05-17 11:49:42 UTC; edd
 Repository: CRAN
-Date/Publication: 2010-04-16 16:03:35
+Date/Publication: 2010-05-17 13:23:57

@@ -94,6 +94,7 @@ const char * sexp_to_name(int sexp_type) {
     switch (sexp_type) {
     case NILSXP:	return "NILSXP";
     case SYMSXP:	return "SYMSXP";
+    case RAWSXP:	return "RAWSXP";
     case LISTSXP:	return "LISTSXP";
     case CLOSXP:	return "CLOSXP";
     case ENVSXP:	return "ENVSXP";
@@ -120,9 +121,8 @@ const char * sexp_to_name(int sexp_type) {
     }
 }
 
-SEXP initRcpp(){
-	initUncaughtExceptionHandler() ;
-	return R_NilValue ;
+extern "C" void R_init_Rcpp(DllInfo* info){
+	// initUncaughtExceptionHandler() ;
 }
    
 namespace Rcpp{

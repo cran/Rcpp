@@ -10,15 +10,12 @@
 #
 # Contributions from Brian D Ripley are also gratefully acknowledged 
 
-PKG_CPPFLAGS =	-I.
-
-## all sources and objects
-SOURCES =	$(wildcard *.cpp)
-OBJECTS =	$(SOURCES:.cpp=.o)
+PKG_CPPFLAGS =	-I../inst/include/
 
 ## we place it inside the inst/ directory so that it gets installed by the package
 USERDIR	= 	../inst/lib$(R_ARCH)
-USERLIB	= 	$(USERDIR)/libRcpp.a
+STATICLIB =	libRcpp.a
+USERLIB	= 	$(USERDIR)/$(STATICLIB)
 
 ## C++0X support enabled if 
 ## - the RCPP_CXX0X environment variable is set to "yes"
@@ -32,22 +29,18 @@ endif
 
 RM = 		rm -f
 
-.PHONY: 	all clean userdir
+.PHONY: 	all clean
 
-all: 		userdir $(USERLIB) $(SHLIB)
+all: 		userlib $(SHLIB)
 
 clean:
 		${RM} $(OBJECTS) $(SHLIB)
 
-userdir:
-		-mkdir -p $(USERDIR)/Rcpp/internal 2>/dev/null
-		-mkdir -p $(USERDIR)/Rcpp/traits 2>/dev/null
-		cp -vax *.h $(USERDIR)
-		cp -vax Rcpp/*.h $(USERDIR)/Rcpp
-		cp -vax Rcpp/internal/*.h $(USERDIR)/Rcpp/internal
-		cp -vax Rcpp/traits/*.h $(USERDIR)/Rcpp/traits
-
 $(USERLIB):	$(OBJECTS)
 
+userlib:	$(STATICLIB)
+		-mkdir -p $(USERDIR)
+		-mv $(STATICLIB) $(USERLIB) 
 
+$(STATICLIB):	$(OBJECTS)
 
