@@ -24,6 +24,8 @@
 #ifndef RcppCommon_h
 #define RcppCommon_h
 
+#include <Rcpp/config.h>
+
 void logTxtFunction(const char* file, const int line, const char* expression ) ;
 
 /**
@@ -56,8 +58,8 @@ namespace Rcpp{
 		#endif
 	#endif
 	// FIXME: [romain] I did not actually check, tr1::unordered_map was 
-	// probably introduced before GCC 4.3
-	#if GCC_VERSION >= 40300
+	// probably introduced before GCC 4.2.1
+	#if GCC_VERSION >= 40201
 		#define HAS_TR1
 		#define HAS_TR1_UNORDERED_MAP
 		#define HAS_TR1_UNORDERED_SET
@@ -147,6 +149,11 @@ RcppExport inline SEXP canUseCXX0X(){ return Rf_ScalarLogical( FALSE ); }
 RcppExport SEXP test_named() ;
 RcppExport SEXP capabilities() ;
 
+/**
+ * the address of the pointer wrapped by an external pointer
+ */
+RcppExport SEXP as_character_externalptr(SEXP); 
+
 const char * sexp_to_name(int sexp_type); 
 
 #include <Rcpp/exceptions.h>
@@ -216,6 +223,12 @@ SEXP stack_trace( const char *file, int line) ;
 #include <Rcpp/traits/storage_type.h>
 #include <Rcpp/traits/r_type_traits.h>
 #include <Rcpp/traits/wrap_type_traits.h>
+
+#include <Rcpp/traits/is_const.h>
+#include <Rcpp/traits/is_reference.h>
+#include <Rcpp/traits/remove_const.h>
+#include <Rcpp/traits/remove_reference.h>
+#include <Rcpp/traits/remove_const_and_reference.h>
 
 #include <Rcpp/internal/caster.h>
 #include <Rcpp/internal/r_vector.h>

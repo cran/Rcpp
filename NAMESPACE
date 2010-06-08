@@ -1,9 +1,16 @@
 useDynLib(Rcpp)
 
+import( methods )
 export(Rcpp.package.skeleton)
-export(cppfunction)
 
-importFrom( utils, capture.output )
+importFrom( utils, capture.output, assignInNamespace )
 
-importFrom( inline, cfunction )
+exportClasses( Module, "C++Class", "C++Object", "C++ObjectS3" )
+export( Module )
+exportMethods( new )
+
+importFrom( utils, .DollarNames, prompt )
+S3method( .DollarNames, "C++ObjectS3" )
+S3method( .DollarNames, "Module" )
+exportMethods( prompt )
 

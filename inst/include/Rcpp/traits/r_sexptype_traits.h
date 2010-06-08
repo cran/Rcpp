@@ -32,6 +32,7 @@ namespace traits{
  */
 template <typename T> struct r_sexptype_traits{ enum{ rtype = VECSXP }; } ;
 template<> struct r_sexptype_traits<int>{ enum{ rtype = INTSXP } ; } ;
+template<> struct r_sexptype_traits<const int>{ enum{ rtype = INTSXP } ; } ;
 template<> struct r_sexptype_traits<double>{ enum{ rtype = REALSXP } ; } ;
 template<> struct r_sexptype_traits<bool>{ enum{ rtype = LGLSXP } ; } ;
 template<> struct r_sexptype_traits<std::string>{ enum{ rtype = STRSXP } ; } ;
@@ -61,6 +62,11 @@ template<> struct r_sexptype_traits<unsigned short>{ enum{ rtype = INTSXP } ; } 
 template<> struct r_sexptype_traits<rcpp_long_long_type>{ enum{ rtype = REALSXP } ; } ;
 template<> struct r_sexptype_traits<rcpp_ulong_long_type>{ enum{ rtype = REALSXP } ; } ;
 #endif
+
+/* std::complex */
+template<> struct r_sexptype_traits< std::complex<double> >{ enum{ rtype = CPLXSXP } ; } ;
+template<> struct r_sexptype_traits< std::complex<float> >{ enum{ rtype = CPLXSXP } ; } ;
+
 
 /**
  * Indicates if a primitive type needs a static_cast

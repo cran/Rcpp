@@ -14,7 +14,7 @@ Create a skeleton for a new package depending on Rcpp
 Rcpp.package.skeleton(name = "anRpackage", list = character(), 
 	environment = .GlobalEnv, path = ".", force = FALSE, 
 	namespace = TRUE, code_files = character(), 
-	example_code = TRUE )
+	example_code = TRUE, module = FALSE )
 }
 \arguments{
 	\item{name}{See \link[utils]{package.skeleton}}
@@ -24,7 +24,8 @@ Rcpp.package.skeleton(name = "anRpackage", list = character(),
 	\item{force}{See \link[utils]{package.skeleton}}
 	\item{namespace}{See \link[utils]{package.skeleton}}
 	\item{code_files}{See \link[utils]{package.skeleton}}
-	\item{example_code}{If TRUE, example c++ code using Rcpp is added to the package}
+	\item{example_code}{If TRUE, example c++ code using Rcpp is added to the package. }
+	\item{module}{If TRUE, an example \code{\link{Module}} is added to the skeleton. }
 }
 \details{
 	In addition to \link[utils]{package.skeleton} : 
@@ -46,6 +47,9 @@ Rcpp.package.skeleton(name = "anRpackage", list = character(),
 	defined in this files makes use of the C++ function \samp{rcpp_hello_world}
 	defined in the C++ file. These files are given as an example and should 
 	eventually by removed from the generated package.
+	
+	If the \code{module} argument is \code{TRUE}, a sample Rcpp module will 
+	be generated as well. 
 }
 \value{
 Nothing, used for its side effects
@@ -62,7 +66,18 @@ see the \emph{R Installation and Administration} manual,
 }
 \examples{
 \dontrun{
+# simple package
 Rcpp.package.skeleton( "foobar" )
+
+# package with a module
+Rcpp.package.skeleton( "testmod", module = TRUE )
+
+# the Rcpp-package vignette
+vignette( "Rcpp-package" )
+
+# the Rcpp-modules vignette for information about modules
+vignette( "Rcpp-modules" )
+
 }
 }
 \keyword{ programming }
