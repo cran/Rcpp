@@ -51,8 +51,12 @@ namespace internal{
 #define BEGIN_RCPP try{ 
 #endif 
 
+#ifndef VOID_END_RCPP
+#define VOID_END_RCPP } catch( std::exception& __ex__ ){ forward_exception_to_r( __ex__ ) ; } catch(...){ ::Rf_error( "c++ exception (unknown reason)" ) ; }
+#endif
+
 #ifndef END_RCPP
-#define END_RCPP } catch( std::exception& __ex__ ){ forward_exception_to_r( __ex__ ) ; } catch(...){ ::Rf_error( "c++ exception (unknown reason)" ) ; }
+#define END_RCPP VOID_END_RCPP return R_NilValue;
 #endif
 
 #include <Rcpp/preprocessor_generated.h>
@@ -72,10 +76,10 @@ extern "C" SEXP RCPP_PP_CAT(__NAME__,__rcpp_info__)(){         \
 extern "C" SEXP __NAME__( SEXP xp ){                           \
 	SEXP res = R_NilValue ;                                    \
 	BEGIN_RCPP                                                 \
-		::Rcpp::XPtr<__CLASS__> ptr(xp) ;                      \
+		::Rcpp::XPtr< __CLASS__ > ptr(xp) ;                    \
 		res = ::Rcpp::wrap( ptr->__FIELD__ ) ;                 \
-	END_RCPP                                                   \
 	return res ;                                               \
+	END_RCPP                                                   \
 }
 
 #define RCPP_XP_FIELD_SET(__NAME__,__CLASS__,__FIELD__)        \
@@ -90,10 +94,9 @@ extern "C" SEXP RCPP_PP_CAT(__NAME__,__rcpp_info__)(){         \
 }                                                              \
 extern "C" SEXP __NAME__( SEXP xp, SEXP value ){               \
 	BEGIN_RCPP                                                 \
-		::Rcpp::XPtr<__CLASS__> ptr(xp) ;                      \
+		::Rcpp::XPtr< __CLASS__ > ptr(xp) ;                    \
 		ptr->__FIELD__ = ::Rcpp::internal::converter(value) ;  \
 	END_RCPP                                                   \
-	return R_NilValue ;                                        \
 }
 
 #define RCPP_XP_FIELD(__PREFIX__,__CLASS__,__FIELD__)          \
@@ -103,16 +106,16 @@ RCPP_XP_FIELD_SET( RCPP_PP_CAT(__PREFIX__,_set), __CLASS__, __FIELD__ )
 
 #define RCPP_TRAITS(__CLASS__,__SEXPTYPE__)                     \
 namespace Rcpp{ namespace traits {                                \
-template<> struct r_type_traits<__CLASS__>{                       \
+template<> struct r_type_traits< __CLASS__ >{                       \
 	typedef r_type_primitive_tag r_category ;                     \
 } ;                                                               \
 template<> struct r_type_traits< std::pair< std::string , __CLASS__ > >{   \
 	typedef r_type_pairstring_primitive_tag r_category ;          \
 } ;                                                               \
-template<> struct wrap_type_traits<__CLASS__>{                    \
+template<> struct wrap_type_traits< __CLASS__ >{                    \
 	typedef wrap_type_primitive_tag wrap_category ;               \
 } ;                                                               \
-template<> struct r_sexptype_traits<__CLASS__>{                   \
+template<> struct r_sexptype_traits< __CLASS__ >{                   \
 	enum{ rtype = __SEXPTYPE__ } ;                                \
 } ;                                                               \
 } }
@@ -140,8 +143,6 @@ template<> struct r_sexptype_traits<__CLASS__>{                   \
 
 #define RCPP_RETURN_VECTOR( _FUN_, _SEXP_ )  ___RCPP_RETURN___( _FUN_, _SEXP_ , Vector ) 
 #define RCPP_RETURN_MATRIX( _FUN_, _SEXP_ )  ___RCPP_RETURN___( _FUN_, _SEXP_ , Matrix )
-
-#define RCPP_REGISTER(__NAME__) 
 
 
 #endif

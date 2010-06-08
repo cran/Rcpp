@@ -14,17 +14,20 @@
 
 if(require("RUnit", quietly = TRUE)) {
   pkg <- "Rcpp"
-
+                                       
   require( pkg, character.only=TRUE)
-
+  
   path <- system.file("unitTests", package = pkg)
-
+  
   stopifnot(file.exists(path), file.info(path.expand(path))$isdir)
-
-  # without this, we get many bunch of unit test failures
+  
+  # without this, we get unit test failures
   Sys.setenv( R_TESTS = "" )
   
+  Rcpp.unit.test.output.dir <- getwd()
+  
   source(file.path(path, "runTests.R"), echo = TRUE)
+  
 } else {
 	print( "package RUnit not available, cannot run unit tests" )
-}
+}                                                                                                 

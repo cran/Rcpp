@@ -1,3 +1,127 @@
+2010-06-08  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION: Release 0.8.1
+
+	* debian/*: Similarly updated for new release to Debian
+
+2010-06-05  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/doc/Rcpp-FAQ*: new mini vignette "Rcpp-FAQ"
+
+2010-06-05  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/doc/Rcpp-FAQ*: Extended mini vignette "Rcpp-FAQ"
+
+2010-06-04  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/Module.h:
+	* R/Module.R: support for properties of C++ objects
+
+2010-06-03  Romain Francois <romain@r-enthusiasts.com>
+
+	* src/RcppCommn.cpp: added show method for C++Object and C++Class
+
+	* inst/include/Rcpp/XPtr.h: getTag and getProtected are deprecated, will be
+	removed in Rcpp 0.8.2. methods tag and prot should be used instead. The new
+	methods support both lhs and rhs use.
+
+2010-06-02  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/traits/r_type_traits.h: added missing support for
+	std::complex<double>, needed by RcppArmadillo
+
+	* src/RcppCommon.cpp: added internal .Call function as_character_externalptr
+	to extract the address of the pointer wrapped by an external pointer
+
+2010-06-01  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/doc/Rcpp-package*: new mini vignette "Rcpp-package" to improve the
+	documentation of Rcpp.package.skeleton and details the steps involved in
+	making a package that uses Rcpp
+
+	* inst/doc/Rcpp-modules/Rcpp-modules.Rnw: document how to use modules
+	in other packages (namespace, etc ...)
+
+	* R/Rcpp.package.skeleton: added the module argument
+
+	* R/Module.R: prompt method for Module objects to generate skeleton of an Rd
+	file with the list of functions and classes defined by the module.
+
+2010-05-30  Romain Francois <romain@r-enthusiasts.com>
+
+	* R/Module.R: completion for C++ modules.
+
+2010-05-29  Romain Francois <romain@r-enthusiasts.com>
+
+	* R/Module.R: when a Module is loaded, it creates extensions of the
+	class C++Object for each internal class to enable S4 dispatch
+
+	* R/Module.R: support for completion of methods of C++ objects
+
+2010-05-28  Romain Francois <romain@r-enthusiasts.com>
+
+	* R/cppfunction.R: withdrawn, we now use inline::cxxfunction which is
+	more flexible and we no longer need to depend on inline
+	* man/cppfunction.Rd: *
+
+	* inst/unitTests/runTests.R: The tests now require a recent version
+	of inline (>= 0.3.4.2)
+
+2010-05-27  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/Module.h: adding support for registering a free function
+	that takes a pointer to the class of the wrapped object as first argument
+	in class_
+
+2010-05-26  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/Module.h:
+	* src/Module.cpp : limited support for exposing c++ classes in Rcpp modules
+
+	* R/Module.R : classes "C++Class", "C++Object" holding external pointers
+	and $ method dispatching internally
+
+2010-05-24  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/Rcpp*.cpp: Moved template code from the older API to headers
+	headers in inst/include/*.h; removed empty source files
+
+2010-05-21  Romain Francois <romain@r-enthusiasts.com>
+
+	* R/exceptions.R: rework rcpp_tryCatch to prevent evaluating the
+	expression too early (reported by Doug Bates on Rcpp-devel)
+
+	* src/Evaluator.cpp: rework Evaluator::run() so that it correctly
+	evaluates inside an environment (reported by Doug Bates on
+	Rcpp-devel)
+
+2010-05-20  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/Vector.h : correct throw specs for
+	vector_from_string (reported by Brian Ripley from solaris)
+
+	* inst/include/Rcpp/internal/Proxy_Iterator.h: fixed constness of
+	several operators in Proxy_Iterator to try to suite suncc/solaris
+
+	* inst/include/Rcpp/config.h: define RCPP_ENABLE_MODULES to hide
+	the experimental module features from the official api
+
+	* R/getDLL.R: removed and promoted to getDynLib in inline
+
+2010-05-19  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/as.h: add throw specification to as
+	specialization, reported by suncc compiler on CRAN checks
+
+	* inst/include/Rcpp/Module.h : adding the concept of Rcpp modules,
+	inspired from boost.python
+
+	* R/Module.R: R side support for modules
+
+	* R/getDLL.R: generic (s4) function to get the DLL based on either
+	its name e.g. getDLL( "Rcpp" ) or an object of class CFunc (from the
+	inline package)
+
 2010-05-17  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION: Release 0.8.0
@@ -12,10 +136,11 @@
 2010-05-10  Romain Francois <romain@r-enthusiasts.com>
 
 	* inst/include/Rcpp/Dimension.h: added a const operator[], requested
-	in the Rcpp-devel thread : http://article.gmane.org/gmane.comp.lang.r.rcpp/327
+	in the Rcpp-devel thread :
+	http://article.gmane.org/gmane.comp.lang.r.rcpp/327
 
-	* inst/include/Rcpp/preprocessor.h: added __rcpp_info__ pseudo reflection information
-	to RCPP_XP_FIELD
+	* inst/include/Rcpp/preprocessor.h: added __rcpp_info__ pseudo
+	reflection information to RCPP_XP_FIELD
 
 	* inst/unitTests/runit.macros.R: testing RCPP_XP_FIELD
 

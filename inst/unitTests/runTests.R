@@ -1,5 +1,17 @@
 pkg <- "Rcpp"
 
+if( ! require( "inline", character.only = TRUE, quietly = TRUE ) ){
+	stop( "The inline package is required to run Rcpp unit tests" )
+}
+
+if( compareVersion( packageDescription( "inline" )[["Version"]], "0.3.4.4" ) < 0 ){
+	stop( "Rcpp unit tests need at least the version 0.3.4.4 of inline" )
+}
+
+cppfunction <- function(...){
+	cxxfunction( ..., plugin = "Rcpp" )
+}
+
 if(require("RUnit", quietly = TRUE)) {
 
     is_local <- function(){
@@ -16,7 +28,9 @@ if(require("RUnit", quietly = TRUE)) {
     ## --- Testing ---
 
     ## Define tests
-    testSuite <- defineTestSuite(name=paste(pkg, "unit testing"), dirs = path )
+    testSuite <- defineTestSuite(name=paste(pkg, "unit testing"), dirs = path
+    	# , testFileRegexp = "runit.Argument.R"
+    )
 
     if(interactive()) {
         cat("Now have RUnit Test Suite 'testSuite' for package '", pkg,
@@ -40,16 +54,22 @@ if(require("RUnit", quietly = TRUE)) {
         		}
         	}
         }
-        
-        # give a chance to the user to customize where he/she wants 
-        # the unit tests results to be stored with the --output= command 
-        # line argument
-        if( exists( "argv",  globalenv() ) ){
-        	# littler
-        	output <- process_args(argv)
-        } else {
-        	# Rscript
-        	output <- process_args(commandArgs(TRUE))
+               
+        # R CMD check uses this
+        if( exists( "Rcpp.unit.test.output.dir", globalenv() ) ){
+			output <- Rcpp.unit.test.output.dir
+		} else {
+          
+        	# give a chance to the user to customize where he/she wants 
+        	# the unit tests results to be stored with the --output= command 
+        	# line argument
+        	if( exists( "argv",  globalenv() ) ){
+        		# littler
+        		output <- process_args(argv)
+        	} else {
+        		# Rscript
+        		output <- process_args(commandArgs(TRUE))
+        	}
         }
         
         # if it did not work, try to use /tmp
