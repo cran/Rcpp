@@ -1,7 +1,7 @@
 Package: Rcpp
 Title: Rcpp R/C++ interface package
-Version: 0.8.1
-Date: $Date: 2010-06-08 05:27:31 -0500 (Tue, 08 Jun 2010) $
+Version: 0.8.2
+Date: $Date: 2010-06-09 11:19:44 -0500 (Wed, 09 Jun 2010) $
 Author: Dirk Eddelbuettel and Romain Francois, with contributions by
         Simon Urbanek, David Reiss and Douglas Bates; based on code
         written during 2005 and 2006 by Dominick Samperi
@@ -60,6 +60,6 @@ URL: http://dirk.eddelbuettel.com/code/rcpp.html,
 License: GPL (>= 2)
 BugReports:
         http://r-forge.r-project.org/tracker/?atid=637&group_id=155&func=browse
-Packaged: 2010-06-08 10:34:22 UTC; edd
+Packaged: 2010-06-09 16:26:59 UTC; edd
 Repository: CRAN
-Date/Publication: 2010-06-08 13:19:29
+Date/Publication: 2010-06-10 06:26:29
