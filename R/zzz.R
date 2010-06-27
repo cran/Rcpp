@@ -15,5 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-.onLoad <- function(libname, pkgname){}
+.onLoad <- function(libname, pkgname){
+	install_help_workaround()
+}
 

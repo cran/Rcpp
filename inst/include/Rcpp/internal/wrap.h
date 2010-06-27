@@ -30,17 +30,11 @@
 
 namespace Rcpp{
 
-// pre-declaring wrap :
-template <typename T> SEXP wrap(const T& object) ;
-
+template <typename T> SEXP wrap( const T& object ) ;
+	
 namespace internal{
-
-// pre declaring
-template <typename InputIterator> SEXP range_wrap(InputIterator first, InputIterator last) ;
-template <typename InputIterator> SEXP rowmajor_wrap(InputIterator first, int nrow, int ncol) ;
-
-// {{{ information about R vectors
-// }}}
+	template <typename InputIterator> SEXP range_wrap(InputIterator first, InputIterator last) ;
+	template <typename InputIterator> SEXP rowmajor_wrap(InputIterator first, int nrow, int ncol) ;
 
 // {{{ range wrap 
 // {{{ unnamed range wrap
@@ -63,7 +57,7 @@ SEXP primitive_range_wrap__impl( InputIterator first, InputIterator last, ::Rcpp
 		caster< T, typename ::Rcpp::traits::storage_type<RTYPE>::type >
 		) ; 
 	UNPROTECT(1) ;
-	return x ;
+	return wrap_extra_steps<T>( x ) ;
 }
 
 /**
@@ -81,7 +75,7 @@ SEXP primitive_range_wrap__impl( InputIterator first, InputIterator last, ::Rcpp
 	SEXP x = PROTECT( Rf_allocVector( RTYPE, size ) );
 	std::copy( first, last, r_vector_start<RTYPE, typename ::Rcpp::traits::storage_type<RTYPE>::type >(x) ) ; 
 	UNPROTECT(1) ;
-	return x ;
+	return wrap_extra_steps<T>( x ) ;
 }
 
 
@@ -165,7 +159,7 @@ SEXP range_wrap_dispatch___impl__cast( InputIterator first, InputIterator last, 
 	}
 	::Rf_setAttrib( x, R_NamesSymbol, names ) ;
 	UNPROTECT(2) ; /* x, names */
-	return x ;
+	return wrap_extra_steps<T>( x ) ;
 }
 
 /** 
@@ -194,7 +188,7 @@ SEXP range_wrap_dispatch___impl__cast( InputIterator first, InputIterator last, 
 	}
 	::Rf_setAttrib( x, R_NamesSymbol, names ) ;
 	UNPROTECT(2) ; /* x, names */
-	return x ;
+	return wrap_extra_steps<T>( x ) ;
 }
 
 
@@ -398,6 +392,21 @@ SEXP wrap_dispatch_unknown_iterable(const T& object, ::Rcpp::traits::false_type)
 	return R_NilValue ; // -Wall
 }
 
+template <typename T>
+SEXP wrap_dispatch_unknown_iterable__logical( const T& object, ::Rcpp::traits::true_type){
+	size_t size = object.size() ;
+	SEXP x = PROTECT( Rf_allocVector( LGLSXP, size ) );
+	std::copy( object.begin(), object.end(), LOGICAL(x) ) ; 
+	UNPROTECT(1) ;
+	return x ;
+}
+
+template <typename T>
+SEXP wrap_dispatch_unknown_iterable__logical( const T& object, ::Rcpp::traits::false_type){
+	return range_wrap( object.begin(), object.end() ) ;
+}
+
+
 /**
  * Here we know for sure that type T has a T::iterator typedef
  * so we hope for the best and call the range based wrap with begin
@@ -412,7 +421,8 @@ SEXP wrap_dispatch_unknown_iterable(const T& object, ::Rcpp::traits::false_type)
  */
 template <typename T>
 SEXP wrap_dispatch_unknown_iterable(const T& object, ::Rcpp::traits::true_type){
-	return range_wrap( object.begin(), object.end() ) ;
+	return wrap_dispatch_unknown_iterable__logical( object, 
+		typename ::Rcpp::traits::expands_to_logical<T>::type() ) ;
 }
 
 template <typename T, typename elem_type>

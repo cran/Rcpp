@@ -31,11 +31,45 @@ test.DataFrame.FromSEXP <- function() {
     checkEquals( fun(DF), DF, msg = "DataFrame pass-through")
 }
 
+test.DataFrame.index.byName <- function() {
+    DF <- data.frame(a=1:3, b=c("a","b","c"))
+    fun <- cppfunction( signature(x='ANY', y='character'), '
+	DataFrame df(x);
+        std::string s = as<std::string>(y);
+	return df[s];
+    ' )
+    checkEquals( fun(DF, "a"), DF$a, msg = "DataFrame column by name 'a'")
+    checkEquals( fun(DF, "b"), DF$b, msg = "DataFrame column by name 'b'")
+}
+
+test.DataFrame.index.byPosition <- function() {
+    DF <- data.frame(a=1:3, b=c("a","b","c"))
+    fun <- cppfunction( signature(x='ANY', y='integer'), '
+	DataFrame df(x);
+        int i = as<int>(y);
+	return df[i];
+    ' )
+    checkEquals( fun(DF, 0), DF$a, msg = "DataFrame column by position 0")
+    checkEquals( fun(DF, 1), DF$b, msg = "DataFrame column by position 1")
+}
+
+test.DataFrame.string.element <- function() {
+    DF <- data.frame(a=1:3, b=c("a","b","c"), stringsAsFactors=FALSE)
+    fun <- cppfunction( signature(x='ANY'), '
+        DataFrame df(x);
+        CharacterVector b = df[1];
+        std::string s;
+        s = b[1];
+        return wrap(s);
+    ' )
+    checkEquals( fun(DF), DF[2,"b"], msg = "DataFrame string element")
+}
+
 test.DataFrame.CreateOne <- function() {
     DF <- data.frame(a=1:3)
     fun <- cppfunction( signature(), '
         IntegerVector v = IntegerVector::create(1,2,3);
-		return DataFrame::create(Named("a")=v);
+        return DataFrame::create(Named("a")=v);
     ' )
     checkEquals( fun(), DF, msg = "DataFrame create1")
 }
@@ -54,9 +88,9 @@ test.DataFrame.CreateTwo <- function() {
 }
 
 test.DataFrame.SlotProxy <- function(){
-	
+
 	setClass("track", representation(x="data.frame", y = "function"))
-	tr1 <- new( "track", x = iris, y = rnorm )                    
+	tr1 <- new( "track", x = iris, y = rnorm )
 	fun <- cppfunction( signature(x="ANY", y="character"), '
 		S4 o(x) ;
 		return DataFrame( o.slot( as<std::string>(y) )) ;
@@ -66,7 +100,7 @@ test.DataFrame.SlotProxy <- function(){
 }
 
 test.DataFrame.AttributeProxy <- function(){
-	
+
 	tr1 <- structure( NULL, x = iris, y = rnorm )
 	fun <- cppfunction( signature(x="ANY", y="character"), '
 		List o(x) ;
@@ -74,7 +108,7 @@ test.DataFrame.AttributeProxy <- function(){
 	' )
 	checkTrue( identical( fun(tr1, "x"), iris) , msg = "DataFrame( AttributeProxy )" )
 	checkException( fun(tr1, "y"), msg = "DataFrame( AttributeProxy ) -> exception" )
-	
+
 }
 
 test.DataFrame.CreateTwo.stringsAsFactors <- function() {
@@ -86,8 +120,8 @@ test.DataFrame.CreateTwo.stringsAsFactors <- function() {
         s[1] = "b";
         s[2] = "c";
 		return DataFrame::create(
-			_["a"] = v, 
-			_["b"] = s, 
+			_["a"] = v,
+			_["b"] = s,
 			_["stringsAsFactors"] = false );
 	' )
     checkEquals( fun(), DF, msg = "DataFrame create2 stringsAsFactors = false")

@@ -156,8 +156,6 @@ inline bool any_if( InputIterator first, InputIterator last, Predicate pred){
 	return __any_if( first, last, pred, typename std::iterator_traits<InputIterator>::iterator_category() ) ;
 }
 
-
-
 }
 
 #endif

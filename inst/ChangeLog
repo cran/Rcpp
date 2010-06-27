@@ -1,3 +1,164 @@
+2010-06-27  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION: Release 0.8.3
+
+	* debian/*: Similarly updated for new release to Debian
+
+	* inst/unitTests/runTests.R: Stop-gap measure to reduce the number of
+	tests run on Windows as we now have so many tests that the build
+	exceeds the time limit granted by the win-builder service. The forced
+	reduction of tests can be overcome by adding --allTests as a
+	command-line argument on Windows, or by running on another platform.
+
+2010-06-25  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/posix.h: anticipate R 2.12.0 switch of classes
+	POSIXt and POSIXct
+
+	* inst/include/classic: New home for the 'classic' API headers. Also
+	some refactoring of the internals so that they can interoperate
+	better withuse the new API.
+
+2010-06-24  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/vector/RangeIndexer.h: factored the RangeIndexer
+	class out of Vector, so that we can at a later time specialize it for
+	character vectors, lists, etc ...
+
+2010-06-24  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/Date.h: add struct tm member variable and
+	sensible (ie non-intra-day) accessor functions; add SEXP ctor
+	* src/Date.cpp: Implementation of the above
+	* inst/unitTests/runit.Date.R: tests for the above
+
+	* inst/include/Rcpp/Datetime.h: New Datetime class
+	* src/Datetime.cpp: Implementation for new Datetime class
+	* inst/unitTests/runit.Datetime.R: first tests for Rcpp::Datetime
+	* inst/include/Rcpp/Datetime_forward.h: API Integration
+
+	* inst/include/Rcpp/DatetimeVector.h: New DatetimeVector class
+	* src/Datetime.cpp: Implementation for new DatetimeVector class
+
+2010-06-23  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/Date.cpp: Import mktime00() from R's src/main/datetime.c,
+	  completed class implementation
+	* inst/include/Rcpp/Date.h: Add mktime00() declaration
+
+	* inst/include/Rcpp/DateVector.h: New DateVector class
+	* src/Date.cpp: Implementation for new DateVector class
+
+2010-06-23  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/Date_forward.h: forward declaration of Rcpp::Date and
+	support for wrap( container of Rcpp::Date ), e.g. wrap( vector<Date> )
+
+	* inst/include/Rcpp/sugar/Range.h: added the concept of range to allow
+	modification of several elements of a vector.
+
+	* inst/examples/ConvolveBenchmarks: version of the convolution function
+	using sugar indexing.
+
+2010-06-22  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/Date.h: New Date class (not yet complete)
+	* src/Date.cpp: Implementation for new Date class (not yet complete)
+	* inst/unitTests/runit.Date.R: first tests for Rcpp::Date
+
+2010-06-21  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/examples/SugarPerformance/: New example to benchmark the new
+	syntactic 'sugar' classes
+
+2010-06-19  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/RcppDoxygenExamples.h: Correct three wrong paths for
+	ConvolveBenchmak example files, and add missing FastLM/ examples
+
+2010-06-18  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/sugar/*: implementation of Rcpp sugar, covering
+	binary operators (<,>,<=,>=,!=,==) for logical vectors or logical
+	expressions, arithmetic operators (+,-,*,/) for vectors and
+	expressions, and several functions similar to the R functions of the
+	same name, currently: abs, all, any, ceiling, diff, exp, ifelse,
+	is_na, lapply, pmin, pmax, pow, sapply, seq_along, seq_len, sign
+
+	* inst/doc/Rcpp-sugar/Rcpp-sugar.Rnw: vignette documenting Rcpp sugar
+
+2010-06-17  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/Vector.h: split into more manageable files
+
+	* inst/include/Rcpp/vector/VectorBase.h: simplify the VectorBase class
+	so that it is just implementing CRTP. It does not inherit from RObject anymore.
+	This will help implementation of sugar.
+
+2010-06-16  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/RcppDateVector.cpp: Also provide non-const operator()(int i)
+	* inst/include/RcppDateVector.h: Idem
+
+2010-06-16  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/InternalFunction.h: new class Rcpp::InternalFunction
+	* R/Module.R: R support for Rcpp::InternalFunction
+
+	* inst/include/Rcpp/Module.h: added the LOAD_RCPP_MODULE macro to
+	allow loading a module from C++
+
+	* R/Module.R: if the first argument is an external pointer already,
+	Module assumes it is a module pointer. (R support for the item above)
+
+2010-06-15  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/RcppDatetimeVector.cpp: Use std::vector internally
+	* inst/include/RcppDatetimeVector.h: Idem
+	* src/RcppDateVector.cpp: Use std::vector internally
+	* inst/include/RcppDateVector.h: Idem
+
+2010-06-14  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/RcppDatetimeVector.cpp: Add constructor from int
+	* inst/include/RcppDatetimeVector.h: Idem
+	* src/RcppDateVector.cpp: Add constructor from int
+	* inst/include/RcppDateVector.h: Idem
+
+2010-06-13  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/RcppResultSet.cpp: Proper template specialisation for wrap
+	* inst/include/RcppResultSet.h: Idem
+
+	* src/RcppDateVector.cpp: Add const qualifier to operator()(int i)
+	* inst/include/RcppDateVector.h: Idem
+
+2010-06-13  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/Vector.h: added new factory functions for Vector:
+	Vector::import and Vector::import_transform
+
+2010-06-12  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/RcppDate.cpp: Simple RcppDate(SEXP) ctor added
+	* inst/include/RcppDate.h: Idem
+
+	* src/RcppResultSet.cpp: carved out four new wrap() functions by
+	splitting the existing code in add() methods off
+
+2010-06-11  Romain Francois <romain@r-enthusiasts.com>
+
+	* R/help.R: workaround to allow the syntax "Rcpp ? something" to
+	bring Rcpp documentation
+
+	* inst/include/Rcpp/Module.h: support for exposing public data
+	members
+
+	* inst/doc/Rcpp-modules/Rcpp-modules.Rnw: a section to mention fields
+	as a way to expose data members
+
+	* inst/Rcpp/traits/is_na.h : new helper class Rcpp::traits::is_na
+
 2010-06-09  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION: Release 0.8.2
@@ -6,8 +167,8 @@
 
 2010-06-08  Romain Francois <romain@r-enthusiasts.com>
 
-	* src/RcppCommon.cpp: track if demangling is available (currently only 
-	available with gcc)
+	* src/RcppCommon.cpp: track if demangling is available (currently
+	only available with gcc)
 
 2010-06-08  Dirk Eddelbuettel  <edd@debian.org>
 

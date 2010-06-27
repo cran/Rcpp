@@ -27,6 +27,25 @@ setClass( "C++Object",
 		pointer = "externalptr"
 		), 
 	contains = "C++ObjectS3" )
+setClass( "C++Function", 
+	representation( pointer = "externalptr" ), 
+	contains = "function"
+)
+     
+internal_function <- function(pointer){
+	f <- function(xp){
+		force(xp)
+		function(...){
+			.External( "InternalFunction_invoke" , PACKAGE = "Rcpp", xp, ... )
+		}
+	}
+	o <- new( "C++Function", f(pointer) )
+	o@pointer <- pointer
+	o
+}
+setMethod( "show", "C++Function", function(object){
+	writeLines( sprintf( "internal C++ function <%s>", externalptr_address(object@pointer) ) )
+} )
 
 setMethod( "$", "Module", function(x, name){
 	if( .Call( "Module__has_function", x@pointer, name, PACKAGE = "Rcpp" ) ){
@@ -107,9 +126,13 @@ dollargets_cppobject <- function(x, name, value){
 setReplaceMethod( "$", "C++Object", dollargets_cppobject )
 
 Module <- function( module, PACKAGE = getPackageName(where), where = topenv(parent.frame()) ){
-	name <- sprintf( "_rcpp_module_boot_%s", module )
-	symbol <- getNativeSymbolInfo( name, PACKAGE )
-	xp  <- .Call( symbol )
+	if( identical( typeof( module ), "externalptr" ) ){
+		xp <- module
+	} else {
+		name <- sprintf( "_rcpp_module_boot_%s", module )
+		symbol <- getNativeSymbolInfo( name, PACKAGE )
+		xp  <- .Call( symbol )
+	}
 	classes <- .Call( "Module__classes_info", xp, PACKAGE = "Rcpp" )
 	if( length( classes ) ){
 		clnames <- names( classes )
