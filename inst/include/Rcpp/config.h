@@ -29,6 +29,5 @@
 #define RCPP_HAS_DEMANGLING
 #endif
 
-
 #endif
 

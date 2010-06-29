@@ -20,7 +20,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <RcppDatetime.h>
+#include <classic/RcppDatetime.h>
 #include <time.h> // for strftime
 #include <Rmath.h> // for Rf_fround
 
@@ -35,6 +35,9 @@ RcppDatetime::RcppDatetime(const double d) : m_d(d),
 }
 
 RcppDatetime::RcppDatetime(SEXP ds) { 
+    if (Rf_length(ds) != 1) {
+	throw std::range_error("RcppDatetime: expect one argument in SEXP constructor");
+    }
     m_d = REAL(ds)[0]; 
     m_parsed = false; 
     m_us = 0;

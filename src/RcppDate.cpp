@@ -21,7 +21,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <RcppDate.h>
+#include <classic/RcppDate.h>
 
 const int RcppDate::Jan1970Offset = 2440588;    // Offset from R date representation to Julian day number.
 const int RcppDate::QLtoJan1970Offset = 25569;  // Offset between R / Unix epoch date and the QL base date
@@ -43,6 +43,15 @@ RcppDate::RcppDate(int month_, int day_, int year_) : month(month_),
     if (month < 1 || month > 12 || day < 1 || day > 31)
 	throw std::range_error("RcppDate: invalid date");
     mdy2jdn();
+}
+
+RcppDate::RcppDate(SEXP dt) {
+    if (Rf_length(dt) != 1) {
+	throw std::range_error("RcppDate: expect one argument in SEXP constructor");
+    }
+    //jdn = Rcpp::as<int>(dt) + Jan1970Offset;
+    jdn = INTEGER(dt)[0] + Jan1970Offset;
+    jdn2mdy();
 }
 
 // Print an RcppDate.

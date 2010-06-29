@@ -28,22 +28,7 @@
 #include <RcppCommon.h>
 
 /* classic api */
-#include <RcppDate.h>
-#include <RcppDateVector.h>
-#include <RcppDatetime.h>
-#include <RcppDatetimeVector.h>
-#include <RcppFrame.h>
-#include <RcppFunction.h>
-#include <RcppList.h>
-#include <RcppMatrix.h>
-#include <RcppMatrixView.h>
-#include <RcppNumList.h>
-#include <RcppParams.h>
-#include <RcppResultSet.h>
-#include <RcppStringVector.h>
-#include <RcppStringVectorView.h>
-#include <RcppVector.h>
-#include <RcppVectorView.h>
+#include <classic/classic.h>
 
 /* new api */
 #include <Rcpp/exceptions.h>
@@ -68,9 +53,18 @@
 #include <Rcpp/StringTransformer.h>
 #include <Rcpp/Formula.h>
 #include <Rcpp/DataFrame.h>
+#include <Rcpp/Date.h>
+#include <Rcpp/DateVector.h>
+#include <Rcpp/Datetime.h>
+#include <Rcpp/DatetimeVector.h>
 
 #ifdef RCPP_ENABLE_MODULES
 #include <Rcpp/Module.h>
 #endif
+
+#include <Rcpp/InternalFunction.h>
+#include <Rcpp/sugar/sugar.h>
+
+#include <classic/classic_backward.h>
 
 #endif

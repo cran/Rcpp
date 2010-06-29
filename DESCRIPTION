@@ -1,7 +1,7 @@
 Package: Rcpp
 Title: Rcpp R/C++ interface package
-Version: 0.8.2
-Date: $Date: 2010-06-09 11:19:44 -0500 (Wed, 09 Jun 2010) $
+Version: 0.8.3
+Date: $Date: 2010-06-27 17:29:38 -0500 (Sun, 27 Jun 2010) $
 Author: Dirk Eddelbuettel and Romain Francois, with contributions by
         Simon Urbanek, David Reiss and Douglas Bates; based on code
         written during 2005 and 2006 by Dominick Samperi
@@ -34,11 +34,11 @@ Description: Seamless R and C++ integration The Rcpp package contains a
  The reverse conversion (from R to C++) is performed by the Rcpp::as
         function template offering a similar degree of flexibility.
  .
- The package also contains a set of classes---which we call the `classic
-        Rcpp API'---that were provided in an earlier API for R and C++
-        integration. Due to its continued use, the classic API is
-        retained and will be supported for the foreseable future. The
-        classic API includes support for R types real, integer,
+ The package also contains a set of classes---which we call the
+        'classic' Rcpp API---that were provided in an earlier API for R
+        and C++ integration. Due to its continued use, the classic API
+        is retained and will be supported for the foreseable future.
+        The classic API includes support for R types real, integer,
         character, vector, matrix, Date, datetime (i.e.  POSIXct) at
         microsecond resolution, data frame, and function. Transfer to
         and from simple or complex SEXP objects is made easy thanks to
@@ -50,7 +50,7 @@ Description: Seamless R and C++ integration The Rcpp package contains a
         'inlined' character argument which makes C++ integration very
         easy.
  .
- Several examples are included, and over 550 unit tests in over 250 unit
+ Several examples are included, and over 720 unit tests in over 320 unit
         test functions provide addtional usage examples.
 Depends: R (>= 2.10.0), methods
 Suggests: RUnit, inline
@@ -60,6 +60,6 @@ URL: http://dirk.eddelbuettel.com/code/rcpp.html,
 License: GPL (>= 2)
 BugReports:
         http://r-forge.r-project.org/tracker/?atid=637&group_id=155&func=browse
-Packaged: 2010-06-09 16:26:59 UTC; edd
+Packaged: 2010-06-27 22:38:29 UTC; edd
 Repository: CRAN
-Date/Publication: 2010-06-10 06:26:29
+Date/Publication: 2010-06-29 12:29:30

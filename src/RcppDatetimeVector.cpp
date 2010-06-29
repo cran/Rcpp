@@ -3,6 +3,7 @@
 // RcppDatetimeVector.cpp: Rcpp R/C++ interface class library -- Datetime vector support
 //
 // Copyright (C) 2008 - 2009 Dirk Eddelbuettel
+// Copyright (C) 2010	     Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -19,7 +20,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <RcppDatetimeVector.h>
+#include <classic/RcppDatetimeVector.h>
 
 RcppDatetimeVector::RcppDatetimeVector(SEXP vec) {
     int i;
@@ -28,18 +29,22 @@ RcppDatetimeVector::RcppDatetimeVector(SEXP vec) {
     int len = Rf_length(vec);
     if (len == 0)
 	throw std::range_error("RcppDatetimeVector: null vector in constructor");
-    v = new RcppDatetime[len];
+    v.resize(len);
     for (i = 0; i < len; i++)
 	v[i] = RcppDatetime(REAL(vec)[i]);
-    length = len;
 }
 
-RcppDatetimeVector::~RcppDatetimeVector() {
-    delete [] v;
+const RcppDatetime & RcppDatetimeVector::operator()(unsigned int i) const {
+    if (i >= v.size()) {
+	std::ostringstream oss;
+	oss << "RcppDatetimeVector: subscript out of range: " << i;
+	throw std::range_error(oss.str());
+    }
+    return v[i];
 }
 
-RcppDatetime & RcppDatetimeVector::operator()(int i) const {
-    if (i < 0 || i >= length) {
+RcppDatetime & RcppDatetimeVector::operator()(unsigned int i) {
+    if (i >= v.size()) {
 	std::ostringstream oss;
 	oss << "RcppDatetimeVector: subscript out of range: " << i;
 	throw std::range_error(oss.str());
@@ -48,6 +53,6 @@ RcppDatetime & RcppDatetimeVector::operator()(int i) const {
 }
 
 int RcppDatetimeVector::size() const { 
-    return length; 
+    return v.size(); 
 }
 

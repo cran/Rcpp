@@ -109,12 +109,17 @@ std::string demangle( const std::string& name) ;
 #include <Rversion.h>
 #define RCPP_GET_NAMES(x)	Rf_getAttrib(x, R_NamesSymbol)
 
+#if defined(R_VERSION) && R_VERSION >= R_Version(2, 12, 0)
+#define R_2_12_0
+#endif
+
 // #ifdef BUILDING_DLL
 // #define RcppExport extern "C" __declspec(dllexport)
 // #else
 #define RcppExport extern "C"
 // #endif
 
+#include <Rcpp/internal/posixt.h>
 
 namespace Rcpp{
 	namespace internal{
@@ -217,22 +222,33 @@ SEXP stack_trace( const char *file, int line) ;
 #include <Rcpp/traits/named_object.h>
 #include <Rcpp/traits/is_convertible.h>
 #include <Rcpp/traits/has_iterator.h>
+#include <Rcpp/traits/expands_to_logical.h>
 #include <Rcpp/traits/has_na.h>
 #include <Rcpp/traits/storage_type.h>
 #include <Rcpp/traits/r_sexptype_traits.h>
 #include <Rcpp/traits/storage_type.h>
 #include <Rcpp/traits/r_type_traits.h>
 #include <Rcpp/traits/wrap_type_traits.h>
+#include <Rcpp/traits/is_na.h>
+#include <Rcpp/traits/get_na.h>
+#include <Rcpp/traits/is_trivial.h>
+#include <Rcpp/traits/init_type.h>
 
 #include <Rcpp/traits/is_const.h>
 #include <Rcpp/traits/is_reference.h>
 #include <Rcpp/traits/remove_const.h>
 #include <Rcpp/traits/remove_reference.h>
 #include <Rcpp/traits/remove_const_and_reference.h>
+#include <Rcpp/traits/result_of.h>
 
 #include <Rcpp/internal/caster.h>
 #include <Rcpp/internal/r_vector.h>
 #include <Rcpp/r_cast.h>
+
+#include <Rcpp/internal/wrap_forward.h>
+
+#include <Rcpp/Date_forward.h>
+#include <Rcpp/Datetime_forward.h>
 
 #include <Rcpp/internal/export.h>
 #include <Rcpp/traits/Exporter.h>
@@ -248,5 +264,9 @@ RcppExport SEXP RcppXPtrExample_get_external_pointer(SEXP );
 
 #include <Rcpp/preprocessor.h>
 #include <Rcpp/algo.h>
+
+#include <Rcpp/vector/VectorBase.h>
+
+#include <Rcpp/sugar/sugar_forward.h>
 
 #endif

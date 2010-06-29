@@ -277,9 +277,11 @@ public:
 	VOID_END_RCPP
 	}
 
+#include <Rcpp/module/Module_Field.h>
+
 #include <Rcpp/module/Module_Add_Property.h>
-	
-	
+
+
 private:
 	METHOD_MAP methods ;
 	PROPERTY_MAP properties ;
@@ -292,7 +294,6 @@ private:
 
 template <typename Class> 
 class_<Class>* class_<Class>::singleton ;
-
 
 // function factories
 #include <Rcpp/module/Module_generated_function.h>
@@ -324,6 +325,9 @@ extern "C" SEXP _rcpp_module_boot_##name(){                          \
   return mod_xp ;                                                    \
 }                                                                    \
 void _rcpp_module_##name##_init()
+
+#define LOAD_RCPP_MODULE(NAME) Rf_eval( Rf_lang2( Rf_install("Module"), _rcpp_module_boot_##NAME() ), R_GlobalEnv )
+
 #endif  
 
 #endif
