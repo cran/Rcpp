@@ -1,3 +1,114 @@
+2010-07-09  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION: Release 0.8.4
+
+	* debian/*: Similarly updated for new release to Debian
+
+2010-07-09  Romain Francois <romain@r-enthusiasts.com>
+
+	* src/RObject.cpp: adapt the SlotProxy class to deal with the special
+	case of the .Data slot (slot<- changes the internal SEXP)
+
+	* R/Module.R: the C++Class now inherits from "character", to facilitate
+	S4 method dispatch
+
+	* src/Module.cpp: The CppClass ctor sets the .Data of the C++Class object
+	to an obfuscated name to avoid class names clashes at the R level.
+
+2010-07-08  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/sugar/functions/head.h: new sugar function : head
+	* inst/include/Rcpp/sugar/functions/tail.h: new sugar function : tail
+
+	* inst/include/Rcpp/sugar/functions/tail.h: new sugar function : diag
+
+2010-07-07  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/README: Updated and now pointing to all the other documentation
+
+2010-07-07  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/sugar/functions/rep.h: version of rep that takes a
+	primitive as the first argument
+
+2010-07-07  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/unitTests/runTests.R: Reverted to running all tests now that
+	tests are reorganised using the one-compile-per-function scheme which
+	significantly speeds up running of the numerous unit tests
+
+2010-07-06  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/Date.cpp: Imported mktime() from R (which is due to Arthur Olson)
+
+2010-07-06  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/sugar/functions/ifelse.h: using compile time dispatch
+	based on the NA-ness of the condition type. ifelse handles primitive
+	arguments on the lhs, rhs or both
+
+	* inst/include/Rcpp/sugar/functions/rev.h: new sugar function: rev
+
+2010-07-05  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/RcppCommon.h : no more using variadic macros in
+	RCPP_DEBUG
+
+	* inst/include/Rcpp/vector/Matrix.h: move ncol, nrow, rows and cols
+	in Matrix (used to be in Vector)
+
+	* inst/include/Rcpp/traits/matrix_interface.h: new SFINAE helper to
+	detect matrix interface (helps matrix sugar expressions)
+
+2010-07-03  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/traits/result_of.h : also deal with functions
+	taking two arguments (useful for e.g. outer)
+
+	* inst/include/Rcpp/vector/MatrixBase.h : new CRTP base class
+	for Matrix to facilitate sugar syntax on matrices.
+
+	* inst/include/Rcpp/sugar/matrix/outer.h : new sugar function: outer
+	* inst/include/Rcpp/sugar/matrix/row.h: new sugar function: row
+	* inst/include/Rcpp/sugar/matrix/col.h: new sugar function: col
+	* inst/include/Rcpp/sugar/matrix/lower_tri.h: new sugar function: lower_tri
+	* inst/include/Rcpp/sugar/matrix/upper_tri.h: new sugar function: upper_tri
+
+	* inst/include/Rcpp/sugar/functions/rep.h: new sugar function : rep
+	* inst/include/Rcpp/sugar/functions/rep_len.h: new sugar function : rep_len
+	* inst/include/Rcpp/sugar/functions/rep_each.h: new sugar function : rep_each
+
+2010-07-02  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/RcppStringVector: Now uses std::vector<std::string>
+	* inst/include/classic/RcppStringVector.h: Idem
+
+	* inst/unitTests/runit.List.R: Added simple test for RcppStringVector
+
+2010-07-01  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/RcppDateVector: Index argument is int here as well
+	* src/RcppDatetimeVector: Idem
+	* inst/include/classic/RcppDateVector.h: Idem
+	* inst/include/classic/RcppDatetimeVector.h: Idem
+
+	* inst/unitTests/runit.List.R: Added simple test for RcppList
+
+2010-06-30  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/DateVector: Index argument is int; throw declared
+	* src/DatetimeVector: Idem
+	* inst/include/Rcpp/DateVector.h: Idem
+	* inst/include/Rcpp/DatetimeVector.h: Idem
+
+2010-06-28  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/sugar/Im.h:
+	* inst/include/Rcpp/sugar/Re.h:
+	* inst/include/Rcpp/sugar/Conj.h:
+	* inst/include/Rcpp/sugar/Mod.h: added sugar functions for
+	complex vectors: Re, Im, Conj, Mod
+
 2010-06-27  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION: Release 0.8.3

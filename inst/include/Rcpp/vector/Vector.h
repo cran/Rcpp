@@ -36,16 +36,14 @@ public:
 	typedef typename traits::init_type<RTYPE>::type init_type ;
 	typedef typename traits::r_vector_element_converter<RTYPE>::type converter_type ;
 	typedef typename traits::storage_type<RTYPE>::type stored_type ;
-	typedef MatrixRow<RTYPE> Row ;
-	typedef MatrixColumn<RTYPE> Column ;
 	
 	Vector() : RObject() {
-		RCPP_DEBUG( "Vector()", 0 ) ;
+		RCPP_DEBUG( "Vector()" ) ;
 		RObject::setSEXP( Rf_allocVector( RTYPE, 0 ) ) ;
 		init() ;
 	} ;
     ~Vector(){
-    	RCPP_DEBUG( "~Vector()", 0 ) ;
+    	RCPP_DEBUG( "~Vector()" ) ;
 	};
     
 	Vector( const Vector& other) : RObject() {
@@ -77,9 +75,9 @@ public:
 	}
 	
     Vector( SEXP x ) throw(not_compatible) : RObject() {
-    	RCPP_DEBUG( "Vector<%d>( SEXP = <%p> )", RTYPE, x) ;
+    	RCPP_DEBUG_2( "Vector<%d>( SEXP = <%p> )", RTYPE, x) ;
     	RObject::setSEXP( r_cast<RTYPE>( x ) ) ;
-    	RCPP_DEBUG( "===========", 0) ;
+    	RCPP_DEBUG( "===========" ) ;
     }
     
     Vector( const int& size ) : RObject()  {
@@ -87,17 +85,17 @@ public:
 		init() ;
     }
     
-    template <bool __NA__, typename __VEC__>
-    Vector( const VectorBase<RTYPE,__NA__,__VEC__>& other ) : RObject() {
+    template <bool NA, typename VEC>
+    Vector( const VectorBase<RTYPE,NA,VEC>& other ) : RObject() {
     	int n = other.size() ;
-    	RObject::setSEXP( Rf_allocVector( RTYPE, other.size() ) ) ;
-    	import_expression<__NA__,__VEC__>( other, n ) ;
+    	RObject::setSEXP( Rf_allocVector( RTYPE, n ) ) ;
+    	import_expression<NA,VEC>( other, n ) ;
 	}
     
 private:
 	
-	template <bool __NA__, typename __VEC__>
-    void import_expression( const VectorBase<RTYPE,__NA__,__VEC__>& other, int n ){
+	template <bool NA, typename VEC>
+    void import_expression( const VectorBase<RTYPE,NA,VEC>& other, int n ){
     	iterator start = begin() ; 
 		for( int i=0; i<n; i++, ++start){
 			*start = other[i] ;
@@ -155,21 +153,6 @@ public:
      */
     inline R_len_t size() const { return ::Rf_length( RObject::m_sexp ) ; }
     
-    inline int ncol() const throw(not_a_matrix) {
-    	return dims()[1]; 
-    }
-    
-    inline int nrow() const throw(not_a_matrix){
-    	return dims()[0]; 
-    }
-
-    inline int cols() const throw(not_a_matrix){ 
-	return dims()[1]; 
-    }
-    inline int rows() const throw(not_a_matrix){ 
-	return dims()[0]; 
-    }
-	
     /**
      * offset based on the dimensions of this vector
      */
@@ -280,9 +263,6 @@ public:
 		return NamesProxy(*this) ;
 	}
     
-	inline Row row( int i ){ return Row( *this, i ) ; }
-	inline Column column( int i ){ return Column(*this, i ) ; }
-	
 	inline iterator begin() const{ return cache.get() ; }
 	inline iterator end() const{ return cache.get(size()) ; }
 	
@@ -291,9 +271,18 @@ public:
 	inline Proxy operator()( const size_t& i) throw(index_out_of_bounds){
 		return cache.ref( offset(i) ) ;
 	}
+	// TODO: should it be const_Proxy
+	inline Proxy operator()( const size_t& i) const throw(index_out_of_bounds){
+		return cache.ref( offset(i) ) ;
+	}
 	inline Proxy operator()( const size_t& i, const size_t& j) throw(not_a_matrix,index_out_of_bounds){
 		return cache.ref( offset(i,j) ) ;
 	}
+	// TODO: should it be const_Proxy
+	inline Proxy operator()( const size_t& i, const size_t& j) const throw(not_a_matrix,index_out_of_bounds){
+		return cache.ref( offset(i,j) ) ;
+	}
+	
 	inline NameProxy operator[]( const std::string& name ){
 		return NameProxy( *this, name ) ;
 	}
@@ -374,7 +363,7 @@ public:
 	}
 	
 	void update_vector(){
-		RCPP_DEBUG(  "update_vector, VECTOR = %s", DEMANGLE(Vector) ) ;
+		RCPP_DEBUG_1(  "update_vector, VECTOR = %s", DEMANGLE(Vector) ) ;
 		cache.update(*this) ;
 	}
 		
@@ -647,18 +636,13 @@ public:
 		set_sexp(target.asSexp() );
 		return result ;
 	}
-	
-	inline int* dims() const throw(not_a_matrix) {
-		if( !::Rf_isMatrix(RObject::m_sexp) ) throw not_a_matrix() ;
-		return INTEGER( ::Rf_getAttrib( RObject::m_sexp, ::Rf_install( "dim") ) ) ;
-	}
-	
+		
 	void init(){
 		internal::r_init_vector<RTYPE>(RObject::m_sexp) ;
 	}
 
 	virtual void update(){
-		RCPP_DEBUG( "%s::update", DEMANGLE(Vector) ) ;
+		RCPP_DEBUG_1( "%s::update", DEMANGLE(Vector) ) ;
 		update_vector() ;
 	}
 	
@@ -671,6 +655,13 @@ public:
 	inline Indexer operator[]( const Range& range ){
 		return Indexer( const_cast<Vector&>(*this), range );
 	}
+
+protected:
+	inline int* dims() const throw(not_a_matrix) {
+		if( !::Rf_isMatrix(RObject::m_sexp) ) throw not_a_matrix() ;
+		return INTEGER( ::Rf_getAttrib( RObject::m_sexp, ::Rf_install( "dim") ) ) ;
+	}
+
 	
 } ; /* Vector */
 

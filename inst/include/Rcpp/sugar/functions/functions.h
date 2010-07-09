@@ -38,5 +38,16 @@
 #include <Rcpp/sugar/functions/floor.h>
 #include <Rcpp/sugar/functions/ceil.h>
 #include <Rcpp/sugar/functions/pow.h>
+#include <Rcpp/sugar/functions/rep.h>
+#include <Rcpp/sugar/functions/rep_len.h>
+#include <Rcpp/sugar/functions/rep_each.h>
+#include <Rcpp/sugar/functions/rev.h>
+#include <Rcpp/sugar/functions/head.h>
+#include <Rcpp/sugar/functions/tail.h>
+
+#include <Rcpp/sugar/functions/Re.h>
+#include <Rcpp/sugar/functions/Im.h>
+#include <Rcpp/sugar/functions/Conj.h>
+#include <Rcpp/sugar/functions/Mod.h>
 
 #endif

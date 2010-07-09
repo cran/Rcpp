@@ -25,14 +25,11 @@
 
 #include <iterator>
 
-// this is a private header, included in RcppCommon.h
-// don't include it directly
-
 namespace Rcpp{
 	
 template<typename T> SEXP wrap_extra_steps( SEXP x ){
 	return x ;
-} 
+}
 
 } // Rcpp
 

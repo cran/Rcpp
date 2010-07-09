@@ -195,9 +195,13 @@ namespace Rcpp{
 #endif
 
 #if RCPP_DEBUG_LEVEL > 0
-	#define RCPP_DEBUG( fmt , ... ) Rprintf( "%s:%d " fmt "\n" , __FILE__, __LINE__,##__VA_ARGS__ ) ;
+	#define RCPP_DEBUG( MSG ) Rprintf( "%s:%d %s" , __FILE__, __LINE__, MSG ) ;
+	#define RCPP_DEBUG_1( fmt, MSG ) Rprintf( "%s:%d " fmt "%s" , __FILE__, __LINE__, MSG ) ;
+	#define RCPP_DEBUG_2( fmt, M1, M2 ) Rprintf( "%s:%d " fmt "%s" , __FILE__, __LINE__, M1, M2 ) ;
 #else
-	#define RCPP_DEBUG( fmt , ... )
+	#define RCPP_DEBUG( MSG )
+	#define RCPP_DEBUG_1( fmt, MSG )
+	#define RCPP_DEBUG_2( fmt, M1, M2 )
 #endif
 
 SEXP stack_trace( const char *file, int line) ;
@@ -223,6 +227,7 @@ SEXP stack_trace( const char *file, int line) ;
 #include <Rcpp/traits/is_convertible.h>
 #include <Rcpp/traits/has_iterator.h>
 #include <Rcpp/traits/expands_to_logical.h>
+#include <Rcpp/traits/matrix_interface.h>
 #include <Rcpp/traits/has_na.h>
 #include <Rcpp/traits/storage_type.h>
 #include <Rcpp/traits/r_sexptype_traits.h>
@@ -230,6 +235,7 @@ SEXP stack_trace( const char *file, int line) ;
 #include <Rcpp/traits/r_type_traits.h>
 #include <Rcpp/traits/wrap_type_traits.h>
 #include <Rcpp/traits/is_na.h>
+#include <Rcpp/traits/if_.h>
 #include <Rcpp/traits/get_na.h>
 #include <Rcpp/traits/is_trivial.h>
 #include <Rcpp/traits/init_type.h>
@@ -254,6 +260,10 @@ SEXP stack_trace( const char *file, int line) ;
 #include <Rcpp/traits/Exporter.h>
 #include <Rcpp/internal/r_coerce.h>
 #include <Rcpp/as.h>
+
+#include <Rcpp/vector/VectorBase.h>
+#include <Rcpp/vector/MatrixBase.h>
+
 #include <Rcpp/internal/wrap.h>
 
 #include <Rcpp/internal/ListInitialization.h>
@@ -265,7 +275,6 @@ RcppExport SEXP RcppXPtrExample_get_external_pointer(SEXP );
 #include <Rcpp/preprocessor.h>
 #include <Rcpp/algo.h>
 
-#include <Rcpp/vector/VectorBase.h>
 
 #include <Rcpp/sugar/sugar_forward.h>
 
