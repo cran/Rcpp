@@ -19,7 +19,10 @@ setGeneric( "new" )
 
 setOldClass( "C++ObjectS3" )
 setClass( "Module", representation( pointer = "externalptr" ) )
-setClass( "C++Class", representation( pointer = "externalptr", module = "externalptr" ) )
+setClass( "C++Class", 
+	representation( pointer = "externalptr", module = "externalptr" ), 
+	contains = "character"
+	)
 setClass( "C++Object", 
 	representation( 
 		module = "externalptr", 
@@ -93,7 +96,7 @@ new_CppObject_xp <- function(Class, ...){
 
 setMethod( "new", "C++Class", function(Class,...){
 	out <- new_CppObject_xp( Class, ... )
-	new( out$cl, pointer = out$xp, cppclass = Class@pointer, module = Class@module )
+	new( as.character(Class), pointer = out$xp, cppclass = Class@pointer, module = Class@module )
 } )
 
 MethodInvoker <- function( x, name ){
@@ -101,7 +104,6 @@ MethodInvoker <- function( x, name ){
 		res <- .External( "Class__invoke_method", x@cppclass, name, x@pointer, ... , PACKAGE = "Rcpp" )
 		if( isTRUE( res$void ) ) invisible(NULL) else res$result
 	}
-	
 }
 
 dollar_cppobject <- function(x, name){
@@ -135,11 +137,11 @@ Module <- function( module, PACKAGE = getPackageName(where), where = topenv(pare
 	}
 	classes <- .Call( "Module__classes_info", xp, PACKAGE = "Rcpp" )
 	if( length( classes ) ){
-		clnames <- names( classes )
 		for( i in seq_along(classes) ){
 			CLASS <- classes[[i]]
-			setClass( clnames[i], contains = "C++Object", where = where )
-			setMethod( "initialize", clnames[i], function(.Object, ...){
+			clname <- as.character(CLASS)
+			setClass( clname, contains = "C++Object", where = where )
+			setMethod( "initialize",clname, function(.Object, ...){
 				.Object <- callNextMethod()
 				if( .Call( "CppObject__needs_init", .Object@pointer, PACKAGE = "Rcpp" ) ){
 					out <- new_CppObject_xp( CLASS, ... )
@@ -152,13 +154,13 @@ Module <- function( module, PACKAGE = getPackageName(where), where = topenv(pare
 			
 			METHODS <- .Call( "CppClass__methods" , CLASS@pointer , PACKAGE = "Rcpp" )
 			if( "[[" %in% METHODS ){
-				setMethod( "[[", clnames[i], function(x, i, j, ...){
+				setMethod( "[[", clname, function(x, i, j, ...){
 					MethodInvoker( x, "[[" )( i )
 				}, where = where )
 			}
 			
 			if( "[[<-" %in% METHODS ){
-				setReplaceMethod( "[[", clnames[i], function(x, i, j, ..., exact = TRUE, value ){
+				setReplaceMethod( "[[", clname, function(x, i, j, ..., exact = TRUE, value ){
 					MethodInvoker( x, "[[<-" )( i, value )
 					x
 				}, where = where )

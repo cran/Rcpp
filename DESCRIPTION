@@ -1,15 +1,14 @@
 Package: Rcpp
-Title: Rcpp R/C++ interface package
-Version: 0.8.3
-Date: $Date: 2010-06-27 17:29:38 -0500 (Sun, 27 Jun 2010) $
+Title: Seamless R and C++ Integration
+Version: 0.8.4
+Date: $Date: 2010-07-09 09:57:03 -0500 (Fri, 09 Jul 2010) $
 Author: Dirk Eddelbuettel and Romain Francois, with contributions by
         Simon Urbanek, David Reiss and Douglas Bates; based on code
         written during 2005 and 2006 by Dominick Samperi
 Maintainer: Dirk Eddelbuettel and Romain Francois
         <RomainAndDirk@r-enthusiasts.com>
-Description: Seamless R and C++ integration The Rcpp package contains a
-        C++ library that facilitates the integration of R and C++ in
-        various ways.
+Description: The Rcpp package provides a C++ library and template
+        classes which facilitates the integration of R and C++.
  .
  R data types (SEXP) are matched to C++ objects in a class hierarchy.
         All R types are supported (vectors, functions, environment, etc
@@ -50,8 +49,8 @@ Description: Seamless R and C++ integration The Rcpp package contains a
         'inlined' character argument which makes C++ integration very
         easy.
  .
- Several examples are included, and over 720 unit tests in over 320 unit
-        test functions provide addtional usage examples.
+ Several examples are included, and 735 unit tests in 329 unit test
+        functions provide addtional usage examples.
 Depends: R (>= 2.10.0), methods
 Suggests: RUnit, inline
 SystemRequirements: GNU make
@@ -60,6 +59,6 @@ URL: http://dirk.eddelbuettel.com/code/rcpp.html,
 License: GPL (>= 2)
 BugReports:
         http://r-forge.r-project.org/tracker/?atid=637&group_id=155&func=browse
-Packaged: 2010-06-27 22:38:29 UTC; edd
+Packaged: 2010-07-09 15:23:03 UTC; edd
 Repository: CRAN
-Date/Publication: 2010-06-29 12:29:30
+Date/Publication: 2010-07-15 10:33:50
