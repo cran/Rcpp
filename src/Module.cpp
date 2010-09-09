@@ -53,6 +53,16 @@ RCPP_FUNCTION_1( bool, CppObject__needs_init, SEXP xp ){
 RCPP_FUNCTION_1( Rcpp::CharacterVector, CppClass__methods, XP_Class cl){
 	return cl->method_names() ;
 }
+RCPP_FUNCTION_1( Rcpp::CharacterVector, CppClass__properties, XP_Class cl){
+	return cl->property_names() ;
+}
+RCPP_FUNCTION_2( bool, CppClass__property_is_readonly, XP_Class cl, std::string p){
+	return cl->property_is_readonly(p) ;
+}
+RCPP_FUNCTION_2( std::string, CppClass__property_class, XP_Class cl, std::string p){
+	return cl->property_class(p) ;
+}
+
 RCPP_FUNCTION_1( Rcpp::IntegerVector, Module__funtions_arity, XP_Module module ){
 	return module->	functions_arity() ;
 }
@@ -237,7 +247,7 @@ namespace Rcpp{
 	CppClass::CppClass( SEXP x) : S4(x){}
 	
 	CppClass::CppClass( Module* p, class_Base* cl ) : S4("C++Class") {
-		XP_Class clxp( cl ) ;
+		XP_Class clxp( cl, false, R_NilValue, R_NilValue ) ;
 		
 		slot( "module"  ) = XP( p, false ) ;
 		slot( "pointer" ) = clxp ;

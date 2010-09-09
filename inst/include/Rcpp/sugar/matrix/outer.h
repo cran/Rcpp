@@ -43,17 +43,16 @@ public:
 	
 	typedef Rcpp::VectorBase<RTYPE,LHS_NA,LHS_T> LHS_TYPE ;
 	typedef Rcpp::VectorBase<RTYPE,RHS_NA,RHS_T> RHS_TYPE ;
+	
+	typedef Rcpp::internal::LazyVector<LHS_T> LHS_LAZY ;
+	typedef Rcpp::internal::LazyVector<RHS_T> RHS_LAZY ;
+	
 	typedef typename Rcpp::traits::r_vector_element_converter<RESULT_R_TYPE>::type converter_type ;
 	typedef typename Rcpp::traits::storage_type<RESULT_R_TYPE>::type STORAGE ;
 	
 	Outer( const LHS_TYPE& lhs_, const RHS_TYPE& rhs_, Function fun_ ) : 
 		lhs(lhs_), rhs(rhs_), fun(fun_), nr(lhs_.size()), nc(rhs_.size()) {}
 	
-	inline STORAGE operator[]( int index ) const {
-		int i = Rcpp::internal::get_line( index, nr ) ;
-		int j = Rcpp::internal::get_column( index, nr, i ) ;
-		return converter_type::get( fun( lhs[i], rhs[j] ) );
-	}
 	inline STORAGE operator()( int i, int j ) const {
 		return converter_type::get( fun( lhs[i], rhs[j] ) );
 	}
@@ -63,8 +62,10 @@ public:
 	inline int ncol() const { return nc; }
 	         
 private:
-	const LHS_TYPE& lhs ;
-	const RHS_TYPE& rhs ;
+	      
+	LHS_LAZY lhs ;
+	RHS_LAZY rhs ;
+	
 	Function fun ;
 	int nr, nc ;
 } ;

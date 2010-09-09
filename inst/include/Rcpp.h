@@ -63,7 +63,12 @@
 #endif
 
 #include <Rcpp/InternalFunction.h>
+
+#include <Rmath.h>
+#include <Rcpp/sugar/undoRmath.h>
+
 #include <Rcpp/sugar/sugar.h>
+#include <Rcpp/stats/stats.h>
 
 #include <classic/classic_backward.h>
 

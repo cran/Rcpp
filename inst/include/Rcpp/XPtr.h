@@ -59,7 +59,7 @@ public:
      *        so you need to make sure the pointer can be "delete" d
      *        this way (has to be a C++ object)
      */
-    explicit XPtr(T* p, bool set_delete_finalizer, SEXP tag = R_NilValue, SEXP prot = R_NilValue) ;
+    explicit XPtr(T* p, bool set_delete_finalizer, SEXP tag, SEXP prot);
 
     XPtr( const XPtr& other ) : RObject( other.asSexp() ) {}
     
@@ -168,7 +168,7 @@ public:
 };
 
 template<typename T>
-XPtr<T>::XPtr(T* p, bool set_delete_finalizer = true, SEXP tag, SEXP prot) : RObject() {
+XPtr<T>::XPtr(T* p, bool set_delete_finalizer = true, SEXP tag = R_NilValue, SEXP prot = R_NilValue) : RObject() {
     setSEXP( R_MakeExternalPtr( (void*)p , tag, prot) ) ;
     if( set_delete_finalizer ){
 	setDeleteFinalizer() ;

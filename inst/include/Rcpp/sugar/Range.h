@@ -26,14 +26,14 @@ namespace Rcpp{
 
 	class Range : public VectorBase<INTSXP,false, Range >{
 	public:
-		Range( int start_, int end_ ) throw(std::range_error) : start(start_), end(end_){
-			if( start_ > end_ ){
+		Range( int start_, int end__ ) throw(std::range_error) : start(start_), end_(end__){
+			if( start_ > end__ ){
 				throw std::range_error( "upper value must be greater than lower value" ) ;
 			}
 		}
 		
 		inline int size() const{
-			return end - start + 1;
+			return end_ - start + 1;
 		}
 		
 		inline int operator[]( int i) const {
@@ -42,7 +42,7 @@ namespace Rcpp{
 		
 	private:
 		int start ;
-		int end ;
+		int end_ ;
 	} ;
 	
 } 
