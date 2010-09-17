@@ -1,6 +1,6 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 8 -*-
 //
-// Re.h: Rcpp R/C++ interface class library -- re
+// pois.h: Rcpp R/C++ interface class library --
 //
 // Copyright (C) 2010 Dirk Eddelbuettel and Romain Francois
 //
@@ -19,36 +19,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef Rcpp__sugar__Re_h
-#define Rcpp__sugar__Re_h
+#ifndef Rcpp__stats__pois_h
+#define Rcpp__stats__pois_h
 
-namespace Rcpp{
-namespace sugar{
+RCPP_DPQ_1(pois,::Rf_dpois,::Rf_ppois,::Rf_qpois)
 
-template <bool NA, typename T>
-class Re : public Rcpp::VectorBase< REALSXP,NA, Re<NA,T> > {
-public:
-	typedef typename Rcpp::VectorBase<CPLXSXP,NA,T> VEC_TYPE ;
-	
-	Re( const VEC_TYPE& object_ ) : object(object_){}
-	
-	inline double operator[]( int i ) const {
-		Rcomplex x = object[i] ;
-		return x.r ;
-	}
-	inline int size() const { return object.size() ; }
-	         
-private:
-	const VEC_TYPE& object ;
-} ;
-	
-} // sugar
-
-template <bool NA, typename T>
-inline sugar::Re<NA,T> Re( const VectorBase<CPLXSXP,NA,T>& t){
-	return sugar::Re<NA,T>( t ) ;
-}
-
-} // Rcpp
 #endif
-

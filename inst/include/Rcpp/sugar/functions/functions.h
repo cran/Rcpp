@@ -22,6 +22,13 @@
 #ifndef RCPP_SUGAR_FUNCTIONS_H
 #define RCPP_SUGAR_FUNCTIONS_H
 
+/* for exp( double ) */
+#include <cmath>
+
+#include <Rcpp/sugar/functions/math.h>
+
+#include <Rcpp/sugar/functions/complex.h>
+
 #include <Rcpp/sugar/functions/any.h>
 #include <Rcpp/sugar/functions/all.h>
 #include <Rcpp/sugar/functions/is_na.h>
@@ -33,10 +40,6 @@
 #include <Rcpp/sugar/functions/pmax.h>
 #include <Rcpp/sugar/functions/sign.h>
 #include <Rcpp/sugar/functions/diff.h>
-#include <Rcpp/sugar/functions/abs.h>
-#include <Rcpp/sugar/functions/exp.h>
-#include <Rcpp/sugar/functions/floor.h>
-#include <Rcpp/sugar/functions/ceil.h>
 #include <Rcpp/sugar/functions/pow.h>
 #include <Rcpp/sugar/functions/rep.h>
 #include <Rcpp/sugar/functions/rep_len.h>
@@ -45,9 +48,7 @@
 #include <Rcpp/sugar/functions/head.h>
 #include <Rcpp/sugar/functions/tail.h>
 
-#include <Rcpp/sugar/functions/Re.h>
-#include <Rcpp/sugar/functions/Im.h>
-#include <Rcpp/sugar/functions/Conj.h>
-#include <Rcpp/sugar/functions/Mod.h>
+#include <Rcpp/sugar/functions/sum.h>
+
 
 #endif

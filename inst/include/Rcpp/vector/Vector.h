@@ -97,19 +97,65 @@ private:
 	template <bool NA, typename VEC>
     void import_expression( const VectorBase<RTYPE,NA,VEC>& other, int n ){
     	iterator start = begin() ; 
-		for( int i=0; i<n; i++, ++start){
-			*start = other[i] ;
+		const VEC& ref = other.get_ref() ;
+    	for( int i=0; i<n; i++, ++start){
+			*start = ref[i] ;
 		}
     }
+
+    template <typename T>
+    inline void fill_or_generate( const T& t){
+    	fill_or_generate__impl( t, typename traits::is_generator<T>::type() ) ;
+    }
+    
+    template <typename T>
+    inline void fill_or_generate__impl( const T& gen, traits::true_type){
+    	iterator first = begin() ;
+    	iterator last = end() ;
+    	while( first != last ) *first++ = gen() ;
+    }
+    
+    template <typename T>
+    inline void fill_or_generate__impl( const T& t, traits::false_type){
+    	fill(t) ;
+    }
+    
 	
 public:
     
     template <typename U>
     Vector( const int& size, const U& u){
     	RObject::setSEXP( Rf_allocVector( RTYPE, size) ) ;
-		fill( u ) ;	
+		fill_or_generate( u ) ;	
+    }
+
+    Vector( const int& siz, stored_type (*gen)(void) ){
+    	RObject::setSEXP( Rf_allocVector( RTYPE, siz) ) ;
+		iterator first = begin(), last = end() ;
+    	while( first != last ) *first++ = gen() ;
     }
     
+    template <typename U1>
+    Vector( const int& siz, stored_type (*gen)(U1), const U1& u1){
+    	RObject::setSEXP( Rf_allocVector( RTYPE, siz) ) ;
+		iterator first = begin(), last = end() ;
+    	while( first != last ) *first++ = gen(u1) ;
+	}
+    
+    template <typename U1, typename U2>
+    Vector( const int& siz, stored_type (*gen)(U1,U2), const U1& u1, const U2& u2){
+    	RObject::setSEXP( Rf_allocVector( RTYPE, siz) ) ;
+		iterator first = begin(), last = end() ;
+    	while( first != last ) *first++ = gen(u1,u2) ;
+    }
+
+    template <typename U1, typename U2, typename U3>
+    Vector( const int& siz, stored_type (*gen)(U1,U2,U3), const U1& u1, const U2& u2, const U3& u3){
+    	RObject::setSEXP( Rf_allocVector( RTYPE, siz) ) ;
+		iterator first = begin(), last = end() ;
+    	while( first != last ) *first++ = gen(u1,u2,u3) ;
+    }
+
     Vector( const Dimension& dims) : RObject() {
     	RObject::setSEXP( Rf_allocVector( RTYPE, dims.prod() ) ) ;
 		init() ;

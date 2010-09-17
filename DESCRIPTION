@@ -1,7 +1,7 @@
 Package: Rcpp
 Title: Seamless R and C++ Integration
-Version: 0.8.5
-Date: $Date: 2010-07-25 11:37:44 -0500 (Sun, 25 Jul 2010) $
+Version: 0.8.6
+Date: $Date: 2010-09-09 12:36:01 -0500 (Thu, 09 Sep 2010) $
 Author: Dirk Eddelbuettel and Romain Francois, with contributions by
         Simon Urbanek, David Reiss and Douglas Bates; based on code
         written during 2005 and 2006 by Dominick Samperi
@@ -32,18 +32,19 @@ Description: The Rcpp package provides a C++ library which facilitates
         expression templates to achieve great performance while
         exposing a syntax that is much nicer to use than the equivalent
         low-level loop code. The "Rcpp-sugar" vignette gives an
-        overview of the feature
+        overview of the feature.
  .
- Several examples are included, and 735 unit tests in 329 unit test
+ Several examples are included, and 773 unit tests in 366 unit test
         functions provide additional usage examples.
-Depends: R (>= 2.11.0), methods
-Suggests: RUnit, inline
-SystemRequirements: GNU make
+Depends: R (>= 2.10.0), methods
+Suggests: RUnit, inline, highlight, rbenchmark
 URL: http://dirk.eddelbuettel.com/code/rcpp.html,
         http://romainfrancois.blog.free.fr/index.php?category/R-package/Rcpp
 License: GPL (>= 2)
 BugReports:
         http://r-forge.r-project.org/tracker/?atid=637&group_id=155&func=browse
-Packaged: 2010-07-25 16:40:57 UTC; edd
+MailingList: Please send questions and comments regarding Rcpp to
+        rcpp-devel@lists.r-forge.r-project.org
+Packaged: 2010-09-17 17:02:16 UTC; edd
 Repository: CRAN
-Date/Publication: 2010-07-26 21:02:16
+Date/Publication: 2010-09-17 17:15:29

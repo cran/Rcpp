@@ -82,6 +82,7 @@ namespace Rcpp{
 #include <algorithm>
 #include <complex>
 #include <limits.h>
+#include <typeinfo>
 
 #ifdef HAS_INIT_LISTS
 #include <initializer_list>
@@ -112,6 +113,8 @@ std::string demangle( const std::string& name) ;
 #if defined(R_VERSION) && R_VERSION >= R_Version(2, 12, 0)
 #define R_2_12_0
 #endif
+
+#include <Rcpp/complex.h>
 
 // #ifdef BUILDING_DLL
 // #define RcppExport extern "C" __declspec(dllexport)
@@ -247,6 +250,8 @@ SEXP stack_trace( const char *file, int line) ;
 #include <Rcpp/traits/remove_const_and_reference.h>
 #include <Rcpp/traits/result_of.h>
 
+#include <Rcpp/Generator.h>
+
 #include <Rcpp/internal/caster.h>
 #include <Rcpp/internal/r_vector.h>
 #include <Rcpp/r_cast.h>
@@ -274,7 +279,6 @@ RcppExport SEXP RcppXPtrExample_get_external_pointer(SEXP );
 
 #include <Rcpp/preprocessor.h>
 #include <Rcpp/algo.h>
-
 
 #include <Rcpp/sugar/sugar_forward.h>
 

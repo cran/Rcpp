@@ -28,7 +28,6 @@
 #include <Rcpp/Date.h>
 #include <Rcpp/Function.h>
 #include <time.h>		// for gmtime
-#include <unistd.h>		// for read and close on Solaris
 
 namespace Rcpp {
 
@@ -181,6 +180,9 @@ namespace Rcpp {
 #include "stdio.h"
 #include "fcntl.h"
 #include "float.h"	/* for FLT_MAX and DBL_MAX */
+
+#include <unistd.h>		// solaris needs this for read() and close()
+
 
 /* merged from private.h */
 #define TYPE_BIT(type)	(sizeof (type) * CHAR_BIT)

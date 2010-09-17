@@ -1,6 +1,6 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 8 -*-
 //
-// exp.h: Rcpp R/C++ interface class library -- exp
+// sum.h: Rcpp R/C++ interface class library -- sum
 //
 // Copyright (C) 2010 Dirk Eddelbuettel and Romain Francois
 //
@@ -19,44 +19,30 @@
 // You should have received a copy of the GNU General Public License
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef Rcpp__sugar__exp_h
-#define Rcpp__sugar__exp_h
+#ifndef Rcpp__sugar__sum_h
+#define Rcpp__sugar__sum_h
 
 namespace Rcpp{
 namespace sugar{
 
-template <bool NA, int RTYPE>
-class exp__impl{
+template <typename T, typename EXPR>
+class Lazy {
 public:
-	typedef typename Rcpp::traits::storage_type<RTYPE>::type STORAGE ;
-	static inline double get( STORAGE x){
-		return Rcpp::traits::is_na<RTYPE>(x) ? NA_INTEGER : exp(x) ;
-	}
+	inline operator T() const { return static_cast<const EXPR&>(*this).get() ; }
 } ;
-
-template <int RTYPE>
-class exp__impl<false,RTYPE>{
-public:
-	typedef typename Rcpp::traits::storage_type<RTYPE>::type STORAGE ;
-	static inline double get( STORAGE x){
-		return exp(x) ;
-	}
-} ;
-
+	
 	
 template <int RTYPE, bool NA, typename T>
-class Exp : public Rcpp::VectorBase< REALSXP ,NA, Exp<RTYPE,NA,T> > {
+class Sum : public Lazy< typename Rcpp::traits::storage_type<RTYPE>::type , Sum<RTYPE,NA,T> > {
 public:
 	typedef typename Rcpp::VectorBase<RTYPE,NA,T> VEC_TYPE ;
 	typedef typename Rcpp::traits::storage_type<RTYPE>::type STORAGE ;
 	
-	Exp( const VEC_TYPE& object_ ) : object(object_){}
+	Sum( const VEC_TYPE& object_ ) : object(object_){}
 	
-	inline double operator[]( int i ) const {
-		return exp__impl<NA,RTYPE>::get( object[i] );
-	}
-	inline int size() const { return object.size() ; }
-	         
+	inline STORAGE get() const {
+		return std::accumulate( object.begin(), object.end(), STORAGE() , std::plus<STORAGE>() ) ;
+	}         
 private:
 	const VEC_TYPE& object ;
 } ;
@@ -64,13 +50,13 @@ private:
 } // sugar
 
 template <bool NA, typename T>
-inline sugar::Exp<INTSXP,NA,T> exp( const VectorBase<INTSXP,NA,T>& t){
-	return sugar::Exp<INTSXP,NA,T>( t ) ;
+inline sugar::Sum<INTSXP,NA,T> sum( const VectorBase<INTSXP,NA,T>& t){
+	return sugar::Sum<INTSXP,NA,T>( t ) ;
 }
 
 template <bool NA, typename T>
-inline sugar::Exp<REALSXP,NA,T> exp( const VectorBase<REALSXP,NA,T>& t){
-	return sugar::Exp<REALSXP,NA,T>( t ) ;
+inline sugar::Sum<REALSXP,NA,T> sum( const VectorBase<REALSXP,NA,T>& t){
+	return sugar::Sum<REALSXP,NA,T>( t ) ;
 }
 
 

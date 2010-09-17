@@ -1,6 +1,6 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 8 -*-
 //
-// Conj.h: Rcpp R/C++ interface class library -- Conj
+// block.h: Rcpp R/C++ interface class library -- sugar blocks
 //
 // Copyright (C) 2010 Dirk Eddelbuettel and Romain Francois
 //
@@ -19,37 +19,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef Rcpp__sugar__Conj_h
-#define Rcpp__sugar__Conj_h
+#ifndef Rcpp__sugar__block__block_h
+#define Rcpp__sugar__block__block_h
 
-namespace Rcpp{
-namespace sugar{
+#include <Rcpp/sugar/block/SugarBlock_1.h>
+#include <Rcpp/sugar/block/SugarBlock_2.h>
+#include <Rcpp/sugar/block/SugarBlock_3.h>
 
-template <bool NA, typename T>
-class Conj : public Rcpp::VectorBase< CPLXSXP,NA, Conj<NA,T> > {
-public:
-	typedef typename Rcpp::VectorBase<CPLXSXP,NA,T> VEC_TYPE ;
-	
-	Conj( const VEC_TYPE& object_ ) : object(object_){}
-	
-	inline Rcomplex operator[]( int i ) const {
-		Rcomplex x = object[i] ;
-		x.i = - x.i ;
-		return x ;
-	}
-	inline int size() const { return object.size() ; }
-	         
-private:
-	const VEC_TYPE& object ;
-} ;
-	
-} // sugar
+#include <Rcpp/sugar/block/SugarMath.h>
 
-template <bool NA, typename T>
-inline sugar::Conj<NA,T> Conj( const VectorBase<CPLXSXP,NA,T>& t){
-	return sugar::Conj<NA,T>( t ) ;
-}
-
-} // Rcpp
 #endif
-
