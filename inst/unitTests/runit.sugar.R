@@ -235,12 +235,12 @@
 				'
 					NumericVector xx(x) ;
 					NumericVector yy(y) ;
-					
+					       
 					return List::create( 
-						_["vec_vec" ]  = ifelse( xx < yy, xx*xx, -(yy*yy) ), 
-						_["vec_prim"]  = ifelse( xx < yy, 1.0  , -(yy*yy) ), 
-						_["prim_vec"]  = ifelse( xx < yy, xx*xx, 1.0      ), 
-						_["prim_prim"] = ifelse( xx < yy, 1.0, 2.0        )
+						 _["vec_vec" ]  = ifelse( xx < yy, xx*xx, -(yy*yy) ),  
+						 _["vec_prim"]  = ifelse( xx < yy, 1.0  , -(yy*yy) ), 
+						 _["prim_vec"]  = ifelse( xx < yy, xx*xx, 1.0      ),
+						 _["prim_prim"] = ifelse( xx < yy, 1.0, 2.0        )
 						) ;
 				'				
 			), 
@@ -900,7 +900,7 @@ test.sugar.ifelse <- function( ){
 	x <- 1:10
 	y <- 10:1
 	checkEquals( fx( x, y), list( 
-		"vec_vec"   = ifelse( x<y, x*x, -(y*y) ), 
+		"vec_vec"   = ifelse( x<y, x*x, -(y*y) ) ,
 		"vec_prim"  = ifelse( x<y, 1.0, -(y*y) ), 
 		"prim_vec"  = ifelse( x<y, x*x, 1.0    ), 
 		"prim_prim" = ifelse( x<y, 1.0, 2.0    )
@@ -913,7 +913,7 @@ test.sugar.isna <- function( ){
 	checkEquals( fx( 1:10) , rep(FALSE,10) )
 }
 
-test.sugar.isna.isna <- function( ){
+test.sugar.isna.isna <- function( ){                                                                                                  
 	fx <- .rcpp.sugar$runit_isna_isna
 	checkEquals( fx( c(1:5,NA,7:10) ) , rep(FALSE,10) )
 }
@@ -951,18 +951,18 @@ test.sugar.plus <- function( ){
 test.sugar.plus.seqlen <- function( ){
 	fx <- .rcpp.sugar$runit_plus_seqlen
 	checkEquals( fx() , list( 11:20,11:20, 1:10+1:10)  )
-}
+}         
 
 test.sugar.plus.all <- function( ){
 	fx <- .rcpp.sugar$runit_plus_all
 	checkEquals( fx(1:10) , FALSE )
-}
+} 
 
 test.sugar.pmin <- function( ){
 	fx <- .rcpp.sugar$runit_pmin
 	checkEquals( fx(1:10, 10:1) , c(1:5,5:1) )
 }
-
+                               
 test.sugar.pmin.one <- function( ){
 	fx <- .rcpp.sugar$runit_pmin_one
 	checkEquals( fx(1:10) , 
@@ -1158,7 +1158,9 @@ test.sugar.matrix.outer <- function( ){
 test.sugar.matrix.row <- function( ){
 	fx <- .rcpp.sugar$runit_row
 	m <- matrix( 1:16, nc = 4 )
-	checkEquals( fx(m), list( row = row(m), col = col(m) ) ) 
+	res <- fx( m )
+	target <- list( row = row(m), col = col(m) )
+	checkEquals( res, target ) 
 }
 
 test.sugar.diag <- function( ){
@@ -1166,8 +1168,13 @@ test.sugar.diag <- function( ){
 	
 	x <- 1:4
 	m <- matrix( 1:16, nc = 4 )
-	checkEquals( fx(x, m), 
-		list( diag(x), diag(m), diag( outer( x, x, "+" ) ) ) ) 
+	res <- fx(x, m)
+	target <- list( 
+		    diag(x), 
+		    diag(m), 
+		    diag( outer( x, x, "+" ) )
+		)
+	checkEquals( res, target ) 
 }
 
 

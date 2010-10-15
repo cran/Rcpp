@@ -110,10 +110,6 @@ std::string demangle( const std::string& name) ;
 #include <Rversion.h>
 #define RCPP_GET_NAMES(x)	Rf_getAttrib(x, R_NamesSymbol)
 
-#if defined(R_VERSION) && R_VERSION >= R_Version(2, 12, 0)
-#define R_2_12_0
-#endif
-
 #include <Rcpp/complex.h>
 
 // #ifdef BUILDING_DLL
@@ -124,8 +120,10 @@ std::string demangle( const std::string& name) ;
 
 #include <Rcpp/internal/posixt.h>
 
+RcppExport void init_Rcpp_routines(DllInfo*) ;
+
 namespace Rcpp{
-	namespace internal{
+    namespace internal{
 		template <typename T> int rcpp_call_test(T t){
 			return T::r_type::value ;
 		}
@@ -156,11 +154,6 @@ RcppExport inline SEXP canUseCXX0X(){ return Rf_ScalarLogical( FALSE ); }
 
 RcppExport SEXP test_named() ;
 RcppExport SEXP capabilities() ;
-
-/**
- * the address of the pointer wrapped by an external pointer
- */
-RcppExport SEXP as_character_externalptr(SEXP); 
 
 const char * sexp_to_name(int sexp_type); 
 
@@ -198,13 +191,15 @@ namespace Rcpp{
 #endif
 
 #if RCPP_DEBUG_LEVEL > 0
-	#define RCPP_DEBUG( MSG ) Rprintf( "%s:%d %s" , __FILE__, __LINE__, MSG ) ;
-	#define RCPP_DEBUG_1( fmt, MSG ) Rprintf( "%s:%d " fmt "%s" , __FILE__, __LINE__, MSG ) ;
-	#define RCPP_DEBUG_2( fmt, M1, M2 ) Rprintf( "%s:%d " fmt "%s" , __FILE__, __LINE__, M1, M2 ) ;
+	#define RCPP_DEBUG( MSG ) Rprintf( "%s:%d %s\n" , __FILE__, __LINE__, MSG ) ;
+	#define RCPP_DEBUG_1( fmt, MSG ) Rprintf( "%s:%d " fmt "\n" , __FILE__, __LINE__, MSG ) ;
+	#define RCPP_DEBUG_2( fmt, M1, M2 ) Rprintf( "%s:%d" fmt "\n" , __FILE__, __LINE__, M1, M2 ) ;
+	#define RCPP_DEBUG_3( fmt, M1, M2, M3 ) Rprintf( "%s:%d" fmt "\n" , __FILE__, __LINE__, M1, M2, M3) ;
 #else
 	#define RCPP_DEBUG( MSG )
 	#define RCPP_DEBUG_1( fmt, MSG )
 	#define RCPP_DEBUG_2( fmt, M1, M2 )
+	#define RCPP_DEBUG_3( fmt, M1, M2, M3 )
 #endif
 
 SEXP stack_trace( const char *file, int line) ;
@@ -231,6 +226,7 @@ SEXP stack_trace( const char *file, int line) ;
 #include <Rcpp/traits/has_iterator.h>
 #include <Rcpp/traits/expands_to_logical.h>
 #include <Rcpp/traits/matrix_interface.h>
+#include <Rcpp/traits/is_sugar_expression.h>
 #include <Rcpp/traits/has_na.h>
 #include <Rcpp/traits/storage_type.h>
 #include <Rcpp/traits/r_sexptype_traits.h>
@@ -281,5 +277,8 @@ RcppExport SEXP RcppXPtrExample_get_external_pointer(SEXP );
 #include <Rcpp/algo.h>
 
 #include <Rcpp/sugar/sugar_forward.h>
+
+#include <Rcpp/routines.h>
+#include <Rcpp/cache.h>
 
 #endif

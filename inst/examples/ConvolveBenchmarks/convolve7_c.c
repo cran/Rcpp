@@ -1,5 +1,6 @@
 
-/* This is from 'Writing R Extensions' section 5.10.1 */
+// This is from 'Writing R Extensions' section 5.10.1 
+// BUT slowed down by using REAL() on each access which proves to be rather costly
 
 #include <R.h>
 #include <Rdefines.h>
@@ -18,4 +19,10 @@ SEXP convolve7(SEXP a, SEXP b)
     	for(j = 0; j < nb; j++) REAL(ab)[i + j] += REAL(a)[i] * REAL(b)[j];
     UNPROTECT(3);
     return(ab);
+
 }
+
+
+#include "loopmacro.h"
+LOOPMACRO_C(convolve7)
+

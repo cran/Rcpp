@@ -53,6 +53,10 @@ public:
 	class_Base() :name(){} ;
 	class_Base(const char* name_) : name(name_){} ;
 	
+	virtual Rcpp::List fields(SEXP){ return Rcpp::List(0); }
+	virtual Rcpp::List getMethods(SEXP){ return Rcpp::List(0); }
+	virtual void run_finalizer(SEXP){ }
+	
 	virtual bool has_method( const std::string& ){ 
 		return false ; 
 	}
@@ -62,23 +66,28 @@ public:
 	virtual SEXP newInstance(SEXP *, int){ 
 		return R_NilValue;
 	}
-	virtual SEXP invoke( const std::string&, SEXP, SEXP *, int ){ 
+	virtual SEXP invoke( SEXP, SEXP, SEXP *, int ){ 
 		return R_NilValue ;
 	}
+	
 	virtual Rcpp::CharacterVector method_names(){ return Rcpp::CharacterVector(0) ; }
 	virtual Rcpp::CharacterVector property_names(){ return Rcpp::CharacterVector(0) ; }
 	virtual bool property_is_readonly(const std::string& ) throw(std::range_error) { return false ; }
 	virtual std::string property_class(const std::string& ) throw(std::range_error){ return "" ; }
+	virtual Rcpp::IntegerVector methods_arity(){ return Rcpp::IntegerVector(0) ; }
+	virtual Rcpp::LogicalVector methods_voidness(){ return Rcpp::LogicalVector(0); }
+	virtual Rcpp::List property_classes(){ return Rcpp::List(0); }
 	
 	virtual Rcpp::CharacterVector complete(){ return Rcpp::CharacterVector(0) ; }
 	virtual ~class_Base(){}
 	
-	virtual SEXP getProperty( const std::string&, SEXP ) {
+	virtual SEXP getProperty( SEXP, SEXP ) {
 		throw std::range_error( "cannot retrieve property" ) ;
 	}
-	virtual void setProperty( const std::string&, SEXP, SEXP) {
+	virtual void setProperty( SEXP, SEXP, SEXP) {
 		throw std::range_error( "cannot set property" ) ;
 	}
+	
 	
 	std::string name ;
 } ;
@@ -145,6 +154,18 @@ class CppMethod {
 		virtual bool is_void(){ return false ; }
 } ;
 
+template <typename Class>
+class S4_CppMethod : public Rcpp::Reference {
+public:             
+    S4_CppMethod( CppMethod<Class>* m, SEXP class_xp ) : Reference( "C++Method" ){
+        field( "void" )          = m->is_void() ;
+        field( "pointer" )       = Rcpp::XPtr< CppMethod<Class> >( m, false ) ;
+        field( "class_pointer" ) = class_xp ;
+        
+    }
+} ;
+
+
 #include <Rcpp/module/Module_generated_CppMethod.h>
 #include <Rcpp/module/Module_generated_Pointer_CppMethod.h>
 
@@ -155,9 +176,41 @@ class CppProperty {
 		
 		CppProperty(){} ;
 		virtual SEXP get(Class* ) throw(std::range_error){ throw std::range_error("cannot retrieve property"); }
-		virtual void set(Class*, SEXP) throw(std::range_error){ throw std::range_error("cannot set property"); }
+		virtual void set(Class*, SEXP) throw(std::range_error,Rcpp::not_compatible){ throw std::range_error("cannot set property"); }
 		virtual bool is_readonly(){ return false; }
 		virtual std::string get_class(){ return ""; }
+} ;
+
+template <typename Class>
+class CppFinalizer{ 
+public:
+    CppFinalizer(){} ;
+    virtual void run(Class* ){} ;
+} ;
+
+template <typename Class>
+class FunctionFinalizer : public CppFinalizer<Class> {
+public:
+    typedef void (*Pointer)(Class*) ;
+    FunctionFinalizer( Pointer p ) : finalizer(p){} ;
+    
+    virtual void run(Class* object){ 
+        finalizer( object ) ;
+    }
+    
+private:
+    Pointer finalizer ;    
+} ;
+
+template <typename Class>
+class S4_field : public Rcpp::Reference {
+public:             
+    S4_field( CppProperty<Class>* p, SEXP class_xp ) : Reference( "C++Field" ){
+        field( "read_only" )     = p->is_readonly() ;
+        field( "cpp_class" )     = p->get_class();
+        field( "pointer" )       = Rcpp::XPtr< CppProperty<Class> >( p, false ) ;
+        field( "class_pointer" ) = class_xp ;
+    }
 } ;
 
 #include <Rcpp/module/Module_Property.h>
@@ -170,15 +223,17 @@ public:
 	typedef std::map<std::string,method_class*> METHOD_MAP ;
 	typedef std::pair<const std::string,method_class*> PAIR ;
 	typedef Rcpp::XPtr<Class> XP ;
+	typedef CppFinalizer<Class> finalizer_class ;
 	
 	typedef CppProperty<Class> prop_class ;
 	typedef std::map<std::string,prop_class*> PROPERTY_MAP ;
 	typedef std::pair<const std::string,prop_class*> PROP_PAIR ;
 	
-	class_( const char* name_ ) : class_Base(name_), methods(), properties(), specials(0) {
+	class_( const char* name_ ) : class_Base(name_), methods(), properties(), specials(0), finalizer_pointer(0) {
 		if( !singleton ){
 			singleton = new self ;
 			singleton->name = name_ ;
+			singleton->finalizer_pointer = new finalizer_class ;
 			getCurrentScope()->AddClass( name_, singleton ) ;
 		}
 	}
@@ -188,22 +243,18 @@ public:
 		return out ;
 	}
 	
-	SEXP invoke( const std::string& method_name, SEXP object, SEXP *args, int nargs ){ 
+	SEXP invoke( SEXP method_xp, SEXP object, SEXP *args, int nargs ){ 
 		BEGIN_RCPP
-		typename METHOD_MAP::iterator it = methods.find( method_name ) ;
-		if( it == methods.end() ){
-			throw std::range_error( "no such method" ) ; 
-		}
-		method_class* met =  it->second ;
+		method_class* met = reinterpret_cast< method_class* >( EXTPTR_PTR( method_xp ) ) ;
+	    // maybe this is not needed as the R side handles it
 		if( met->nargs() > nargs ){
+		    Rprintf( "met->nargs() = %d\nnargs=%d\n", met->nargs(), nargs ) ;
 			throw std::range_error( "incorrect number of arguments" ) ; 	
 		}
-		return Rcpp::List::create( 
-				Rcpp::Named("result") = met->operator()( XP(object), args ), 
-				Rcpp::Named("void")   = met->is_void() 
-			) ;
+		return met->operator()( XP(object), args ); 
 		END_RCPP	
 	}
+	
 	
 	self& AddMethod( const char* name_, method_class* m){
 		singleton->methods.insert( PAIR( name_,m ) ) ;  
@@ -246,6 +297,32 @@ public:
 		return out ;
 	}
 	
+	Rcpp::IntegerVector methods_arity(){
+		int n = methods.size() ;
+		Rcpp::CharacterVector mnames(n) ;
+		Rcpp::IntegerVector res( n );
+		typename METHOD_MAP::iterator it = methods.begin( ) ;
+		for( int i=0; i<n; i++, ++it){
+			mnames[i] = it->first ;
+			res[i] = it->second->nargs() ;
+		}
+		res.names( ) = mnames ;
+		return res ;
+	}
+	Rcpp::LogicalVector methods_voidness(){
+		int n = methods.size() ;
+		Rcpp::CharacterVector mnames(n) ;
+		Rcpp::LogicalVector res( n );
+		typename METHOD_MAP::iterator it = methods.begin( ) ;
+		for( int i=0; i<n; i++, ++it){
+			mnames[i] = it->first ;
+			res[i] = it->second->is_void() ;
+		}
+		res.names( ) = mnames ;
+		return res ;
+	}
+	
+	
 	Rcpp::CharacterVector property_names(){
 		int n = properties.size() ;
 		Rcpp::CharacterVector out(n) ;
@@ -253,6 +330,19 @@ public:
 		for( int i=0; i<n; i++, ++it){
 			out[i] = it->first ;
 		} 
+		return out ;
+	}
+	
+	Rcpp::List property_classes(){
+		int n = properties.size() ;
+		Rcpp::CharacterVector pnames(n) ;
+		Rcpp::List out(n) ;
+		typename PROPERTY_MAP::iterator it = properties.begin( ) ;
+		for( int i=0; i<n; i++, ++it){
+			pnames[i] = it->first ;
+			out[i] = it->second->get_class() ; 
+		} 
+		out.names() = pnames ;
 		return out ;
 	}
 	
@@ -281,37 +371,71 @@ public:
 		return out ;
 	}
 	
-	SEXP getProperty( const std::string& name_, SEXP object) {
+	SEXP getProperty( SEXP field_xp , SEXP object) {
 	BEGIN_RCPP
-		typename PROPERTY_MAP::iterator it = properties.find( name_ ) ;
-		if( it == properties.end() ){
-			throw std::range_error( "no such property" ) ; 
-		}
-		prop_class* prop =  it->second ;
-		return prop->get( XP(object) ); 
+		prop_class* prop = reinterpret_cast< prop_class* >( EXTPTR_PTR( field_xp ) ) ;
+	    return prop->get( XP(object) ); 
 	END_RCPP
 	}
 	
-	void setProperty( const std::string& name_, SEXP object, SEXP value)  {
+	void setProperty( SEXP field_xp, SEXP object, SEXP value)  {
 	BEGIN_RCPP
-		typename PROPERTY_MAP::iterator it = properties.find( name_ ) ;
-		if( it == properties.end() ){
-			throw std::range_error( "no such property" ) ; 
-		}
-		prop_class* prop =  it->second ;
-		return prop->set( XP(object), value ); 
+		prop_class* prop = reinterpret_cast< prop_class* >( EXTPTR_PTR( field_xp ) ) ;
+	    return prop->set( XP(object), value ); 
 	VOID_END_RCPP
+	}
+	
+	
+	Rcpp::List fields( SEXP class_xp ){
+	    int n = properties.size() ;
+		Rcpp::CharacterVector pnames(n) ;
+		Rcpp::List out(n) ;
+		typename PROPERTY_MAP::iterator it = properties.begin( ) ;
+		for( int i=0; i<n; i++, ++it){
+			pnames[i] = it->first ;
+			out[i] = S4_field<Class>( it->second, class_xp ) ; 
+		} 
+		out.names() = pnames ;
+		return out ;
+	}
+
+	Rcpp::List getMethods( SEXP class_xp ){
+	    int n = methods.size() ;
+		Rcpp::CharacterVector pnames(n) ;
+		Rcpp::List out(n) ;
+		typename METHOD_MAP::iterator it = methods.begin( ) ;
+		for( int i=0; i<n; i++, ++it){
+			pnames[i] = it->first ;
+			out[i] = S4_CppMethod<Class>( it->second, class_xp ) ; 
+		} 
+		out.names() = pnames ;
+		return out ;
 	}
 
 #include <Rcpp/module/Module_Field.h>
 
 #include <Rcpp/module/Module_Add_Property.h>
 
+    self& finalizer( void (*f)(Class*) ){
+        SetFinalizer( new FunctionFinalizer<Class>( f ) ) ;
+        return *this ;
+    }    
 
+    virtual void run_finalizer( SEXP object ){
+        finalizer_pointer->run( XP(object) ) ;
+    }
+    
 private:
+    
+    void SetFinalizer( finalizer_class* f ){
+        if( singleton->finalizer_pointer ) delete singleton->finalizer ;
+        singleton->finalizer_pointer = f ; 
+    }
+    
 	METHOD_MAP methods ;
 	PROPERTY_MAP properties ;
 	static self* singleton ;
+	finalizer_class* finalizer_pointer ;
 	int specials ;
 	
 	class_( ) : class_Base(), methods(), properties(), specials(0) {}; 

@@ -1,4 +1,4 @@
-// -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 8 -*-
+// -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 4 -*-
 //
 // times.h: Rcpp R/C++ interface class library -- operator*
 //                                                                      
@@ -32,8 +32,12 @@ namespace sugar{
 		typedef typename Rcpp::VectorBase<RTYPE,LHS_NA,LHS_T> LHS_TYPE ;
 		typedef typename Rcpp::VectorBase<RTYPE,RHS_NA,RHS_T> RHS_TYPE ;
 		
+		typedef typename Rcpp::traits::Extractor< RTYPE, LHS_NA, LHS_T>::type LHS_EXT ;
+		typedef typename Rcpp::traits::Extractor< RTYPE, RHS_NA, RHS_T>::type RHS_EXT ;
+		
 		Times_Vector_Vector( const LHS_TYPE& lhs_, const RHS_TYPE& rhs_ ) : 
-			lhs(lhs_), rhs(rhs_){}
+			lhs(lhs_.get_ref()), rhs(rhs_.get_ref()) {
+		}
 		
 		inline STORAGE operator[]( int i ) const {
 			STORAGE lhs_ = lhs[i] ;
@@ -45,8 +49,8 @@ namespace sugar{
 		inline int size() const { return lhs.size() ; }
 		
 	private:
-		const LHS_TYPE& lhs ;
-		const RHS_TYPE& rhs ;
+		const LHS_EXT& lhs ;
+		const RHS_EXT& rhs ;
 	} ;	
 	
 	// specialization LHS_NA = false
@@ -57,8 +61,11 @@ namespace sugar{
 		typedef typename Rcpp::VectorBase<RTYPE,false,LHS_T> LHS_TYPE ;
 		typedef typename Rcpp::VectorBase<RTYPE,RHS_NA,RHS_T> RHS_TYPE ;
 		
+		typedef typename Rcpp::traits::Extractor< RTYPE, false, LHS_T>::type LHS_EXT ;
+		typedef typename Rcpp::traits::Extractor< RTYPE, RHS_NA, RHS_T>::type RHS_EXT ;
+		
 		Times_Vector_Vector( const LHS_TYPE& lhs_, const RHS_TYPE& rhs_ ) : 
-			lhs(lhs_), rhs(rhs_){}
+			lhs(lhs_.get_ref()), rhs(rhs_.get_ref()){}
 		
 		inline STORAGE operator[]( int i ) const {
 			STORAGE rhs_ = rhs[i] ;
@@ -69,8 +76,8 @@ namespace sugar{
 		inline int size() const { return lhs.size() ; }
 		
 	private:
-		const LHS_TYPE& lhs ;
-		const RHS_TYPE& rhs ;
+		const LHS_EXT& lhs ;
+		const RHS_EXT& rhs ;
 	} ;	
 
 	// specialization for RHS_NA = false 
@@ -81,8 +88,11 @@ namespace sugar{
 		typedef typename Rcpp::VectorBase<RTYPE,LHS_NA,LHS_T> LHS_TYPE ;
 		typedef typename Rcpp::VectorBase<RTYPE,false,RHS_T> RHS_TYPE ;
 		
+		typedef typename Rcpp::traits::Extractor< RTYPE, LHS_NA, LHS_T>::type LHS_EXT ;
+		typedef typename Rcpp::traits::Extractor< RTYPE, false, RHS_T>::type RHS_EXT ;
+		
 		Times_Vector_Vector( const LHS_TYPE& lhs_, const RHS_TYPE& rhs_ ) : 
-			lhs(lhs_), rhs(rhs_){}
+			lhs(lhs_.get_ref()), rhs(rhs_.get_ref()){}
 		
 		inline STORAGE operator[]( int i ) const {
 			STORAGE lhs_ = lhs[i] ;
@@ -93,8 +103,8 @@ namespace sugar{
 		inline int size() const { return lhs.size() ; }
 		
 	private:
-		const LHS_TYPE& lhs ;
-		const RHS_TYPE& rhs ;
+		const LHS_EXT& lhs ;
+		const RHS_EXT& rhs ;
 	} ;	
 
 
@@ -106,8 +116,11 @@ namespace sugar{
 		typedef typename Rcpp::VectorBase<RTYPE,false,LHS_T> LHS_TYPE ;
 		typedef typename Rcpp::VectorBase<RTYPE,false,RHS_T> RHS_TYPE ;
 		
+		typedef typename Rcpp::traits::Extractor< RTYPE, false, LHS_T>::type LHS_EXT ;
+		typedef typename Rcpp::traits::Extractor< RTYPE, false, RHS_T>::type RHS_EXT ;
+		                                                     
 		Times_Vector_Vector( const LHS_TYPE& lhs_, const RHS_TYPE& rhs_ ) : 
-			lhs(lhs_), rhs(rhs_){}
+			lhs(lhs_.get_ref()), rhs(rhs_.get_ref()){}
 		
 		inline STORAGE operator[]( int i ) const {
 			return lhs[i] * rhs[i]  ;
@@ -116,8 +129,8 @@ namespace sugar{
 		inline int size() const { return lhs.size() ; }
 		
 	private:
-		const LHS_TYPE& lhs ;
-		const RHS_TYPE& rhs ;
+		const LHS_EXT& lhs ;
+		const RHS_EXT& rhs ;
 	} ;	
 	
 	
@@ -127,68 +140,107 @@ namespace sugar{
 	public:
 		typedef typename Rcpp::VectorBase<RTYPE,NA,T> VEC_TYPE ;
 		typedef typename traits::storage_type<RTYPE>::type STORAGE ;
-		typedef STORAGE (Times_Vector_Primitive::*METHOD)(int) const ;
+		
+		typedef typename Rcpp::traits::Extractor< RTYPE, NA, T>::type EXT ;
 		
 		Times_Vector_Primitive( const VEC_TYPE& lhs_, STORAGE rhs_ ) : 
-			lhs(lhs_), rhs(rhs_), m() {
-			
-			m = Rcpp::traits::is_na<RTYPE>(rhs) ? 
-				&Times_Vector_Primitive::rhs_is_na :
-				&Times_Vector_Primitive::rhs_is_not_na ;
-		}
+			lhs(lhs_.get_ref()), rhs(rhs_), rhs_na( Rcpp::traits::is_na<RTYPE>(rhs_) )
+			{}
 		
 		inline STORAGE operator[]( int i ) const {
-			return (this->*m)(i) ;
+			if( rhs_na ) return rhs ;
+			STORAGE x = lhs[i] ;
+			return Rcpp::traits::is_na<RTYPE>(x) ? x : (x * rhs) ;
 		}
 		
 		inline int size() const { return lhs.size() ; }
 		
 	private:
-		const VEC_TYPE& lhs ;
+		const EXT& lhs ;
 		STORAGE rhs ;
-		METHOD m ;
-		
-		inline STORAGE rhs_is_na(int i) const { return rhs ; }
-		inline STORAGE rhs_is_not_na(int i) const { 
-			STORAGE x = lhs[i] ;
-			return Rcpp::traits::is_na<RTYPE>(x) ? x : (x * rhs) ;
-		}
+		bool rhs_na ;
 		
 	} ;
 	
-
+	
 	template <int RTYPE, typename T>
 	class Times_Vector_Primitive<RTYPE,false,T> : public Rcpp::VectorBase<RTYPE,false, Times_Vector_Primitive<RTYPE,false,T> > {
 	public:
 		typedef typename Rcpp::VectorBase<RTYPE,false,T> VEC_TYPE ;
 		typedef typename traits::storage_type<RTYPE>::type STORAGE ;
-		typedef STORAGE (Times_Vector_Primitive::*METHOD)(int) const ;
+		
+		typedef typename Rcpp::traits::Extractor< RTYPE, false, T>::type EXT ;
 		
 		Times_Vector_Primitive( const VEC_TYPE& lhs_, STORAGE rhs_ ) : 
-			lhs(lhs_), rhs(rhs_), m() {
-				m = Rcpp::traits::is_na<RTYPE>(rhs) ? 
-				&Times_Vector_Primitive::rhs_is_na :
-				&Times_Vector_Primitive::rhs_is_not_na ;
-		}
+			lhs(lhs_.get_ref()), rhs(rhs_), rhs_na( Rcpp::traits::is_na<RTYPE>(rhs_) ) {}
 		
 		inline STORAGE operator[]( int i ) const {
-			return (this->*m)(i) ;
+			return rhs_na ? rhs : (rhs * lhs[i] ) ;
 		}
 		
 		inline int size() const { return lhs.size() ; }
 		
 	private:
-		const VEC_TYPE& lhs ;
+		const EXT& lhs ;
 		STORAGE rhs ;
-		METHOD m ;
-		
-		inline STORAGE rhs_is_na(int i) const { return rhs ; }
-		inline STORAGE rhs_is_not_na(int i) const { 
-			return rhs * lhs[i] ;
-		}
+		bool rhs_na ;
 		
 	} ;
 	
+
+
+	
+	
+	
+	// Vector * nona(primitive)
+	
+	template <int RTYPE, bool NA, typename T>
+	class Times_Vector_Primitive_nona : public Rcpp::VectorBase<RTYPE,true, Times_Vector_Primitive_nona<RTYPE,NA,T> > {
+	public:
+		typedef typename Rcpp::VectorBase<RTYPE,NA,T> VEC_TYPE ;
+		typedef typename traits::storage_type<RTYPE>::type STORAGE ;
+		typedef typename Rcpp::traits::Extractor< RTYPE, NA, T>::type EXT ;
+		   
+		Times_Vector_Primitive_nona( const VEC_TYPE& lhs_, STORAGE rhs_ ) : 
+			lhs(lhs_.get_ref()), rhs(rhs_)
+			{}
+		
+		inline STORAGE operator[]( int i ) const {
+			STORAGE x = lhs[i] ;
+			return Rcpp::traits::is_na<RTYPE>(x) ? x : (x * rhs) ;
+		}
+		
+		inline int size() const { return lhs.size() ; }
+		
+	private:
+		const EXT& lhs ;
+		STORAGE rhs ;
+		
+	} ;
+
+	
+	template <int RTYPE, typename T>
+	class Times_Vector_Primitive_nona<RTYPE,false,T> : public Rcpp::VectorBase<RTYPE,false, Times_Vector_Primitive_nona<RTYPE,false,T> > {
+	public:
+		typedef typename Rcpp::VectorBase<RTYPE,false,T> VEC_TYPE ;
+		typedef typename traits::storage_type<RTYPE>::type STORAGE ;
+		
+		typedef typename Rcpp::traits::Extractor< RTYPE, false, T>::type EXT ;
+		
+		Times_Vector_Primitive_nona( const VEC_TYPE& lhs_, STORAGE rhs_ ) : 
+			lhs(lhs_.get_ref()), rhs(rhs_) {}
+		
+		inline STORAGE operator[]( int i ) const {
+			return rhs * lhs[i] ;
+		}
+		
+		inline int size() const { return lhs.size() ; }
+		
+	private:
+		const EXT& lhs ;
+		STORAGE rhs ;
+		
+	} ;
 	
 }
 }
@@ -211,6 +263,27 @@ operator*(
 ) {
 	return Rcpp::sugar::Times_Vector_Primitive<RTYPE,NA, T >( lhs, rhs ) ;
 }
+
+
+
+template <int RTYPE,bool NA, typename T>
+inline Rcpp::sugar::Times_Vector_Primitive_nona<RTYPE,NA,T>
+operator*( 
+	const Rcpp::VectorBase<RTYPE,NA,T>& lhs, 
+	typename Rcpp::sugar::NonaPrimitive< typename Rcpp::traits::storage_type<RTYPE>::type > rhs 
+) {
+	return Rcpp::sugar::Times_Vector_Primitive_nona<RTYPE,NA,T>( lhs, rhs ) ;
+}
+
+template <int RTYPE,bool NA, typename T>
+inline Rcpp::sugar::Times_Vector_Primitive_nona< RTYPE , NA , T >
+operator*( 
+	typename Rcpp::sugar::NonaPrimitive< typename Rcpp::traits::storage_type<RTYPE>::type > rhs, 
+	const Rcpp::VectorBase<RTYPE,NA,T>& lhs
+) {
+	return Rcpp::sugar::Times_Vector_Primitive_nona<RTYPE,NA, T >( lhs, rhs ) ;
+}
+
 
 template <int RTYPE,bool LHS_NA, typename LHS_T, bool RHS_NA, typename RHS_T>
 inline Rcpp::sugar::Times_Vector_Vector< 
