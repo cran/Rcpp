@@ -27,33 +27,34 @@ cpp_exception <- function( message = "C++ exception", class = NULL, cppstack = r
 	stop( condition )
 }
 
+## Dummy versions
+rcpp_get_current_stack_trace <- function() "DUMMY STACK TRACE"
+rcpp_set_current_stack_trace <- function(s) NULL
+
+
 # used by Rcpp::Evaluator
-exceptions <- new.env()
-setCurrentError <- function( condition = NULL) exceptions[["current"]] <- condition
-resetCurrentError <- function() {
-	setCurrentError(NULL)
-	setErrorOccured(FALSE)
-}
-getCurrentError <- function() exceptions[["current"]]
-setErrorOccured <- function(error_occured = TRUE) exceptions[["error_occured"]] <- error_occured
-setErrorOccured(FALSE)
+setCurrentError <- function( condition = NULL) .Call( rcpp_set_current_error, condition )
+getCurrentError <- function() .Call( rcpp_get_current_error )
+
+setErrorOccured <- function(error_occured = TRUE) .Call( rcpp_set_error_occured, error_occured )
+getErrorOccured <- function() .Call( rcpp_get_error_occured )
+
+setStackTrace <- function(trace = TRUE) .Call( rcpp_set_stack_trace, trace )
+getStackTrace <- function() .Call( rcpp_get_stack_trace)
 
 # all below are called from Evaluator::run 
 # on the C++ side, don't change them unless you also change
 # Evaluator::run
 
-getCurrentErrorMessage <- function() conditionMessage( exceptions[["current"]] )
-resetCurrentError()
-errorOccured <- function() isTRUE( exceptions[["error_occured"]] )
+getCurrentErrorMessage <- function() conditionMessage( getCurrentError() )
+errorOccured <- function() getErrorOccured()
 .rcpp_error_recorder <- function(e){
-	setErrorOccured( TRUE )
-	setCurrentError( e )
-	invisible( NULL )
+	invisible( .Call( rcpp_error_recorder, e ) )
 }
 
 # simplified version of utils::tryCatch
 rcpp_tryCatch <- function(expr, unused){  # unused is kept for compatibility, but is indeed not used
-	resetCurrentError()
+	.Call(reset_current_error)
 	rcpp_doTryCatch <- function(expr, env) {
 	    .Internal(.addCondHands("error", list(.rcpp_error_recorder), 
 	    	env, environment(), FALSE))
@@ -72,13 +73,4 @@ rcpp_tryCatch <- function(expr, unused){  # unused is kept for compatibility, bu
 	else cond <- value[[1L]]
 	.rcpp_error_recorder(cond)
 }
-
-rcpp_set_current_stack_trace <- function( trace ){
-	exceptions[["stack_trace"]] <- trace
-}
-rcpp_get_current_stack_trace <- function(){
-	exceptions[["stack_trace"]]
-}
-rcpp_set_current_stack_trace( NULL )
-
 

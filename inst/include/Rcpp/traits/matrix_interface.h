@@ -29,14 +29,6 @@
 namespace Rcpp{
 namespace traits{
 
-	template <int RTYPE>
-	struct matrix_interface__impl{} ;
-	
-	template <>
-	struct matrix_interface__impl<LGLSXP> {
-		struct r_matrix_interface{}; 
-	} ;
-
 	template<typename T>
 	class _has_matrix_interface_helper : __sfinae_types {
       template<typename U> struct _Wrap_type { };

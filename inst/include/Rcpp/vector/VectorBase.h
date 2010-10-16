@@ -28,7 +28,8 @@ namespace Rcpp{
 template <int RTYPE, bool na, typename VECTOR>
 class VectorBase : public traits::expands_to_logical__impl<RTYPE> {
 public:
-	struct r_type : traits::integral_constant<int,RTYPE>{} ;
+	struct rcpp_sugar_expression{} ;
+    struct r_type : traits::integral_constant<int,RTYPE>{} ;
 	struct can_have_na : traits::integral_constant<bool,na>{} ;
 	typedef typename traits::storage_type<RTYPE>::type stored_type ;
 	typedef typename traits::storage_type<RTYPE>::type elem_type ;
@@ -41,8 +42,8 @@ public:
 		return static_cast<const VECTOR&>(*this) ;
 	}
 
-	inline stored_type operator[]( int i) const { 
-		return static_cast<const VECTOR*>(this)->operator[](i) ;
+	inline stored_type operator[]( int i) const {
+	    return static_cast<const VECTOR*>(this)->operator[](i) ;
 	}
 	
 	inline int size() const { return static_cast<const VECTOR*>(this)->size() ; }
@@ -55,7 +56,7 @@ public:
 		typedef stored_type value_type;
 		typedef std::random_access_iterator_tag iterator_category ;
 
-		iterator( const VectorBase& object_, int index_ ) : object(object_), index(index_){} 
+		iterator( const VectorBase& object_, int index_ ) : object(object_.get_ref()), index(index_){} 
 		iterator( const iterator& other) : object(other.object), index(other.index){};
 		
 		inline iterator& operator++(){
@@ -92,6 +93,10 @@ public:
 			return *this ;
 		}
 
+		inline reference operator[](int i){
+		    return object[index+i] ;
+		}
+		
 		inline reference operator*() {
 			return object[index] ;
 		}
@@ -124,7 +129,7 @@ public:
 	
 			
 	private:
-		const VectorBase& object ;
+		const VECTOR& object ;
 		int index; 
 	} ;
 	

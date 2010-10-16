@@ -1,4 +1,4 @@
-// -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 8 -*-
+// -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 4 -*-
 //
 // Module.cpp: Rcpp R/C++ interface class library -- Rcpp modules
 //
@@ -56,6 +56,18 @@ RCPP_FUNCTION_1( Rcpp::CharacterVector, CppClass__methods, XP_Class cl){
 RCPP_FUNCTION_1( Rcpp::CharacterVector, CppClass__properties, XP_Class cl){
 	return cl->property_names() ;
 }
+RCPP_FUNCTION_1( Rcpp::List, CppClass__property_classes, XP_Class cl){
+	return cl->property_classes() ;
+}
+
+RCPP_FUNCTION_1( Rcpp::IntegerVector, CppClass__methods_arity, XP_Class cl){
+	return cl->methods_arity() ;
+}
+RCPP_FUNCTION_1( Rcpp::LogicalVector, CppClass__methods_voidness, XP_Class cl){
+	return cl->methods_voidness() ;
+}
+
+
 RCPP_FUNCTION_2( bool, CppClass__property_is_readonly, XP_Class cl, std::string p){
 	return cl->property_is_readonly(p) ;
 }
@@ -63,7 +75,7 @@ RCPP_FUNCTION_2( std::string, CppClass__property_class, XP_Class cl, std::string
 	return cl->property_class(p) ;
 }
 
-RCPP_FUNCTION_1( Rcpp::IntegerVector, Module__funtions_arity, XP_Module module ){
+RCPP_FUNCTION_1( Rcpp::IntegerVector, Module__functions_arity, XP_Module module ){
 	return module->	functions_arity() ;
 }
 RCPP_FUNCTION_1( std::string, Module__name, XP_Module module ){
@@ -75,17 +87,24 @@ RCPP_FUNCTION_1( Rcpp::List, Module__classes_info, XP_Module module ){
 RCPP_FUNCTION_1( Rcpp::CharacterVector, Module__complete, XP_Module module ){
 	return module->complete() ;
 }
-extern "C" SEXP CppClass__complete( SEXP xp){
-	XP_Class cl(xp) ;
+RCPP_FUNCTION_1( Rcpp::CharacterVector, CppClass__complete, XP_Class cl){
 	return cl->complete(); 
 }
-RCPP_FUNCTION_3(SEXP, CppClass__get, XP_Class cl, SEXP obj, std::string name){
-	return cl->getProperty( name, obj ) ;
+
+// these operate directly on the external pointers, rather than 
+// looking up the property in the map
+RCPP_FUNCTION_3(SEXP, CppField__get, XP_Class cl, SEXP field_xp, SEXP obj){
+	return cl->getProperty( field_xp, obj ) ;
 }
-RCPP_FUNCTION_4(SEXP, CppClass__set, XP_Class cl, SEXP obj, std::string name, SEXP value){
-	cl->setProperty( name, obj, value ) ;
+RCPP_FUNCTION_4(SEXP, CppField__set, XP_Class cl, SEXP field_xp, SEXP obj, SEXP value){
+	cl->setProperty( field_xp, obj, value ) ;
 	return R_NilValue ;
 }
+RCPP_FUNCTION_2(SEXP, CppObject__finalize, XP_Class cl, SEXP obj){
+	cl->run_finalizer( obj ) ;
+	return R_NilValue ;
+}
+
 
 
 // .External functions
@@ -133,13 +152,19 @@ extern "C" SEXP class__newInstance(SEXP args){
    	return clazz->newInstance(cargs, nargs ) ;
 }
 
-extern "C" SEXP Class__invoke_method(SEXP args){
+extern "C" SEXP CppMethod__invoke(SEXP args){
 	SEXP p = CDR(args) ;
 	
+	// the external pointer to the class
 	XP_Class clazz( CAR(p) ) ; p = CDR(p);
-	std::string met = Rcpp::as<std::string>( CAR(p) ) ; p = CDR(p) ;
+	
+	// the external pointer to the method
+	SEXP met = CAR(p) ; p = CDR(p) ;
+	
+	// the external pointer to the object
 	SEXP obj = CAR(p); p = CDR(p) ;
 	
+	// additional arguments, processed the same way as .Call does
 	SEXP cargs[MAX_ARGS] ;
     int nargs = 0 ;
    	for(; nargs<MAX_ARGS; nargs++){
@@ -157,8 +182,14 @@ namespace Rcpp{
 
 Rcpp::Module* getCurrentScope(){ return Rcpp::current_scope ; }
 void setCurrentScope( Rcpp::Module* scope ){ Rcpp::current_scope = scope ; }
-void R_init_Rcpp( DllInfo* info){
+extern "C" void R_init_Rcpp( DllInfo* info){
 	Rcpp::current_scope = 0 ;
+	
+	// init the cache
+	init_Rcpp_cache() ;
+	
+	// init routines
+	init_Rcpp_routines(info) ;
 }
 
 namespace Rcpp{
@@ -260,6 +291,9 @@ namespace Rcpp{
 		mangled_name += "_" ;
 		mangled_name += cl->name ;
 		slot( ".Data" ) = mangled_name ;
+		
+		slot( "fields" ) = cl->fields( clxp.asSexp() ) ;
+		slot( "methods" ) = cl->getMethods( clxp.asSexp() ) ;
 	}
 
 	CppObject::CppObject( Module* p, class_Base* clazz, SEXP xp ) : S4("C++Object") {

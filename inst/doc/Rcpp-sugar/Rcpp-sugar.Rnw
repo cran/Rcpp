@@ -19,9 +19,16 @@
 \newcommand{\pkg}[1]{{\fontseries{b}\selectfont #1}}
 \newcommand{\sugar}{\textsl{Rcpp sugar}}
 \newcommand{\ith}{\textsl{i}-\textsuperscript{th}}
+\newcommand{\code}[1]{\texttt{#1}}
+
+<<echo=FALSE,print=FALSE>>=
+prettyVersion <- packageDescription("Rcpp")$Version
+prettyDate <- format(Sys.Date(), "%B %e, %Y")
+@
 
 \author{Dirk Eddelbuettel \and Romain Fran\c{c}ois}
 \title{\pkg{Rcpp} syntactic sugar}
+\date{\pkg{Rcpp} version \Sexpr{prettyVersion} as of \Sexpr{prettyDate}}
 
 <<echo=FALSE>>=
 link <- function( f, package, text = f, root = "http://finzi.psych.upenn.edu/R/library/" ){
@@ -55,18 +62,18 @@ linkS4class <- function( cl, package, text = cl, root = "http://finzi.psych.upen
   written using the \pkg{Rcpp} API.
 
   \sugar~is based on expression templates
-  \citep{Abrahams+Gurtovoy:2004,Vandevoorde+Josuttis:2003} and provides
+  \citep{Abrahams+Gurtovoy:2004:TemplateMetaprogramming,Vandevoorde+Josuttis:2003:Templates} and provides
   some 'syntactic sugar' facilities directly in \pkg{Rcpp}. This is similar
   to how \pkg{RcppArmadillo} \citep{CRAN:RcppArmadillo} offers
   linear algebra \proglang{C++} classes based on \pkg{Armadillo}
-  \citep{Armadillo}.
+  \citep{Sanderson:2010:Armadillo}.
   % TODO: reference to armadillo, blitz, etc ...
 }
 
 \section{Motivation}
 
 \pkg{Rcpp} facilitates development of internal compiled code in an \proglang{R}
-package by abstracting low-level details of the \proglang{R} API \citep{R:exts}
+package by abstracting low-level details of the \proglang{R} API \citep{R:Extensions}
 into a consistent set of \proglang{C++} classes.
 
 Code written using \pkg{Rcpp} classes is easier to read, write and maintain,
@@ -122,7 +129,7 @@ Apart from the fact that we need to assign the two objects we obtain from
 is now identical between highly-vectorised \proglang{R} and \proglang{C++}.
 
 \sugar~is written using expression templates and lazy evaluation techniques
-\citep{Abrahams+Gurtovoy:2004,Vandevoorde+Josuttis:2003}.
+\citep{Abrahams+Gurtovoy:2004:TemplateMetaprogramming,Vandevoorde+Josuttis:2003:Templates}.
 This not only allows a much nicer high-level syntax, but also makes it
 rather efficient (as we detail in section~\ref{sec:performance} below).
 
@@ -443,6 +450,48 @@ pow(x, z)     # x to the power of z
 
 % log() and log10() maybe?  Or ln() ?
 
+\subsection{The d/q/p/q statistical functions}
+
+The framework provided by \sugar also permits easy and efficient access the
+density, distribution function, quantile and random number generation
+functions function by \proglang{R} in the \code{Rmath} library.
+
+Currently, most of these functions are vectorised for the first element which
+denote size. Consequently, these calls works in \proglang{C++} just as they
+would in \proglang{R}:
+
+<<lang=cpp>>=
+x1 = dnorm(y1, 0, 1);  // density of y1 at m=0, sd=1
+x2 = pnorm(y2, 0, 1);  // distribution function of y2
+x3 = qnorm(y3, 0, 1);  // quantiles of y3
+x4 = rnorm(n, 0, 1);   // 'n' RNG draws of N(0, 1)
+@
+
+Similar d/q/p/r functions are provided for the most common distributions:
+beta, binom, cauchy, chisq, exp, f, gamma, geom, hyper, lnorm, logis, nbeta,
+nbinom, nbinom\_mu, nchisq, nf, norm, nt, pois, t, unif, and weibull.
+
+One point to note is that the programmer using these functions needs to
+initialize the state of the random number generator as detailed in Section
+6.3 of the `Writing R Extensions' manual \citep{R:Extensions}.  A nice
+\proglang{C++} solution for this is to use a \textsl{scoped} class that sets
+the random number generatator on entry to a block and resets it on exit. We
+offer the \code{RNGScope} class which allows code such as
+
+<<lang=cpp>>=
+RcppExport SEXP getRGamma() {
+    RNGScope scope;
+    NumericVector x = rgamma( 10, 1, 1 );
+    return x;
+}
+@
+
+As there is some computational overhead involved in using \code{RNGScope}, we
+are not wrapping it around each inner function.  Rather, the user of these
+functions (\textsl{i.e.} you) should place an \code{RNGScope} at the
+appropriate level of your code.
+
+
 \section{Performance}
 \label{sec:performance}
 
@@ -720,7 +769,7 @@ inline int size() const { return vec.size() ; }
 
 TBD
 
-\bibliographystyle{abbrvnat}
+\bibliographystyle{plainnat}
 \bibliography{Rcpp}
 
 \end{document}

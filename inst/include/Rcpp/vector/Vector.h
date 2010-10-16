@@ -26,7 +26,7 @@ template <int RTYPE>
 class Vector :
 	public RObject,       
 	public VectorBase< RTYPE, true, Vector<RTYPE> >, 
-	public internal::eval_methods<RTYPE>
+	public internal::eval_methods<RTYPE> 
 	{
 public:
 	typedef typename traits::r_vector_proxy<RTYPE>::type Proxy ;
@@ -51,7 +51,7 @@ public:
 	}
 	
 	Vector& operator=( const Vector& other ){
-		RObject::setSEXP( other.asSexp() ) ;
+		set_sexp( other.asSexp() ) ;
 		return *this ;
 	}
 	
@@ -62,12 +62,57 @@ public:
 	Vector( const RObject::AttributeProxy& proxy ) throw(not_compatible) {
 		RObject::setSEXP( r_cast<RTYPE>( proxy ) ) ;
 	}
-	
+		
 	template <typename T>
 	Vector& operator=( const T& x){
-		RObject::setSEXP( r_cast<RTYPE>( wrap(x) ) ) ;
-		return *this ;
+	    assign_object( x, typename traits::is_sugar_expression<T>::type() ) ;
+	    return *this ;
 	}
+	
+private:
+    
+    // sugar
+    template <typename T>
+	inline void assign_object( const T& x, traits::true_type ){
+	    int n = size() ;
+	    if( n == x.size() ){
+           
+            // just copy the data 
+            iterator start = begin() ;
+            
+            int __trip_count = n >> 2 ;
+            int i = 0 ;
+            for ( ; __trip_count > 0 ; --__trip_count) { 
+            	start[i] = x[i] ; i++ ;            
+            	start[i] = x[i] ; i++ ;            
+            	start[i] = x[i] ; i++ ;            
+            	start[i] = x[i] ; i++ ;            
+            }                                            
+            switch (n - i){                          
+              case 3:                                    
+                  start[i] = x[i] ; i++ ;             
+              case 2:                                    
+                  start[i] = x[i] ; i++ ;             
+              case 1:                                    
+                  start[i] = x[i] ; i++ ;             
+              case 0:                                    
+              default:                                   
+                  {}                         
+            }
+        } else{
+            // different size, so we change the memory
+            set_sexp( r_cast<RTYPE>( wrap(x) ) ); 
+        }
+    }
+    
+	// anything else
+	template <typename T>
+	inline void assign_object( const T& x, traits::false_type ){
+	    // TODO: maybe we already have the memory to host the results
+	    set_sexp( r_cast<RTYPE>( wrap(x) ) ) ;
+	}
+    
+public:
 	
 	internal::ListInitialization<iterator,init_type> operator=( init_type x){
 		iterator start = begin() ; *start = x; 
@@ -81,6 +126,7 @@ public:
     }
     
     Vector( const int& size ) : RObject()  {
+    	RCPP_DEBUG_2( "Vector<%d>( int = %d )", RTYPE, size ) ;
     	RObject::setSEXP( Rf_allocVector( RTYPE, size) ) ;
 		init() ;
     }
@@ -93,16 +139,40 @@ public:
 	}
     
 private:
-	
-	template <bool NA, typename VEC>
-    void import_expression( const VectorBase<RTYPE,NA,VEC>& other, int n ){
-    	iterator start = begin() ; 
-		const VEC& ref = other.get_ref() ;
-    	for( int i=0; i<n; i++, ++start){
-			*start = ref[i] ;
-		}
+	  
+    // TODO: do some dispatch when VEC == Vector so that we use std::copy
+    template <bool NA, typename VEC>
+    inline void import_expression( const VectorBase<RTYPE,NA,VEC>& other, int n ){
+        iterator start = begin() ; 
+        const VEC& ref = other.get_ref() ;
+        
+        int __trip_count = n >> 2 ;
+        int i = 0 ;
+    	for ( ; __trip_count > 0 ; --__trip_count) { 
+        	start[i] = ref[i] ; i++ ;            
+        	start[i] = ref[i] ; i++ ;            
+        	start[i] = ref[i] ; i++ ;            
+        	start[i] = ref[i] ; i++ ;            
+    	}                                            
+    	switch (n - i){                          
+    	  case 3:                                    
+    	      start[i] = ref[i] ; i++ ;             
+          case 2:                                    
+    	      start[i] = ref[i] ; i++ ;             
+    	  case 1:                                    
+    	      start[i] = ref[i] ; i++ ;             
+    	  case 0:                                    
+    	  default:                                   
+    	      {}                         
+    	}
     }
-
+    
+    // template <>
+    // inline void import_expression<true,Vector>( const VectorBase<RTYPE,NA,VEC>& other, int n ){
+    //     const VEC& ref = other.get_ref() ;
+    //     std::copy( ref.begin(), ref.end(), begin() ) ;
+	// }
+    
     template <typename T>
     inline void fill_or_generate( const T& t){
     	fill_or_generate__impl( t, typename traits::is_generator<T>::type() ) ;
@@ -303,7 +373,7 @@ public:
 						Rf_cons( parent, Rf_cons( x , R_NilValue) )))) ;
 				/* names<- makes a new vector, so we have to change 
 				   the SEXP of the parent of this proxy */
-				const_cast<Vector&>(parent).setSEXP( new_vec ) ;
+				const_cast<Vector&>(parent).set_sexp( new_vec ) ;
 				UNPROTECT(1) ; /* new_vec */
     			}
     		
@@ -318,8 +388,8 @@ public:
 	inline iterator begin() const{ return cache.get() ; }
 	inline iterator end() const{ return cache.get(size()) ; }
 	
-	inline Proxy operator[]( const int& i ){ return cache.ref(i) ; }
-	inline Proxy operator[]( const int& i ) const { return cache.ref(i) ; }
+	inline Proxy operator[]( int i ){ return cache.ref(i) ; }
+	inline Proxy operator[]( int i ) const { return cache.ref(i) ; }
 	inline Proxy operator()( const size_t& i) throw(index_out_of_bounds){
 		return cache.ref( offset(i) ) ;
 	}
@@ -415,7 +485,7 @@ public:
 	}
 	
 	void update_vector(){
-		RCPP_DEBUG_1(  "update_vector, VECTOR = %s", DEMANGLE(Vector) ) ;
+		RCPP_DEBUG_2(  " update_vector( VECTOR = %s, SEXP = < %p > )", DEMANGLE(Vector), reinterpret_cast<void*>( RObject::asSexp() ) ) ;
 		cache.update(*this) ;
 	}
 		
@@ -438,15 +508,19 @@ public:
 	
 	template <typename U>
 	static void replace_element__dispatch( traits::true_type, iterator it, SEXP names, int index, const U& u){
-		*it = converter_type::get(u.object ) ;
+		RCPP_DEBUG_2( "  Vector::replace_element__dispatch<%s>(true, index= %d) ", DEMANGLE(U), index ) ; 
+		
+	    *it = converter_type::get(u.object ) ;
 		SET_STRING_ELT( names, index, ::Rf_mkChar( u.name.c_str() ) ) ;
 	}
 	
 	
+public:
 	void set_sexp(SEXP x){
 		RObject::setSEXP( x) ;
 		update_vector() ;
 	}
+private:
 	
 	void push_back__impl(const stored_type& object){
 		int n = size() ;
@@ -694,7 +768,7 @@ public:
 	}
 
 	virtual void update(){
-		RCPP_DEBUG_1( "%s::update", DEMANGLE(Vector) ) ;
+		RCPP_DEBUG_2( "Vector<%d>::update( SEXP = <%p> )", RTYPE, RObject::asSexp() ) ;
 		update_vector() ;
 	}
 	
@@ -711,9 +785,8 @@ public:
 protected:
 	inline int* dims() const throw(not_a_matrix) {
 		if( !::Rf_isMatrix(RObject::m_sexp) ) throw not_a_matrix() ;
-		return INTEGER( ::Rf_getAttrib( RObject::m_sexp, ::Rf_install( "dim") ) ) ;
+		return INTEGER( ::Rf_getAttrib( RObject::m_sexp, R_DimSymbol ) ) ;
 	}
-
 	
 } ; /* Vector */
 
