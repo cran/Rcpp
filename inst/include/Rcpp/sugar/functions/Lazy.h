@@ -1,8 +1,8 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 8 -*-
 //
-// posixt.h: Rcpp R/C++ interface class library -- Date type
+// Lazy.h: Rcpp R/C++ interface class library -- Lazy
 //
-// Copyright (C) 2010	      Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2010 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -19,33 +19,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <RcppCommon.h>
+#ifndef Rcpp__sugar__Lazy_h
+#define Rcpp__sugar__Lazy_h
 
 namespace Rcpp{
-namespace internal{
-	
-SEXP getPosixClasses(){
-	SEXP datetimeclass = PROTECT(Rf_allocVector(STRSXP,2));
-	SET_STRING_ELT(datetimeclass, 0, Rf_mkChar("POSIXct"));
-	SET_STRING_ELT(datetimeclass, 1, Rf_mkChar("POSIXt"));
-	UNPROTECT(1) ;
-	return datetimeclass ;
-}
+namespace sugar{
 
-SEXP new_posixt_object( double d){
-	SEXP x = PROTECT( Rf_ScalarReal( d ) ) ;
-	Rf_setAttrib(x, R_ClassSymbol, getPosixClasses() ); 
-	UNPROTECT(1); 
-	return x ;	
-}
-
-SEXP new_date_object( double d){
-	SEXP x = PROTECT(Rf_ScalarReal( d ) ) ;
-	Rf_setAttrib(x, R_ClassSymbol, Rf_mkString("Date")); 
-	UNPROTECT(1);
-	return x;
-}
-
+template <typename T, typename EXPR>
+class Lazy {
+public:
+	inline operator T() const { return static_cast<const EXPR&>(*this).get() ; }
+} ;
 	
 }
 }
+
+#endif

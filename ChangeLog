@@ -1,3 +1,60 @@
+2010-11-01  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version): Release 0.8.8
+
+        * debian/*: Similarly updated for new release to Debian
+
+2010-10-30  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/RcppCommon.h: New define IS_GCC_450_OR_LATER
+	* inst/include/Rcpp/Extractor.h: Do not enable Rcpp::Fast if g++
+	4.5.0 or later is used -- we need to figure out what upsets it
+
+2010-10-23  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/vector/MatrixRow.h: Faster row indexing
+
+	* inst/include/Rcpp/vector/Matrix.h: added use of _ to get columns
+	and rows of a matrix. For example if x is a NumericMatrix, x(_,i)
+	returns the same as x.column(i) and x(i,_) returns the same as
+	x.row(i)
+
+	* inst/unitTests/runit.Matrix.R: unit tests for the above
+
+	* inst/include/Rcpp/sugar/functions/sum.h: the sugar version of sum
+	now takes care of missing values correctly
+
+	* inst/include/Rcpp/sugar/functions/cumsum.h: sugar version of cumsum
+
+2010-10-21  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/vector/MatrixColumn.h: Fixed indexing
+	bug (mismatch between number of rows and number of columns
+
+	* inst/unitTests/runit.Matrix.R: test fix above based on the
+	R-help/Rcpp-devel thread:
+	http://article.gmane.org/gmane.comp.lang.r.rcpp/851
+
+	* inst/include/Rcpp/vector/MatrixColumn.h: Column gains a operator=
+	taking a sugar expression. Faster indexing (caching the pointer
+	instead of calling nrow many times)
+
+	* inst/include/Rcpp/vector/Matrix.h: first pass at making matrix
+	indexing faster
+
+2010-10-21  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/Module.h: Reorder instantiation for class_
+
+2010-10-20  Dirk Eddelbuettel  <edd@debian.org>
+
+	* include/Rcpp/XPtr.h: Applied patch by Karl Millar
+	* include/Rcpp/vector/Vector.h): Idem
+
+2010-10-19  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/posixt.cpp: Correct POSIXct, POSIXt ordering for R 2.12.0
+
 2010-10-14  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (Version): Release 0.8.7
@@ -31,7 +88,7 @@
           NumericVector x0 = x.row(0) ;
 
         * inst/include/Rcpp/vector/MatrixColumn.h: idem for columns
- 
+
         * cleanup: run make clean in the inst/doc directory to install
         the fake vignettes
 
