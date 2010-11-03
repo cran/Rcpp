@@ -131,6 +131,22 @@
 					return wrap( std::accumulate( col.begin(), col.end(), 0.0 ) ) ;
 				'	
 			), 
+			"runit_NumericMatrix_cumsum" = list( 
+			    signature(x = "matrix" ), 
+				'
+				NumericMatrix input( x ) ;
+                int nr = input.nrow(), nc = input.ncol() ;
+                NumericMatrix output(nr, nc) ;
+                
+                NumericVector tmp( nr );
+                for( int i=0; i<nc; i++){
+                    tmp = tmp + input.column(i) ;
+                    NumericMatrix::Column target( output, i ) ;
+                    std::copy( tmp.begin(), tmp.end(), target.begin() ) ;
+                }
+                return output ;
+                '
+			), 
 			"runit_CharacterMatrix_column" = list( 
 				signature(x = "matrix" ),
 					'
@@ -169,9 +185,32 @@
 			        x.row(1) + x.column(1)
 			        ) ;
 			    '
+			), 
+			"runit_NumericMatrix_colsum" = list( 
+			    signature( x = "matrix" ), 
+			    '
+                 NumericMatrix input( x ) ;
+                 int nr = input.nrow(), nc = input.ncol() ;
+                 NumericMatrix output = clone<NumericMatrix>( input ) ;
+                 for( int i=1; i<nc; i++){
+                    output(_,i) = output(_,i-1) + input(_,i) ; 
+                 }
+                 return output ;
+			    '
+			), 
+			"runit_NumericMatrix_rowsum" = list( 
+			    signature( x = "matrix" ), 
+			    '
+                 NumericMatrix input( x ) ;
+                 int nr = input.nrow(), nc = input.ncol() ;
+                 NumericMatrix output = clone<NumericMatrix>( input ) ;
+                 for( int i=1; i<nr; i++){
+                    output(i,_) = output(i-1,_) + input(i,_) ; 
+                 }
+                 return output ;
+			    '
 			)
-
-        )
+		)
         
         signatures <- lapply(f, "[[", 1L)
         bodies <- lapply(f, "[[", 2L)
@@ -181,6 +220,22 @@
         getDynLib( fun ) # just forcing loading the dll now
         assign( tests, fun, globalenv() )
     }
+}
+
+
+test.List.column <- function(){
+	funx <- .rcpp.Matrix$runit_Row_Column_sugar
+	x <- matrix( 1:16+.5, nc = 4 )
+	res <- funx( x )
+	target <- list( 
+	    x[1,], 
+	    x[,1], 
+	    x[2,],
+	    x[,2], 
+	    x[2,] + x[,2]
+	    )
+	checkEquals( res, target, msg = "column and row as sugar" )
+	
 }
 
 test.NumericMatrix <- function(){
@@ -272,6 +327,12 @@ test.NumericMatrix.column <- function(){
 	checkEquals( funx( x ), sum( x[,1] ) , msg = "iterating over a column" )
 }
 
+test.NumericMatrix.cumsum <- function(){
+	funx <- .rcpp.Matrix$runit_NumericMatrix_cumsum
+	x <- matrix( 1:8 + .5, ncol = 2 )
+	checkEquals( funx( x ), t(apply(x, 1, cumsum)) , msg = "cumsum" )
+}
+
 test.CharacterMatrix.column <- function(){
 	funx <- .rcpp.Matrix$runit_CharacterMatrix_column
 	m <- matrix( letters, ncol = 2 )
@@ -283,22 +344,17 @@ test.List.column <- function(){
 	m <- lapply( 1:16, function(i) seq(from=1, to = i ) )
 	dim( m ) <- c( 4, 4 )
 	checkEquals( funx( m ), 1:4, msg = "List::Column" )
-	
 }
 
-test.List.column <- function(){
-	funx <- .rcpp.Matrix$runit_Row_Column_sugar
-	x <- matrix( 1:16+.5, nc = 4 )
-	res <- funx( x )
-	target <- list( 
-	    x[1,], 
-	    x[,1], 
-	    x[2,],
-	    x[,2], 
-	    x[2,] + x[,2]
-	    )
-	checkEquals( res, target, msg = "colum and row as sugar" )
-	
+test.NumericMatrix.colsum <- function( ){
+    funx <- .rcpp.Matrix$runit_NumericMatrix_colsum
+    probs <- matrix(1:12,nrow=3)
+    checkEquals( funx( probs ), t(apply(probs,1,cumsum)) )
 }
 
+test.NumericMatrix.rowsum <- function( ){
+    funx <- .rcpp.Matrix$runit_NumericMatrix_rowsum
+    probs <- matrix(1:12,nrow=3)
+    checkEquals( funx( probs ), apply(probs,2,cumsum) )
+}
 

@@ -30,41 +30,65 @@ public:
 	typedef typename MATRIX::value_type value_type ;
 	typedef typename MATRIX::iterator iterator ;
 	
-	MatrixColumn( MATRIX& object, int i ) : parent(object), index(i){
+	MatrixColumn( MATRIX& object, int i ) : 
+	    parent(object), index(i), start(parent.begin() + i * parent.nrow() )
+	{
 		if( i < 0 || i >= parent.ncol() ) throw index_out_of_bounds() ;
 	}
 	
-	MatrixColumn( const MatrixColumn& other ) : parent(other.parent), index(other.index){} ;
+	MatrixColumn( const MatrixColumn& other ) : 
+	    parent(other.parent), index(other.index), start(other.start){} ;
 	
-	MatrixColumn& operator=( MatrixColumn& other ){
-		parent = other.parent ;
-		index  = other.index ;
+	template <int RT, bool NA, typename T>
+	MatrixColumn& operator=( const Rcpp::VectorBase<RT,NA,T>& rhs ){
+	    int n = size() ;
+	    const T& ref = rhs.get_ref() ;
+	    
+	        int __trip_count = n >> 2 ;
+            int i = 0 ;
+            for ( ; __trip_count > 0 ; --__trip_count) { 
+            	start[i] = ref[i] ; i++ ;            
+            	start[i] = ref[i] ; i++ ;            
+            	start[i] = ref[i] ; i++ ;            
+            	start[i] = ref[i] ; i++ ;            
+            }                                            
+            switch (n - i){                          
+              case 3:                                    
+                  start[i] = ref[i] ; i++ ;             
+              case 2:                                    
+                  start[i] = ref[i] ; i++ ;             
+              case 1:                                    
+                  start[i] = ref[i] ; i++ ;             
+              case 0:                                    
+              default:                                   
+                  {}                         
+            }
 	}
-	
+
 	Proxy operator[]( int i ){
 		/* TODO: should we cache nrow and ncol */
-		return parent[ get_parent_index(i) ] ;
+		return start[i] ;
 	}
 	
 	Proxy operator[]( int i ) const {
 		/* TODO: should we cache nrow and ncol */
-		return parent[ get_parent_index(i) ] ;
+		return start[i] ;
 	}
 	
 	inline iterator begin(){
-		return parent.begin() + index * parent.ncol() ;
+		return start ;
 	}
 	
 	inline iterator begin() const {
-		return parent.begin() + index * parent.ncol() ;
+		return start ;
 	}
 	
 	inline iterator end(){
-		return begin() + parent.nrow() ;
+		return start + parent.nrow() ;
 	}
 	
 	inline iterator end() const {
-		return begin() + parent.nrow() ;
+		return start + parent.nrow() ;
 	}
 	
 	inline int size() const {
@@ -73,9 +97,9 @@ public:
 	
 private:
 	MATRIX& parent; 
-	int index ;
-	
-	inline int get_parent_index(int i) const { return index * parent.ncol() + i ; }
+	int index ;     
+	iterator start ;
+
 } ;
 
 #endif

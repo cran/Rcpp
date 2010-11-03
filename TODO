@@ -20,6 +20,8 @@ API
     o   const operators, as requested on Rcpp-devel:
         http://permalink.gmane.org/gmane.comp.lang.r.rcpp/494
 
+    o   Fast indexing and g++ 4.5.0 or later: open issue of why this compiler
+        gets upset when the previous version(s) coped just fine
 
 Modules 
 
@@ -84,8 +86,6 @@ Syntactic sugar
     	
     	tukey : only has p and q, no r or d
     
-    o	sum : deal with missing values
-
     o	other random generators: 
     
     	rmultinom : tricky because it generates a matrix
