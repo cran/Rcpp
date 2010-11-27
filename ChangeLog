@@ -1,3 +1,199 @@
+2010-11-27  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION: Release 0.8.9
+
+        * debian/*: Similarly updated for new release to Debian
+
+2010-11-26  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/vector/Vector.h: List::create( _["foo"] ) sets
+	the SEXP to R_MissingArg, usueful for formal arguments
+	specifications, simpler form than List::create( _["foo"] =
+	R_MissingArg )
+
+	* inst/include/Rcpp/macros/unroll.h: helper macro RCPP_UNROLL_LOOP
+
+	* inst/include/Rcpp/vector/MatrixColumn.h: added
+	MatrixColumn::operator=( MatrixColumn& ) otherwise it gets
+	synthetized by the compiler
+
+	* inst/include/Rcpp/vector/MatrixRow.h: same for MatrixRow
+
+	* inst/include/Rcpp/vector/Matrix.h: added Matrix( SubMatrix ) and
+	Matrix::operator=( SubMatrix )
+
+2010-11-25  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/module/Module_generated_function.h: new .function
+	with formal argument specification
+
+	* inst/include/Rcpp/module/Module_generated_CppFunction.h: helper
+	classes for the above
+
+	* R/Module.R: using the formal argument specification if available
+
+	* R/populate.R: new R function populate to dump the contents of a
+	module into an environment or a namespace
+
+	* man/populate.Rd: documentation for populate
+
+2010-11-24  Romain Francois <romain@r-enthusiasts.com>
+
+	* R/00_classes.R: formals<- method for C++Function that allows to set
+	default arguments, etc .. to a C++ function
+
+2010-11-23  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/doc/Makefile: Call Rscript with --vanilla to skip user settings
+
+2010-11-23  Romain Francois <romain@r-enthusiasts.com>
+
+	* R/00_classes.R: C++Class gains a docstring slot to host self
+	documentation
+
+	* R/Module.R: calling an exposed C++ more efficiently by using the xp
+	directly rather than traversing the map internally
+
+	* R/00_classes.R: C++Function gains a docstring slot to host self
+	documentation of the internal function. And a "signature" slot to
+	host the C++ signature of the function
+
+	* R/01_show.R: updated show( C++Function ) to display the docstring
+	and the signature. updated show( C++Class ) to display the docstring.
+
+	* inst/include/Rcpp/module/Module_generated_CppFunction.h: self
+	documentation for exposed C++ functions and extraction of the
+	signature
+
+	* inst/include/Rcpp/module/Module_generated_function.h: idem
+
+2010-11-22  Romain Francois <romain@r-enthusiasts.com>
+
+	* R/00_classes.R: C++OverloadedMethods gains an "info" class methods,
+	factored out from Module.R
+
+	* R/01_show.R: more information printed in show( C++Class )
+
+	* inst/include/Rcpp/Module/Module_generated_get_signature.h:
+	templates to grab method signatures
+
+	* inst/include/Rcpp/Module.h: CppMethod gains a signature method that
+	returns the signature of the method.
+
+	* R/00_classes.R: C++OverloadedMethods gains a "signatures" field
+	that contains the signature of each overload
+
+	* R/Module.R: registered method gain an automatically generated self
+	description that contains the method(s) signature(s) and the
+	docstring that is declared in .method
+
+	* inst/include/Rcpp/Module/Module_generated_CppMethod.h: implement
+	signature
+
+	* inst/include/Rcpp/Module/Module_generated_Pointer_CppMethod.h: idem
+
+2010-11-21  Romain Francois <romain@r-enthusiasts.com>
+
+	* R/Module.R: internal version of cpp_hasDefaultConstructor
+
+	* src/Module.cpp: implementation (Class__has_default_constructor)
+
+	* inst/include/Rcpp/Module.h: support (class_.has_default_constructor)
+
+	* inst/include/Rcpp/module/Module_generated_class_constructor.h: new interface
+	for exposing constructors, the init_ disappears and the template arguments
+	are directly applied to the .constructor function
+
+	* inst/include/Rcpp/module/Module_generated_Constructor.h: removed init_*
+
+	* inst/include/Rcpp/module/Module_generated_method.h: .method gains a docstring
+	argument to allow self documentation of exposed methods
+
+	* inst/include/Rcpp/module/Module_generated_PointerMethod.h: idem
+
+	* R/Module.R: grab method docstrings
+
+2010-11-20  John M Chambers  <jmc@r-project.org>
+
+	* R/Module.R: now checks for the existence of a default constructor
+	for a C++ class and generates a suitable $initialize() method accordingly.
+
+2010-11-20  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/vector/MatrixRow.h: added missing return *this ;
+
+	* R/Module.R: dispatch based on void-ness of the methods. For example
+	if all methods are known to be void, etc ...
+
+	* R/00_classes.R: more information in the C++OverloadedMethods ref
+	class
+
+	* src/Module.cpp: new .External CppMethod__invoke_void and
+	CppMethod__invoke_notvoid that are used when we know for sure that
+	all overloaded methods are void, or not void
+
+	* inst/include/Rcpp/Module.h: class_ gains invoke_void and
+	invoke_notvoid to support the changes above
+
+2010-11-18  Douglas Bates  <bates@stat.wisc.edu>
+
+	* inst/include/Rcpp/module/Module_generated_[class_]Constructor.h:
+	allow up to 6 arguments to .constructor
+
+2010-11-18  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/Module.h: rework the class_ template to allow
+	overloaded methods
+
+	* R/00_classes.R: The C++Method class disappears and the
+	C++OverloadedMethods enters. a "C++OverloadedMethods" object points
+	to a set of overloaded C++ methods that all share the same name.
+
+	* R/Module.R: adapt some of the code to cope with changes above
+
+2010-11-17  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/sugar/as_vector.h: added the as_vector function
+	that turns a sugar matrix expression into a vector of the appropriate
+	type
+
+	* inst/include/Rcpp/vector/Matrix.h: new SubMatrix class
+
+2010-11-13  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/Module.h: expose constructors as the
+	"cpp_constructor" field of "C++ClassRepresentation" and the
+	"constructors" slot of "C++Class"
+
+2010-11-07  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/sugar/operators/minus.h: fixed
+	Minus_Vector_Primitive<RTYPE,false,T>
+
+	* inst/unitTests/runit.sugar.R: new test for the above
+
+2010-11-05  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/Module.h: exposing multiple constructors in modules
+
+	* src/Module.cpp: The mangled class name is now "Rcpp_" plus the
+	class name. The previous version used the address of the external
+	pointer to the module, which was not constant.
+
+2010-11-04  Douglas Bates  <bates@stat.wisc.edu>
+
+	* inst/include/Rcpp/module/Module_generated_Constructor.h: remove
+	redundant 'return's.
+
+2010-11-04  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/Module.h: experimental way to specify which
+	constructor to use in classes exposed by modules. This is still too
+	restrictive as it only allows one constructor.
+
+	* inst/include/Rcpp/sugar/block/SugarMath.h: extend the SUGAR_MATH_1
+	macro so that we can apply functions (e.g. sqrt) directly on SEXP
+
 2010-11-01  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (Version): Release 0.8.8
@@ -49,13 +245,13 @@
 2010-10-20  Dirk Eddelbuettel  <edd@debian.org>
 
 	* include/Rcpp/XPtr.h: Applied patch by Karl Millar
-	* include/Rcpp/vector/Vector.h): Idem
+	* include/Rcpp/vector/Vector.h: Idem
 
 2010-10-19  Dirk Eddelbuettel  <edd@debian.org>
 
 	* src/posixt.cpp: Correct POSIXct, POSIXt ordering for R 2.12.0
 
-2010-10-14  Dirk Eddelbuettel  <edd@debian.org>
+ 2010-10-14  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (Version): Release 0.8.7
 

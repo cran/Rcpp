@@ -508,12 +508,24 @@ public:
 	
 	template <typename U>
 	static void replace_element__dispatch( traits::true_type, iterator it, SEXP names, int index, const U& u){
-		RCPP_DEBUG_2( "  Vector::replace_element__dispatch<%s>(true, index= %d) ", DEMANGLE(U), index ) ; 
+		replace_element__dispatch__isArgument( typename traits::same_type<U,Argument>(), it, names, index, u ) ;
+	}
+
+    template <typename U>
+	static void replace_element__dispatch__isArgument( traits::false_type, iterator it, SEXP names, int index, const U& u){
+	    RCPP_DEBUG_2( "  Vector::replace_element__dispatch<%s>(true, index= %d) ", DEMANGLE(U), index ) ; 
 		
 	    *it = converter_type::get(u.object ) ;
 		SET_STRING_ELT( names, index, ::Rf_mkChar( u.name.c_str() ) ) ;
 	}
 	
+	template <typename U>
+	static void replace_element__dispatch__isArgument( traits::true_type, iterator it, SEXP names, int index, const U& u){
+	    RCPP_DEBUG_2( "  Vector::replace_element__dispatch<%s>(true, index= %d) ", DEMANGLE(U), index ) ; 
+		
+	    *it = R_MissingArg ;
+		SET_STRING_ELT( names, index, ::Rf_mkChar( u.name.c_str() ) ) ;
+	}
 	
 public:
 	void set_sexp(SEXP x){
@@ -787,7 +799,44 @@ protected:
 		if( !::Rf_isMatrix(RObject::m_sexp) ) throw not_a_matrix() ;
 		return INTEGER( ::Rf_getAttrib( RObject::m_sexp, R_DimSymbol ) ) ;
 	}
+
 	
+public:
+    
+    template <bool EXPR_NA, typename EXPR_VEC>
+    Vector& operator+=( const VectorBase<RTYPE,EXPR_NA,EXPR_VEC>& rhs ){
+        const EXPR_VEC& ref = rhs.get_ref() ;
+        iterator start = begin() ;
+        int n = size() ;
+        // TODO: maybe unroll this
+        stored_type tmp ;
+        for( int i=0; i<n; i++){
+            Proxy left = start[i] ;
+            if( ! traits::is_na<RTYPE>( left ) ){
+                tmp = ref[i] ;
+                left = traits::is_na<RTYPE>( tmp ) ? tmp : ( left + tmp ) ;
+            }
+        }
+        return *this ;
+    }
+    
+    template <typename EXPR_VEC>
+    Vector& operator+=( const VectorBase<RTYPE,false,EXPR_VEC>& rhs ){
+        const EXPR_VEC& ref = rhs.get_ref() ;
+        iterator start = begin() ;
+        int n = size() ;
+        // TODO: maybe unroll this
+        stored_type tmp ;
+        for( int i=0; i<n; i++){
+            Proxy left = start[i] ;
+            if( ! traits::is_na<RTYPE>( left ) ){
+                left = left + ref[i] ;
+            }
+        }
+        return *this ;
+    }
+    
 } ; /* Vector */
+
 
 #endif

@@ -41,15 +41,18 @@ CALLFUN_1(as_character_externalptr) ;
 CALLFUN_3(CppField__get);
 CALLFUN_4(CppField__set);
 CALLFUN_1(Class__name);
+CALLFUN_1(Class__has_default_constructor) ;
 CALLFUN_1(CppClass__complete);
 CALLFUN_1(CppClass__methods);
 
 CALLFUN_1(Module__classes_info) ;
 CALLFUN_1(Module__complete) ;
 CALLFUN_1(Module__functions_arity);
+CALLFUN_1(Module__functions_names);
 CALLFUN_2(Module__get_class);
 CALLFUN_2(Module__has_class);
 CALLFUN_2(Module__has_function);
+CALLFUN_2(Module__get_function);
 CALLFUN_1(Module__name);
 CALLFUN_2(CppObject__finalize);
 
@@ -67,6 +70,8 @@ CALLFUN_0(rcpp_get_stack_trace);
 
 /* .External functions */
 EXTFUN(CppMethod__invoke) ;
+EXTFUN(CppMethod__invoke_void) ;
+EXTFUN(CppMethod__invoke_notvoid) ;
 EXTFUN(InternalFunction_invoke) ;
 EXTFUN(Module__invoke) ;
 EXTFUN(class__newInstance) ;

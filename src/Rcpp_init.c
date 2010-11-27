@@ -39,6 +39,7 @@ static R_CallMethodDef callEntries[]  = {
     CALLDEF(CppField__set,4),
     
     CALLDEF(Class__name,1),
+    CALLDEF(Class__has_default_constructor,1),
     
     CALLDEF(CppClass__complete,1),
     CALLDEF(CppClass__methods,1),
@@ -51,7 +52,9 @@ static R_CallMethodDef callEntries[]  = {
     CALLDEF(Module__has_class,2),
     CALLDEF(Module__has_function,2),
     CALLDEF(Module__functions_arity,1),
+    CALLDEF(Module__functions_names,1),
     CALLDEF(Module__name,1),
+    CALLDEF(Module__get_function, 2),
     
     CALLDEF(get_rcpp_cache,0),
     CALLDEF(init_Rcpp_cache,0),
@@ -69,6 +72,8 @@ static R_CallMethodDef callEntries[]  = {
 
 static R_ExternalMethodDef extEntries[]  = {
     EXTDEF(CppMethod__invoke),
+    EXTDEF(CppMethod__invoke_void),
+    EXTDEF(CppMethod__invoke_notvoid),
     EXTDEF(InternalFunction_invoke),
     EXTDEF(Module__invoke), 
     EXTDEF(class__newInstance), 

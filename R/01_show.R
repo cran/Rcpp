@@ -34,20 +34,65 @@ setMethod( "show", "C++Object", function(object){
 } )
 
 setMethod( "show", "C++Class", function(object){
-	txt <- sprintf( "C++ class '%s' <%s>", 
+	doc <- object@docstring
+    txt <- sprintf( "C++ class '%s' <%s>%s", 
 		.Call( Class__name, object@pointer ), 
-		externalptr_address(object@pointer) )
+		externalptr_address(object@pointer), 
+		if( length(doc) && nchar(doc) ) sprintf( "\n    docstring : %s", doc ) else ""
+	)
 	writeLines( txt )
 	
-	met <- .Call( CppClass__methods, object@pointer )
-	if( length( met ) ){
-		txt <- sprintf( "\n%d methods : \n%s", length(met), paste( sprintf("    %s", met), collapse = "\n") )
-		writeLines( txt )
+	ctors <- object@constructors
+	nctors <- length( ctors )
+	txt <- character( nctors )
+	for( i in seq_len(nctors) ){
+	    ctor <- ctors[[i]]
+	    doc  <- ctor$docstring
+	    txt[i] <- sprintf( "    %s%s", ctor$signature, if( nchar(doc) ) sprintf( "\n        docstring : %s", doc) else "" )
 	}
+	writeLines( "Constructors:" )
+	writeLines( paste( txt, collapse = "\n" ) )
+	
+	writeLines( "\nFields: " )
+	fields <- object@fields
+	nfields <- length(fields)
+	names <- names(fields)
+	txt <- character(nfields)
+	for( i in seq_len(nfields) ){
+	    f <- fields[[i]]
+	    doc <- f$docstring
+	    txt[i] <- sprintf( "    %s %s%s%s",
+	        f$cpp_class, 
+	        names[i], 
+	        if( f$read_only ) " [readonly]" else "", 
+	        if( nchar(doc) ) sprintf( "\n        docstring : %s", doc ) else ""
+	    )    
+	}
+	writeLines( paste( txt, collapse = "\n" ) )
+	
+	writeLines( "\nMethods: " )
+	mets <- object@methods
+	nmethods <- length(mets)
+	txt <- character( nmethods )
+	for( i in seq_len(nmethods) ){
+	    txt[i] <- mets[[i]]$info("    ")
+	}
+	writeLines( paste( txt, collapse = "\n" ) )
 } )
 
 setMethod( "show", "C++Function", function(object){
-	writeLines( sprintf( "internal C++ function <%s>", externalptr_address(object@pointer) ) )
+	txt <- sprintf( "internal C++ function <%s>", externalptr_address(object@pointer) )
+    writeLines( txt )
+    
+    doc <- object@docstring
+    if( length(doc) && nchar( doc ) ){
+        writeLines( sprintf( "    docstring : %s", doc ) )
+    }
+    
+    sign <- object@signature
+    if( length(sign) && nchar( sign ) ){
+        writeLines( sprintf( "    signature : %s", sign ) )
+    }
 } )
 
 setMethod( "show", "Module", function( object ){

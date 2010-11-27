@@ -23,7 +23,6 @@
 #define Rcpp_Module_h
    
 #include <Rcpp/config.h>
-#ifdef RCPP_ENABLE_MODULES
 
 namespace Rcpp{
 
@@ -32,31 +31,38 @@ class CppObject ;
 
 class CppFunction {
 	public:
-		CppFunction() {}
+		CppFunction(const char* doc = 0) : docstring( doc == 0 ? "" : doc) {}
 		virtual SEXP operator()(SEXP*) { 
 			return R_NilValue ;
 		}
 		virtual ~CppFunction(){} ;
 		virtual int nargs(){ return 0 ; }
 		virtual bool is_void(){ return false ; }
+		virtual const char* signature(const char* ){ return "" ; }
+		virtual SEXP get_formals(){ return R_NilValue; }
+		
+		std::string docstring ;
 };
 
+#include <Rcpp/module/Module_generated_get_return_type.h>
+#include <Rcpp/module/Module_generated_get_signature.h>
 
 // templates CppFunction0, ..., CppFunction65
 #include <Rcpp/module/Module_generated_CppFunction.h>
 
-// make_function factories
-#include <Rcpp/module/Module_generated_make_function.h>
-
 class class_Base {
 public:
-	class_Base() :name(){} ;
-	class_Base(const char* name_) : name(name_){} ;
+	class_Base() : name(), docstring() {} ;
+	class_Base(const char* name_, const char* doc) : 
+	    name(name_), docstring( doc == 0 ? "" : doc ){} ;
 	
 	virtual Rcpp::List fields(SEXP){ return Rcpp::List(0); }
 	virtual Rcpp::List getMethods(SEXP){ return Rcpp::List(0); }
+	virtual Rcpp::List getConstructors(SEXP){ return Rcpp::List(0); }
+	
 	virtual void run_finalizer(SEXP){ }
 	
+	virtual bool has_default_constructor(){ return false ; }
 	virtual bool has_method( const std::string& ){ 
 		return false ; 
 	}
@@ -67,6 +73,12 @@ public:
 		return R_NilValue;
 	}
 	virtual SEXP invoke( SEXP, SEXP, SEXP *, int ){ 
+		return R_NilValue ;
+	}
+	virtual SEXP invoke_void( SEXP, SEXP, SEXP *, int ){ 
+		return R_NilValue ;
+	}
+	virtual SEXP invoke_notvoid( SEXP, SEXP, SEXP *, int ){ 
 		return R_NilValue ;
 	}
 	
@@ -88,8 +100,8 @@ public:
 		throw std::range_error( "cannot set property" ) ;
 	}
 	
-	
 	std::string name ;
+	std::string docstring ;
 } ;
 
 class Module {
@@ -106,9 +118,12 @@ class Module {
 		SEXP invoke( const std::string& /* name */,  SEXP* /* args */, int /* nargs */ ) ;                        
 		
 		Rcpp::IntegerVector functions_arity() ;
+		Rcpp::CharacterVector functions_names() ;
+		
 		Rcpp::CharacterVector class_names() ;
 		Rcpp::List classes_info() ;
 		Rcpp::CharacterVector complete() ;
+		SEXP get_function_ptr( const std::string& ) ;
 		
 		inline void Add( const char* name_ , CppFunction* ptr){
 			functions.insert( FUNCTION_PAIR( name_ , ptr ) ) ;
@@ -152,19 +167,96 @@ class CppMethod {
 		virtual ~CppMethod(){}
 		virtual int nargs(){ return 0 ; }
 		virtual bool is_void(){ return false ; }
+		virtual bool is_const(){ return false ; }
+		virtual const char* signature(const char* name ){ return name ; }
 } ;
 
+#include <Rcpp/module/Module_generated_ctor_signature.h>
+#include <Rcpp/module/Module_generated_Constructor.h>
+#include <Rcpp/module/Module_generated_class_signature.h>
+
+typedef bool (*ValidConstructor)(SEXP*,int) ;
+typedef bool (*ValidMethod)(SEXP*,int) ;
+
 template <typename Class>
-class S4_CppMethod : public Rcpp::Reference {
-public:             
-    S4_CppMethod( CppMethod<Class>* m, SEXP class_xp ) : Reference( "C++Method" ){
-        field( "void" )          = m->is_void() ;
-        field( "pointer" )       = Rcpp::XPtr< CppMethod<Class> >( m, false ) ;
-        field( "class_pointer" ) = class_xp ;
-        
+class SignedConstructor {
+public:
+    
+    SignedConstructor( 
+        Constructor_Base<Class>* ctor_, 
+        ValidConstructor valid_, 
+        const char* doc
+        ) : ctor(ctor_), valid(valid_), docstring(doc == 0 ? "" : doc){}
+    
+    Constructor_Base<Class>* ctor ;
+    ValidConstructor valid ;
+    std::string docstring ;
+    
+    inline int nargs(){ return ctor->nargs() ; }
+    inline const char* signature(const std::string& class_name){ 
+        return ctor->signature(class_name) ;
     }
 } ;
 
+template <typename Class>
+class SignedMethod {
+public:
+    typedef CppMethod<Class> METHOD ;
+    SignedMethod( METHOD* m, ValidMethod valid_, const char* doc ) : method(m), valid(valid_), docstring(doc == 0 ? "" : doc) {}
+    
+    METHOD* method ;
+    ValidMethod valid ;
+    std::string docstring ;
+    
+    inline int nargs(){ return method->nargs() ; }
+    inline bool is_void(){ return method->is_void() ; }
+    inline bool is_const(){ return method->is_const() ; }
+    inline const char* signature(const char* name){ return method->signature(name); }
+
+} ;
+
+template <typename Class>
+class S4_CppConstructor : public Rcpp::Reference {
+public:             
+    S4_CppConstructor( SignedConstructor<Class>* m, SEXP class_xp, const std::string& class_name ) : Reference( "C++Constructor" ){
+        field( "pointer" )       = Rcpp::XPtr< SignedConstructor<Class> >( m, false ) ;
+        field( "class_pointer" ) = class_xp ;
+        field( "nargs" )         = m->nargs() ;
+        std::string sign(  m->signature(class_name) ) ;
+        field( "signature" )     = sign ;
+        field( "docstring" )     = m->docstring ;
+    }
+} ;
+
+template <typename Class>
+class S4_CppOverloadedMethods : public Rcpp::Reference {
+public:    
+    typedef SignedMethod<Class> signed_method_class ;
+	typedef std::vector<signed_method_class*> vec_signed_method ;
+	
+	S4_CppOverloadedMethods( vec_signed_method* m, SEXP class_xp, const char* name ) : Reference( "C++OverloadedMethods" ){
+        
+	    int n = m->size() ;
+        Rcpp::LogicalVector voidness( n), constness(n) ;
+        Rcpp::CharacterVector docstrings( n ), signatures(n) ;
+        signed_method_class* met ;
+        for( int i=0; i<n; i++){ 
+            met = m->at(i) ;
+            voidness[i] = met->is_void() ;
+            constness[i] = met->is_const() ;
+            docstrings[i] = met->docstring ;
+            signatures[i] = met->signature(name) ;
+        }
+        
+	    field( "pointer" )       = Rcpp::XPtr< vec_signed_method >( m, false ) ;
+        field( "class_pointer" ) = class_xp ;
+        field( "size" )          = n ;
+        field( "void" )          = voidness ;
+        field( "const" )         = constness ;
+        field( "docstrings" )    = docstrings ;
+        field( "signatures" )    = signatures ;
+    }
+} ;
 
 #include <Rcpp/module/Module_generated_CppMethod.h>
 #include <Rcpp/module/Module_generated_Pointer_CppMethod.h>
@@ -174,11 +266,13 @@ class CppProperty {
 	public:
 		typedef Rcpp::XPtr<Class> XP ;
 		
-		CppProperty(){} ;
+		CppProperty(const char* doc = 0) : docstring( doc == 0 ? "" : doc ) {} ;
 		virtual SEXP get(Class* ) throw(std::range_error){ throw std::range_error("cannot retrieve property"); }
 		virtual void set(Class*, SEXP) throw(std::range_error,Rcpp::not_compatible){ throw std::range_error("cannot set property"); }
 		virtual bool is_readonly(){ return false; }
 		virtual std::string get_class(){ return ""; }
+		
+		std::string docstring ;
 } ;
 
 template <typename Class>
@@ -210,6 +304,7 @@ public:
         field( "cpp_class" )     = p->get_class();
         field( "pointer" )       = Rcpp::XPtr< CppProperty<Class> >( p, false ) ;
         field( "class_pointer" ) = class_xp ;
+        field( "docstring" )     = p->docstring ;
     }
 } ;
 
@@ -220,44 +315,162 @@ class class_ : public class_Base {
 public:
 	typedef class_<Class> self ;
 	typedef CppMethod<Class> method_class ;
+	
+	typedef SignedMethod<Class> signed_method_class ;
+	typedef std::vector<signed_method_class*> vec_signed_method ;
+	typedef std::map<std::string,vec_signed_method*> map_vec_signed_method ;
+	typedef std::pair<std::string,vec_signed_method*> vec_signed_method_pair ;
+	
 	typedef std::map<std::string,method_class*> METHOD_MAP ;
 	typedef std::pair<const std::string,method_class*> PAIR ;
+	
 	typedef Rcpp::XPtr<Class> XP ;
 	typedef CppFinalizer<Class> finalizer_class ;
+	
+	typedef Constructor_Base<Class> constructor_class ;
+	typedef SignedConstructor<Class> signed_constructor_class ;
+	typedef std::vector<signed_constructor_class*> vec_signed_constructor ;
 	
 	typedef CppProperty<Class> prop_class ;
 	typedef std::map<std::string,prop_class*> PROPERTY_MAP ;
 	typedef std::pair<const std::string,prop_class*> PROP_PAIR ;
 	
-	class_( const char* name_ ) : class_Base(name_), methods(), properties(), finalizer_pointer(0), specials(0) {
+	class_( const char* name_, const char* doc = 0) : 
+	    class_Base(name_, 0), 
+	    vec_methods(), 
+	    properties(), 
+	    finalizer_pointer(0), 
+	    specials(0), 
+	    constructors()
+	{
 		if( !singleton ){
 			singleton = new self ;
 			singleton->name = name_ ;
+			singleton->docstring = std::string( doc == 0 ? "" : doc );
 			singleton->finalizer_pointer = new finalizer_class ;
 			getCurrentScope()->AddClass( name_, singleton ) ;
 		}
 	}
+         
+	~class_(){}
+	
+	
+	self& AddConstructor( constructor_class* ctor, ValidConstructor valid, const char* docstring = 0 ){
+		singleton->constructors.push_back( new signed_constructor_class( ctor, valid, docstring ) );  
+		return *this ;
+	}
+	
+	self& default_constructor( const char* docstring= 0, ValidConstructor valid = &yes_arity<0> ){
+	    return constructor( docstring, valid ) ;  
+	}
+		
+#include <Rcpp/module/Module_generated_class_constructor.h>
+	
+public:
 	
 	SEXP newInstance( SEXP* args, int nargs ){
-		SEXP out = XP( new Class, true ) ;
-		return out ;
+		BEGIN_RCPP
+		signed_constructor_class* p ;
+	    int n = constructors.size() ;
+	    for( int i=0; i<n; i++ ){
+	        p = constructors[i];
+	        bool ok = (p->valid)(args, nargs) ;
+	        if( ok ){
+	            return XP( p->ctor->get_new( args, nargs ), true ) ;
+	        }
+	    }
+	    throw std::range_error( "no valid constructor available for the argument list" ) ;
+	    END_RCPP
 	}
+	
+	bool has_default_constructor(){ 
+	    int n = constructors.size() ;
+	    signed_constructor_class* p ;
+	    for( int i=0; i<n; i++ ){
+	        p = constructors[i];
+	        if( p->nargs() == 0 ) return true ;
+	    }
+	    return false ;
+    }
 	
 	SEXP invoke( SEXP method_xp, SEXP object, SEXP *args, int nargs ){ 
 		BEGIN_RCPP
-		method_class* met = reinterpret_cast< method_class* >( EXTPTR_PTR( method_xp ) ) ;
-	    // maybe this is not needed as the R side handles it
-		if( met->nargs() > nargs ){
-		    Rprintf( "met->nargs() = %d\nnargs=%d\n", met->nargs(), nargs ) ;
-			throw std::range_error( "incorrect number of arguments" ) ; 	
+		
+		vec_signed_method* mets = reinterpret_cast< vec_signed_method* >( EXTPTR_PTR( method_xp ) ) ;
+		typename vec_signed_method::iterator it = mets->begin() ;
+		int n = mets->size() ;
+		method_class* m = 0 ;
+		bool ok = false ; 
+		for( int i=0; i<n; i++, ++it ){
+		    if( ( (*it)->valid )( args, nargs) ){
+		        m = (*it)->method ;
+		        ok = true ; 
+		        break ;
+		    }
 		}
-		return met->operator()( XP(object), args ); 
+		if( !ok ){
+		    throw std::range_error( "could not find valid method" ) ; 	
+		}
+		if( m->is_void() ){
+		    m->operator()( XP(object), args ); 
+		    return Rcpp::List::create( true ) ;
+		} else {
+		    return Rcpp::List::create( false, m->operator()( XP(object), args ) ) ;
+		}
+		END_RCPP	
+	}
+	
+	SEXP invoke_void( SEXP method_xp, SEXP object, SEXP *args, int nargs ){ 
+		BEGIN_RCPP
+		
+		vec_signed_method* mets = reinterpret_cast< vec_signed_method* >( EXTPTR_PTR( method_xp ) ) ;
+		typename vec_signed_method::iterator it = mets->begin() ;
+		int n = mets->size() ;
+		method_class* m = 0 ;
+		bool ok = false ; 
+		for( int i=0; i<n; i++, ++it ){
+		    if( ( (*it)->valid )( args, nargs) ){
+		        m = (*it)->method ;
+		        ok = true ; 
+		        break ;
+		    }
+		}
+		if( !ok ){
+		    throw std::range_error( "could not find valid method" ) ; 	
+		}
+		m->operator()( XP(object), args ); 
+		END_RCPP	
+	}
+	
+	SEXP invoke_notvoid( SEXP method_xp, SEXP object, SEXP *args, int nargs ){ 
+		BEGIN_RCPP
+		
+		vec_signed_method* mets = reinterpret_cast< vec_signed_method* >( EXTPTR_PTR( method_xp ) ) ;
+		typename vec_signed_method::iterator it = mets->begin() ;
+		int n = mets->size() ;
+		method_class* m = 0 ;
+		bool ok = false ; 
+		for( int i=0; i<n; i++, ++it ){
+		    if( ( (*it)->valid )( args, nargs) ){
+		        m = (*it)->method ;
+		        ok = true ; 
+		        break ;
+		    }
+		}
+		if( !ok ){
+		    throw std::range_error( "could not find valid method" ) ; 	
+		}
+		return m->operator()( XP(object), args ) ;
 		END_RCPP	
 	}
 	
 	
-	self& AddMethod( const char* name_, method_class* m){
-		singleton->methods.insert( PAIR( name_,m ) ) ;  
+	self& AddMethod( const char* name_, method_class* m, ValidMethod valid = &yes, const char* docstring = 0){
+		typename map_vec_signed_method::iterator it = singleton->vec_methods.find( name_ ) ; 
+	    if( it == singleton->vec_methods.end() ){
+	        it = singleton->vec_methods.insert( vec_signed_method_pair( name_, new vec_signed_method() ) ).first ;
+	    } 
+		(it->second)->push_back( new signed_method_class(m, valid, docstring ) ) ;
 		if( *name_ == '[' ) singleton->specials++ ;
 		return *this ;
 	}
@@ -270,8 +483,8 @@ public:
 #include <Rcpp/module/Module_generated_method.h>
 #include <Rcpp/module/Module_generated_Pointer_method.h>
 	
-	bool has_method( const std::string& m){
-		return methods.find(m) != methods.end() ;
+    bool has_method( const std::string& m){
+		return vec_methods.find(m) != vec_methods.end() ;
 	}
 	bool has_property( const std::string& m){
 		return properties.find(m) != properties.end() ;
@@ -288,35 +501,68 @@ public:
 	}
 	
 	Rcpp::CharacterVector method_names(){
-		int n = methods.size() ;
-		Rcpp::CharacterVector out(n) ;
-		typename METHOD_MAP::iterator it = methods.begin( ) ;
-		for( int i=0; i<n; i++, ++it){
-			out[i] = it->first ;
+		int n = 0 ; 
+		int s = vec_methods.size() ;
+		typename map_vec_signed_method::iterator it = vec_methods.begin( ) ;
+		for( int i=0; i<s; i++, ++it){
+		    n += (it->second)->size() ;
+		}
+	    Rcpp::CharacterVector out(n) ;
+	    it = vec_methods.begin() ;
+	    int k = 0 ;
+		for( int i=0; i<s; i++, ++it){
+			n = (it->second)->size() ;
+			std::string name = it->first ;
+			for( int j=0; j<n; j++, k++){
+			    out[k] = name ;
+			}
 		} 
 		return out ;
 	}
 	
 	Rcpp::IntegerVector methods_arity(){
-		int n = methods.size() ;
-		Rcpp::CharacterVector mnames(n) ;
-		Rcpp::IntegerVector res( n );
-		typename METHOD_MAP::iterator it = methods.begin( ) ;
-		for( int i=0; i<n; i++, ++it){
-			mnames[i] = it->first ;
-			res[i] = it->second->nargs() ;
+	    int n = 0 ; 
+		int s = vec_methods.size() ;
+		typename map_vec_signed_method::iterator it = vec_methods.begin( ) ;
+		for( int i=0; i<s; i++, ++it){
+		    n += (it->second)->size() ;
+		}
+	    Rcpp::CharacterVector mnames(n) ;
+	    Rcpp::IntegerVector res(n) ;
+	    it = vec_methods.begin() ;
+	    int k = 0 ;
+		for( int i=0; i<s; i++, ++it){
+			n = (it->second)->size() ;
+			std::string name = it->first ;
+			typename vec_signed_method::iterator m_it = (it->second)->begin() ;
+			for( int j=0; j<n; j++, k++, ++m_it){
+			    mnames[k] = name ;
+			    res[k] = (*m_it)->nargs() ;
+			}
 		}
 		res.names( ) = mnames ;
 		return res ;
 	}
+	
 	Rcpp::LogicalVector methods_voidness(){
-		int n = methods.size() ;
-		Rcpp::CharacterVector mnames(n) ;
-		Rcpp::LogicalVector res( n );
-		typename METHOD_MAP::iterator it = methods.begin( ) ;
-		for( int i=0; i<n; i++, ++it){
-			mnames[i] = it->first ;
-			res[i] = it->second->is_void() ;
+		int n = 0 ; 
+		int s = vec_methods.size() ;
+		typename map_vec_signed_method::iterator it = vec_methods.begin( ) ;
+		for( int i=0; i<s; i++, ++it){
+		    n += (it->second)->size() ;
+		}
+	    Rcpp::CharacterVector mnames(n) ;
+	    Rcpp::LogicalVector res(n) ;
+	    it = vec_methods.begin() ;
+	    int k = 0 ;
+		for( int i=0; i<s; i++, ++it){
+			n = (it->second)->size() ;
+			std::string name = it->first ;
+			typename vec_signed_method::iterator m_it = (it->second)->begin() ;
+			for( int j=0; j<n; j++, k++, ++m_it){
+			    mnames[k] = name ;
+			    res[k] = (*m_it)->is_void() ;
+			}
 		}
 		res.names( ) = mnames ;
 		return res ;
@@ -347,20 +593,21 @@ public:
 	}
 	
 	Rcpp::CharacterVector complete(){
-		int n = methods.size() - specials ;
+		int n = vec_methods.size() - specials ;
 		int ntotal = n + properties.size() ;
 		Rcpp::CharacterVector out(ntotal) ;
-		typename METHOD_MAP::iterator it = methods.begin( ) ;
+		typename map_vec_signed_method::iterator it = vec_methods.begin( ) ;
 		std::string buffer ;
 		int i=0 ;
 		for( ; i<n; ++it){  
 			buffer = it->first ;
 			if( buffer[0] == '[' ) continue ;
-			if( (it->second)->nargs() == 0){
-				buffer += "() " ;
-			} else {
-				buffer += "( " ;
-			}
+			// if( (it->second)->nargs() == 0){
+			// 	buffer += "() " ;
+			// } else {
+			// 	buffer += "( " ;
+			// } 
+			buffer += "( " ;
 			out[i] = buffer ;
 			i++ ;
 		}
@@ -400,15 +647,27 @@ public:
 	}
 
 	Rcpp::List getMethods( SEXP class_xp ){
-	    int n = methods.size() ;
-		Rcpp::CharacterVector pnames(n) ;
+	    int n = vec_methods.size() ;
+		Rcpp::CharacterVector mnames(n) ;
+		Rcpp::List res(n) ;
+	    typename map_vec_signed_method::iterator it = vec_methods.begin( ) ;
+		vec_signed_method* v; 
+	    for( int i=0; i<n; i++, ++it){
+		    mnames[i] = it->first ;
+		    v = it->second ;
+		    res[i] = S4_CppOverloadedMethods<Class>( v , class_xp, it->first.c_str() ) ;
+		}
+		res.names() = mnames ;
+	    return res ;
+	}
+	
+	Rcpp::List getConstructors( SEXP class_xp){
+	    int n = constructors.size() ;
 		Rcpp::List out(n) ;
-		typename METHOD_MAP::iterator it = methods.begin( ) ;
+		typename vec_signed_constructor::iterator it = constructors.begin( ) ;
 		for( int i=0; i<n; i++, ++it){
-			pnames[i] = it->first ;
-			out[i] = S4_CppMethod<Class>( it->second, class_xp ) ; 
+			out[i] = S4_CppConstructor<Class>( *it , class_xp, name ) ; 
 		} 
-		out.names() = pnames ;
 		return out ;
 	}
 
@@ -432,13 +691,14 @@ private:
         singleton->finalizer_pointer = f ; 
     }
     
-	METHOD_MAP methods ;
+	map_vec_signed_method vec_methods ;
 	PROPERTY_MAP properties ;
 	static self* singleton ;
 	finalizer_class* finalizer_pointer ;
 	int specials ;
-	
-	class_( ) : class_Base(), methods(), properties(), specials(0) {}; 
+	vec_signed_constructor constructors ;
+   
+	class_( ) : class_Base(), vec_methods(), properties(), specials(0) {}; 
 	
 } ;   
 
@@ -477,8 +737,6 @@ extern "C" SEXP _rcpp_module_boot_##name(){                          \
 void _rcpp_module_##name##_init()
 
 #define LOAD_RCPP_MODULE(NAME) Rf_eval( Rf_lang2( Rf_install("Module"), _rcpp_module_boot_##NAME() ), R_GlobalEnv )
-
-#endif  
 
 #endif
 
