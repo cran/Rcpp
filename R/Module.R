@@ -56,7 +56,7 @@ setMethod("initialize", "Module",
                    moduleName = "UNKNOWN",
                    packageName = "",
                    pointer = .badModulePointer, ...) {
-              env <- new.env(TRUE, emptyenv())
+              env <- new.env(TRUE, emptyenv())           
               as(.Object, "environment") <- env
               assign("pointer", pointer, envir = env)
               assign("packageName", packageName, envir = env)
@@ -67,21 +67,42 @@ setMethod("initialize", "Module",
               .Object
           })
 
+.get_Module_function <- function(x, name, pointer = .getModulePointer(x) ){
+    pointer <- .getModulePointer(x)
+	info <- .Call( Module__get_function, pointer, name )
+	fun_ptr <- info[[1L]]
+	doc     <- info[[3L]]
+	sign    <- info[[4L]]
+	formal_args <- info[[5L]]
+	f <- function(...) NULL
+	stuff <- list( fun_pointer = fun_ptr, InternalFunction_invoke = InternalFunction_invoke )
+	body(f) <- if( info[[2]] ) {
+	    substitute( {
+	        .External( InternalFunction_invoke, fun_pointer, ... )
+	        invisible(NULL)         
+	    }, stuff ) 
+	} else {
+	    substitute( {
+	        .External( InternalFunction_invoke, fun_pointer, ... )
+	    }, stuff ) 
+	}
+	out <- new( "C++Function", f, pointer = fun_ptr, docstring = doc, signature = sign )
+	if( ! is.null( formal_args ) ){
+	    formals( out ) <- formal_args
+	}
+	out
+}
 
+.get_Module_Class <- function( x, name, pointer =  .getModulePointer(x) ){
+    value <- .Call( Module__get_class, pointer, name )
+    value@generator <-  get("refClassGenerators",envir=x)[[as.character(value)]]
+    value
+}
+          
 setMethod( "$", "Module", function(x, name){
     pointer <- .getModulePointer(x)
-	if( .Call( Module__has_function, pointer, name ) ){
-		function( ... ) {
-			res <- .External( Module__invoke , pointer, name, ... )
-			if( isTRUE( res$void ) ) invisible(NULL) else res$result
-		}
-	} else if( .Call( Module__has_class, pointer, name ) ){
-		value <- .Call( Module__get_class, pointer, name )
-                value@generator <-  get("refClassGenerators",envir=x)[[as.character(value)]]
-                value
-	} else{
-		stop( "no such method or class in module" )
-	}
+    storage <- get( "storage", envir = as.environment(x) )
+    storage[[ name ]] 
 } )
 
 new_CppObject_xp <- function(module, pointer, ...) {
@@ -152,6 +173,9 @@ Module <- function( module, PACKAGE = getPackageName(where), where = topenv(pare
     if(environmentIsLocked(where))
         where <- .GlobalEnv # or???
     generators <- list()
+    
+    storage <- new.env()
+    
     for( i in seq_along(classes) ){
         CLASS <- classes[[i]]
         clname <- as.character(CLASS)
@@ -166,7 +190,16 @@ Module <- function( module, PACKAGE = getPackageName(where), where = topenv(pare
                                  )
         # just to make codetools happy
         .self <- .refClassDef <- NULL
-        generator$methods(initialize = function(...) Rcpp:::cpp_object_initializer(.self,.refClassDef, ...))
+        generator$methods(initialize =
+              if(cpp_hasDefaultConstructor(CLASS))
+                 function(...) Rcpp:::cpp_object_initializer(.self,.refClassDef, ...)
+              else
+                 function(...) {
+                     if(nargs())  Rcpp:::cpp_object_initializer(.self,.refClassDef, ...)
+                     else .self
+                 }
+                          )
+               
         rm( .self, .refClassDef )
         
         classDef <- getClass(clname)
@@ -197,27 +230,65 @@ Module <- function( module, PACKAGE = getPackageName(where), where = topenv(pare
         }
     }
     module$refClassGenerators <- generators
+    
+    for( i in seq_along(classes) ){
+        clname <- as.character(classes[[i]])
+        demangled_name <- sub( "^Rcpp_", "", clname )
+        storage[[ demangled_name ]] <- .get_Module_Class( module, demangled_name, xp )
+    }
+    
+    # functions
+    functions <- .Call( Module__functions_names, xp )
+    for( fun in functions ){
+        storage[[ fun ]] <- .get_Module_function( module, fun, xp )
+    }
+    
+    assign( "storage", storage, envir = as.environment(module) )
     module
 }
 
+dealWith <- function( x ) if(isTRUE(x[[1]])) invisible(NULL) else x[[2]]
+
 method_wrapper <- function( METHOD, where ){
-            f <- function(...) NULL
-	    extCall <- substitute(
-                .External(CppMethod__invoke, class_pointer, pointer, .pointer, ...)
-           ,
-            list(
-                class_pointer = METHOD$class_pointer,
-                pointer = METHOD$pointer,
-                CppMethod__invoke = CppMethod__invoke
-                 )
-            )
-            if( METHOD$void )
-                extCall <- substitute({
-                    CALL
-                    invisible(NULL)
-                }, list(CALL = extCall))
-            body(f, where) <- extCall
-            f
+        f <- function(...) NULL
+        
+        stuff <- list(
+            class_pointer = METHOD$class_pointer,
+            pointer = METHOD$pointer,
+            CppMethod__invoke = CppMethod__invoke,
+            CppMethod__invoke_void = CppMethod__invoke_void,
+            CppMethod__invoke_notvoid = CppMethod__invoke_notvoid,
+            dealWith = dealWith, 
+            docstring = METHOD$info("")
+        )
+        
+        extCall <- if( all( METHOD$void ) ){
+            # all methods are void, so we know we want to return invisible(NULL)
+            substitute( 
+            {
+                docstring
+                .External(CppMethod__invoke_void, class_pointer, pointer, .pointer, ...)
+                invisible(NULL)
+            } , stuff )
+        } else if( all( ! METHOD$void ) ){
+            # none of the methods are void so we always return the result of 
+            # .External
+            substitute( 
+            {
+                docstring
+               .External(CppMethod__invoke_notvoid, class_pointer, pointer, .pointer, ...)
+            } , stuff )
+        } else {
+            # some are void, some are not, so the voidness is part of the result 
+            # we get from internally and we need to deal with it
+            substitute( 
+	        {
+	            docstring
+	            dealWith( .External(CppMethod__invoke, class_pointer, pointer, .pointer, ...) )
+            } , stuff )
+        }
+        body(f, where) <- extCall
+        f
 	}
 ## create a named list of the R methods to invoke C++ methods
 ## from the C++ class with pointer xp
@@ -237,6 +308,10 @@ cpp_refMethods <- function(CLASS, where) {
 	    "finalize" = finalizer
 	)
     mets
+}
+
+cpp_hasDefaultConstructor <- function(CLASS) {
+    .Call( Class__has_default_constructor, CLASS@pointer )
 }
 
 binding_maker <- function( FIELD, where ){

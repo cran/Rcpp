@@ -29,62 +29,83 @@ setRefClass( "C++Field",
         pointer       = "externalptr", 
         cpp_class     = "character", 
         read_only     = "logical", 
-        class_pointer = "externalptr"
-    ),
-    methods = list( 
-        get = function(obj_xp){
-            .Call( CppField__get, class_pointer, pointer, obj_xp ) 
-        }, 
-        set = function(obj_xp, value){
-            .Call( CppField__set, class_pointer, pointer, obj_xp, value )
-            invisible( NULL )
-        }
+        class_pointer = "externalptr", 
+        docstring     = "character"
     )
 )
 
-setRefClass( "C++Method", 
+setRefClass( "C++OverloadedMethods", 
     fields = list( 
         pointer       = "externalptr", 
         class_pointer = "externalptr", 
-        void          = "logical"
-        # perhaps something to deal with classes of input and output
-        # but this needs some work internally before
+        size          = "integer", 
+        void          = "logical",
+        const         = "logical", 
+        docstrings    = "character", 
+        signatures    = "character"
     ), 
     methods = list( 
-        invoke = function(obj_xp, ...){
-            .External( CppMethod__invoke, class_pointer, pointer, obj_xp, ... )    
+        info = function(prefix = "    " ){
+             paste( paste( prefix, signatures, ifelse(const, " const", "" ), "\n", prefix, prefix, "docstring :", docstrings) , collapse = "\n" )   
         }
     )
 )
 
+setRefClass( "C++Constructor", 
+    fields = list( 
+        pointer       = "externalptr", 
+        class_pointer = "externalptr", 
+        nargs         = "integer", 
+        signature     = "character", 
+        docstring     = "character"
+    )
+)
 
 setClass( "C++Class", 
 	representation( 
-	    pointer = "externalptr", 
-	    module  = "externalptr", 
-	    fields  = "list",
-	    methods = "list",
-            generator = "refObjectGenerator"
+	    pointer      = "externalptr", 
+	    module       = "externalptr", 
+	    fields       = "list",
+	    methods      = "list",
+	    constructors = "list",
+	    generator    = "refObjectGenerator", 
+	    docstring    = "character"
 	), 
 	contains = "character"
 	)
 setClass( "C++ClassRepresentation", 
     representation( 
-        pointer       = "externalptr", 
-        generator     = "refObjectGenerator", 
-        cpp_fields    = "list", 
-        cpp_methods   = "list"
+        pointer         = "externalptr", 
+        generator       = "refObjectGenerator", 
+        cpp_fields      = "list", 
+        cpp_methods     = "list", 
+        cpp_constructor = "list"
     ), 
     contains = "classRepresentation" )
-
-# # might not actually use this
-# setClass( "C++Property" )	
 
 setClass( "C++Object")
 
 setClass( "C++Function", 
-	representation( pointer = "externalptr" ), 
+	representation( 
+	    pointer   = "externalptr", 
+	    docstring = "character", 
+	    signature = "character"
+	), 
 	contains = "function"
 )
 
-
+.cppfunction_formals_gets <- function (fun, envir = environment(fun), value) {
+    bd <- body(fun)
+    b2 <- bd[[2L]]
+    for( i in seq_along(value) ){
+        b2[[3L+i]] <- as.name( names(value)[i] )
+    }
+    bd[[2]] <- b2
+    f <- fun@.Data
+    formals(f) <- value
+    body(f) <- bd
+    fun@.Data <- f
+    fun
+}
+setGeneric( "formals<-" )
+setMethod( "formals<-", "C++Function", .cppfunction_formals_gets )

@@ -22,15 +22,12 @@
 #ifndef RCPP__CONFIG_H
 #define RCPP__CONFIG_H
 
-// comment to disable Rcpp modules
-#define RCPP_ENABLE_MODULES
-
 #ifdef __GNUC__
 #define RCPP_HAS_DEMANGLING
 #endif
 
 #define Rcpp_Version(v,p,s) (((v) * 65536) + ((p) * 256) + (s))
-#define RCPP_VERSION Rcpp_Version(0,8,6)
+#define RCPP_VERSION Rcpp_Version(0,8,9)
 
 #endif
 

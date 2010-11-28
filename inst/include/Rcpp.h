@@ -34,7 +34,6 @@
 #include <Rcpp/exceptions.h>
 
 #include <Rcpp/RObject.h>
-#include <Rcpp/Named.h>
 
 #include <Rcpp/S4.h>
 #include <Rcpp/Reference.h>
@@ -64,10 +63,7 @@
 #include <Rcpp/Datetime.h>
 #include <Rcpp/DatetimeVector.h>
 
-#ifdef RCPP_ENABLE_MODULES
 #include <Rcpp/Module.h>
-#endif
-
 #include <Rcpp/InternalFunction.h>
 
 #include <Rmath.h>

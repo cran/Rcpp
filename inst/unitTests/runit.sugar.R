@@ -280,7 +280,9 @@
 					return List::create(
 						xx - 10, 
 						10 - xx, 
-						xx - xx
+						xx - xx, 
+						noNA( xx ) - 10, 
+						10 - noNA( xx )
 						) ;
 				'			
 			), 
@@ -660,6 +662,15 @@
 			   NumericVector res = cumsum( xx ) ;
 			   return res ;
 			   '
+			), 
+			"runit_asvector" = list( 
+			    signature( x = "numeric", y = "numeric", z = "matrix" ), 
+			    '
+			    return List::create( 
+			        as_vector( NumericMatrix(z) ), 
+			        as_vector( outer( NumericVector(x) , NumericVector(y) , std::plus<double>() ) )
+			    ) ;
+			    '
 			)
 		)
 		
@@ -946,7 +957,10 @@ test.sugar.lapply <- function( ){
 
 test.sugar.minus <- function( ){
 	fx <- .rcpp.sugar$runit_minus
-	checkEquals( fx(1:10) , list( (1:10)-10L, 10L-(1:10), rep(0L,10) )  )
+	checkEquals( 
+	    fx(1:10) , 
+	    list( (1:10)-10L, 10L-(1:10), rep(0L,10), (1:10)-10L, 10L-(1:10)  )
+	    )
 }
 
 test.sugar.any.equal.not <- function( ){
@@ -1287,5 +1301,12 @@ test.sugar.cumsum <- function(){
     checkEquals( fx(x), cumsum(x) )
     x[4] <- NA
     checkEquals( fx(x), cumsum(x) )
+}
+
+test.sugar.asvector <- function(){
+    fx <- .rcpp.sugar$runit_asvector
+    res <- fx( 1:4, 1:5, diag( 1:5 ) )
+    checkEquals( res[[1]], as.vector( diag(1:5) ) )
+    checkEquals( res[[2]], as.vector( outer( 1:4, 1:5, "+" ) ) )
 }
 

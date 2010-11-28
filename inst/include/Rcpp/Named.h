@@ -19,16 +19,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef Rcpp_Named_h
+#ifndef Rcpp_Named_h    
 #define Rcpp_Named_h
-
-#include <RcppCommon.h>
-
-#include <Rcpp/Symbol.h>
-#include <Rcpp/RObject.h>
-
+                     
 namespace Rcpp{ 
-
+                    
 class Argument {
 public:
 	Argument() : name(){} ;
@@ -39,7 +34,6 @@ public:
 		return traits::named_object<T>( name, t ) ;	
 	}
 	
-private:
 	std::string name ;	
 } ;
 

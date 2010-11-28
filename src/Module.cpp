@@ -21,14 +21,18 @@
 
 #include <Rcpp.h>
 
-#ifdef RCPP_ENABLE_MODULES
-
 #define MAX_ARGS 65
 
 typedef Rcpp::XPtr<Rcpp::Module> XP_Module ; 
 typedef Rcpp::XPtr<Rcpp::class_Base> XP_Class ; 
 typedef Rcpp::XPtr<Rcpp::CppFunction> XP_Function ; 
 
+RCPP_FUNCTION_1( bool, Class__has_default_constructor, XP_Class cl ){
+    return cl->has_default_constructor() ;
+}
+RCPP_FUNCTION_2( SEXP, Module__get_function, XP_Module module, std::string fun ){
+    return module->get_function_ptr( fun ) ;
+}
 RCPP_FUNCTION_2( bool, Class__has_method, XP_Class cl, std::string m){
 	return cl->has_method(m) ;
 }
@@ -78,6 +82,9 @@ RCPP_FUNCTION_2( std::string, CppClass__property_class, XP_Class cl, std::string
 RCPP_FUNCTION_1( Rcpp::IntegerVector, Module__functions_arity, XP_Module module ){
 	return module->	functions_arity() ;
 }
+RCPP_FUNCTION_1( Rcpp::CharacterVector, Module__functions_names, XP_Module module ){
+	return module->	functions_names() ;
+}
 RCPP_FUNCTION_1( std::string, Module__name, XP_Module module ){
 	return module->name;
 }
@@ -104,8 +111,6 @@ RCPP_FUNCTION_2(SEXP, CppObject__finalize, XP_Class cl, SEXP obj){
 	cl->run_finalizer( obj ) ;
 	return R_NilValue ;
 }
-
-
 
 // .External functions
 extern "C" SEXP InternalFunction_invoke( SEXP args ){
@@ -176,6 +181,55 @@ extern "C" SEXP CppMethod__invoke(SEXP args){
    	return clazz->invoke( met, obj, cargs, nargs ) ;
 }
 
+extern "C" SEXP CppMethod__invoke_void(SEXP args){
+	SEXP p = CDR(args) ;
+	
+	// the external pointer to the class
+	XP_Class clazz( CAR(p) ) ; p = CDR(p);
+	
+	// the external pointer to the method
+	SEXP met = CAR(p) ; p = CDR(p) ;
+	
+	// the external pointer to the object
+	SEXP obj = CAR(p); p = CDR(p) ;
+	
+	// additional arguments, processed the same way as .Call does
+	SEXP cargs[MAX_ARGS] ;
+    int nargs = 0 ;
+   	for(; nargs<MAX_ARGS; nargs++){
+   		if( p == R_NilValue ) break ;
+   		cargs[nargs] = CAR(p) ;
+   		p = CDR(p) ;
+   	}
+   	clazz->invoke_void( met, obj, cargs, nargs ) ;
+   	return R_NilValue ;
+}
+
+extern "C" SEXP CppMethod__invoke_notvoid(SEXP args){
+	SEXP p = CDR(args) ;
+	
+	// the external pointer to the class
+	XP_Class clazz( CAR(p) ) ; p = CDR(p);
+	
+	// the external pointer to the method
+	SEXP met = CAR(p) ; p = CDR(p) ;
+	
+	// the external pointer to the object
+	SEXP obj = CAR(p); p = CDR(p) ;
+	
+	// additional arguments, processed the same way as .Call does
+	SEXP cargs[MAX_ARGS] ;
+    int nargs = 0 ;
+   	for(; nargs<MAX_ARGS; nargs++){
+   		if( p == R_NilValue ) break ;
+   		cargs[nargs] = CAR(p) ;
+   		p = CDR(p) ;
+   	}
+   	
+   	return clazz->invoke_notvoid( met, obj, cargs, nargs ) ;
+}
+
+
 namespace Rcpp{
 	static Module* current_scope  ;
 }
@@ -215,6 +269,25 @@ namespace Rcpp{
 		END_RCPP
 	}                                                                                  
 	
+	SEXP Module::get_function_ptr( const std::string& name ){
+	    MAP::iterator it = functions.begin() ;
+	    int n = functions.size() ;
+	    CppFunction* fun = 0 ;
+	    for( int i=0; i<n; i++, ++it){
+	        if( name.compare( it->first ) == 0){
+	            fun = it->second ;
+	            break ;
+	        }
+	    }
+	    return Rcpp::List::create( 
+	        Rcpp::XPtr<CppFunction>( fun, false ), 
+	        fun->is_void(), 
+	        fun->docstring, 
+	        fun->signature( name.data() ), 
+	        fun->get_formals()
+	        ) ;
+	}
+	
 	Rcpp::List Module::classes_info(){
 		int n = classes.size() ;
 		Rcpp::CharacterVector names(n) ;
@@ -251,6 +324,16 @@ namespace Rcpp{
 		return x ;
 	}
 	
+	Rcpp::CharacterVector Module::functions_names(){
+		int n = functions.size() ;
+		Rcpp::CharacterVector names( n );
+		MAP::iterator it = functions.begin() ;
+		for( int i=0; i<n; i++, ++it){
+			names[i] = it->first ;
+		}
+		return names ;
+	}
+	
 	Rcpp::CharacterVector Module::complete(){
 		int nf = functions.size() ;
 		int nc = classes.size() ;
@@ -283,17 +366,14 @@ namespace Rcpp{
 		slot( "module"  ) = XP( p, false ) ;
 		slot( "pointer" ) = clxp ;
 		
-		std::string mangled_name( "rcpp_" ) ;
-		char buffer[20] ;
-		sprintf( buffer, "%p", (void*)EXTPTR_PTR(clxp) ) ;
-	
-		mangled_name += (const char*) buffer ;
-		mangled_name += "_" ;
+		std::string mangled_name( "Rcpp_" ) ;
 		mangled_name += cl->name ;
 		slot( ".Data" ) = mangled_name ;
 		
-		slot( "fields" ) = cl->fields( clxp.asSexp() ) ;
-		slot( "methods" ) = cl->getMethods( clxp.asSexp() ) ;
+		slot( "fields" )      = cl->fields( clxp.asSexp() ) ;
+		slot( "methods" )     = cl->getMethods( clxp.asSexp() ) ;
+		slot( "constructors") = cl->getConstructors( clxp.asSexp() ) ;
+		slot( "docstring"   ) = cl->docstring ;
 	}
 
 	CppObject::CppObject( Module* p, class_Base* clazz, SEXP xp ) : S4("C++Object") {
@@ -311,9 +391,4 @@ namespace Rcpp{
 	}
 	
 }
-
-#else
-/* quiet ranlib */ 
-void dummy(){}
-#endif
 
