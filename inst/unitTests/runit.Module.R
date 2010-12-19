@@ -78,7 +78,7 @@ test.Module <- function(){
 
 		class_<World>( "World" )
 		
-		    .default_constructor()
+		    .constructor()
 		    
 			.method( "greet", &World::greet )
 			.method( "set", &World::set )
@@ -109,73 +109,6 @@ test.Module <- function(){
 
 }
 
-# hide this one for now (suncc not happy about overloads)
-if(FALSE){
-test.Module.stdvec <- function(){
-
-code <- ''
-
-inc  <- '
-typedef std::vector<double> vec ;
-
-void vec_assign( vec* obj, Rcpp::NumericVector data ){
-	obj->assign( data.begin(), data.end() ) ;
-}
-
-void vec_insert( vec* obj, int position, Rcpp::NumericVector data){
-	vec::iterator it = obj->begin() + position ;
-	obj->insert( it, data.begin(), data.end() ) ;
-}
-
-Rcpp::NumericVector vec_asR( vec* obj){
-	return Rcpp::wrap( *obj ) ;
-}
-
-RCPP_MODULE(yada){
-	using namespace Rcpp ;
-
-	class_<vec>( "vec")
-	
-	    .default_constructor() 
-	    
-	 	.method( "size", &vec::size)
- 		.method( "max_size", &vec::max_size)
- 		.method( "resize", &vec::resize)
- 		.method( "capacity", &vec::capacity)
- 		.method( "empty", &vec::empty)
- 		.method( "reserve", &vec::reserve)
- 		.method( "push_back", &vec::push_back )
- 		.method( "pop_back", &vec::pop_back )
- 		.method( "clear", &vec::clear )
-
- 		.const_method( "back", &vec::back )
-		.const_method( "front", &vec::front )
-		.const_method( "at", &vec::at )
-
-		.method( "assign", &vec_assign )
-		.method( "insert", &vec_insert )
-		.method( "as.vector", &vec_asR )
-
-
-	;
-}
-
-'
-	fx <- cxxfunction( signature(), "", include = inc, plugin = "Rcpp" )
-
-	yada <- Rcpp:::Module( "yada", getDynLib( fx ) )
-	v <- new( yada$vec )
-	v$assign( 1:10 )
-
-	checkEquals( v$back(), 10 )
-	v$push_back( 10 )
-	checkEquals( as.integer(v$size()), 11L )
-	checkEquals( v$at( 0 ), 1 )
-	checkEquals( v$as.vector(), c(1:10, 10 ) )
-
-}
-}
-
 test.Module.property <- function(){
 
 	inc  <- '
@@ -198,7 +131,7 @@ test.Module.property <- function(){
 
 		class_<Num>( "Num" )
 		    
-		    .default_constructor() 
+		    .constructor() 
 	    
 			// read and write property
 			.property( "x", &Num::getX, &Num::setX )
@@ -239,7 +172,7 @@ test.Module.member <- function(){
 
 		class_<Number>( "Number" )
 
-		    .default_constructor() 
+		    .constructor() 
 	    
 			// read and write data member
 			.field( "x", &Number::x )
@@ -261,6 +194,50 @@ test.Module.member <- function(){
     checkEquals( w$x, 2.0 )
 
     checkException( { w$y <- 3 } )
+}
+
+test.Module.Constructor <- function() {
+    inc <- '
+
+class Randomizer {
+public:
+
+    // Randomizer() : min(0), max(1){}
+    Randomizer( double min_, double max_) : min(min_), max(max_){}
+
+    NumericVector get( int n ){
+        RNGScope scope ;
+        return runif( n, min, max );
+    }
+
+private:
+    double min, max ;
+} ;
+
+RCPP_MODULE(mod){
+
+    class_<Randomizer>( "Randomizer" )
+
+        // No default: .default_constructor()
+        .constructor<double,double>()
+    
+        .method( "get" , &Randomizer::get ) ;
+
+}
+'
+    fx <- cxxfunction( , '', includes = inc, plugin = "Rcpp" )
+
+    mod <- Module( "mod", getDynLib( fx ) )
+
+    Randomizer <- mod$Randomizer
+    r <- new( Randomizer, 10.0, 20.0 )
+    set.seed(123)
+    x10 <- runif(10, 10.0, 20.0)
+    set.seed(123)
+    checkEquals(r$get(10), x10)
+
+    r <- new( Randomizer )
+    stopifnot(is(tryCatch(r$get(10), error = function(e)e), "error"))
 }
 
 }

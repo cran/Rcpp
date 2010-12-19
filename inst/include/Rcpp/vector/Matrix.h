@@ -21,8 +21,6 @@
 
 #ifndef Rcpp__vector__Matrix_h
 #define Rcpp__vector__Matrix_h
-   
-template <int RTYPE> class SubMatrix ;
 
 template <int RTYPE> 
 class Matrix : public Vector<RTYPE>, public MatrixBase<RTYPE,true, Matrix<RTYPE> > {
@@ -139,6 +137,7 @@ public:
 	
 	typedef MatrixRow<RTYPE> Row ;
 	typedef MatrixColumn<RTYPE> Column ;
+	typedef SubMatrix<RTYPE> Sub ;
 
 	inline Row operator()( int i, internal::NamedPlaceHolder ){
 	    return Row( *this, i ) ;
@@ -148,16 +147,16 @@ public:
 	    return Column( *this, i ) ;
 	}
 	
-	inline SubMatrix<RTYPE> operator()( const Range& row_range, const Range& col_range){
-	    return SubMatrix<RTYPE>( const_cast<Matrix&>(*this), row_range, col_range ) ;
+	inline Sub operator()( const Range& row_range, const Range& col_range){
+	    return Sub( const_cast<Matrix&>(*this), row_range, col_range ) ;
 	}
 	
-	inline SubMatrix<RTYPE> operator()( internal::NamedPlaceHolder, const Range& col_range){
-	    return SubMatrix<RTYPE>( const_cast<Matrix&>(*this), Range(0,nrow()-1) , col_range ) ;
+	inline Sub operator()( internal::NamedPlaceHolder, const Range& col_range){
+	    return Sub( const_cast<Matrix&>(*this), Range(0,nrow()-1) , col_range ) ;
 	}
 	
-	inline SubMatrix<RTYPE> operator()( const Range& row_range, internal::NamedPlaceHolder ){
-	    return SubMatrix<RTYPE>( const_cast<Matrix&>(*this), row_range, Range(0,ncol()-1) ) ;
+	inline Sub operator()( const Range& row_range, internal::NamedPlaceHolder ){
+	    return Sub( const_cast<Matrix&>(*this), row_range, Range(0,ncol()-1) ) ;
 	}
 	
 	
@@ -221,69 +220,6 @@ private:
     int nrows ;	
 	
 } ;
-
-template <int RTYPE>
-class SubMatrix : public Rcpp::MatrixBase< RTYPE, true, SubMatrix<RTYPE> > {
-public:
-    typedef Matrix<RTYPE> MATRIX ;
-    typedef typename Vector<RTYPE>::iterator vec_iterator ;
-    typedef typename MATRIX::Proxy Proxy ;
-    
-    SubMatrix( MATRIX& m_, const Range& row_range_, const Range& col_range_ ) :
-        m(m_),
-        iter( static_cast< Vector<RTYPE>& >(m_).begin() + row_range_.get_start() + col_range_.get_start() * m_.ncol() ), 
-        m_nc( m.ncol() ), 
-        nc( col_range_.size() ), 
-        nr( row_range_.size() )
-    {}
-    
-    inline int size() const { return ncol() * nrow() ; }
-    inline int ncol() const { return nc ; }
-    inline int nrow() const { return nr ; }
-    
-    inline Proxy operator()(int i, int j) const {
-        return iter[ i + j*m_nc ] ;
-    }
-    
-    inline vec_iterator column_iterator( int j ) const { return iter + j*m_nc ; } 
-    
-private:
-    MATRIX& m ;
-    vec_iterator iter ;
-    int m_nc, nc, nr ;
-} ;
-
-template <int RTYPE>
-Matrix<RTYPE>::Matrix( const SubMatrix<RTYPE>& sub ) : nrows(sub.nrow()) {
-    int nc = sub.ncol() ;
-    VECTOR::setSEXP( Rf_allocMatrix( RTYPE, nrows, nc ) ) ;
-	iterator start = VECTOR::begin() ;
-	iterator rhs_it ;
-	for( int j=0; j<nc; j++){
-	    rhs_it = sub.column_iterator(j) ;
-	    for( int i=0; i<nrows; i++, ++start){
-	        *start = rhs_it[i] ;
-	    }
-	}
-}
-
-template <int RTYPE>
-Matrix<RTYPE>& Matrix<RTYPE>::operator=( const SubMatrix<RTYPE>& sub ){
-    int nc = sub.ncol(), nr = sub.nrow() ;
-    if( nc != nrow() || nr != ncol() ){
-        nrows = nr ;
-        VECTOR::setSEXP( Rf_allocMatrix( RTYPE, nr, nc ) ) ;
-	}
-	iterator start = VECTOR::begin() ;
-	iterator rhs_it ;
-	for( int j=0; j<nc; j++){
-	    rhs_it = sub.column_iterator(j) ;
-	    for( int i=0; i<nrows; i++, ++start){
-	        *start = rhs_it[i] ;
-	    }
-	}
-	return *this ;
-}
 
 
 #endif

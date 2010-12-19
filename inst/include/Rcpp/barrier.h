@@ -1,10 +1,8 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 8 -*-
 //
-// RcppDateVector.h: Rcpp R/C++ interface class library -- Date vector support
+// barrier.h: Rcpp R/C++ interface class library -- crossin the write barrier
 //
-// Copyright (C) 2005 - 2006 Dominick Samperi
-// Copyright (C) 2008 - 2009 Dirk Eddelbuettel
-// Copyright (C) 2010	     Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2010	Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -21,22 +19,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef RcppDateVector_h
-#define RcppDateVector_h
+#ifndef Rcpp__barrier__h
+#define Rcpp__barrier__h
 
-#include <RcppCommon.h>
-#include <classic/RcppDate.h>
+SEXP get_string_elt(SEXP, int) ;
+const char* char_get_string_elt(SEXP, int) ;
+void set_string_elt(SEXP, int, SEXP) ;
+void char_set_string_elt(SEXP, int, const char*) ;        
+SEXP* get_string_ptr(SEXP) ;
 
-class RcppDateVector {
-public:
-    RcppDateVector(SEXP vec);
-    RcppDateVector(int n);
-    ~RcppDateVector() {};
-    const RcppDate& operator()(int i) const;
-    RcppDate& operator()(int i);
-    int size() const;
-private:
-    std::vector<RcppDate> v;
-};
+SEXP get_vector_elt(SEXP, int) ;
+void set_vector_elt(SEXP, int, SEXP ) ;
+SEXP* get_vector_ptr(SEXP) ;
 
 #endif

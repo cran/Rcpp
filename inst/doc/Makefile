@@ -127,7 +127,6 @@ endif
 Rcpp-quickref.pdf : Rcpp-quickref/Rcpp-quickref.Rnw
 	cp -f Rcpp-quickref/Rcpp-quickref.Rnw .
 	Rscript --vanilla -e "require(highlight); driver <- HighlightWeaveLatex(boxes = TRUE, bg = 'white' ); Sweave( 'Rcpp-quickref.Rnw', driver = driver ); "
-	Rscript --vanilla -e "tex <- readLines('Rcpp-quickref.tex'); tex <- gsub( 'begin{minipage}{0.9', 'begin{minipage}{0.42', tex, fixed = TRUE ) ; writeLines( tex, 'Rcpp-quickref.tex' )  "
 	Rscript --vanilla -e "tools::texi2dvi( 'Rcpp-quickref.tex', pdf = TRUE, clean = FALSE )"
 ifneq (,$(findstring edd,$(whoami)))
 	pdflatex Rcpp-quickref

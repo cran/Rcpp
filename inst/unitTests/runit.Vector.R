@@ -17,11 +17,8 @@
 # You should have received a copy of the GNU General Public License
 # along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-.setUp <- function() {
-    tests <- ".rcpp.Vector"
-    if( ! exists( tests, globalenv() )) {
-        ## definition of all the functions at once
-        f <- list(
+definitions <- function(){
+    f <- list(
         	"raw_" = list( 
         		signature(), 
         		'
@@ -572,6 +569,14 @@
 	            		) ;
 	            	
 	            	'
+	            ), 
+	            "List_extract" = list( 
+	                signature( x = "list" ), 
+	                '
+	                    List input(x) ;
+	                    bool a = input[0] ;
+	                    return wrap(a) ;
+	                '
 	            )
 
                 
@@ -635,16 +640,28 @@
         	)     
         	f <- c(f,g)
         }
+        f
+    
+}
 
-        signatures <- lapply(f, "[[", 1L)
-        bodies <- lapply(f, "[[", 2L)
-        fun <- cxxfunction(signatures, bodies,
-                           plugin = "Rcpp", includes = "
-                           using namespace std;
-                           inline double square( double x){ return x*x; }
-                           ",
-                           cxxargs = ifelse(Rcpp:::capabilities()[["initializer lists"]],"-std=c++0x",""))
-        getDynLib( fun ) # just forcing loading the dll now
+includes <- function(){
+"
+    inline double square( double x){ return x*x; }
+"    
+}
+
+cxxargs <- function(){
+    ifelse(Rcpp:::capabilities()[["initializer lists"]],"-std=c++0x","")
+}
+
+.setUp <- function() {
+    tests <- ".rcpp.Vector"
+    if( ! exists( tests, globalenv() )) {
+        fun <- Rcpp:::compile_unit_tests( 
+            definitions(), 
+            includes = includes(), 
+            cxxargs = cxxargs()
+        )
         assign( tests, fun, globalenv() )
     }
 }
@@ -1005,13 +1022,13 @@ test.List.push.front <- function(){
 
 # test.List.insert <- function(){
 #
-# 	funx <- cppfunction( signature(x = "list"),
+# 	funx <- cxxfunction( signature(x = "list"),
 # 	'
 # 	List list(x) ;
 # 	list.insert( list.begin(), 10 ) ;
 # 	list.insert( list.end(), Named("foo", "bar" ) ) ;
 # 	return list ;
-# 	' )
+# 	' , plugin = "Rcpp" )
 # 	d <- list( x = 1:10, y = letters[1:10] )
 # 	res <- funx( d )
 # 	checkEquals( res,
@@ -1192,4 +1209,8 @@ test.ComplexVector.binary.operators <- function(){
 		), msg = "complex binary operators" )
 }
 
-
+test.ComplexVector.binary.operators <- function(){
+	fun <- .rcpp.Vector$List_extract
+    checkEquals( fun(list(TRUE)), TRUE )
+    checkEquals( fun(list(FALSE)), FALSE )
+}

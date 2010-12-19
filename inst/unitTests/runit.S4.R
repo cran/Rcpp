@@ -17,11 +17,8 @@
 # You should have received a copy of the GNU General Public License
 # along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-.setUp <- function() {
-    tests <- ".rcpp.S4"
-    if( ! exists( tests, globalenv() )) {
-        ## definition of all the functions at once
-        f <- list(
+definitions <- function(){
+    list(
         	"S4_methods" = list( 
         		signature(x = "ANY" ), '
 					RObject y(x) ;
@@ -93,12 +90,19 @@
         	)
         )
         
-        signatures <- lapply(f, "[[", 1L)
-        bodies <- lapply(f, "[[", 2L)
-        fun <- cxxfunction(signatures, bodies,
-                           plugin = "Rcpp",
-                           cxxargs = ifelse(Rcpp:::capabilities()[["initializer lists"]],"-std=c++0x",""))
-        getDynLib( fun ) # just forcing loading the dll now
+}
+
+cxxargs <- function(){
+    ifelse(Rcpp:::capabilities()[["initializer lists"]],"-std=c++0x","")
+}
+
+.setUp <- function() {
+    tests <- ".rcpp.S4"
+    if( ! exists( tests, globalenv() )) {
+        fun <- Rcpp:::compile_unit_tests( 
+            definitions(), 
+            cxxargs = cxxargs() 
+        )
         assign( tests, fun, globalenv() )
     }
 }
@@ -129,8 +133,8 @@ test.S4 <- function(){
 	setClass("track",
            representation(x="numeric", y="numeric"))
 	tr <- new( "track", x = 2, y = 3 )
-	fx <- cppfunction( signature( x = "ANY" ),
-                        'S4 o(x); return o.slot( "x" ) ;')
+	fx <- cxxfunction( signature( x = "ANY" ),
+                        'S4 o(x); return o.slot( "x" ) ;', plugin = "Rcpp" )
 	checkEquals( fx( tr ), 2, msg = "S4( SEXP )" )
 	
 	checkException( fx( list( x = 2, y = 3 ) ), msg = "not S4" )

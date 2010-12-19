@@ -1,6 +1,134 @@
+2010-12-19  Dirk Eddelbuettel  <edd@debian.org>
+
+ 	* DESCRIPTION: Release 0.9.0
+
+        * debian/*: Similarly updated for new release to Debian
+
+2010-12-18  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/announce/ANNOUNCE-0.9.0.txt: Started announcement post
+
+	* inst/unitTests/runit.Date.R: Added new unit tests for date and
+	datetime from string
+
+2010-12-17  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/Datetime.h: correct default format to use %OS for
+	fractional seconds and not the popular typo %OS (i.e. ooh, not zero)
+
+	* src/Datetime.cpp: add missing as.POSIXct() after strptime for
+	constructor from string as we then use the constructor from double
+
+	* src/Date.cpp: add missing as.Date() after strptime for constructor
+	from string as we then use the constructor from int
+
+2010-12-13  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/vector/string_proxy.h: List::Proxy did not
+	convert bool correctly, reported on Rcpp-devel by Daniel Sabanés
+	Bové <daniel.sabanesbove@ifspm.uzh.ch>
+
+2010-12-12  Romain Francois <romain@r-enthusiasts.com>
+
+	* R/SHLIB.R: new unexported R function SHLIB, small wrapper around
+	R CMD SHLIB
+
+	* inst/include/Rcpp/sprintf.h: returning a std::string to avoid leaks
+
+2010-12-10  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/sprintf.h: Use vsnprintf() instead
+
+2010-12-10  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/barrier.h: faster versions (crossing the write
+	barrier) for string_elt, etc ...(to be used only internally)
+
+	* src/barrier.cpp: implementation of the above
+
+2010-12-09  John M Chambers  <jmc@r-project.org>
+
+	* src/Module.cpp: Rcpp/src/exceptions.cpp,
+	Rcpp/src/Rcpp_init.c, etc. add a not_initialized exception and a
+	dummy_pointer to identify such objects, throw exc. back to R
+
+2010-12-07  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/vector/matrix.h: Matrix gains a nested ::Sub
+	typedef
+
+2010-12-05  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/module/Module_generated_class_constructor.h: the
+	default constructor was always considered valid because of the use of
+	&yes instead of &yes_arity<0>
+
+	* R/Rcpp.package.skeleton.R: Rcpp.package.skeleton( "foo",
+	example_code = FALSE) did not work properly. Rcpp.package.skeleton
+	gains some arguments
+
+2010-12-05  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/Date.cpp: Add 1900 to tm.year after mktime00() call as we now
+	no longer assume the field is '1900-less'
+	* src/Date.cpp: Define new static const variable baseYear as 1900
+	and use throughout
+
+	* inst/unitTests/runit.Date.R (test.Date.getFunctions): Added unit
+	tests for the get* functions of the Date class
+
+	* R/bib.R (bib): Correct expression for default Rcpp bibtex file
+
+2010-12-04  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/Date.h: Remove addition of 1900 in getYear()
+
+2010-12-04  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/doc/Rcpp-quickref/Rcpp-quickref.Rnw: documentation patch by
+	Christian Gunnning <xian@unm.edu>
+
+	* inst/include/Rcpp/vector/matrix.h: fix SubMatrix. Bug reported by
+	Christian Gunnning <xian@unm.edu> on Rcpp-devel
+
+	* inst/include/Rcpp/vector/SubMatrix.h: factored out of matrix.h
+
+	* inst/include/Rcpp/sprintf.h: new sprintf template to format strings
+
+2010-12-03  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/unitTests/runit.RObject.R: fix 'inherits' test added today
+
+	* inst/include/Rcpp/module/Module_generated_Constructor.h: Applied
+	patch by Tama Ma <pingnang@phys.ethz.ch> for up to seven args in ctor
+	* inst/include/Rcpp/module/Module_generated_class_constructor.h: Idem
+	* inst/include/Rcpp/module/Module_generated_ctor_signature.h: Idem
+
+2010-12-03  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/RObject.h : new inline method inherits that
+	checks if an object inherits from a given class (wrapper around
+	Rf_inherits)
+
+	* inst/unitTests/runit.RObject.R: unit test for the above
+
+2010-12-02  Douglas Bates  <bates@stat.wisc.edu>
+
+	* inst/include/Rcpp/generated/Function__operator.h,
+	  inst/include/Rcpp/Function.h: operator() becomes const.
+
+2010-11-29  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/vector/Vector.h: trying to please suncc after
+	CRAN checks
+
+	* R/Module.R: protect the module$refClassGenerators <- generators
+	line against the case where there are no classes (triggered a
+	problem with the parser package)
+
 2010-11-27  Dirk Eddelbuettel  <edd@debian.org>
 
-	* DESCRIPTION: Release 0.8.9
+ 	* DESCRIPTION: Release 0.8.9
 
         * debian/*: Similarly updated for new release to Debian
 
