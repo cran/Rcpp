@@ -15,29 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-.help <- function( what ){
-	print( sprintf( "Rcpp help for '%s'", what ) )
-	invisible(TRUE)
+bib <- function() {
+    system.file( "doc", "Rcpp.bib", package = "Rcpp" )
 }
-
-install_help_workaround <- function(){
-	utils <- asNamespace( "utils" )
-	unlockBinding( ".tryHelp", utils )
-	th <- get( ".tryHelp", utils )
-	b <- body( th )
-	b <- as.call( c( 
-			as.name( "{" ), 
-			quote( 
-				if( grepl( "[-]Rcpp$", topic ) ){
-					result <- Rcpp:::.help( sub( "[-]Rcpp$", "", topic ) )
-					if( result )
-						return( invisible(NULL) )
-				}
-			), 
-			as.list( b[-1] )
-		) )
-	body( th ) <- b
-	assign( ".tryHelp", th, utils )
-	lockBinding( ".tryHelp", utils )
-}
- 

@@ -2,7 +2,6 @@
 //
 // RcppCommon.h: Rcpp R/C++ interface class library -- common include and defines statements
 //
-// Copyright (C) 2005 - 2006 Dominick Samperi
 // Copyright (C) 2008 - 2009 Dirk Eddelbuettel
 // Copyright (C) 2009 - 2010 Dirk Eddelbuettel and Romain Francois
 //
@@ -23,6 +22,21 @@
 
 #ifndef RcppCommon_h
 #define RcppCommon_h
+
+#undef GOOD_COMPILER_FOR_RCPP
+#ifdef __GNUC__
+#define GOOD_COMPILER_FOR_RCPP
+#endif
+#ifdef __SUNPRO_CC
+#define GOOD_COMPILER_FOR_RCPP
+#endif
+#ifdef __clang__
+#define GOOD_COMPILER_FOR_RCPP
+#endif
+
+#ifndef GOOD_COMPILER_FOR_RCPP
+# error "This compiler is not supported"
+#endif
 
 #include <Rcpp/config.h>
 #include <Rcpp/macros/unroll.h>
@@ -88,6 +102,7 @@ namespace Rcpp{
 #include <complex>
 #include <limits.h>
 #include <typeinfo>
+#include <Rcpp/sprintf.h>
 
 #ifdef HAS_INIT_LISTS
 #include <initializer_list>
@@ -117,11 +132,9 @@ std::string demangle( const std::string& name) ;
 
 #include <Rcpp/complex.h>
 
-// #ifdef BUILDING_DLL
-// #define RcppExport extern "C" __declspec(dllexport)
-// #else
+#include <Rcpp/barrier.h>
+
 #define RcppExport extern "C"
-// #endif
 
 #include <Rcpp/internal/posixt.h>
 
@@ -137,8 +150,6 @@ namespace Rcpp{
 }
 
 extern "C" SEXP rcpp_call_test(SEXP x) ;
-
-char *copyMessageToR(const char* const mesg);
 
 /* in exceptions.cpp */
 void forward_uncaught_exceptions_to_r() ;

@@ -27,18 +27,18 @@ class Constructor_Base {
 public:
     virtual Class* get_new( SEXP* args, int nargs ) = 0 ;
     virtual int nargs() = 0 ;
-    virtual const char* signature(const std::string& class_name) = 0 ;
+    virtual void signature(std::string& s, const std::string& class_name) = 0 ;
 } ;
 
 template <typename Class>
 class Constructor_0 : public Constructor_Base<Class>{
 public:
     virtual Class* get_new( SEXP* args, int nargs ){
-	return new Class ;
+	return new Class() ;
     }
     virtual int nargs(){ return 0 ; }
-    virtual const char* signature(const std::string& class_name ){
-        return ctor_signature(class_name) ;
+    virtual void signature(std::string& s, const std::string& class_name ){
+        ctor_signature(s, class_name) ;
     }
 } ;
 template <typename Class, typename U0>
@@ -47,8 +47,8 @@ class Constructor_1 : public Constructor_Base<Class>{
         return new Class( as<U0>(args[0]) ) ;
     }
     virtual int nargs(){ return 1 ; }
-    virtual const char* signature(const std::string& class_name ){
-        return ctor_signature<U0>(class_name) ;
+    virtual void signature(std::string& s, const std::string& class_name ){
+        ctor_signature<U0>(s, class_name) ;
     }
 } ;
 template <typename Class, typename U0, typename U1>
@@ -60,8 +60,8 @@ class Constructor_2 : public Constructor_Base<Class>{
             ) ;
     }
     virtual int nargs(){ return 2 ; }
-    virtual const char* signature(const std::string& class_name ){
-        return ctor_signature<U0,U1>(class_name) ;
+    virtual void signature(std::string& s, const std::string& class_name ){
+        ctor_signature<U0,U1>(s, class_name) ;
     }
 } ;
 template <typename Class, typename U0, typename U1, typename U2>
@@ -74,8 +74,8 @@ class Constructor_3 : public Constructor_Base<Class>{
             ) ;
     }
     virtual int nargs(){ return 3 ; }
-    virtual const char* signature(const std::string& class_name ){
-        return ctor_signature<U0,U1,U2>(class_name) ;
+    virtual void signature(std::string& s, const std::string& class_name ){
+        ctor_signature<U0,U1,U2>(s, class_name) ;
     }
 } ;
 template <typename Class, typename U0, typename U1, typename U2, typename U3>
@@ -89,8 +89,8 @@ class Constructor_4 : public Constructor_Base<Class>{
             ) ;
     }
     virtual int nargs(){ return 4 ; }
-    virtual const char* signature(const std::string& class_name ){
-        return ctor_signature<U0,U1,U2,U3>(class_name) ;
+    virtual void signature(std::string& s, const std::string& class_name ){
+        ctor_signature<U0,U1,U2,U3>(s, class_name) ;
     }
 } ;
 template <typename Class, typename U0, typename U1, typename U2, typename U3, typename U4>
@@ -105,8 +105,8 @@ class Constructor_5 : public Constructor_Base<Class>{
             ) ;
     }
     virtual int nargs(){ return 5 ; }
-    virtual const char* signature(const std::string& class_name ){
-        return ctor_signature<U0,U1,U2,U3,U4>(class_name) ;
+    virtual void signature(std::string& s, const std::string& class_name ){
+        ctor_signature<U0,U1,U2,U3,U4>(s, class_name) ;
     }
 } ;
 template <typename Class, typename U0, typename U1, typename U2, typename U3, typename U4, typename U5>
@@ -122,8 +122,26 @@ class Constructor_6 : public Constructor_Base<Class>{
             ) ;
     }
     virtual int nargs(){ return 6 ; }
-    virtual const char* signature(const std::string& class_name ){
-        return ctor_signature<U0,U1,U2,U3,U4,U5>(class_name) ;
+    virtual void signature(std::string& s, const std::string& class_name ){
+        ctor_signature<U0,U1,U2,U3,U4,U5>(s, class_name) ;
+    }
+} ;
+template <typename Class, typename U0, typename U1, typename U2, typename U3, typename U4, typename U5, typename U6>
+class Constructor_7 : public Constructor_Base<Class>{
+    virtual Class* get_new( SEXP* args, int nargs ){
+        return new Class( 
+            as<U0>(args[0]), 
+            as<U1>(args[1]), 
+            as<U2>(args[2]), 
+            as<U3>(args[3]), 
+            as<U4>(args[4]),
+            as<U5>(args[5]),
+            as<U6>(args[6]) 
+            ) ;
+    }
+    virtual int nargs(){ return 7 ; }
+    virtual void signature(std::string& s, const std::string& class_name ){
+        ctor_signature<U0,U1,U2,U3,U4,U5,U6>(s, class_name) ;
     }
 } ;
 

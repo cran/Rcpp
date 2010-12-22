@@ -17,11 +17,8 @@
 # You should have received a copy of the GNU General Public License
 # along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-.setUp <- function() {
-    tests <- ".rcpp.Matrix"
-    if( ! exists( tests, globalenv() )) {
-        ## definition of all the functions at once
-        f <- list(
+definitions <- function(){
+    list(
         	"matrix_numeric" = list( 
         		signature(x = "matrix" ), '
 					NumericMatrix m(x) ;
@@ -209,15 +206,35 @@
                  }
                  return output ;
 			    '
+			), 
+			"runit_SubMatrix" = list( 
+			    signature(), 
+			    '
+                 NumericMatrix xx(4, 5);
+                 xx(0,0) = 3;
+                 xx(0,1) = 4;
+                 xx(0,2) = 5;
+                 xx(1,_) = xx(0,_);
+                 xx(_,3) = xx(_,2);
+                 SubMatrix<REALSXP> yy = xx( Range(0,2), Range(0,3) ) ;
+                 NumericMatrix res = yy ;
+                 return res;
+			    '
 			)
 		)
-        
-        signatures <- lapply(f, "[[", 1L)
-        bodies <- lapply(f, "[[", 2L)
-        fun <- cxxfunction(signatures, bodies,
-                           plugin = "Rcpp",
-                           cxxargs = ifelse(Rcpp:::capabilities()[["initializer lists"]],"-std=c++0x",""))
-        getDynLib( fun ) # just forcing loading the dll now
+}
+
+cxxargs <- function(){
+    ifelse(Rcpp:::capabilities()[["initializer lists"]],"-std=c++0x","")
+}
+
+.setUp <- function() {
+    tests <- ".rcpp.Matrix"
+    if( ! exists( tests, globalenv() )) {
+        fun <- Rcpp:::compile_unit_tests( 
+            definitions(), 
+            cxxargs = cxxargs()
+        )
         assign( tests, fun, globalenv() )
     }
 }
@@ -357,4 +374,11 @@ test.NumericMatrix.rowsum <- function( ){
     probs <- matrix(1:12,nrow=3)
     checkEquals( funx( probs ), apply(probs,2,cumsum) )
 }
+
+test.NumericMatrix.SubMatrix <- function( ){
+    funx <- .rcpp.Matrix$runit_SubMatrix
+    target <- rbind( c(3,4,5,5), c(3,4,5,5), 0 )
+    checkEquals( funx(), target, msg = "SubMatrix" )
+}
+
 

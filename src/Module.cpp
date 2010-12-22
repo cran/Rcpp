@@ -157,6 +157,24 @@ extern "C" SEXP class__newInstance(SEXP args){
    	return clazz->newInstance(cargs, nargs ) ;
 }
 
+SEXP rcpp_dummy_pointer = R_NilValue; // relies on being set in .onLoad()
+
+#define CHECK_DUMMY_OBJ(p) if(p == rcpp_dummy_pointer) forward_exception_to_r ( Rcpp::not_initialized())
+	
+
+
+extern "C" SEXP class__dummyInstance(SEXP args) {
+	SEXP p;
+
+	if(args == R_NilValue)
+		return rcpp_dummy_pointer;
+	p  = CDR(args);
+
+	if(p != R_NilValue)
+		rcpp_dummy_pointer = CAR(p);
+	return rcpp_dummy_pointer;
+}
+
 extern "C" SEXP CppMethod__invoke(SEXP args){
 	SEXP p = CDR(args) ;
 	
@@ -168,6 +186,7 @@ extern "C" SEXP CppMethod__invoke(SEXP args){
 	
 	// the external pointer to the object
 	SEXP obj = CAR(p); p = CDR(p) ;
+	CHECK_DUMMY_OBJ(obj);
 	
 	// additional arguments, processed the same way as .Call does
 	SEXP cargs[MAX_ARGS] ;
@@ -192,6 +211,7 @@ extern "C" SEXP CppMethod__invoke_void(SEXP args){
 	
 	// the external pointer to the object
 	SEXP obj = CAR(p); p = CDR(p) ;
+	CHECK_DUMMY_OBJ(obj);
 	
 	// additional arguments, processed the same way as .Call does
 	SEXP cargs[MAX_ARGS] ;
@@ -216,6 +236,7 @@ extern "C" SEXP CppMethod__invoke_notvoid(SEXP args){
 	
 	// the external pointer to the object
 	SEXP obj = CAR(p); p = CDR(p) ;
+	CHECK_DUMMY_OBJ(obj);
 	
 	// additional arguments, processed the same way as .Call does
 	SEXP cargs[MAX_ARGS] ;
@@ -279,11 +300,13 @@ namespace Rcpp{
 	            break ;
 	        }
 	    }
+	    std::string sign ;
+	    fun->signature( sign, name.data() ) ;
 	    return Rcpp::List::create( 
 	        Rcpp::XPtr<CppFunction>( fun, false ), 
 	        fun->is_void(), 
 	        fun->docstring, 
-	        fun->signature( name.data() ), 
+	        sign, 
 	        fun->get_formals()
 	        ) ;
 	}
@@ -293,9 +316,10 @@ namespace Rcpp{
 		Rcpp::CharacterVector names(n) ;
 		Rcpp::List info(n);
 		CLASS_MAP::iterator it = classes.begin() ;
+		std::string buffer ;
 		for( int i=0; i<n; i++, ++it){
 			names[i] = it->first ;
-			info[i]  = CppClass( this , it->second ) ;
+			info[i]  = CppClass( this , it->second, buffer ) ;
 		}
 		info.names() = names ;
 		return info ;
@@ -360,19 +384,19 @@ namespace Rcpp{
 	
 	CppClass::CppClass( SEXP x) : S4(x){}
 	
-	CppClass::CppClass( Module* p, class_Base* cl ) : S4("C++Class") {
+	CppClass::CppClass( Module* p, class_Base* cl, std::string& buffer ) : S4("C++Class") {
 		XP_Class clxp( cl, false, R_NilValue, R_NilValue ) ;
 		
 		slot( "module"  ) = XP( p, false ) ;
 		slot( "pointer" ) = clxp ;
 		
-		std::string mangled_name( "Rcpp_" ) ;
-		mangled_name += cl->name ;
-		slot( ".Data" ) = mangled_name ;
+		buffer = "Rcpp_" ;
+		buffer += cl->name ;
+		slot( ".Data" ) = buffer ;
 		
 		slot( "fields" )      = cl->fields( clxp.asSexp() ) ;
-		slot( "methods" )     = cl->getMethods( clxp.asSexp() ) ;
-		slot( "constructors") = cl->getConstructors( clxp.asSexp() ) ;
+		slot( "methods" )     = cl->getMethods( clxp.asSexp(), buffer ) ;
+		slot( "constructors") = cl->getConstructors( clxp.asSexp(), buffer ) ;
 		slot( "docstring"   ) = cl->docstring ;
 	}
 
@@ -386,7 +410,8 @@ namespace Rcpp{
 		BEGIN_RCPP
 			CLASS_MAP::iterator it = classes.find(cl) ;
 			if( it == classes.end() ) throw std::range_error( "no such class" ) ;
-			return CppClass( this, it->second ) ;
+			std::string buffer ;
+			return CppClass( this, it->second, buffer ) ;
 		END_RCPP
 	}
 	

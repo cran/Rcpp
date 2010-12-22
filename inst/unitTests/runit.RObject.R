@@ -18,14 +18,8 @@
 # You should have received a copy of the GNU General Public License
 # along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-.setUp <- function(){
-    suppressMessages( require( datasets ) )
-    data( iris )
-
-    tests <- ".Rcpp.RObject"
-    if( ! exists(tests, globalenv() )) {
-        ## definition of all the functions at once
-        f <- list("asDouble"=list(
+definitions <- function(){
+    list("asDouble"=list(
                   signature(x="numeric"),
                   'double d = as<double>(x);
 				   return(wrap( 2*d ) );')
@@ -49,16 +43,6 @@
                    signature(x="logical"),
                    'bool b = as<bool>(x);
 					return(wrap( !b ));')
-
-                  ,"asStdVectorIntResultsSet"=list(
-                   signature(x="numeric"),
-                   'std::vector<int> iv = as<std::vector<int> >( x );
-					for (size_t i=0; i<iv.size(); i++) {
-    	    			iv[i] = 2*iv[i];
-    				}
-			    	RcppResultSet rs;
-    				rs.add("", iv);
-    				return(rs.getSEXP());')
 
                   ,"asStdVectorInt"=list(
                    signature(x="numeric"),
@@ -155,16 +139,32 @@
                   ,"isNULL"=list(
                    signature(x="ANY"),
                    'bool is_null = RObject(x).isNULL() ;
-					return wrap( is_null ) ; ' )
+					return wrap( is_null ) ; ')
+
+				  ,"inherits" = list(
+                   signature(x = "ANY" ),
+				   'RObject xx(x) ;
+				    return wrap( xx.inherits( "foo" ) ) ;
+				   ')
 
                   )
 
-        signatures <- lapply(f, "[[", 1L)
-        bodies <- lapply(f, "[[", 2L)
-        fun <- cxxfunction(signatures, bodies,
-                           plugin = "Rcpp", includes = "using namespace std;",
-                           cxxargs = ifelse(Rcpp:::capabilities()[["initializer lists"]],"-std=c++0x",""))
-        getDynLib( fun ) # just forcing loading the dll now
+}
+
+cxxargs <- function(){
+    ifelse(Rcpp:::capabilities()[["initializer lists"]],"-std=c++0x","")
+}
+
+.setUp <- function(){
+    suppressMessages( require( datasets ) )
+    data( iris )
+
+    tests <- ".Rcpp.RObject"
+    if( ! exists(tests, globalenv() )) {
+        fun <- Rcpp:::compile_unit_tests(
+            definitions(), 
+            cxxargs = cxxargs()
+        )
         assign( tests, fun, globalenv() )
     }
 }
@@ -234,23 +234,6 @@ test.RObject.asLogical <- function(){
 	checkException( funx(integer(0)), msg = "as<bool>(0 integer) -> exception" )
 	checkException( funx(numeric(0)), msg = "as<bool>(0 numeric) -> exception" )
 	checkException( funx(raw(0)), msg = "as<bool>(0 raw) -> exception" )
-}
-
-test.RObject.asStdVectorIntResultsSet <- function(){
-	funx <- .Rcpp.RObject$asStdVectorIntResultsSet
-	foo <- '
-		std::vector<int> iv = as<std::vector<int> >( x );
-		for (size_t i=0; i<iv.size(); i++) {
-    	    iv[i] = 2*iv[i];
-    	}
-    	RcppResultSet rs;
-    	rs.add("", iv);
-    	return(rs.getSEXP());'
-    funx <- cppfunction(signature(x="numeric"), foo )
-	checkEquals( funx(x=2:5), 2:5*2L, msg = "as<std::vector<int> >(integer) via RcppResultSet" )
-    checkEquals( funx(x=2:5+.1), 2:5*2L, msg = "as<std::vector<int> >(numeric) via RcppResultSet" )
-    checkEquals( funx(x=as.raw(2:5)), 2:5*2L, msg = "as<std::vector<int> >(raw) via RcppResultSet" )
-    checkException( funx("foo"), msg = "as<std::vector<int> >(character) -> exception" )
 }
 
 test.RObject.asStdVectorInt <- function(){
@@ -353,3 +336,12 @@ test.RObject.isNULL <- function(){
 	checkTrue( !funx(.GlobalEnv), msg = "RObject.isNULL(environment) -> false" )
 }
 
+test.RObject.inherits <- function(){
+	fx <- .Rcpp.RObject$inherits
+	x <- 1:10
+	checkTrue( !fx(x) )
+	class(x) <- "foo"
+	checkTrue( fx(x) )
+	class(x) <- c("foo", "bar" )
+	checkTrue( fx(x) )
+}

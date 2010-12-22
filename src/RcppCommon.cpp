@@ -2,7 +2,6 @@
 //
 // RcppCommon.cpp: R/C++ interface class library -- common functions
 //
-// Copyright (C) 2005 - 2006 Dominick Samperi
 // Copyright (C) 2008 - 2009 Dirk Eddelbuettel
 // Copyright (C) 2010 Dirk Eddelbuettel and Romain Francois
 //
@@ -25,26 +24,13 @@
 #include <cstring>
 #include <stdio.h>
 
-// Paul Roebuck has observed that the memory used by an exception message
-// is not reclaimed if error() is called inside of a catch block (due to
-// a setjmp() call), and he suggested the following work-around.
-char *copyMessageToR(const char* const mesg) {
-    char* Rmesg;
-    const char* prefix = "Exception: ";
-    void* Rheap = R_alloc(strlen(prefix)+strlen(mesg)+1,sizeof(char));
-    Rmesg = static_cast<char*>(Rheap);
-    strcpy(Rmesg, prefix);
-    strcat(Rmesg, mesg);
-    return Rmesg;
-}
-
 void logTxtFunction(const char* file, const int line, const char* expression) {
     Rprintf("%s:%d %s\n", file, line, expression);
 }
 
 SEXP capabilities(){
-	SEXP cap = PROTECT( Rf_allocVector( LGLSXP, 7) ) ;
-	SEXP names = PROTECT( Rf_allocVector( STRSXP, 7 ) ) ;
+	SEXP cap = PROTECT( Rf_allocVector( LGLSXP, 8) ) ;
+	SEXP names = PROTECT( Rf_allocVector( STRSXP, 8 ) ) ;
 #ifdef HAS_VARIADIC_TEMPLATES
 	LOGICAL(cap)[0] = TRUE ;
 #else
@@ -78,6 +64,8 @@ SEXP capabilities(){
 	LOGICAL(cap)[6] = FALSE ;
 #endif
 
+	LOGICAL(cap)[7] = FALSE ;
+
 	SET_STRING_ELT(names, 0, Rf_mkChar("variadic templates") ) ;
 	SET_STRING_ELT(names, 1, Rf_mkChar("initializer lists") ) ;
 	SET_STRING_ELT(names, 2, Rf_mkChar("exception handling") ) ;
@@ -85,6 +73,7 @@ SEXP capabilities(){
 	SET_STRING_ELT(names, 4, Rf_mkChar("tr1 unordered sets") ) ;
 	SET_STRING_ELT(names, 5, Rf_mkChar("Rcpp modules") ) ;
 	SET_STRING_ELT(names, 6, Rf_mkChar("demangling") ) ;
+	SET_STRING_ELT(names, 7, Rf_mkChar("classic api") ) ;
 	Rf_setAttrib( cap, R_NamesSymbol, names ) ;
 	UNPROTECT(2) ;
 	return cap ;
@@ -182,20 +171,6 @@ namespace internal{
 
 SEXP rcpp_call_test(SEXP x){
 	return Rf_ScalarInteger( ::Rcpp::internal::rcpp_call_test_(x) ) ;
-}
-
-
-SEXP RcppXPtrExample_create_external_pointer(){
-	std::vector<int> *v = new std::vector<int> ;
-	v->push_back( 1 ) ;
-	v->push_back( 2 ) ;
-	Rcpp::XPtr< std::vector<int> > p(v, true) ;
-	return p ;
-}
-
-SEXP RcppXPtrExample_get_external_pointer(SEXP x){
-	Rcpp::XPtr< std::vector<int> > p(x) ;
-	return Rf_ScalarInteger( p->back( ) ) ;
 }
 
 SEXP as_character_externalptr(SEXP xp){

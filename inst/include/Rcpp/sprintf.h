@@ -1,8 +1,8 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 8 -*-
 //
-// classic_backward.h: Rcpp R/C++ interface class library -- 
+// sprintf.h: Rcpp R/C++ interface class library -- string formatting
 //
-// Copyright (C) 2010 Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2010	Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -19,11 +19,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef Rcpp__CLASSIC__API__BACKWARD_h
-#define Rcpp__CLASSIC__API__BACKWARD_h
+#include <cstdio>
+#include <cstdarg>
 
-#include <classic/RcppResultSet__backward.h>
-#include <classic/RcppList__backward.h>
-#include <classic/RcppMatrix__backward.h>
+namespace Rcpp{
 
-#endif
+template <int MAX_SIZE>
+std::string sprintf( const char *format, ...) {
+    static char buffer[MAX_SIZE]; 
+    va_list(ap);
+    va_start(ap, format);
+    vsnprintf( buffer, MAX_SIZE, format, ap);
+    va_end(ap);
+    return buffer ;
+}
+
+}
+

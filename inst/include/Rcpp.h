@@ -2,7 +2,6 @@
 //
 // Rcpp.h: R/C++ interface class library
 //
-// Copyright (C) 2005 - 2006 Dominick Samperi
 // Copyright (C) 2008 - 2009 Dirk Eddelbuettel
 // Copyright (C) 2009 - 2010 Dirk Eddelbuettel and Romain Francois
 //
@@ -26,9 +25,6 @@
 
 /* it is important that this comes first */
 #include <RcppCommon.h>
-
-/* classic api */
-#include <classic/classic.h>
 
 /* new api */
 #include <Rcpp/exceptions.h>
@@ -71,7 +67,5 @@
 
 #include <Rcpp/sugar/sugar.h>
 #include <Rcpp/stats/stats.h>
-
-#include <classic/classic_backward.h>
 
 #endif
