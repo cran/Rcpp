@@ -2,7 +2,7 @@
 //
 // Module.h: Rcpp R/C++ interface class library -- Rcpp modules
 //
-// Copyright (C) 2010	Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2010 - 2011 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -237,7 +237,6 @@ public:
 	typedef std::vector<signed_method_class*> vec_signed_method ;
 	
 	S4_CppOverloadedMethods( vec_signed_method* m, SEXP class_xp, const char* name, std::string& buffer ) : Reference( "C++OverloadedMethods" ){
-        
 	    int n = m->size() ;
         Rcpp::LogicalVector voidness(n), constness(n) ;
         Rcpp::CharacterVector docstrings(n), signatures(n) ;
@@ -656,7 +655,7 @@ public:
 	    typename map_vec_signed_method::iterator it = vec_methods.begin( ) ;
 		vec_signed_method* v; 
 	    for( int i=0; i<n; i++, ++it){
-		    mnames[i] = it->first ;
+	        mnames[i] = it->first ;
 		    v = it->second ;
 		    res[i] = S4_CppOverloadedMethods<Class>( v , class_xp, it->first.c_str(), buffer ) ;
 		}
@@ -740,7 +739,17 @@ extern "C" SEXP _rcpp_module_boot_##name(){                          \
 }                                                                    \
 void _rcpp_module_##name##_init()
 
-#define LOAD_RCPP_MODULE(NAME) Rf_eval( Rf_lang2( Rf_install("Module"), _rcpp_module_boot_##NAME() ), R_GlobalEnv )
+// helper function to cache the result of Rf_install("Module"): once
+// it is allocated and in the symbol table it is safe from gc
+static SEXP moduleSym = NULL;
+static SEXP getModuleSym() {
+    if (moduleSym == NULL) {
+	moduleSym = Rf_install("Module");
+    }
+    return moduleSym;
+}
+#define LOAD_RCPP_MODULE(NAME) Rf_eval( Rf_lang2( getModuleSym(), _rcpp_module_boot_##NAME() ), R_GlobalEnv )
+
 
 #endif
 

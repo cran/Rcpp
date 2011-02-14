@@ -2,7 +2,7 @@
 //
 // Date.h: Rcpp R/C++ interface class library -- dates
 //
-// Copyright (C) 2010	Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2010 - 2011 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -87,7 +87,7 @@ namespace Rcpp {
     }
     
     template<> inline SEXP wrap_extra_steps<Rcpp::Date>( SEXP x ){
-    	Rf_setAttrib( x, Rf_install("class"), Rf_mkString( "Date" ) ) ;
+    	Rf_setAttrib( x, R_ClassSymbol, Rf_mkString( "Date" ) ) ;
     	return x ;
     }
 	

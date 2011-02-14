@@ -1,8 +1,8 @@
-// -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 8 -*-
+// -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 4 -*-
 //
 // eval_methods.h: Rcpp R/C++ interface class library -- 
 //
-// Copyright (C) 2010	Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2010 - 2011 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -24,21 +24,23 @@
 
 namespace internal{
 	
-	template <int RTYPE> class expr_eval_methods {
-	public:
-		typedef Rcpp::Vector<RTYPE> VECTOR ;
+    template <int RTYPE> class expr_eval_methods {
+    public:
+	typedef Rcpp::Vector<RTYPE> VECTOR ;
 		
-		SEXP eval(){
-			SEXP xp = ( static_cast<VECTOR&>(*this) ).asSexp() ;
-			return try_catch( ::Rf_lcons( ::Rf_install( "eval" ) , ::Rf_cons( xp, R_NilValue) ) ) ;
-		} ;
-		SEXP eval( const ::Rcpp::Environment& env ){
-			SEXP xp = ( static_cast<VECTOR&>(*this) ).asSexp() ;
-			return try_catch( ::Rf_lcons( ::Rf_install( "eval" ) , ::Rf_cons( xp, ::Rf_cons(env.asSexp(), R_NilValue)) ) ) ;
-		} ;
+	SEXP eval(){
+	    SEXP xp = ( static_cast<VECTOR&>(*this) ).asSexp() ;
+	    SEXP evalSym = Rf_install( "eval" );
+	    return try_catch( Rf_lang2( evalSym, xp ) ) ;
 	} ;
+	SEXP eval( const ::Rcpp::Environment& env ){
+	    SEXP xp = ( static_cast<VECTOR&>(*this) ).asSexp() ;
+	    SEXP evalSym = Rf_install( "eval" );
+	    return try_catch( Rf_lang3( evalSym, xp, env.asSexp() ) ) ;
+	} ;
+    } ;
 	
-	template<> class eval_methods<EXPRSXP> : public expr_eval_methods<EXPRSXP> {} ;
+    template<> class eval_methods<EXPRSXP> : public expr_eval_methods<EXPRSXP> {} ;
 	
 }
 #endif

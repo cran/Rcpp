@@ -2,7 +2,7 @@
 //
 // RObject.h: Rcpp R/C++ interface class library -- general R object wrapper
 //
-// Copyright (C) 2009 - 2010	Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2009 - 2011	Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -26,6 +26,25 @@
 
 namespace Rcpp{ 
 
+    namespace internal{
+     
+        class SEXPstack {
+        public:
+            SEXPstack() ;
+            void preserve( SEXP ) ;
+            void release( SEXP ) ;
+        private:
+            SEXP stack ;
+            SEXP* data ;
+            int len, top ;
+            
+            void grow( ) ;
+        } ;
+    
+    }
+    
+    
+    
 class RObject {
 public:
    	
@@ -162,7 +181,7 @@ public:
 		 * @param rhs another slot proxy
 		 */
 		SlotProxy& operator=(const SlotProxy& rhs) ;
-		
+		  
 		/**
 		 * lhs use. Assigns the slot by wrapping the rhs object
 		 *
@@ -265,8 +284,13 @@ protected:
     
 private:
 
-    void preserve(){ if( m_sexp != R_NilValue ) R_PreserveObject(m_sexp) ; } 
+//    static internal::SEXPstack PPstack ;
+//    void preserve(){ if( m_sexp != R_NilValue ) PPstack.preserve(m_sexp) ; } 
+//    void release() { if( m_sexp != R_NilValue ) PPstack.release(m_sexp) ; }
+
+    void preserve(){ if( m_sexp != R_NilValue ) R_PreserveObject(m_sexp) ; }
     void release() { if( m_sexp != R_NilValue ) R_ReleaseObject(m_sexp) ; } 
+    
     virtual void update() {
         RCPP_DEBUG_1( "RObject::update(SEXP = <%p> )", m_sexp ) ; 
     } ;

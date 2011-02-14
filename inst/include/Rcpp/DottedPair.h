@@ -2,7 +2,7 @@
 //
 // DottedPair.h: Rcpp R/C++ interface class library -- dotted pair list template
 //
-// Copyright (C) 2010	Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2010 - 2011 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -167,7 +167,8 @@ template<typename... Args>
 		template <typename U>
 		Proxy& operator=(const traits::named_object<U>& rhs){
 			SETCAR( node, rhs.object ) ;
-			SET_TAG( node, Rf_install( rhs.name.c_str() ) ) ;
+			SEXP rhsNameSym = ::Rf_install( rhs.name.c_str() ); // cannot be gc()ed once in symbol table
+			SET_TAG( node, rhsNameSym ) ;
 			return *this ;
 		}
 		
