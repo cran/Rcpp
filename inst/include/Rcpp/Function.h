@@ -2,7 +2,7 @@
 //
 // Function.h: Rcpp R/C++ interface class library -- functions (also primitives and builtins)
 //
-// Copyright (C) 2010	Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2010 - 2011 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -72,11 +72,11 @@ public:
 #ifdef HAS_VARIADIC_TEMPLATES
 template<typename... Args> 
 	SEXP operator()( const Args&... args) /* throw(Evaluator::eval_error) */ const {
-		return internal::try_catch( Rf_lcons( m_sexp, pairlist(args...) ) ) ;
+		return internal::try_catch( Rf_lang2( m_sexp, pairlist(args...) ) ) ;
 	}
 #else
 	SEXP operator()() const {
-		return internal::try_catch( Rf_lcons( m_sexp, R_NilValue ) ) ;	
+		return internal::try_catch( Rf_lang1( m_sexp  ) ) ;	
 	}
 	
 #include <Rcpp/generated/Function__operator.h>	

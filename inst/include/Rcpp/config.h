@@ -2,7 +2,7 @@
 //
 // config.h: Rcpp R/C++ interface class library -- Rcpp configuration of optional features
 //
-// Copyright (C) 2010 Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2010 - 2011 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -27,7 +27,7 @@
 #endif
 
 #define Rcpp_Version(v,p,s) (((v) * 65536) + ((p) * 256) + (s))
-#define RCPP_VERSION Rcpp_Version(0,8,10)
+#define RCPP_VERSION Rcpp_Version(0,9,1)
 
 #endif
 

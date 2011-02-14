@@ -2,7 +2,7 @@
 //
 // XPtr.h: Rcpp R/C++ interface class library -- smart external pointers
 //
-// Copyright (C) 2009 - 2010	Romain Francois
+// Copyright (C) 2009 - 2011	Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -29,7 +29,7 @@ namespace Rcpp{
 template <typename T>
 void delete_finalizer(SEXP p){
     if( TYPEOF(p) == EXTPTRSXP ){
-	T* ptr = (T*) EXTPTR_PTR(p) ;
+	T* ptr = (T*) R_ExternalPtrAddr(p) ;
 	delete ptr ;
     }
 }
@@ -82,7 +82,7 @@ public:
   		  		        
     void setDeleteFinalizer() ;
   	
-    inline operator T*(){ return (T*)(EXTPTR_PTR(m_sexp)) ; }
+    inline operator T*(){ return (T*)( R_ExternalPtrAddr(m_sexp)) ; }
 
     class TagProxy{
     public:
@@ -168,12 +168,12 @@ void XPtr<T>::setDeleteFinalizer(){
 
 template<typename T>
 T& XPtr<T>::operator*() const {
-    return *((T*)EXTPTR_PTR( m_sexp )) ;
+    return *((T*)R_ExternalPtrAddr( m_sexp )) ;
 }
 
 template<typename T>
 T* XPtr<T>::operator->() const {
-    return (T*)(EXTPTR_PTR(m_sexp));
+    return (T*)(R_ExternalPtrAddr(m_sexp));
 }
 
 } // namespace Rcpp 

@@ -2,7 +2,7 @@
 //
 // Module.cpp: Rcpp R/C++ interface class library -- Rcpp modules
 //
-// Copyright (C) 2010	Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2010 - 2011 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -318,7 +318,7 @@ namespace Rcpp{
 		CLASS_MAP::iterator it = classes.begin() ;
 		std::string buffer ;
 		for( int i=0; i<n; i++, ++it){
-			names[i] = it->first ;
+		    names[i] = it->first ;
 			info[i]  = CppClass( this , it->second, buffer ) ;
 		}
 		info.names() = names ;

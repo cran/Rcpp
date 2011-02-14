@@ -1,3 +1,132 @@
+2011-02-14  Dirk Eddelbuettel  <edd@debian.org>
+
+ 	* DESCRIPTION: Release 0.9.1
+	* inst/NEWS: Release 0.9.1
+	* inst/include/Rcpp/config.h: Release 0.9.1
+        * debian/*: Similarly updated for new release to Debian
+
+2011-02-13  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/Module.h: Cache return of Rf_install("Module") in
+	a static helper function used by the LOAD_RCPP_MODULE macro
+
+2011-02-11  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/doc/Rcpp-FAQ/Rcpp-FAQ.Rnw: Added two more examples
+
+2011-02-10  Douglas Bates  <bates@stat.wisc.edu>
+
+	* inst/include/Rcpp/XPtr.h: Replace calls to EXTPTR_PTR with
+	R_ExternalPtrAddr.  The distinction is important when R is
+	compiled with PROTECTCHECK enabled.
+
+2011-02-01  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/vector/Vector.h: extra PROTECT'ion in several places
+
+2011-01-25  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/DataFrame_generated.h: Assign Rf_install() result
+	to local SEXP (by modifying generator script creating the file)
+	* inst/include/Rcpp/DataFrame.h: Assign Rf_install() result to local SEXP
+	* inst/include/Rcpp/DottedPair.h: idem
+	* inst/include/Rcpp/grow.h: idem
+	* inst/include/Rcpp/Module.h: idem
+	* inst/include/Rcpp/vector/eval_methods.h: idem
+	* inst/include/Rcpp/vector/Vector.h: idem
+
+2011-01-25  Douglas Bates  <bates@stat.wisc.edu>
+
+	* src/exceptions.cpp: Assign Rf_install() result to local SEXP
+	* src/Evaluator.cpp: idem
+	* src/Reference.cpp: idem
+	* src/S4.cpp: idem
+
+	* inst/include/Rcpp/Date.h: Use predefined symbol.
+
+2011-01-22  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/cache.cpp: Assign Rf_install() result to local SEXP
+	* src/Environment.cpp: idem
+	* src/Evaluator.cpp: idem
+	* src/Function.cpp: idem
+	* src/Function.cpp: idem
+	* src/RObject.cpp: idem
+	* src/Symbol.cpp: idem
+
+	* inst/doc/Rcpp.bib: Added SoDA (some time ago)
+
+2011-01-13  Douglas Bates  <bates@stat.wisc.edu>
+
+	* src/Reference.cpp: Protect the value being set in Reference::FieldProxy::set
+
+2011-01-11  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/vector/string_proxy.h: fix implicit conversion to int,
+	reported by Daniel Sabanes Bove on Rcpp-devel
+
+	* inst/unitTests/runit.vector.R: unit test for the above fix
+
+2011-01-08  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/doc/Rcpp.bib: Updated a number of CRAN versions
+
+2011-01-07  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/config.h (RCPP_VERSION): Set to 0.9.0, at last.
+
+2011-01-06  Douglas Bates  <bates@stat.wisc.edu>
+
+	* R/zzz.R (.onLoad): Don't call init_Rcpp_cache here.
+
+	* src/Rcpp_init.c: Don't register init_Rcpp_cache.  It should only
+	be called once and it is called in the C function R_init_Rcpp.
+
+	* NAMESPACE: Use registered symbols instead of relisting them.
+	Registration allows for checking the number of arguments.
+
+2011-01-04  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/debugging.cpp: Treat the *BSD flavours like Windows and offer
+	file and line number but not stack trace (for lack of execinfo)
+
+	* src/Makevars: Replace implicit variable $^ with explicit list
+
+2011-01-02  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/doc/Rcpp-quickref/Rcpp-quickref.Rnw: Applied patch with
+	additional documentation by Christian Gunning
+
+2010-12-23  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/RObject.h: New internal class SEXPstack to handle
+	garbage collection. Presumably more efficient than R_PreserveObject
+	and R_ReleaseObject
+
+	* inst/include/Rcpp/sugar/operators/times.h: More efficient operator*
+	for REALSXP sugar expressions, avoiding unnecessary NA tests.
+
+	* inst/include/Rcpp/sugar/operators/divides.h: More efficient
+	operator/ for REALSXP sugar expressions, avoiding unnecessary NA
+	tests.
+
+	* inst/include/Rcpp/sugar/operators/minus.h: More efficient operator- for
+	REALSXP sugar expressions, avoiding unnecessary NA tests.
+
+2010-12-22  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/sugar/operators/plus.h: More efficient operator+
+	for REALSXP sugar expressions, avoiding unnecessary NA tests.
+
+2010-12-22  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/unitTests/runit.Vector.R: Applied patch by Christian Gunning
+	to add more tests for complex-typed vectors
+
+2010-12-20  Dirk Eddelbuettel  <edd@debian.org>
+
+	* R/inline.R (Rcpp.plugin.maker): Reverse order in PKG_LIBS
+
 2010-12-19  Dirk Eddelbuettel  <edd@debian.org>
 
  	* DESCRIPTION: Release 0.9.0

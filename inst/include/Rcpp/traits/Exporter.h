@@ -3,7 +3,7 @@
 //
 // exporter.h: Rcpp R/C++ interface class library -- identify if a class has a nested iterator typedef
 //
-// Copyright (C) 2010	Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2010 - 2011 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -39,12 +39,8 @@ template <typename T> class RangeExporter {
 public:
 	typedef typename T::value_type r_export_type ;
 	
-	RangeExporter( SEXP x ) : object(x){
-		// R_PreserveObject(object) ;
-	}
-	~RangeExporter(){
-		// R_ReleaseObject(object) ;
-	}
+	RangeExporter( SEXP x ) : object(x){}
+	~RangeExporter(){}
 	
 	T get(){ 
 		T vec( ::Rf_length(object) );

@@ -3,7 +3,7 @@
 // RcppCommon.h: Rcpp R/C++ interface class library -- common include and defines statements
 //
 // Copyright (C) 2008 - 2009 Dirk Eddelbuettel
-// Copyright (C) 2009 - 2010 Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2009 - 2011 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -129,6 +129,14 @@ std::string demangle( const std::string& name) ;
 #include <R_ext/Rdynload.h>
 #include <Rversion.h>
 #define RCPP_GET_NAMES(x)	Rf_getAttrib(x, R_NamesSymbol)
+
+inline SEXP Rcpp_lcons(SEXP car, SEXP cdr){
+    PROTECT(car) ;
+    car = Rf_lcons( car, cdr ) ; 
+    UNPROTECT(1) ;
+    return car ;
+}
+#include <Rcpp/lang.h>
 
 #include <Rcpp/complex.h>
 

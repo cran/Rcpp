@@ -2,7 +2,7 @@
 //
 // block.h: Rcpp R/C++ interface class library -- sugar blocks
 //
-// Copyright (C) 2010 Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2010 - 2011 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -27,5 +27,6 @@
 #include <Rcpp/sugar/block/SugarBlock_3.h>
 
 #include <Rcpp/sugar/block/SugarMath.h>
+#include <Rcpp/sugar/block/Vectorized_Math.h>
 
 #endif

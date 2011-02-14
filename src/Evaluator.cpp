@@ -2,7 +2,7 @@
 //
 // Evaluator.cpp: Rcpp R/C++ interface class library -- evaluator
 //
-// Copyright (C) 2009 - 2010	Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2009 - 2011 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -36,18 +36,21 @@ namespace Rcpp {
 	SEXP res = PROTECT( Rf_eval( call, RCPP ) );
 	
 	/* was there an error ? */
-	int error = LOGICAL( Rf_eval( Rf_lang1( Rf_install("errorOccured") ), RCPP ) )[0];
+	SEXP errorOccuredSym = Rf_install("errorOccured");
+	SEXP err_call = PROTECT( Rf_lang1( errorOccuredSym ) ) ;
+	SEXP err_res  = PROTECT( Rf_eval( err_call, RCPP ) ) ;
+	int error = LOGICAL( err_res )[0];
+	UNPROTECT(2) ;
 	
-	if( error ){
-		SEXP err_msg = PROTECT( Rf_eval( 
-			Rf_lang1( Rf_install("getCurrentErrorMessage")), 
-			RCPP ) );
-		std::string message = CHAR(STRING_ELT(err_msg,0)) ;
-		UNPROTECT( 3 ) ;
-		throw eval_error(message) ;
+	if( error ) {
+	    SEXP getCurrentErrorMessageSym = Rf_install("getCurrentErrorMessage");
+	    SEXP err_msg = PROTECT( Rf_eval( Rf_lang1(getCurrentErrorMessageSym),  RCPP ) );
+	    std::string message = CHAR(STRING_ELT(err_msg,0)) ;
+	    UNPROTECT( 3 ) ;
+	    throw eval_error(message) ;
 	} else {
-		UNPROTECT(2) ;
-		return res ;
+	    UNPROTECT(2) ;
+	    return res ;
 	}
     }
     
@@ -60,8 +63,9 @@ namespace internal{
    defined */
     SEXP convert_using_rfunction(SEXP x, const char* const fun) throw(::Rcpp::not_compatible) {
     	SEXP res = R_NilValue ;
-    	try{    
-    		res = Evaluator::run( Rf_lcons( Rf_install(fun), Rf_cons(x, R_NilValue) ) ) ;
+    	try{
+	    SEXP funSym = Rf_install(fun);
+    		res = Evaluator::run( Rf_lang2( funSym, x ) ) ;
     	} catch( eval_error& e){
     		throw ::Rcpp::not_compatible( std::string("could not convert using R function : ") + fun  ) ;
     	}

@@ -2,7 +2,7 @@
 //
 // grow.h: Rcpp R/C++ interface class library -- grow a pairlist
 //
-// Copyright (C) 2010	Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2010 - 2011 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -52,15 +52,19 @@ namespace internal{
 
 template <typename T>
 SEXP grow__dispatch( ::Rcpp::traits::false_type, const T& head, SEXP tail ){
-	return Rf_cons( wrap(head), tail ) ;	
+	SEXP x = PROTECT( wrap( head ) ) ;
+    SEXP res = PROTECT( Rf_cons( x, tail ) ) ;
+    UNPROTECT(2) ;
+    return res ;
 }
 
 template <typename T>
 SEXP grow__dispatch( ::Rcpp::traits::true_type, const T& head, SEXP tail ){
-	SEXP x;
-	x = PROTECT( Rf_cons( wrap( head.object) , tail) ) ;
-	SET_TAG( x, Rf_install( head.name.c_str() ) ); 
-	UNPROTECT(1); 
+	SEXP y = PROTECT( wrap( head.object) ) ;
+	SEXP x = PROTECT( Rf_cons( y , tail) ) ;
+	SEXP headNameSym = ::Rf_install( head.name.c_str() ); // cannot be gc()ed once in symbol table
+	SET_TAG( x, headNameSym ); 
+	UNPROTECT(2); 
 	return x; 	
 }
 
