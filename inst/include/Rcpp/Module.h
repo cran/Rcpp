@@ -343,14 +343,16 @@ public:
 	    properties(), 
 	    finalizer_pointer(0), 
 	    specials(0), 
-	    constructors()
+	    constructors(), 
+	    class_pointer(0)
 	{
-		if( !singleton ){
-			singleton = new self ;
-			singleton->name = name_ ;
-			singleton->docstring = std::string( doc == 0 ? "" : doc );
-			singleton->finalizer_pointer = new finalizer_class ;
-			getCurrentScope()->AddClass( name_, singleton ) ;
+	    Rcpp::Module* module = getCurrentScope() ;
+		if( ! module->has_class(name_) ){
+			class_pointer = new self ;
+			class_pointer->name = name_ ;
+			class_pointer->docstring = std::string( doc == 0 ? "" : doc );
+			class_pointer->finalizer_pointer = new finalizer_class ;
+			module->AddClass( name_, class_pointer ) ;
 		}
 	}
          
@@ -358,7 +360,7 @@ public:
 	
 	
 	self& AddConstructor( constructor_class* ctor, ValidConstructor valid, const char* docstring = 0 ){
-		singleton->constructors.push_back( new signed_constructor_class( ctor, valid, docstring ) );  
+		class_pointer->constructors.push_back( new signed_constructor_class( ctor, valid, docstring ) );  
 		return *this ;
 	}
 	
@@ -468,17 +470,17 @@ public:
 	
 	
 	self& AddMethod( const char* name_, method_class* m, ValidMethod valid = &yes, const char* docstring = 0){
-		typename map_vec_signed_method::iterator it = singleton->vec_methods.find( name_ ) ; 
-	    if( it == singleton->vec_methods.end() ){
-	        it = singleton->vec_methods.insert( vec_signed_method_pair( name_, new vec_signed_method() ) ).first ;
+		typename map_vec_signed_method::iterator it = class_pointer->vec_methods.find( name_ ) ; 
+	    if( it == class_pointer->vec_methods.end() ){
+	        it = class_pointer->vec_methods.insert( vec_signed_method_pair( name_, new vec_signed_method() ) ).first ;
 	    } 
 		(it->second)->push_back( new signed_method_class(m, valid, docstring ) ) ;
-		if( *name_ == '[' ) singleton->specials++ ;
+		if( *name_ == '[' ) class_pointer->specials++ ;
 		return *this ;
 	}
 	
 	self& AddProperty( const char* name_, prop_class* p){
-		singleton->properties.insert( PROP_PAIR( name_, p ) ) ;
+		class_pointer->properties.insert( PROP_PAIR( name_, p ) ) ;
 		return *this ;
 	}
 
@@ -689,23 +691,21 @@ public:
 private:
     
     void SetFinalizer( finalizer_class* f ){
-        if( singleton->finalizer_pointer ) delete singleton->finalizer ;
-        singleton->finalizer_pointer = f ; 
+        if( class_pointer->finalizer_pointer ) delete class_pointer->finalizer ;
+        class_pointer->finalizer_pointer = f ; 
     }
     
 	map_vec_signed_method vec_methods ;
 	PROPERTY_MAP properties ;
-	static self* singleton ;
+	
 	finalizer_class* finalizer_pointer ;
 	int specials ;
 	vec_signed_constructor constructors ;
-   
+    self* class_pointer ;
+	
 	class_( ) : class_Base(), vec_methods(), properties(), specials(0) {}; 
 	
 } ;   
-
-template <typename Class> 
-class_<Class>* class_<Class>::singleton ;
 
 // function factories
 #include <Rcpp/module/Module_generated_function.h>
