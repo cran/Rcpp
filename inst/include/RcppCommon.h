@@ -86,6 +86,10 @@ namespace Rcpp{
     #if GCC_VERSION >= 40500
         #define IS_GCC_450_OR_LATER
     #endif
+    // g++ 4.6 no longer has exception_defines.h so need a flag for that
+    #if GCC_VERSION < 40600
+        #define IS_EARLIER_THAN_GCC_460
+    #endif
 #endif
 
 #ifdef __INTEL_COMPILER
@@ -249,10 +253,12 @@ SEXP stack_trace( const char *file, int line) ;
 #endif
 
 #ifdef __GNUC__
+#ifdef __GXX_EXPERIMENTAL_CXX0X__
 #ifdef LONG_LONG_MAX
     __extension__ typedef long long int rcpp_long_long_type;
     __extension__ typedef unsigned long long int rcpp_ulong_long_type;
     #define RCPP_HAS_LONG_LONG_TYPES
+#endif
 #endif
 #endif
 
