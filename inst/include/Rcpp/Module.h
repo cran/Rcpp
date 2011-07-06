@@ -29,6 +29,24 @@ namespace Rcpp{
 class CppClass ;
 class CppObject ;
 
+template <typename T>
+class result {
+public:
+    result( T* ptr_ ) : ptr(ptr_){}
+    operator T*(){ return ptr ; }
+private:
+    T* ptr;
+} ;
+
+namespace internal {
+template <typename Class>
+SEXP make_new_object( Class* ptr ){
+    Rcpp::XPtr<Class> xp( ptr, true ) ;
+	Function maker = Environment::Rcpp_namespace()[ "cpp_object_maker"] ;
+	return maker( typeid(Class).name() , xp ) ;
+}
+} 
+
 class CppFunction {
 	public:
 		CppFunction(const char* doc = 0) : docstring( doc == 0 ? "" : doc) {}
@@ -99,6 +117,7 @@ public:
 	virtual void setProperty( SEXP, SEXP, SEXP) {
 		throw std::range_error( "cannot set property" ) ;
 	}
+    virtual std::string get_typeinfo_name(){ return "" ; }
 	
 	std::string name ;
 	std::string docstring ;
@@ -344,7 +363,8 @@ public:
 	    finalizer_pointer(0), 
 	    specials(0), 
 	    constructors(), 
-	    class_pointer(0)
+	    class_pointer(0), 
+	    typeinfo_name("")
 	{
 	    Rcpp::Module* module = getCurrentScope() ;
 		if( ! module->has_class(name_) ){
@@ -352,6 +372,7 @@ public:
 			class_pointer->name = name_ ;
 			class_pointer->docstring = std::string( doc == 0 ? "" : doc );
 			class_pointer->finalizer_pointer = new finalizer_class ;
+			class_pointer->typeinfo_name = typeid(Class).name() ;
 			module->AddClass( name_, class_pointer ) ;
 		}
 	}
@@ -372,6 +393,10 @@ public:
 	
 public:
 	
+    std::string get_typeinfo_name(){
+        return typeinfo_name ;    
+    }
+    
 	SEXP newInstance( SEXP* args, int nargs ){
 		BEGIN_RCPP
 		signed_constructor_class* p ;
@@ -380,7 +405,8 @@ public:
 	        p = constructors[i];
 	        bool ok = (p->valid)(args, nargs) ;
 	        if( ok ){
-	            return XP( p->ctor->get_new( args, nargs ), true ) ;
+	            Class* ptr = p->ctor->get_new( args, nargs ) ;
+	            return XP( ptr, true ) ;
 	        }
 	    }
 	    throw std::range_error( "no valid constructor available for the argument list" ) ;
@@ -702,7 +728,8 @@ private:
 	int specials ;
 	vec_signed_constructor constructors ;
     self* class_pointer ;
-	
+    std::string typeinfo_name ;
+    
 	class_( ) : class_Base(), vec_methods(), properties(), specials(0) {}; 
 	
 } ;   
