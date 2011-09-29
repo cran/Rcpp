@@ -1,7 +1,7 @@
 Package: Rcpp
 Title: Seamless R and C++ Integration
-Version: 0.9.6
-Date: $Date: 2011-07-26 19:19:38 -0500 (Tue, 26 Jul 2011) $
+Version: 0.9.7
+Date: $Date: 2011-09-29 17:26:58 -0500 (Thu, 29 Sep 2011) $
 Author: Dirk Eddelbuettel and Romain Francois, with contributions by
         Douglas Bates and John Chambers
 Maintainer: Dirk Eddelbuettel and Romain Francois
@@ -50,6 +50,6 @@ BugReports:
         http://r-forge.r-project.org/tracker/?atid=637&group_id=155&func=browse
 MailingList: Please send questions and comments regarding Rcpp to
         rcpp-devel@lists.r-forge.r-project.org
-Packaged: 2011-07-27 11:42:34.18692 UTC; edd
+Packaged: 2011-09-29 22:31:03.21069 UTC; edd
 Repository: CRAN
-Date/Publication: 2011-07-27 13:41:02
+Date/Publication: 2011-09-30 05:51:31

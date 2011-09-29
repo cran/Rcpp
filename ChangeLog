@@ -1,3 +1,67 @@
+2011-09-29  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION: Release 0.9.7
+        * inst/NEWS: Release 0.9.7
+        * inst/include/Rcpp/config.h: Release 0.9.7
+        * debian/*: Similarly updated for new release to Debian
+
+	* inst/include/Rcpp/sugar/block/SugarBlock_1.h: Apply second path by
+	Martyn Plummer to permit compilation on Solaris
+	* inst/include/Rcpp/sugar/block/SugarBlock_2.h: Idem
+	* inst/include/Rcpp/sugar/block/SugarBlock_3.h: Idem
+	* inst/include/Rcpp/sugar/matrix/outer.h: Idem
+	* inst/include/Rcpp/vector/LazyVector.h: Idem
+	* inst/unitTests/testRcppModule/src/stdVector.cpp: Idem
+
+2011-09-24  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/Extractor.h: Apply patch by Martyn Plummer to
+	help with compilation on Solaris
+	* inst/include/Rcpp/sugar/block/Vectorized_Math.h: Idem
+	* inst/include/Rcpp/sugar/functions/math.h: Idem
+
+	* inst/include/Rcpp/sugar/block/SugarBlock_2.h: Also applied path by
+	Martyn Plummer, but with additional #ifdef layer for SunPro Compiler
+	* inst/include/Rcpp/vector/LazyVector.h: Idem
+
+2011-08-26  Douglas Bates  <bates@stat.wisc.edu>
+
+	* inst/examples/OpenMP/OpenMPandInline.r: Added another variant
+	using import_transform for the Rcpp Vector class.
+
+2011-08-26  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/*h: Removed exception specifiers in function headers
+	* src/*cpp: Corresponding changes in implementations
+
+	* inst/examples/OpenMP/OpenMPandInline.r: Added two std::transform()
+	variants as suggested in rcpp-devel email by Davor Cubranic
+
+2011-08-25  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/examples/OpenMP/OpenMPandInline.r: Added new example for
+	OpenMP via inline, comparing simple loops with plain Rcpp and sugar
+
+2011-08-23  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/examples/Misc/ifelseLooped.r: Added new example based on blog
+	post today, and a StackOverflow ansers---and which shows how Rcpp can
+	accelerate loops that may be difficult to vectorise due to dependencies
+
+        * inst/examples/Misc/: New directory for small examples regrouping
+	the new example as well as the fibonacci example added in Rcpp 0.9.6
+
+2011-08-17  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/doc/Rcpp-FAQ/Rcpp-FAQ.Rnw: Added a short section including an
+	example on the issue raised by Murray wherein 64 bit 'long' integer
+	types can be cast with loss to numeric types without error or warning.
+
+2011-07-28  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/unitTests/runit.Function.R: new unit test for accessing a
+	non-exported function from a namespace
+
 2011-07-26  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION: Release 0.9.6
