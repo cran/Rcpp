@@ -1,3 +1,27 @@
+0.9.7   2011-09-29
+
+    o   Applied two patches kindly provided by Martyn Plummer which provide
+    	support for compilation on Solaris using the SunPro compiler
+
+    o   Minor code reorganisation in which exception specifiers are removed;
+        this effectively only implements a run-time (rather than compile-time) 
+        check and is generally seen as a somewhat depreated C++ idiom. Thanks
+        to Darren Cook for alerting us to this issue.
+
+    o   New example 'OpenMPandInline.r' in the OpenMP/ directory, showing how
+        easily use OpenMP by modifying the RcppPlugin output
+
+    o   New example 'ifelseLooped.r' showing Rcpp can accelerate loops that may
+	be difficult to vectorise due to dependencies
+
+    o   New example directory examples/Misc/ regrouping the new example as
+        well as the fibonacci example added in Rcpp 0.9.6
+
+    o   New Rcpp-FAQ example warning of lossy conversion from 64-bit long
+        integer types into a 53-bit mantissa which has no clear fix yet.
+
+    o   New unit test for accessing a non-exported function from a namespace
+
 0.9.6   2011-07-26
 
     o   Added helper traits to facilitate implementation of the RcppEigen
