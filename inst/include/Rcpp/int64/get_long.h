@@ -1,8 +1,9 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 4 -*-
 //
-// f.h: Rcpp R/C++ interface class library -- 
+// get_long.h : Rcpp R/C++ interface class library -- 
 //
-// Copyright (C) 2010 - 2011 Douglas Bates, Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2011 Romain Francois
+// Copyright (C) 2011 Google Inc.  All rights reserved.
 //
 // This file is part of Rcpp.
 //
@@ -16,13 +17,20 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
-// You should have received a copy of the GNU General Public License
-// along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
+// You should have received a copy of the GNU General Public License  
+// along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.    
+    
+#ifndef Rcpp__int64__get_long__h
+#define Rcpp__int64__get_long__h
 
-#ifndef Rcpp__stats__f_h
-#define Rcpp__stats__f_h
+namespace Rcpp{
+    namespace int64{
 
-RCPP_DPQ_2(f,::Rf_df,::Rf_pf,::Rf_qf)
+template <typename T>
+inline T get_long( int highbits, int lowbits ){
+    return ( ( (T) (unsigned int)highbits ) << 32 ) | ( (T) (unsigned int)lowbits ) ;    
+}
 
+    } // namespace int64
+} // namespace Rcpp
 #endif
-

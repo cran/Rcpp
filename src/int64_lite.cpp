@@ -1,8 +1,9 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 4 -*-
 //
-// f.h: Rcpp R/C++ interface class library -- 
+// barrier.cpp: Rcpp R/C++ interface class library -- write barrier
 //
-// Copyright (C) 2010 - 2011 Douglas Bates, Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2010 - 2011 Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2011 Google Inc.  All rights reserved.
 //
 // This file is part of Rcpp.
 //
@@ -19,10 +20,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef Rcpp__stats__f_h
-#define Rcpp__stats__f_h
+#include <Rcpp.h>
 
-RCPP_DPQ_2(f,::Rf_df,::Rf_pf,::Rf_qf)
+namespace Rcpp{
+    namespace int64{
 
-#endif
-
+        SEXP int2(int x, int y){
+            SEXP res = PROTECT( Rf_allocVector(INTSXP, 2) ) ;
+            int* p = INTEGER(res) ;
+            p[0] = x;
+            p[1] = y ;
+            UNPROTECT(1) ;
+            return res ;
+        }
+        
+    }
+}

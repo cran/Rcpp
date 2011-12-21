@@ -218,17 +218,17 @@ test.RCPPXPFIELD <- function(){
 }
 
 ### regression test for long long support
-test.long.long <- function(){
+test.int64 <- function(){
 	
 	fx <- cxxfunction( signature(), '
 		return foo() ;
 	', includes = '
-	RCPP_FUNCTION_0(size_t, foo){
-		std::vector<int> v(10) ;
-		return v.size() ;
+	RCPP_FUNCTION_0(int64_t, foo){
+		int64_t x = 1234 ;
+		return x ;
 	}
 	', plugin = "Rcpp" )
-	checkEquals( as.integer(fx()), 10L, msg = "long long support" )
+	checkEquals( fx(), as.int64(1234L), msg = "long long support" )
 
 }
 

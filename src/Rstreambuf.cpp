@@ -1,8 +1,8 @@
-// -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 4 -*-
+// -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; indent-tabs-mode: nil; -*-
 //
-// f.h: Rcpp R/C++ interface class library -- 
+// Rostream.h: Rcpp R/C++ interface class library -- stream buffer
 //
-// Copyright (C) 2010 - 2011 Douglas Bates, Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2011           Dirk Eddelbuettel, Romain Francois and Jelmer Ypma
 //
 // This file is part of Rcpp.
 //
@@ -19,10 +19,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef Rcpp__stats__f_h
-#define Rcpp__stats__f_h
+#include <RcppCommon.h>
+#include <Rcpp/iostream/Rstreambuf.h>
 
-RCPP_DPQ_2(f,::Rf_df,::Rf_pf,::Rf_qf)
+std::streamsize Rcpp::Rstreambuf::xsputn(const char *s, std::streamsize num ) {
+    Rprintf( "%.*s", num, s );
+    return num;
+}
 
-#endif
-
+int Rcpp::Rstreambuf::overflow(int c ) {
+    if (c != EOF) {
+        Rprintf( "%.1s", &c );
+    }
+    return c;
+}
