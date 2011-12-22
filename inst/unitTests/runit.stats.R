@@ -1,7 +1,7 @@
 #!/usr/bin/r -t
 # -*- mode: R; tab-width: 4 -*-
 #
-# Copyright (C) 2010	Dirk Eddelbuettel and Romain Francois
+# Copyright (C) 2010 - 2011	Dirk Eddelbuettel and Romain Francois
 #
 # This file is part of Rcpp.
 #
@@ -122,6 +122,19 @@ definitions <- function(){
 				  ')
 
 				  ,
+				  "runit_pcauchy" = list(
+				  signature( x = "numeric", location = "numeric", scale = "numeric" ),
+				  '
+				  double loc = as<double>(location);
+				  double scl = as<double>(scale);
+				  NumericVector xx(x) ;
+				  return List::create(_["lowerNoLog"] = pcauchy(xx, loc, scl ),
+									  _["lowerLog"]	  = pcauchy(xx, loc, scl, true, true ),
+									  _["upperNoLog"] = pcauchy(xx, loc, scl, false ),
+									  _["upperLog"]	  = pcauchy(xx, loc, scl, false, true ));
+				  ')
+
+				  ,
 				  "runit_punif" = list(
 				  signature( x = "numeric" ),
 				  '
@@ -144,6 +157,50 @@ definitions <- function(){
 				  ')
 
 				  ,
+				  "runit_pnf" = list(
+				  signature( x = "numeric" ),
+				  '
+				  NumericVector xx(x) ;
+				  return List::create(_["lowerNoLog"] = pnf( xx, 6.0, 8.0, 2.5, true ),
+									  _["lowerLog"]	  = pnf( xx, 6.0, 8.0, 2.5, true, true ),
+									  _["upperNoLog"] = pnf( xx, 6.0, 8.0, 2.5, false ),
+									  _["upperLog"]	  = pnf( xx, 6.0, 8.0, 2.5, false, true ));
+				  ')
+
+				  ,
+				  "runit_pf" = list(
+				  signature( x = "numeric" ),
+				  '
+				  NumericVector xx(x) ;
+				  return List::create(_["lowerNoLog"] = pf( xx, 6.0, 8.0 ),
+									  _["lowerLog"]	  = pf( xx, 6.0, 8.0, true, true ),
+									  _["upperNoLog"] = pf( xx, 6.0, 8.0, false ),
+									  _["upperLog"]	  = pf( xx, 6.0, 8.0, false, true ));
+				  ')
+
+				  ,
+				  "runit_pnchisq" = list(
+				  signature( x = "numeric" ),
+				  '
+				  NumericVector xx(x) ;
+				  return List::create(_["lowerNoLog"] = pnchisq( xx, 6.0, 2.5, true ),
+									  _["lowerLog"]	  = pnchisq( xx, 6.0, 2.5, true, true ),
+									  _["upperNoLog"] = pnchisq( xx, 6.0, 2.5, false ),
+									  _["upperLog"]	  = pnchisq( xx, 6.0, 2.5, false, true ));
+				  ')
+
+				  ,
+				  "runit_pchisq" = list(
+				  signature( x = "numeric" ),
+				  '
+				  NumericVector xx(x) ;
+				  return List::create(_["lowerNoLog"] = pchisq( xx, 6.0 ),
+									  _["lowerLog"]	  = pchisq( xx, 6.0, true, true ),
+									  _["upperNoLog"] = pchisq( xx, 6.0, false ),
+									  _["upperLog"]	  = pchisq( xx, 6.0, false, true ));
+				  ')
+
+                  ,
 				  "runit_pnorm" = list(signature( x = "numeric" ),
 				  '
 				  NumericVector xx(x) ;
@@ -240,7 +297,7 @@ definitions <- function(){
 
 .setUp <- function(){
 	if( ! exists( ".rcpp.stats", globalenv() ) ){
-		fun <- Rcpp:::compile_unit_tests( 
+		fun <- Rcpp:::compile_unit_tests(
 		    definitions()
 		)
 	    assign( ".rcpp.stats", fun, globalenv() )
@@ -263,9 +320,9 @@ test.stats.dbinom <- function( ){
 	fx <- .rcpp.stats$runit_dbinom
     v <- 1:10
 	checkEquals(fx(v) ,
-                list( 
-                    false = dbinom(v, 10, .5), 
-                    true = dbinom(v, 10, .5, TRUE ) 
+                list(
+                    false = dbinom(v, 10, .5),
+                    true = dbinom(v, 10, .5, TRUE )
                 ), msg = "stats.dbinom" )
 }
 
@@ -288,9 +345,9 @@ test.stats.dgamma <- function( ) {
     fx <- .rcpp.stats$runit_dgamma
     v <- 1:4
     checkEquals(fx(v),
-                list( NoLog = dgamma(v, 1.0, 1.0), 
+                list( NoLog = dgamma(v, 1.0, 1.0),
                       Log = dgamma(v, 1.0, 1.0, log = TRUE ),
-                      Log_noRate = dgamma(v, 1.0, log = TRUE ) 
+                      Log_noRate = dgamma(v, 1.0, log = TRUE )
                 ), msg = "stats.dgamma" )
 }
 
@@ -299,8 +356,8 @@ test.stats.dpois <- function( ){
 	fx <- .rcpp.stats$runit_dpois
     v <- 0:5
 	checkEquals(fx(v) ,
-                list( false = dpois(v, .5), 
-                      true = dpois(v, .5, TRUE ) 
+                list( false = dpois(v, .5),
+                      true = dpois(v, .5, TRUE )
                 ), msg = "stats.dpois" )
 }
 
@@ -308,12 +365,12 @@ test.stats.dnorm <- function( ) {
     fx <- .rcpp.stats$runit_dnorm
     v <- seq(0.0, 1.0, by=0.1)
     checkEquals(fx(v),
-                list( false_noMean_noSd = dnorm(v), 
-                      false_noSd = dnorm(v, 0.0), 
-                      false = dnorm(v, 0.0, 1.0), 
+                list( false_noMean_noSd = dnorm(v),
+                      false_noSd = dnorm(v, 0.0),
+                      false = dnorm(v, 0.0, 1.0),
                       true = dnorm(v, 0.0, 1.0, log=TRUE ),
                       true_noSd = dnorm(v, 0.0, log=TRUE ),
-                      true_noMean_noSd = dnorm(v, log=TRUE ) 
+                      true_noMean_noSd = dnorm(v, log=TRUE )
                 ), msg = "stats.dnorm" )
 }
 
@@ -321,7 +378,7 @@ test.stats.dt <- function( ) {
 	fx <- .rcpp.stats$runit_dt
     v <- seq(0.0, 1.0, by=0.1)
     checkEquals(fx(v),
-                list( false = dt(v, 5), 
+                list( false = dt(v, 5),
                       true = dt(v, 5, log=TRUE ) # NB: need log=TRUE here
                 ), msg = "stats.dt" )
 }
@@ -359,6 +416,20 @@ test.stats.pbinom <- function( ) {
                 msg = " stats.pbinom")
 }
 
+test.stats.pcauchy <- function( ) {
+    fx <- .rcpp.stats$runit_pcauchy
+    location <- 0.5
+    scale <- 1.5
+    vv <- 1:5
+    checkEquals(fx(vv, location, scale),
+                list(lowerNoLog = pcauchy(vv, location, scale),
+                     lowerLog   = pcauchy(vv, location, scale, log=TRUE),
+                     upperNoLog = pcauchy(vv, location, scale, lower=FALSE),
+                     upperLog   = pcauchy(vv, location, scale, lower=FALSE, log=TRUE)
+                     ),
+                msg = " stats.pcauchy")
+}
+
 test.stats.punif <- function( ) {
     fx <- .rcpp.stats$runit_punif
     v <- qunif(seq(0.0, 1.0, by=0.1))
@@ -370,6 +441,54 @@ test.stats.punif <- function( ) {
                      ),
                 msg = "stats.punif" )
     # TODO: also borrow from R's d-p-q-r-tests.R
+}
+
+test.stats.pf <- function( ) {
+    fx <- .rcpp.stats$runit_pf
+    v <- (1:9)/10
+    checkEquals(fx(v),
+                list(lowerNoLog = pf(v, 6, 8, lower=TRUE, log=FALSE),
+                     lowerLog   = pf(v, 6, 8, log=TRUE ),
+                     upperNoLog = pf(v, 6, 8, lower=FALSE),
+                     upperLog   = pf(v, 6, 8, lower=FALSE, log=TRUE)
+                     ),
+                msg = "stats.pf" )
+}
+
+test.stats.pnf <- function( ) {
+    fx <- .rcpp.stats$runit_pnf
+    v <- (1:9)/10
+    checkEquals(fx(v),
+                list(lowerNoLog = pf(v, 6, 8, ncp=2.5, lower=TRUE, log=FALSE),
+                     lowerLog   = pf(v, 6, 8, ncp=2.5, log=TRUE ),
+                     upperNoLog = pf(v, 6, 8, ncp=2.5, lower=FALSE),
+                     upperLog   = pf(v, 6, 8, ncp=2.5, lower=FALSE, log=TRUE)
+                     ),
+                msg = "stats.pnf" )
+}
+
+test.stats.pchisq <- function( ) {
+    fx <- .rcpp.stats$runit_pchisq
+    v <- (1:9)/10
+    checkEquals(fx(v),
+                list(lowerNoLog = pchisq(v, 6, lower=TRUE, log=FALSE),
+                     lowerLog   = pchisq(v, 6, log=TRUE ),
+                     upperNoLog = pchisq(v, 6, lower=FALSE),
+                     upperLog   = pchisq(v, 6, lower=FALSE, log=TRUE)
+                     ),
+                msg = "stats.pchisq" )
+}
+
+test.stats.pnchisq <- function( ) {
+    fx <- .rcpp.stats$runit_pnchisq
+    v <- (1:9)/10
+    checkEquals(fx(v),
+                list(lowerNoLog = pchisq(v, 6, ncp=2.5, lower=TRUE, log=FALSE),
+                     lowerLog   = pchisq(v, 6, ncp=2.5, log=TRUE ),
+                     upperNoLog = pchisq(v, 6, ncp=2.5, lower=FALSE),
+                     upperLog   = pchisq(v, 6, ncp=2.5, lower=FALSE, log=TRUE)
+                     ),
+                msg = "stats.pnchisq" )
 }
 
 test.stats.pgamma <- function( ) {
@@ -493,5 +612,5 @@ test.stats.qt <- function( ) {
 }
 
 # TODO: test.stats.qgamma
-# TODO: test.stats.(dpq)chisq
+# TODO: test.stats.(dq)chisq
 

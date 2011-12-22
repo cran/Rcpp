@@ -1,8 +1,8 @@
-// -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 4 -*-
+// -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 8 -*-
 //
-// f.h: Rcpp R/C++ interface class library -- 
-//
-// Copyright (C) 2010 - 2011 Douglas Bates, Dirk Eddelbuettel and Romain Francois
+// or.h: Rcpp R/C++ interface class library -- dispatch
+//                                                                      
+// Copyright (C) 2010 - 2011 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -19,10 +19,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef Rcpp__stats__f_h
-#define Rcpp__stats__f_h
+#ifndef Rcpp__traits_or_h
+#define Rcpp__traits_or_h
 
-RCPP_DPQ_2(f,::Rf_df,::Rf_pf,::Rf_qf)
+namespace Rcpp{
+namespace traits{
+	
+template <typename LHS, typename RHS>
+struct or_ : integral_constant<bool,LHS::value | RHS::value>{} ;
+
+}
+}
 
 #endif
-
