@@ -1,7 +1,7 @@
 Package: Rcpp
 Title: Seamless R and C++ Integration
-Version: 0.9.8
-Date: $Date: 2011-12-21 15:37:01 -0600 (Wed, 21 Dec 2011) $
+Version: 0.9.9
+Date: $Date: 2011-12-25 14:14:33 -0600 (Sun, 25 Dec 2011) $
 Author: Dirk Eddelbuettel and Romain Francois, 
  with contributions by Douglas Bates and John Chambers
 Maintainer: Dirk Eddelbuettel and Romain Francois
@@ -39,7 +39,7 @@ Description: The Rcpp package provides a C++ library which facilitates the
  been factored out of Rcpp into the package RcppClassic, and it is still
  available for code relying on the older interface. New development, however, 
  should use the Rcpp package instead.
-Depends: R (>= 2.12.0), methods, int64
+Depends: R (>= 2.12.0), methods
 Suggests: RUnit, inline, rbenchmark
 URL: http://dirk.eddelbuettel.com/code/rcpp.html,
         http://romainfrancois.blog.free.fr/index.php?category/R-package/Rcpp
@@ -48,6 +48,6 @@ BugReports:
         http://r-forge.r-project.org/tracker/?atid=637&group_id=155&func=browse
 MailingList: Please send questions and comments regarding Rcpp to
         rcpp-devel@lists.r-forge.r-project.org
-Packaged: 2011-12-21 21:42:28.993285 UTC; edd
+Packaged: 2011-12-25 20:19:57.44161 UTC; edd
 Repository: CRAN
-Date/Publication: 2011-12-22 08:26:06
+Date/Publication: 2011-12-27 10:05:58
