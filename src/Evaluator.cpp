@@ -2,7 +2,7 @@
 //
 // Evaluator.cpp: Rcpp R/C++ interface class library -- evaluator
 //
-// Copyright (C) 2009 - 2011 Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2009 - 2012  Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -21,38 +21,46 @@
 
 #include <Rcpp/Evaluator.h>
 
+void maybe_init() ;
+
 namespace Rcpp {
 
     SEXP Evaluator::run(SEXP expr, SEXP env) {
-        SEXP call = PROTECT( 
-                            Rf_lang2( 
-                                     internal::get_rcpptrycatch() , 
-                                     Rf_lang3( internal::get_evalq() , expr, env )
-                                      )
-                             ) ;
+        PROTECT(expr);
+
+        maybe_init() ;
+        reset_current_error() ; 
+
         Environment RCPP = Environment::Rcpp_namespace(); 
-        
+        static SEXP rcpp_tryCatchSym = NULL, evalqSym, errorOccuredSym, getCurrentErrorMessageSym;
+        if (!rcpp_tryCatchSym) {
+            rcpp_tryCatchSym          = ::Rf_install("rcpp_tryCatch");
+            evalqSym                  = ::Rf_install("evalq");
+            errorOccuredSym           = ::Rf_install("errorOccured");
+            getCurrentErrorMessageSym = ::Rf_install("getCurrentErrorMessage");
+        }
+
+        SEXP call = PROTECT(::Rf_lang2(rcpp_tryCatchSym, PROTECT(::Rf_lang3(evalqSym, expr, env))));
         /* call the tryCatch call */
-        SEXP res = PROTECT( Rf_eval( call, RCPP ) );
+        SEXP res  = PROTECT(::Rf_eval( call, RCPP ) );
         
         /* was there an error ? */
-        SEXP errorOccuredSym = Rf_install("errorOccured");
-        SEXP err_call = PROTECT( Rf_lang1( errorOccuredSym ) ) ;
-        SEXP err_res  = PROTECT( Rf_eval( err_call, RCPP ) ) ;
-        int error = LOGICAL( err_res )[0];
+        int error = ::Rf_asLogical(PROTECT(::Rf_eval(PROTECT(::Rf_lang1(errorOccuredSym)), RCPP)));
         UNPROTECT(2) ;
         
         if( error ) {
-            SEXP getCurrentErrorMessageSym = Rf_install("getCurrentErrorMessage");
-            SEXP err_msg = PROTECT( Rf_eval( Rf_lang1(getCurrentErrorMessageSym),  RCPP ) );
-            std::string message = CHAR(STRING_ELT(err_msg,0)) ;
-            UNPROTECT( 3 ) ;
+            std::string 
+                message(CHAR(::Rf_asChar(PROTECT(::Rf_eval(
+                                                     PROTECT(::Rf_lang1(getCurrentErrorMessageSym)),
+                                                     RCPP)))));
+            UNPROTECT( 6 ) ;
             throw eval_error(message) ;
-        } else {
-            UNPROTECT(2) ;
-            return res ;
         }
+
+        UNPROTECT(4) ;
+        return res ;
     }
+
     
     SEXP Evaluator::run( SEXP expr) {
         return run(expr, R_GlobalEnv );

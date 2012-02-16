@@ -1,7 +1,24 @@
+0.9.10  2012-02-16
+
+    o   Rearrange headers so that Rcpp::Rcout can be used by RcppArmadillo et al
+
+    o   New Rcpp sugar function mapply (for limited to two or three input vectors)
+
+    o   Added custom version of the Rcpp sugar diff function for numeric vectors
+        skipping unncesserry checks for NA
+
+    o   Some internal code changes to reflect changes and stricter requirements
+        in R CMD check in the current R-devel versions
+    
+    o   Corrected fixed-value initialization for IntegerVector (with thanks to
+        Gregor Kastner for spotting this)
+
+    o   New Rcpp-FAQ entry on simple way to set compiler option for cxxfunction
+
 0.9.9   2012-12-25
 
     o   Reverting the 'int64' changes from release 0.9.8 which adversely
-    	affect packages using Rcpp We will re-apply the 'int64' changes in a 
+    	affect packages using Rcpp: We will re-apply the 'int64' changes in a 
 	way which should cooperate more easily with 'long' and 'unsigned long'.
 
     o   Unit test output directory fallback changed to use Rcpp.Rcheck

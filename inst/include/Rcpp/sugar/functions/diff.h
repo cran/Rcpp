@@ -2,7 +2,7 @@
 //
 // diff.h: Rcpp R/C++ interface class library -- diff
 //
-// Copyright (C) 2010 - 2011 Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2010 - 2012 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -61,6 +61,26 @@ private:
 	const LHS_TYPE& lhs ;
 	mutable STORAGE previous ;
 	mutable bool was_na ;
+} ;
+
+template <typename LHS_T, bool LHS_NA>
+class Diff<REALSXP, LHS_NA, LHS_T> : public Rcpp::VectorBase< REALSXP, LHS_NA, Diff<REALSXP,LHS_NA,LHS_T> >{
+public:
+	typedef typename Rcpp::VectorBase<REALSXP,LHS_NA,LHS_T> LHS_TYPE ;
+	
+	Diff( const LHS_TYPE& lhs_ ) : lhs(lhs_), previous(lhs_[0]) {}
+	
+	inline double operator[]( int i ) const {
+		double y = lhs[i+1] ;
+		double res = y - previous ;
+		previous = y ;
+		return res ;
+	}
+	inline int size() const { return lhs.size() - 1 ; }
+	         
+private:
+	const LHS_TYPE& lhs ;
+	mutable double previous ;
 } ;
 
 template <int RTYPE, typename LHS_T>
