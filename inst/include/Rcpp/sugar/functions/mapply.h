@@ -1,8 +1,8 @@
-// -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 4 -*-
+// -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 8 -*-
 //
-// config.h: Rcpp R/C++ interface class library -- Rcpp configuration of optional features
+// mapply.h: Rcpp R/C++ interface class library -- mapply
 //
-// Copyright (C) 2010 - 2012  Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2012 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -19,15 +19,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef RCPP__CONFIG_H
-#define RCPP__CONFIG_H
+#ifndef Rcpp__sugar__mapply_h
+#define Rcpp__sugar__mapply_h
 
-#ifdef __GNUC__
-#define RCPP_HAS_DEMANGLING
-#endif
-
-#define Rcpp_Version(v,p,s) (((v) * 65536) + ((p) * 256) + (s))
-#define RCPP_VERSION Rcpp_Version(0,9,10)
+#include <Rcpp/sugar/functions/mapply/mapply_3.h>
+#include <Rcpp/sugar/functions/mapply/mapply_2.h>
 
 #endif
-

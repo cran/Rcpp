@@ -1,4 +1,4 @@
-RUNIT TEST PROTOCOL -- Sun Dec 25 14:17:39 2011 
+RUNIT TEST PROTOCOL -- Thu Feb 16 15:07:29 2012 
 *********************************************** 
 Number of test functions: 335 
 Number of errors: 0 
@@ -33,10 +33,10 @@ test.as.vector.raw: (4 checks) ... OK (0 seconds)
 test.as.vector.string: (1 checks) ... OK (0 seconds)
 --------------------------- 
 Test file: /usr/local/lib/R/site-library/Rcpp/unitTests/runit.client.package.R 
-test.client.packageA: (2 checks) ... OK (5.28 seconds)
+test.client.packageA: (2 checks) ... OK (2.71 seconds)
 --------------------------- 
 Test file: /usr/local/lib/R/site-library/Rcpp/unitTests/runit.DataFrame.R 
-test.DataFrame.AttributeProxy: (2 checks) ... OK (0.03 seconds)
+test.DataFrame.AttributeProxy: (2 checks) ... OK (0 seconds)
 test.DataFrame.CreateOne: (1 checks) ... OK (0 seconds)
 test.DataFrame.CreateTwo: (1 checks) ... OK (0 seconds)
 test.DataFrame.CreateTwo.stringsAsFactors: (1 checks) ... OK (0 seconds)
@@ -64,7 +64,7 @@ test.DateVector.wrap: (1 checks) ... OK (0 seconds)
 test.vector.Date: (1 checks) ... OK (0 seconds)
 --------------------------- 
 Test file: /usr/local/lib/R/site-library/Rcpp/unitTests/runit.environments.R 
-test.environment.assign: (6 checks) ... OK (0.55 seconds)
+test.environment.assign: (6 checks) ... OK (0 seconds)
 test.environment.base.env: (1 checks) ... OK (0 seconds)
 test.environment.bindingIsActive: (3 checks) ... OK (0 seconds)
 test.environment.bindingIsLocked: (3 checks) ... OK (0 seconds)
@@ -89,18 +89,18 @@ test.environment.unlockBinding: (2 checks) ... OK (0 seconds)
 --------------------------- 
 Test file: /usr/local/lib/R/site-library/Rcpp/unitTests/runit.Function.R 
 test.Function: (7 checks) ... OK (0 seconds)
-test.Function.binary.call: (1 checks) ... OK (0.01 seconds)
+test.Function.binary.call: (1 checks) ... OK (0 seconds)
 test.Function.env: (3 checks) ... OK (0 seconds)
-test.Function.namespace.env: (1 checks) ... OK (2.25 seconds)
+test.Function.namespace.env: (1 checks) ... OK (1.62 seconds)
 test.Function.unary.call: (1 checks) ... OK (0 seconds)
 test.Function.variadic: (2 checks) ... OK (0 seconds)
 --------------------------- 
 Test file: /usr/local/lib/R/site-library/Rcpp/unitTests/runit.Language.R 
-test.Formula: (1 checks) ... OK (0.01 seconds)
+test.Formula: (1 checks) ... OK (0 seconds)
 test.Formula.SEXP: (5 checks) ... OK (0 seconds)
 test.Language: (7 checks) ... OK (0 seconds)
 test.Language.binary.call: (1 checks) ... OK (0 seconds)
-test.Language.fixed.call: (1 checks) ... OK (0.02 seconds)
+test.Language.fixed.call: (1 checks) ... OK (0 seconds)
 test.Language.function: (1 checks) ... OK (0 seconds)
 test.Language.in.env: (1 checks) ... OK (0 seconds)
 test.Language.inputoperator: (1 checks) ... OK (0 seconds)
@@ -120,12 +120,12 @@ test.Pairlist.square: (2 checks) ... OK (0 seconds)
 test.Pairlist.variadic: (2 checks) ... OK (0 seconds)
 --------------------------- 
 Test file: /usr/local/lib/R/site-library/Rcpp/unitTests/runit.macros.R 
-test.long.long: (1 checks) ... OK (2.76 seconds)
+test.long.long: (1 checks) ... OK (2.71 seconds)
 test.macro.switch: (8 checks) ... OK (0 seconds)
-test.RCPPFUNCTION: (4 checks) ... OK (5.49 seconds)
-test.RCPPFUNCTION.VOID: (10 checks) ... OK (5.51 seconds)
-test.RCPPXPFIELD: (8 checks) ... OK (2.87 seconds)
-test.RCPPXPMETHOD: (18 checks) ... OK (10.96 seconds)
+test.RCPPFUNCTION: (4 checks) ... OK (5.41 seconds)
+test.RCPPFUNCTION.VOID: (10 checks) ... OK (5.42 seconds)
+test.RCPPXPFIELD: (8 checks) ... OK (2.83 seconds)
+test.RCPPXPMETHOD: (18 checks) ... OK (10.68 seconds)
 --------------------------- 
 Test file: /usr/local/lib/R/site-library/Rcpp/unitTests/runit.Matrix.R 
 test.CharacterMatrix: (1 checks) ... OK (0 seconds)
@@ -157,19 +157,16 @@ test.Symbol: (4 checks) ... OK (0 seconds)
 test.Symbol.notcompatible: (6 checks) ... OK (0 seconds)
 --------------------------- 
 Test file: /usr/local/lib/R/site-library/Rcpp/unitTests/runit.modref.R 
-test.modRef: (0 checks) ... OK (4.41 seconds)
---------------------------- 
-Test file: /usr/local/lib/R/site-library/Rcpp/unitTests/runit.Module.client.package.R 
-test.Module.package: (3 checks) ... OK (19.29 seconds)
+test.modRef: (0 checks) ... OK (4.35 seconds)
 --------------------------- 
 Test file: /usr/local/lib/R/site-library/Rcpp/unitTests/runit.Module.R 
-test.Module: (9 checks) ... OK (4.64 seconds)
-test.Module.Constructor: (1 checks) ... OK (4.28 seconds)
-test.Module.member: (4 checks) ... OK (4.23 seconds)
-test.Module.property: (4 checks) ... OK (4.15 seconds)
+test.Module: (9 checks) ... OK (4.65 seconds)
+test.Module.Constructor: (1 checks) ... OK (4.86 seconds)
+test.Module.member: (4 checks) ... OK (4.1 seconds)
+test.Module.property: (4 checks) ... OK (4.14 seconds)
 --------------------------- 
 Test file: /usr/local/lib/R/site-library/Rcpp/unitTests/runit.rcout.R 
-test.rcout: (1 checks) ... OK (2.71 seconds)
+test.rcout: (1 checks) ... OK (2.67 seconds)
 --------------------------- 
 Test file: /usr/local/lib/R/site-library/Rcpp/unitTests/runit.RObject.R 
 test.RObject.asDouble: (5 checks) ... OK (0 seconds)
@@ -195,21 +192,21 @@ test.RObject.stdsetstring: (1 checks) ... OK (0 seconds)
 --------------------------- 
 Test file: /usr/local/lib/R/site-library/Rcpp/unitTests/runit.S4.R 
 test.RObject.S4methods: (5 checks) ... OK (0 seconds)
-test.S4: (7 checks) ... OK (2.62 seconds)
+test.S4: (7 checks) ... OK (2.66 seconds)
 test.S4.dotdataslot: (1 checks) ... OK (0.02 seconds)
 test.S4.is: (4 checks) ... OK (0.01 seconds)
 test.Vector.AttributeProxy.ambiguity: (1 checks) ... OK (0 seconds)
 test.Vector.SlotProxy.ambiguity: (1 checks) ... OK (0.01 seconds)
 --------------------------- 
 Test file: /usr/local/lib/R/site-library/Rcpp/unitTests/runit.stats.R 
-test.stats.dbeta: (1 checks) ... OK (0 seconds)
-test.stats.dbinom: (1 checks) ... OK (0 seconds)
+test.stats.dbeta: (1 checks) ... OK (0.01 seconds)
+test.stats.dbinom: (1 checks) ... OK (0.04 seconds)
 test.stats.dgamma: (1 checks) ... OK (0 seconds)
 test.stats.dnorm: (1 checks) ... OK (0 seconds)
 test.stats.dpois: (1 checks) ... OK (0 seconds)
 test.stats.dt: (1 checks) ... OK (0 seconds)
 test.stats.dunif: (1 checks) ... OK (0 seconds)
-test.stats.pbeta: (3 checks) ... OK (0.03 seconds)
+test.stats.pbeta: (3 checks) ... OK (0 seconds)
 test.stats.pbinom: (1 checks) ... OK (0 seconds)
 test.stats.pcauchy: (1 checks) ... OK (0 seconds)
 test.stats.pchisq: (1 checks) ... OK (0 seconds)
@@ -250,7 +247,7 @@ test.sugar.any.less: (4 checks) ... OK (0 seconds)
 test.sugar.any.less.or.equal: (5 checks) ... OK (0 seconds)
 test.sugar.any.not.equal: (5 checks) ... OK (0 seconds)
 test.sugar.assignment: (4 checks) ... OK (0 seconds)
-test.sugar.asvector: (2 checks) ... OK (0 seconds)
+test.sugar.asvector: (1 checks) ... OK (0 seconds)
 test.sugar.beta: (1 checks) ... OK (0 seconds)
 test.sugar.ceil: (1 checks) ... OK (0 seconds)
 test.sugar.choose: (1 checks) ... OK (0 seconds)
@@ -262,7 +259,7 @@ test.sugar.diff: (1 checks) ... OK (0 seconds)
 test.sugar.divides: (1 checks) ... OK (0 seconds)
 test.sugar.exp: (1 checks) ... OK (0 seconds)
 test.sugar.floor: (1 checks) ... OK (0 seconds)
-test.sugar.gamma: (1 checks) ... OK (0 seconds)
+test.sugar.gamma: (1 checks) ... OK (0.02 seconds)
 test.sugar.head: (1 checks) ... OK (0 seconds)
 test.sugar.ifelse: (1 checks) ... OK (0 seconds)
 test.sugar.isna: (1 checks) ... OK (0 seconds)
@@ -343,6 +340,7 @@ test.IntegerVector.erase: (2 checks) ... OK (0 seconds)
 test.IntegerVector.erase2: (2 checks) ... OK (0 seconds)
 test.IntegerVector.fill: (1 checks) ... OK (0 seconds)
 test.IntegerVector.insert: (2 checks) ... OK (0 seconds)
+test.IntegerVector_int_init: (1 checks) ... OK (0 seconds)
 test.IntegerVector.INTSXP_: (1 checks) ... OK (0 seconds)
 test.IntegerVector.names.get: (1 checks) ... OK (0 seconds)
 test.IntegerVector.names.indexing: (1 checks) ... OK (0 seconds)
@@ -395,4 +393,4 @@ test.wrap.unordered.map.string.Rbyte: (3 checks) ... OK (0 seconds)
 test.wrap.unordered.map.string.string: (3 checks) ... OK (0 seconds)
 --------------------------- 
 Test file: /usr/local/lib/R/site-library/Rcpp/unitTests/runit.XPTr.R 
-test.XPtr: (2 checks) ... OK (5.27 seconds)
+test.XPtr: (2 checks) ... OK (5.32 seconds)

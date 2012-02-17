@@ -2,7 +2,7 @@
 //
 // Vector.h: Rcpp R/C++ interface class library -- vectors
 //
-// Copyright (C) 2010 - 2011 Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2010 - 2012 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -197,6 +197,11 @@ public:
     Vector( const int& size, const U& u){
     	RObject::setSEXP( Rf_allocVector( RTYPE, size) ) ;
         fill_or_generate( u ) ;	
+    }
+    
+    Vector( const int& size, const stored_type& u ){
+        RObject::setSEXP( Rf_allocVector( RTYPE, size) ) ;
+        fill( u ) ;
     }
 
     Vector( const int& siz, stored_type (*gen)(void) ){
