@@ -1,6 +1,6 @@
 \documentclass[10pt]{article}
 %\VignetteIndexEntry{Rcpp-sugar}
-\usepackage{vmargin}
+\usepackage[USletter]{vmargin}
 \setmargrb{0.75in}{0.75in}{0.75in}{0.75in}
 
 \usepackage{color, alltt}
@@ -623,7 +623,7 @@ private:
     Function fun ;
 } ;
 
-} // sugar
+// sugar
 
 template <int RTYPE, bool _NA_, typename T, typename Function >
 inline sugar::Sapply<RTYPE,_NA_,T,Function>
