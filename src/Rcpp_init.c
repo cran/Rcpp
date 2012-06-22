@@ -2,7 +2,7 @@
 //
 // Rcpp_init.c : Rcpp R/C++ interface class library -- Initialize and register
 //
-// Copyright (C) 2010 - 2011 John Chambers, Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2010 - 2012 John Chambers, Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -56,8 +56,6 @@ static R_CallMethodDef callEntries[]  = {
     CALLDEF(Module__get_function, 2),
     
     CALLDEF(get_rcpp_cache,0),
-//    CALLDEF(init_Rcpp_cache,0),
-    CALLDEF(reset_current_error,0),
     CALLDEF(rcpp_error_recorder,1),
     CALLDEF(rcpp_set_current_error,1),
     CALLDEF(rcpp_get_current_error,0),

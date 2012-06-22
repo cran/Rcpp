@@ -1,7 +1,7 @@
 Package: Rcpp
 Title: Seamless R and C++ Integration
-Version: 0.9.10
-Date: $Date: 2012-02-16 14:06:32 -0600 (Thu, 16 Feb 2012) $
+Version: 0.9.11
+Date: $Date: 2012-06-22 06:23:28 -0500 (Fri, 22 Jun 2012) $
 Author: Dirk Eddelbuettel and Romain Francois, with contributions by
         Douglas Bates and John Chambers
 Maintainer: Dirk Eddelbuettel and Romain Francois
@@ -33,16 +33,17 @@ Description: The Rcpp package provides R functions as well as a C++
         low-level loop code. The "Rcpp-sugar" vignette gives an
         overview of the feature.
  .
- Several examples are included, and more than 750 unit tests in over 330
+ Several examples are included, and more than 770 unit tests in over 349
         unit test functions provide additional usage examples.
  .
  An earlier version of Rcpp, containing what we now call the 'classic
         Rcpp API' was written during 2005 and 2006 by Dominick Samperi.
         This code has been factored out of Rcpp into the package
         RcppClassic, and it is still available for code relying on the
-        older interface. New development should use alwayse use this
-        Rcpp package instead.
-Depends: R (>= 2.12.0), methods
+        older interface. New development should always use this Rcpp
+        package instead.
+Depends: R (>= 2.15.1)
+Imports: methods
 Suggests: RUnit, inline, rbenchmark
 URL: http://dirk.eddelbuettel.com/code/rcpp.html,
         http://romainfrancois.blog.free.fr/index.php?category/R-package/Rcpp
@@ -51,6 +52,6 @@ BugReports:
         http://r-forge.r-project.org/tracker/?atid=637&group_id=155&func=browse
 MailingList: Please send questions and comments regarding Rcpp to
         rcpp-devel@lists.r-forge.r-project.org
-Packaged: 2012-02-16 21:08:45.015763 UTC; edd
+Packaged: 2012-06-22 11:28:15.866583 UTC; edd
 Repository: CRAN
-Date/Publication: 2012-02-17 07:38:36
+Date/Publication: 2012-06-22 15:08:38

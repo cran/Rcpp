@@ -47,7 +47,7 @@ public:
     };
     
     Vector( const Vector& other) : RObject() {
-        RObject::setSEXP(other.asSexp()) ;
+        set_sexp( other.asSexp() ) ;
     }
 	
     Vector& operator=( const Vector& other ){
@@ -702,6 +702,21 @@ public:
         }
         return *this ;
     }
+    
+    /** 
+     *  Does this vector have an element with the target name 
+     */
+    bool containsElementNamed( const char* target ) const {
+        SEXP names = RCPP_GET_NAMES(m_sexp) ; 
+        if( Rf_isNull(names) ) return false ;
+        int n = Rf_length(names) ;
+        for( int i=0; i<n; i++){
+            if( !strcmp( target, CHAR(STRING_ELT(names, i)) ) ) 
+                return true ;   
+        }
+        return false ;
+    }
+    
     
 } ; /* Vector */
 

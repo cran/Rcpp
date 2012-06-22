@@ -1,3 +1,116 @@
+2012-06-22  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION: Release 0.9.11
+        * inst/NEWS: Release 0.9.11
+        * inst/include/Rcpp/config.h: Release 0.9.11
+        * debian/*: Similarly updated for new release to Debian
+
+	* DESCRIPTION: Increased Depends to R (>= 2.15.1)
+
+2012-06-21  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/doc/Rcpp-modules/Rcpp-modules.Rnw: Updated to reflect use
+	under R 2.15.1 
+	* inst/skeleton/zzz.R: Idem
+
+2012-06-20  Dirk Eddelbuettel  <edd@debian.org>
+
+	* R/loadRcppModules.R: Use lib.loc= argument on packageDescription()
+	as suggested by Kurt, and fetch libname from enclosing environment
+
+	* DESCRIPTION: Typo and grammar fixes with thanks to Kurt and Doug
+	
+2012-05-25  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/skeleton/zzz.R: Added new 'evalqOnLoad()' call for R-devel,
+	currently commented out
+
+2012-05-24  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/skeleton/Num.cpp: Added to Rcpp.package.skeleton(); will be
+	added when module=TRUE in call
+	* inst/skeleton/stdVector.cpp: Idem
+
+	* inst/unitTests/testRcppModule/src/rcpp_module.cpp: added more
+	comments, added copyright header, corrected output of example
+	functions by not escaping "backslash-n" twice
+	* inst/unitTests/testRcppModule/src/stdVector.cpp: added some
+	comments, added copyright header
+	* inst/unitTests/testRcppModule/src/Num.cpp: Idem
+
+	* inst/unitTests/runit.Module.client.package.R: Added four simple
+	tests for Rcpp Modules
+
+	* inst/doc/Rcpp-modules/Rcpp-modules.Rnw: Some extensions and
+	clarifications added
+
+2012-05-13  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/iostream/Rostream.h: Added Rstreambuf.h include
+	as per rcpp-devel discussion with Alexey Stukalov
+
+2012-05-09  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/doc/Rcpp-FAQ/Rcpp-FAQ.Rnw: Expanded R CMD SHLIB discussion
+	after suggested changes from Søren Højsgaard; also expanded compiler
+	section a little mentioning clang/clang++ and icc.
+
+2012-05-02  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/Environment.cpp: Move one default argument to Environment.h
+	* src/Function.cpp: Move one default argument to Function.h
+	* inst/THANKS: Thanks to Anirban Mukherjee for these two changes
+
+2012-04-28  John M Chambers  <jmc@r-project.org>
+
+	* R/RcppClass.R: use globalVariables() from R 2.15.1 (with exists()
+	test to no break older versions) to declare C++ fields and methods
+	* inst/unitTests/testRcppClass/R/load.R: test use
+
+2012-04-22  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/debugging.cpp: Expanded 'if defined()' test to included Cygwin
+	thanks to a patch submitted by Dario Buttari
+
+2012-04-19  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/Evaluator.cpp: errorOccuredSym never used and commented out
+
+2012-04-18  John M Chambers  <jmc@r-project.org>
+
+	* R/RcppClass.R: New version of setRcppClass, allowing R classes to
+	extend C++ classes used via Rcpp modules
+	* R/loadModule.R: New function, replaces uses of .onLoad()
+	* man/*: Added/updated corresponding documentation
+
+2012-04-07  Romain Francois  <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/vector/Vector.h: bug fix. reported on Rcpp-devel
+	http://comments.gmane.org/gmane.comp.lang.r.rcpp/3292
+
+2012-03-29  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/unitTests/runit.Vector.R: unit test for containsElementNamed
+
+2012-03-29  Romain Francois  <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/vector/Vector.h: Vector<> gains the
+	containsElementNamed method to test for presence of named element
+
+2012-03-24  Romain Francois  <romain@r-enthusiasts.com>
+
+	* src/cache.cpp: Using a single Rcpp_cache, stored in the Rcpp
+	namespace
+
+	* src/Evaluator.cpp: Using tryCatch instead of rcpp_tryCatch, no more
+	using .Internal; but still define rcpp_TryCatch for backwards compat.
+
+2012-03-23  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/doc/Rcpp-FAQ/Rcpp-FAQ.Rnw: Added short subsection on how to
+	test a package from the command-line, expanding a patch by Glenn
+	Lawyer in response to an initial rcpp-devel post by Dirk
+
 2012-02-16  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION: Release 0.9.10
