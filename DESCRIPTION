@@ -1,11 +1,10 @@
 Package: Rcpp
 Title: Seamless R and C++ Integration
-Version: 0.9.11
-Date: $Date: 2012-06-22 06:23:28 -0500 (Fri, 22 Jun 2012) $
+Version: 0.9.12
+Date: $Date: 2012-06-23 12:07:05 -0500 (Sat, 23 Jun 2012) $
 Author: Dirk Eddelbuettel and Romain Francois, with contributions by
         Douglas Bates and John Chambers
-Maintainer: Dirk Eddelbuettel and Romain Francois
-        <RomainAndDirk@r-enthusiasts.com>
+Maintainer: Dirk Eddelbuettel <edd@debian.org>
 Description: The Rcpp package provides R functions as well as a C++
         library which facilitate the integration of R and C++.
  .
@@ -52,6 +51,6 @@ BugReports:
         http://r-forge.r-project.org/tracker/?atid=637&group_id=155&func=browse
 MailingList: Please send questions and comments regarding Rcpp to
         rcpp-devel@lists.r-forge.r-project.org
-Packaged: 2012-06-22 11:28:15.866583 UTC; edd
+Packaged: 2012-06-23 17:13:26.48798 UTC; edd
 Repository: CRAN
-Date/Publication: 2012-06-22 15:08:38
+Date/Publication: 2012-06-25 06:15:57
