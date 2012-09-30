@@ -1,3 +1,51 @@
+2012-09-30  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION: Release 0.9.14
+        * inst/NEWS: Release 0.9.14
+        * inst/include/Rcpp/config.h: Release 0.9.14
+        * debian/*: Similarly updated for new release to Debian
+
+2012-09-08  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/unitTests/runit.sugarOps.R: More sugar Ops unit tests
+
+2012-09-07  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/unitTests/runit.sugarOps.R: (Incomplete) beginnings of new
+	unit test file for sugar operations on vectors and matrices
+
+2012-09-07  Romain Francois  <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/sugar/functions/sign.h: Sign gets a SEXP operator
+
+2012-09-03  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/sugar/functions/math.h: Added new sugar
+	function trunc(), round() and signif()
+	* inst/unitTests/runit.sugar.R: Added unit tests for these
+
+2012-09-01  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/doc/Makefile: The 'all' target is now empty to prevent
+	autobuilders such as R-Forge from falling over
+
+2012-07-23  Dirk Eddelbuettel  <edd@debian.org>
+
+	* R/bib.R: Trim the trailing ".bib" from the generated bibtex
+	filename as Windows adds one anyway leading to two and an error
+
+2012-07-21  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/Module.h (Rcpp): Corrected typo / incomplete
+	reference in finalizer use
+
+2012-07-06  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/config.h: In order to not attempt to include
+	exception_defines.h if on OS X (as the clang runtime may not have
+	predictable access to g++ headers providing these), do not define
+	RCPP_HAS_DEMANGLING which is used in src/exceptions.cpp
+
 2012-06-28  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION: Release 0.9.13
