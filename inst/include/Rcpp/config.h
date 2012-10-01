@@ -23,11 +23,16 @@
 #define RCPP__CONFIG_H
 
 #ifdef __GNUC__
-#define RCPP_HAS_DEMANGLING
+  // from http://sourceforge.net/apps/mediawiki/predef/index.php?title=Operating_Systems#MacOS
+  #ifndef __APPLE__ 
+    #ifndef __MACH__
+      #define RCPP_HAS_DEMANGLING
+    #endif
+  #endif
 #endif
 
 #define Rcpp_Version(v,p,s) (((v) * 65536) + ((p) * 256) + (s))
-#define RCPP_VERSION Rcpp_Version(0,9,13)
+#define RCPP_VERSION Rcpp_Version(0,9,14)
 
 #endif
 
