@@ -2,6 +2,22 @@
 \title{News for Package 'Rcpp'}
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+\section{Changes in Rcpp version 0.9.15 (2012-10-13)}{
+  \itemize{
+    \item Untangling the clang++ build issue about the location of the
+    exceptions header by directly checking for the include file -- an
+    approach provided by Martin Morgan in a kindly contributed patch
+    as unit tests for them.
+    \item The \code{Date} and \code{Datetime} types now correctly
+    handles \code{NA}, \code{NaN} and \code{Inf} representation; the
+    \code{Date} type switched to an internal representation via \code{double}
+    \item Added \code{Date} and \code{Datetime} unit tests for the new
+    features
+    \item An additional \code{PROTECT} was added for parsing exception
+    messages before returning them to R, following a report by Ben North
+  }
+}
+
 \section{Changes in Rcpp version 0.9.14 (2012-09-30)}{
   \itemize{
     \item Added new Rcpp sugar functions trunc(), round() and signif(), as well
