@@ -50,6 +50,28 @@ private:
     std::string message ;                                                      
 } ;
 
+class file_io_error : public std::exception {                                      
+public:                                                                        
+    file_io_error(const std::string& file) throw() : message( std::string("file io error: '") + file + "'" ), file(file) {} ;
+    file_io_error(int code, const std::string& file) throw() : message( "file io error " + toString(code) + ": '" + file + "'"), file(file) {} ;
+    file_io_error(const std::string& msg, const std::string& file) throw() : message( msg + ": '" + file + "'"), file(file) {} ;
+    virtual ~file_io_error() throw(){} ;                                         
+    virtual const char* what() const throw(){ return message.c_str() ; } ; 
+    std::string filePath() const throw(){ return file ; } ;
+private:                                                                       
+    std::string message ;                                                      
+    std::string file;
+} ;
+
+class file_not_found : public file_io_error {
+public:
+    file_not_found(const std::string& file) throw() : file_io_error("file not found", file) {}
+};
+
+class file_exists : public file_io_error {
+public:
+    file_exists(const std::string& file) throw() : file_io_error("file already exists", file) {}
+};
 
 #define RCPP_EXCEPTION_CLASS(__CLASS__,__WHAT__)                               \
 class __CLASS__ : public std::exception{                                       \
@@ -88,6 +110,7 @@ RCPP_EXCEPTION_CLASS(no_such_binding, std::string("no such binding : '") + messa
 RCPP_EXCEPTION_CLASS(binding_not_found, std::string("binding not found: '") + message + "'" )
 RCPP_EXCEPTION_CLASS(binding_is_locked, std::string("binding is locked: '") + message + "'" )
 RCPP_EXCEPTION_CLASS(no_such_namespace, std::string("no such namespace: '") + message + "'" )
+RCPP_EXCEPTION_CLASS(function_not_exported, std::string("function not exported: ") + message)
 RCPP_EXCEPTION_CLASS(eval_error, message )
 
 #undef RCPP_EXCEPTION_CLASS

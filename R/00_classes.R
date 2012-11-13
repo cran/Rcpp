@@ -1,4 +1,4 @@
-# Copyright (C) 2010 - 2011 John Chambers, Dirk Eddelbuettel and Romain Francois
+# Copyright (C) 2010 - 2012 John Chambers, Dirk Eddelbuettel and Romain Francois
 #
 # This file is part of Rcpp.
 #
@@ -18,6 +18,10 @@
 # not used, but this keeps packages that import the class happy
 # e.g. highlight 
 setClass( "C++ObjectS3" ) 
+
+# anticipating a change in R 2.16.0
+setClass( "refClassGeneratorFunction" )
+setClassUnion("refGenerator", c("refObjectGenerator", "refClassGeneratorFunction")) 
 
 ## "Module" class as an environment with "pointer", "moduleName",
 ##  "packageName" and "refClassGenerators"
@@ -42,7 +46,8 @@ setRefClass( "C++OverloadedMethods",
         void          = "logical",
         const         = "logical", 
         docstrings    = "character", 
-        signatures    = "character"
+        signatures    = "character", 
+        nargs         = "integer"
     ), 
     methods = list( 
         info = function(prefix = "    " ){
@@ -71,16 +76,17 @@ setClass( "C++Class",
 	    fields       = "list",
 	    methods      = "list",
 	    constructors = "list",
-	    generator    = "refObjectGenerator", 
+	    generator    = "refGenerator", 
 	    docstring    = "character", 
-	    typeid       = "character"
+	    typeid       = "character", 
+	    enums        = "list"
 	), 
 	contains = "character"
 	)
 setClass( "C++ClassRepresentation", 
     representation( 
         pointer         = "externalptr", 
-        generator       = "refObjectGenerator", 
+        generator       = "refGenerator", 
         cpp_fields      = "list", 
         cpp_methods     = "list", 
         cpp_constructor = "list"
