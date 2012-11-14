@@ -1,5 +1,5 @@
 #!/usr/bin/r -t
-#                     -*- mode: R; ess-indent-level: 4; indent-tabs-mode: nil; -*-
+#   -*- mode: R; ess-indent-level: 4; indent-tabs-mode: nil; -*-
 #
 # Copyright (C) 2012         Dirk Eddelbuettel and Romain Francois
 #
@@ -17,6 +17,10 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
+
+.runThisTest <- Sys.getenv("RunAllRcppTests") == "yes"
+
+if (.runThisTest) {
 
 definitions <- function() {
     list(
@@ -122,3 +126,5 @@ test.vector.vector.logical <- function( ){
 ##     checkEquals(fx(x) , x + 2)
 ##     #checkEquals(fx(x) , x )             # DUMMY
 ## }
+
+}

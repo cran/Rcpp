@@ -1,7 +1,7 @@
 #!/usr/bin/r -t
-# -*- mode: R; tab-width: 4 -*-
+# -*- mode: R; tab-width: 4; -*-
 #
-# Copyright (C) 2009 - 2010  Romain Francois and Dirk Eddelbuettel
+# Copyright (C) 2009 - 2012  Romain Francois and Dirk Eddelbuettel
 #
 # This file is part of Rcpp.
 #
@@ -17,6 +17,10 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
+
+.runThisTest <- Sys.getenv("RunAllRcppTests") == "yes"
+
+if (.runThisTest) {
 
 definitions <- function(){
     list("asDouble"=list(
@@ -162,7 +166,7 @@ cxxargs <- function(){
     tests <- ".Rcpp.RObject"
     if( ! exists(tests, globalenv() )) {
         fun <- Rcpp:::compile_unit_tests(
-            definitions(), 
+            definitions(),
             cxxargs = cxxargs()
         )
         assign( tests, fun, globalenv() )
@@ -344,4 +348,6 @@ test.RObject.inherits <- function(){
 	checkTrue( fx(x) )
 	class(x) <- c("foo", "bar" )
 	checkTrue( fx(x) )
+}
+
 }

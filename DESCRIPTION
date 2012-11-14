@@ -1,9 +1,9 @@
 Package: Rcpp
 Title: Seamless R and C++ Integration
-Version: 0.9.15
-Date: $Date: 2012-10-13 18:29:55 -0500 (Sat, 13 Oct 2012) $
+Version: 0.10.0
+Date: $Date: 2012-11-13 20:07:26 -0600 (Tue, 13 Nov 2012) $
 Author: Dirk Eddelbuettel and Romain Francois, with contributions by
-        Douglas Bates and John Chambers
+        Douglas Bates, John Chambers and JJ Allaire
 Maintainer: Dirk Eddelbuettel <edd@debian.org>
 Description: The Rcpp package provides R functions as well as a C++
         library which facilitate the integration of R and C++.
@@ -32,7 +32,7 @@ Description: The Rcpp package provides R functions as well as a C++
         low-level loop code. The "Rcpp-sugar" vignette gives an
         overview of the feature.
  .
- Several examples are included, and over 800 unit tests in over 360 unit
+ Several examples are included, and over 860 unit tests in over 380 unit
         test functions provide additional usage examples.
  .
  An earlier version of Rcpp, containing what we now call the 'classic
@@ -51,6 +51,6 @@ BugReports:
         http://r-forge.r-project.org/tracker/?atid=637&group_id=155&func=browse
 MailingList: Please send questions and comments regarding Rcpp to
         rcpp-devel@lists.r-forge.r-project.org
-Packaged: 2012-10-13 23:30:34.906122 UTC; edd
+Packaged: 2012-11-14 02:19:59.02981 UTC; edd
 Repository: CRAN
-Date/Publication: 2012-10-14 09:12:33
+Date/Publication: 2012-11-14 07:28:04

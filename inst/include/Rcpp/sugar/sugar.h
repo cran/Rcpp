@@ -2,7 +2,7 @@
 //
 // sugar.h: Rcpp R/C++ interface class library -- main file for Rcpp::sugar
 //
-// Copyright (C) 2010 - 2011 Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2010 - 2012 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -22,6 +22,7 @@
 #ifndef RCPP_SUGAR_H
 #define RCPP_SUGAR_H
 
+#include <Rcpp/sugar/sets.h>
 #include <Rcpp/sugar/block/block.h>
 
 #include <Rcpp/sugar/operators/operators.h>

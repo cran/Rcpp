@@ -650,6 +650,21 @@ inline SEXP wrap_dispatch( const T& object, ::Rcpp::traits::wrap_type_primitive_
 }
 
 template <typename T>
+inline SEXP wrap_dispatch( const T& object, ::Rcpp::traits::wrap_type_module_object_pointer_tag ){
+	return Rcpp::internal::make_new_object< typename T::object_type >( object.ptr ) ;	
+}
+
+template <typename T>
+inline SEXP wrap_dispatch( const T& object, ::Rcpp::traits::wrap_type_module_object_tag ){
+	return Rcpp::internal::make_new_object<T>( new T(object) ) ;	
+}
+
+template <typename T>
+inline SEXP wrap_dispatch( const T& object, ::Rcpp::traits::wrap_type_enum_tag ){
+	return wrap( (int)object ) ;	
+}
+
+template <typename T>
 inline SEXP wrap_dispatch_eigen( const T& object, ::Rcpp::traits::false_type){
 	return wrap_dispatch_unknown( object, typename ::Rcpp::traits::is_convertible<T,SEXP>::type() ) ;
 }
@@ -790,6 +805,31 @@ template <typename T>
 inline SEXP wrap(const T& object){
 	return internal::wrap_dispatch( object, typename ::Rcpp::traits::wrap_type_traits<T>::wrap_category() ) ;
 }
+
+template <typename T>
+inline SEXP module_wrap_dispatch( const T& obj, Rcpp::traits::void_wrap_tag ){
+	return R_NilValue ;
+}
+
+template <typename T>
+inline SEXP module_wrap_dispatch( const T& obj, Rcpp::traits::pointer_wrap_tag ){
+	return wrap( object< typename traits::un_pointer<T>::type >( obj ) ) ;
+}
+
+template <typename T>
+inline SEXP module_wrap_dispatch( const T& obj, Rcpp::traits::normal_wrap_tag ){
+	return wrap( obj ) ;
+}
+
+template <typename T>
+inline SEXP module_wrap( const T& obj ){
+	return module_wrap_dispatch<T>( obj, typename Rcpp::traits::module_wrap_traits<T>::category() ) ;	
+}
+template <>
+inline SEXP module_wrap<SEXP>( const SEXP& obj ){
+	return obj ;	
+}
+
 
 // special case - FIXME : this is not template specializations of wrap<>
 inline SEXP wrap(const char* const v ){ 

@@ -2,7 +2,7 @@
 //
 // Rostream.h: Rcpp R/C++ interface class library -- stream buffer
 //
-// Copyright (C) 2011           Dirk Eddelbuettel, Romain Francois and Jelmer Ypma
+// Copyright (C) 2011 - 2012    Dirk Eddelbuettel, Romain Francois and Jelmer Ypma
 //
 // This file is part of Rcpp.
 //
@@ -32,11 +32,16 @@ namespace Rcpp {
 
     class Rstreambuf : public std::streambuf {
     public:
+        Rstreambuf(bool output_): output(output_){}
 		
     protected:
         virtual std::streamsize xsputn(const char *s, std::streamsize n );
         
         virtual int overflow(int c = EOF );
+        
+        virtual int sync() ;
+    private:
+        bool output ;
   };
 
 }

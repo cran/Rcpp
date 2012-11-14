@@ -64,6 +64,8 @@ namespace Rcpp{
     } // internal 
 } // Rcpp
 
+#include <Rcpp/module/macros.h>
+
 #ifdef __GNUC__
     #define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)
     #ifdef __GXX_EXPERIMENTAL_CXX0X__
@@ -131,7 +133,7 @@ namespace Rcpp{
 #include <numeric>
 #include <algorithm>
 #include <complex>
-#include <limits.h>
+#include <limits>
 #include <typeinfo>
 #include <Rcpp/sprintf.h>
 
@@ -274,6 +276,13 @@ SEXP stack_trace( const char *file, int line) ;
 #endif
 #endif
 
+namespace Rcpp{
+    template <typename T> class object ;
+	namespace internal{
+		template <typename Class> SEXP make_new_object( Class* ptr ) ;	
+	}
+}	
+
 // DO NOT CHANGE THE ORDER OF THESE INCLUDES
 #include <Rcpp/traits/integral_constant.h>
 #include <Rcpp/traits/same_type.h>
@@ -290,7 +299,10 @@ SEXP stack_trace( const char *file, int line) ;
 #include <Rcpp/traits/r_sexptype_traits.h>
 #include <Rcpp/traits/storage_type.h>
 #include <Rcpp/traits/r_type_traits.h>
+#include <Rcpp/traits/un_pointer.h>
+#include <Rcpp/traits/is_pointer.h>
 #include <Rcpp/traits/wrap_type_traits.h>
+#include <Rcpp/traits/module_wrap_traits.h>
 #include <Rcpp/traits/is_na.h>
 #include <Rcpp/traits/if_.h>
 #include <Rcpp/traits/get_na.h>

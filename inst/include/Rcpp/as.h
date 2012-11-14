@@ -2,7 +2,7 @@
 //
 // as.h: Rcpp R/C++ interface class library -- convert SEXP to C++ objects
 //
-// Copyright (C) 2009 - 2011    Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2009 - 2012    Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -26,7 +26,7 @@ namespace Rcpp{
 
     namespace internal{
         
-        template <typename T> T as( SEXP x, ::Rcpp::traits::r_type_primitive_tag ) {
+        template <typename T> T primitive_as( SEXP x ){
             if( ::Rf_length(x) != 1 ) throw ::Rcpp::not_compatible( "expecting a single value" ) ;
             const int RTYPE = ::Rcpp::traits::r_sexptype_traits<T>::rtype ;
             SEXP y = PROTECT( r_cast<RTYPE>(x) );
@@ -34,6 +34,10 @@ namespace Rcpp{
             T res = caster<STORAGE,T>( *r_vector_start<RTYPE,STORAGE>( y ) ) ;
             UNPROTECT(1) ;
             return res ; 
+        }
+        
+        template <typename T> T as( SEXP x, ::Rcpp::traits::r_type_primitive_tag ) {
+            return primitive_as<T>(x) ;
         }
         
         template <typename T> T as(SEXP x, ::Rcpp::traits::r_type_string_tag ) {
@@ -51,6 +55,27 @@ namespace Rcpp{
             ::Rcpp::traits::Exporter<T> exporter(x);
             RCPP_DEBUG_1( "exporter type = %s", DEMANGLE(exporter) ) ;
             return exporter.get() ;
+        }
+        
+        void* as_module_object_internal(SEXP) ;
+        template <typename T> object<T> as_module_object(SEXP x){
+            return (T*) as_module_object_internal(x) ;
+        }
+        
+        /** handling object<T> */ 
+        template <typename T> T as(SEXP x, ::Rcpp::traits::r_type_module_object_pointer_tag ) {
+            return as_module_object<typename T::object_type>( x ) ;
+        }
+        
+        /** handling T such that T is exposed by a module */
+        template <typename T> T as(SEXP x, ::Rcpp::traits::r_type_module_object_tag ){
+            T* obj = as_module_object<T>(x) ;
+            return *obj ;
+        }
+        
+        /** handling enums by converting to int first */
+        template <typename T> T as(SEXP x, ::Rcpp::traits::r_type_enum_tag ){
+            return T( primitive_as<int>(x) ) ;
         }
         
     }
@@ -74,7 +99,12 @@ namespace Rcpp{
     template <typename T> T as( SEXP m_sexp) {
         return internal::as<T>( m_sexp, typename traits::r_type_traits<T>::r_category() ) ;
     }
-
+    
+    template <typename T> 
+    inline typename traits::remove_const_and_reference<T>::type bare_as( SEXP m_sexp ){
+        return as< typename traits::remove_const_and_reference<T>::type >( m_sexp ) ;
+    }
+    
     template<> inline SEXP as(SEXP m_sexp) { return m_sexp ; }
 
 } // Rcpp 

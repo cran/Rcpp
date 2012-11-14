@@ -1,4 +1,4 @@
-# Copyright (C) 2010 - 2011 John Chambers, Dirk Eddelbuettel and Romain Francois
+# Copyright (C) 2010 - 2012 John Chambers, Dirk Eddelbuettel and Romain Francois
 #
 # This file is part of Rcpp.
 #
@@ -71,20 +71,36 @@ setMethod("initialize", "Module",
     pointer <- .getModulePointer(x)
 	info <- .Call( Module__get_function, pointer, name )
 	fun_ptr <- info[[1L]]
+	is_void <- info[[2L]]
 	doc     <- info[[3L]]
 	sign    <- info[[4L]]
 	formal_args <- info[[5L]]
+	nargs <- info[[6L]]
 	f <- function(...) NULL
+	if( nargs == 0L ) formals(f) <- NULL
 	stuff <- list( fun_pointer = fun_ptr, InternalFunction_invoke = InternalFunction_invoke )
-	body(f) <- if( info[[2]] ) {
-	    substitute( {
-	        .External( InternalFunction_invoke, fun_pointer, ... )
-	        invisible(NULL)
-	    }, stuff )
+	body(f) <- if( nargs == 0L ){
+	    if( is_void ) {
+	        substitute( {
+	            .External( InternalFunction_invoke, fun_pointer)
+	            invisible(NULL)
+	        }, stuff )
+	    } else {
+	        substitute( {
+	            .External( InternalFunction_invoke, fun_pointer)
+	        }, stuff )
+	    }
 	} else {
-	    substitute( {
-	        .External( InternalFunction_invoke, fun_pointer, ... )
-	    }, stuff )
+	    if( is_void ) {
+	        substitute( {
+	            .External( InternalFunction_invoke, fun_pointer, ... )
+	            invisible(NULL)
+	        }, stuff )
+	    } else {
+	        substitute( {
+	            .External( InternalFunction_invoke, fun_pointer, ... )
+	        }, stuff )
+	    }
 	}
 	out <- new( "C++Function", f, pointer = fun_ptr, docstring = doc, signature = sign )
 	if( ! is.null( formal_args ) ){
@@ -221,7 +237,6 @@ Module <- function( module, PACKAGE = methods::getPackageName(where), where = to
                      else Rcpp:::cpp_object_dummy(.self, .refClassDef)
                  }
                           )
-
         rm( .self, .refClassDef )
 
         classDef <- methods:::getClass(clname)
@@ -248,9 +263,13 @@ Module <- function( module, PACKAGE = methods::getPackageName(where), where = to
                     x
                 } , where = where )
             }
-
         }
-
+        
+        # promoting show to S4
+        if( any( grepl( "show", names(CLASS@methods) ) ) ){
+            setMethod( "show", clname, function(object) object$show(), where = where )
+        }
+        
     }
     if(length(classes)) {
         module$refClassGenerators <- generators
@@ -261,12 +280,39 @@ Module <- function( module, PACKAGE = methods::getPackageName(where), where = to
         clname <- as.character(CLASS)
         demangled_name <- sub( "^Rcpp_", "", clname )
         .classes_map[[ CLASS@typeid ]] <- storage[[ demangled_name ]] <- .get_Module_Class( module, demangled_name, xp )
+        
+        # exposing enums values as CLASS.VALUE 
+        # (should really be CLASS$value but I don't know how to do it)
+        if( length( CLASS@enums ) ){
+            for( enum in CLASS@enums ){
+                for( i in 1:length(enum) ){
+                    storage[[ paste( demangled_name, ".", names(enum)[i], sep = "" ) ]] <- enum[i]  
+                }
+            }
+        }
+        
     }
 
     # functions
     functions <- .Call( Module__functions_names, xp )
     for( fun in functions ){
         storage[[ fun ]] <- .get_Module_function( module, fun, xp )
+        
+        # register as(FROM, TO) methods
+        converter_rx <- "^[.]___converter___(.*)___(.*)$"
+        if( length( matches <- grep( converter_rx, functions ) ) ){
+            for( i in matches ){
+                fun <- functions[i]
+                from <- sub( converter_rx, "\\1", fun )
+                to   <- sub( converter_rx, "\\2", fun )
+                converter <- function( from ){}
+                body( converter ) <- substitute( { CONVERT(from) }, 
+                    list( CONVERT = storage[[fun]] )
+                )
+                setAs( from, to, converter, where = where )
+            }
+        }
+        
     }
 
     assign( "storage", storage, envir = as.environment(module) )
@@ -276,8 +322,7 @@ Module <- function( module, PACKAGE = methods::getPackageName(where), where = to
 dealWith <- function( x ) if(isTRUE(x[[1]])) invisible(NULL) else x[[2]]
 
 method_wrapper <- function( METHOD, where ){
-        f <- function(...) NULL
-
+        noargs <- all( METHOD$nargs == 0 ) 
         stuff <- list(
             class_pointer = METHOD$class_pointer,
             pointer = METHOD$pointer,
@@ -287,31 +332,63 @@ method_wrapper <- function( METHOD, where ){
             dealWith = dealWith,
             docstring = METHOD$info("")
         )
-
-        extCall <- if( all( METHOD$void ) ){
-            # all methods are void, so we know we want to return invisible(NULL)
-            substitute(
-            {
-                docstring
-                .External(CppMethod__invoke_void, class_pointer, pointer, .pointer, ...)
-                invisible(NULL)
-            } , stuff )
-        } else if( all( ! METHOD$void ) ){
-            # none of the methods are void so we always return the result of
-            # .External
-            substitute(
-            {
-                docstring
-               .External(CppMethod__invoke_notvoid, class_pointer, pointer, .pointer, ...)
-            } , stuff )
+        f <- function(...) NULL
+        if( noargs ){
+            formals(f) <- NULL
+        } 
+        
+        extCall <- if( noargs ) { 
+            if( all( METHOD$void ) ){
+                # all methods are void, so we know we want to return invisible(NULL)
+                substitute(
+                {
+                    docstring
+                    .External(CppMethod__invoke_void, class_pointer, pointer, .pointer )
+                    invisible(NULL)
+                } , stuff )
+            } else if( all( ! METHOD$void ) ){
+                # none of the methods are void so we always return the result of
+                # .External
+                substitute(
+                {
+                    docstring
+                   .External(CppMethod__invoke_notvoid, class_pointer, pointer, .pointer )
+                } , stuff )
+            } else {
+                # some are void, some are not, so the voidness is part of the result
+                # we get from internally and we need to deal with it
+                substitute(
+	            {
+	                docstring
+	                dealWith( .External(CppMethod__invoke, class_pointer, pointer, .pointer ) )
+                } , stuff )
+            }
         } else {
-            # some are void, some are not, so the voidness is part of the result
-            # we get from internally and we need to deal with it
-            substitute(
-	        {
-	            docstring
-	            dealWith( .External(CppMethod__invoke, class_pointer, pointer, .pointer, ...) )
-            } , stuff )
+            if( all( METHOD$void ) ){
+                # all methods are void, so we know we want to return invisible(NULL)
+                substitute(
+                {
+                    docstring
+                    .External(CppMethod__invoke_void, class_pointer, pointer, .pointer, ...)
+                    invisible(NULL)
+                } , stuff )
+            } else if( all( ! METHOD$void ) ){
+                # none of the methods are void so we always return the result of
+                # .External
+                substitute(
+                {
+                    docstring
+                   .External(CppMethod__invoke_notvoid, class_pointer, pointer, .pointer, ...)
+                } , stuff )
+            } else {
+                # some are void, some are not, so the voidness is part of the result
+                # we get from internally and we need to deal with it
+                substitute(
+	            {
+	                docstring
+	                dealWith( .External(CppMethod__invoke, class_pointer, pointer, .pointer, ...) )
+                } , stuff )
+            }
         }
         body(f, where) <- extCall
         f

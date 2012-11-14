@@ -1,3 +1,327 @@
+2012-11-13  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION: Release 0.10.0
+        * inst/NEWS: Release 0.10.0
+        * inst/include/Rcpp/config.h: Release 0.10.0
+        * debian/*: Similarly updated for new release to Debian
+
+2012-11-13  Romain Francois <romain@r-enthusiasts.com>
+
+        * include/Rcpp/as.h: as<enum>
+        * include/Rcpp/internal/wrap.h : wrap( enum )
+        * include/Rcpp/traits/wrap_type_traits.h: trait to help wrap( enum )
+        * include/Rcpp/traits/r_type_traits.h: trait to help as<enum>
+        * include/Rcpp/module/macros.h: macros RCPP_EXPOSED_ENUM to help as/wrap
+        of enums
+
+2012-11-12  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/announce/ANNOUNCE-0.10.0.txt: Announcement draft
+
+2012-11-12  JJ Allaire <jj@rstudio.org>
+
+	* inst/doc/Rcpp-attributes/*: New vignette
+
+2012-11-12  Romain Francois <romain@r-enthusiasts.com>
+
+        * include/Rcpp/vector/Vector.h : adding const_iterator and associated
+	begin() and end() methods
+        * include/Rcpp/vector/Matrix.h : idem
+
+2012-11-11  JJ Allaire <jj@rstudio.org>
+
+        * src/Attributes.cpp: fully qualify _ in generated code
+
+2012-11-11  Romain Francois <romain@r-enthusiasts.com>
+
+        * include/Rcpp/iostream/Rstreambuf.h: implementing sync() so that
+        flush works
+        * src/Rstreambuf.cpp: implementation
+        * src/Rostream.cpp : added Rcerr that forwards to REprintf
+
+2012-11-10  JJ Allaire <jj@rstudio.org>
+
+        * R/Attributes.R: ensure function definitions are never stale
+        * src/Attributes.cpp: add optional hook for inclusion of package types
+        * examples/Attributes/Export.cpp: example use of Rcpp::export
+        * examples/Attributes/Depends.cpp: example use of Rcpp::depends
+        * examples/Attributes/sourceCpp.R: example use of sourceCpp()
+        * examples/Attributes/cppFunction.R: example use of cppFunction()
+
+2012-11-09  Romain Francois <romain@r-enthusiasts.com>
+
+        * R/Attributes.R: Passing verbose from evalCpp to cppFunction
+        * include/RcppCommon.h: include <limits> instead of <limits.h>
+        * include/Rcpp/vector/CharacterVectorExtractionIterator.h: iterator
+	class to quickly iterate over the content of a CharacterVector. The
+	content that is iterated over is to be considered read-only.
+
+2012-11-08  JJ Allaire <jj@rstudio.org>
+
+        * R/Attributes.R: special sourceCpp handling for file within the src
+        directory of a package; use .h as suffix for generated headers
+        * src/Attributes.cpp: add information on arguments to Rcpp module;
+        use inline rather than static linkage for generated C++ shims;
+        generated headers: add header guard and use .h suffix;
+        * man/cppFunction.Rd: update documentation
+        * man/sourceCpp.Rd: update documentation
+        * man/evalCpp.Rd: update documentation
+        * man/exportAttribute.Rd: update documentation
+        * man/interfacesAttribute.Rd: update documentation
+
+
+2012-11-08  Romain Francois <romain@r-enthusiasts.com>
+
+        * R/Module.R: Module functions taking no arguments don't get the ellipsis
+        anymore in their formals
+        * src/Module.cpp: passing up the number of arguments of the function
+        * R/Attributes.R: added evalCpp
+        * man/evalCpp.Rd: documentation for evalCpp
+
+2012-11-07  JJ Allaire <jj@rstudio.org>
+
+        * R/Attributes.R: derive depends from package LinkingTo; change
+	sourceCpp plugin parameter to depends and respect Rcpp::interfaces
+	generated include files
+        * src/Attributes.cpp: validate exported C++ functions before calling;
+        use static rather than inline for stubs to avoid call-site bloat;
+        improved error message when package hpp already exists; import Rcpp
+        namespace into package shim namespace
+        * src/AttributesParser.h: add signature and isHidden methods
+        * src/AttributesParser.cpp: add signature and isHidden methods
+        * src/exceptions.cpp: add function_not_exported exception
+        * include/Rcpp/exceptions.h: add function_not_exported exception
+        * man/cppFunction.Rd: update documentation
+        * man/sourceCpp.Rd: update documentation
+        * man/compileAttributes.Rd: update documentation
+        * man/dependsAttribute.Rd: update documentation
+        * man/exportAttribute.Rd: update documentation
+        * man/interfacesAttribute.Rd: update documentation
+
+2012-11-07  Romain Francois <romain@r-enthusiasts.com>
+
+        * src/Language.cpp: Language gains a fast_eval method, without the whole try/catch
+        * src/barrier.cpp: function char_nocheck to avoid the check in using CHAR
+        * include/Rcpp/sugar/functions/unique.h: sugar unique and sort_unique
+        using unordered_set (perhaps we could use it from c++11). 
+
+2012-11-06  JJ Allaire <jj@rstudio.org>
+
+        * R/Attributes.R: tweak whitespace in verbose mode
+        * src/AttributesParser.h: support for interfaces attribute
+        * src/AttributesParser.cpp: support for interfaces attribute
+        * src/Attributes.cpp: support for interfaces attribute; refactor 
+        code generators; use single module for exports; return list of
+        updated files from compileAttributes
+        * src/Module.cpp: add package parameter to GetCppCallable
+        * include/Rcpp/Module.h: add package parameter to GetCppCallable
+        * man/compileAttributes.Rd: documentation updates
+
+2012-11-05  Romain Francois <romain@r-enthusiasts.com>
+
+        * include/Rcpp/Module.h: added class CppInheritedProperty to handle 
+        inherited properties
+        * include/Rcpp/module/class.h: implemented inheritance of properties
+
+2012-11-05  JJ Allaire <jj@rstudio.org>
+
+        * R/Attributes.R: use modules for attribute code generation
+        * src/Attributes.cpp: use modules for attribute code generation
+        * src/AttributesParser.h: use modules for attribute code generation
+        * src/AttributesParser.cpp: use modules for attribute code generation
+
+2012-11-04  Dirk Eddelbuettel  <edd@debian.org>
+
+	* tests/doRUnit.R: In "development releases" (such as 0.9.15.5) we
+	now default to setting the required CRAN-test-workaround-kludge
+	"RunAllRcppTests" to "yes" as a default -- but not for actual
+	releases (with versions such as 0.9.15)
+
+2012-11-04  Romain Francois <romain@r-enthusiasts.com>
+
+        * include/Rcpp/module/CppFunction.h: fixed module bug (virtual function
+        was not defined)
+
+2012-11-03  JJ Allaire <jj@rstudio.org>
+
+        * Use CLINK_CPPFLAGS rather than PKG_CXXFLAGS for LinkingTo
+        include directories (identical behavior to inline)
+
+2012-11-03  Romain Francois <romain@r-enthusiasts.com>
+
+        * include/Rcpp/sugar/functions/which_min.h : sugar which.min
+        * include/Rcpp/sugar/functions/which_max.h : sugar which.max
+        * include/Rcpp/module/Module.h : added get_function_ptr which returns
+        the pointer of the target function as a DL_FUNC
+
+2012-11-02  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/unitTests/runit.rmath.R: More tests added
+
+2012-11-02  Romain Francois <romain@r-enthusiasts.com>
+
+        * include/Rcpp/module/CppFunction.h : factored CppFunction in its own
+	file and added the get_function_ptr virtual method. added
+	documentation
+        * include/Rcpp/module/Module_generated_CppFunction.h: implementation
+	of get_function_ptr in classes that derive CppFunction
+        * src/Module.cpp: s/get_function_ptr/get_function/
+        * include/Rcpp/module/Module.h : factored out and documented.
+	s/get_function_ptr/get_function/
+
+2012-11-01  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/unitTests/runit.rmath.R: New unit test file added
+
+2012-11-01  JJ Allaire <jj@rstudio.org>
+
+	* R/Attributes.R: change 'envir' param to 'env' for consistency with
+	the interface of loadModule
+	* man/sourceCpp.Rd: documentation updates
+	* man/cppFunction.Rd: documentation updates
+
+2012-11-01  Romain Francois <romain@r-enthusiasts.com>
+
+        * include/Rcpp/sugar/logical/or.h : implementing x | y where x and y
+	are Logical sugar expressions
+        * include/Rcpp/sugar/logical/and.h : implementing x & y where x and y
+	are Logical sugar expressions
+
+2012-10-31  JJ Allaire <jj@rstudio.org>
+
+	* R/Attributes.R: add cppFunction for inline-style definitions;
+	change 'local' param to (more clear and explicit) 'envir' param;
+	change 'show.output' param to 'showOutput'; add parameter to
+	onBuild hook to indicate if the source was from a 'code' parameter
+	* src/Attributes.cpp: factored parser into it's own file
+	* src/AttributesParser.h: attributes parser header
+	* src/AttributesParser.cpp: attributes parser implementation
+	* man/sourceCpp.Rd: documentation updates
+	* man/compileAttributes.Rd: documentation updates
+	* man/cppFunction.Rd: documentation for cppFunction
+	* NAMESPACE: export for cppFunction
+
+2012-10-31  Romain Francois <romain@r-enthusiasts.com>
+
+        * include/Rcpp/module/class.h: factored out of Module.h which started to
+        be too big. class_ gains a derives<Parent>( "Parent" ) for so that the
+        class inherits method that were exposed by its parent.
+        * include/Rcpp/Module.h: template class CppInheritedMethod for
+	implementing inherited method
+        * src/Module.cpp: get_class_pointer implementation
+
+2012-10-30  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/Rmath.h: Finalised adding Rmath functions
+
+2012-10-30  JJ Allaire <jj@rstudio.org>
+
+	* R/Attributes.R: new functions sourceCpp and compileAttributes that
+	use C++11 style attributes (embedded in comments) to perform
+	automatic generation of boilerplate marshaling code
+	* src/Attributes.cpp: support functions for attribute handling
+	* include/Rcpp/exceptions.h: file io exception classes
+	* man/sourceCpp.Rd: documentation for sourceCpp
+	* man/compileAttributes.Rd: documentation for compileAttributes
+	* man/exportAttriute.Rd: documentation for export attribute
+	* man/dependsAttribute.Rd: documentation for depends attribute
+	* NAMESPACE: exports for sourceCpp and compileAttributes
+
+2012-10-30  Romain Francois <romain@r-enthusiasts.com>
+
+        * include/Rcpp/as.h: new bare_as to simplify uses of as
+        * include/Rcpp/module/Module_generated_Factory.h: using bare_as
+        * R/Module.R: promoting the show method
+        * src/Attributes.cpp: remove g++ warning (int != size_t)
+
+2012-10-29  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/Rmath.h: More Rmath functions
+
+2012-10-29  Romain Francois <romain@r-enthusiasts.com>
+
+	* R/Module.R: Taking care of a check warning
+	* include/Rcpp/module/macros.h: adding RCPP_EXPOSED_CLASS_NODECL
+	* include/Rcpp/Module.h: introducing converter to facilitate
+	conversion between classes.
+	* R/Module.R: Methods registered internally with converter will
+	generate the appropriate "as" S4 method.
+
+2012-10-28  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/Rmath.h: Beginnings of a namespave 'R' around
+	Rmath functions so that Rcpp users can call the (scalar) functions
+	R::pnorm() which helps with adapting or integrating programs writting
+	outside of Rcpp
+
+2012-10-27  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/module/macros.h: Add forward declaration of class
+	to macro 'RCPP_EXPOSED_CLASS'
+
+2012-10-25  Romain Francois <romain@r-enthusiasts.com>
+
+	* include/Rcpp/internal/wrap.h: wrapping module object with the help
+	of the RCPP_EXPOSED_CLASS
+	* include/Rcpp/module/macros.h: improving the macros so that wrap and
+	as are covered
+	* include/Rcpp/traits/wrap_type_traits.h: wrapping module objects
+	* include/Rcpp/module/Module_generated_class_factory.h : factories
+	are alternatives to constructors. For now, we can expose as factories
+	any free function that returns a pointer to the target class
+	* include/Rcpp/module/Module_generated_Factory.h : factories
+	* include/Rcpp/Module.h: exposing factories
+
+2012-10-24  Romain Francois <romain@r-enthusiasts.com>
+
+	* include/Rcpp/traits/is_pointer.h: traits to identify if a type is a
+	pointer
+	* include/Rcpp/traits/un_pointer.h: traits to remove a pointer
+	* include/Rcpp/module/Module_generated_get_return_type.h : handle
+	pointer return types
+	* include/Rcpp/config.h: define RCPP_HAS_DEMANGLING for MAC OS <=
+	10.7 (up to Lion)
+	* include/Rcpp/module/macros.h: new file that contains macro to help
+	with modules
+	* include/Rcpp/traits/r_type_traits.h : new tag to allow as<T> where
+	T is some class exposed in a module
+	* include/Rcpp/as.h : implementation of as<T> in that case
+
+2012-10-23  Romain Francois <romain@r-enthusiasts.com>
+
+	* include/Rcpp/internal/wrap.h: new function module_wrap used
+	internally by modules
+	* include/Rcpp/module/Module_generated_CppMethod.h: using module_wrap
+	and simplified the code (removing 35% of the generated code now
+	rendered useless)
+	* include/Rcpp/module/Module_generated_PointerCppMethod.h: using
+	module_wrap and simplified the code
+	* include/Rcpp/traits/module_wrap_traits.h : new file. helping
+	implementation of module_wrap
+
+	* R/00_classes.R: C++OverloadedMethods gets the field "nargs" to
+	capture the number of arguments
+
+	* R/01_show.R: cleanup
+
+	* R/Module.R: handle the case where a method has no argument. In that
+	case, the ellipsis does not end up in the formals
+
+	* include/Rcpp/Module.h: exposing nargs in C++OverloadedMethods
+
+2012-10-22  Romain Francois <romain@r-enthusiasts.com>
+
+	* include/Rcpp/as.h: support for as<> for module objects
+	* include/Rcpp/Module.h: idem
+	* include/Rcpp/traits/r_type_traits.h: idem
+	* src/Module.cpp: idem
+
+2012-10-21  Romain Francois <romain@r-enthusiasts.com>
+
+        * include/Rcpp/traits/wrap_type_traits.h: support for wrapping module objects
+        * include/Rcpp/internal/wrap.h : idem
+        * include/Rcpp/Module.h: idem
+
 2012-10-13  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION: Release 0.9.15

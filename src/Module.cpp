@@ -31,7 +31,7 @@ RCPP_FUNCTION_1( bool, Class__has_default_constructor, XP_Class cl ){
     return cl->has_default_constructor() ;
 }
 RCPP_FUNCTION_2( SEXP, Module__get_function, XP_Module module, std::string fun ){
-    return module->get_function_ptr( fun ) ;
+    return module->get_function( fun ) ;
 }
 RCPP_FUNCTION_2( bool, Class__has_method, XP_Class cl, std::string m){
 	return cl->has_method(m) ;
@@ -269,8 +269,10 @@ extern "C" void R_init_Rcpp( DllInfo* info){
 
 namespace Rcpp{
 	
-	Module::Module() : name(), functions(), classes() {}
-	Module::Module(const char* name_) : name(name_), functions(), classes() {}
+	Module::Module() : name(), functions(), classes(), prefix() {}
+	Module::Module(const char* name_) : name(name_), functions(), classes(), prefix("Rcpp_module_") {
+	    prefix += name ;
+	}
 	
 	SEXP Module::invoke( const std::string& name_, SEXP* args, int nargs){
 		BEGIN_RCPP
@@ -290,7 +292,7 @@ namespace Rcpp{
 		END_RCPP
 	}                                                                                  
 	
-	SEXP Module::get_function_ptr( const std::string& name ){
+	SEXP Module::get_function( const std::string& name ){
 	    MAP::iterator it = functions.begin() ;
 	    int n = functions.size() ;
 	    CppFunction* fun = 0 ;
@@ -307,8 +309,22 @@ namespace Rcpp{
 	        fun->is_void(), 
 	        fun->docstring, 
 	        sign, 
-	        fun->get_formals()
+	        fun->get_formals(), 
+	        fun->nargs()
 	        ) ;
+	}
+	
+	DL_FUNC Module::get_function_ptr( const std::string& name ){
+	    MAP::iterator it = functions.begin() ;
+	    int n = functions.size() ;
+	    CppFunction* fun = 0 ;
+	    for( int i=0; i<n; i++, ++it){
+	        if( name.compare( it->first ) == 0){
+	            fun = it->second ;
+	            break ;
+	        }
+	    }
+	    return fun->get_function_ptr() ;
 	}
 	
 	Rcpp::List Module::classes_info(){
@@ -382,6 +398,24 @@ namespace Rcpp{
 		return res ;
 	}
 	
+	void Module::add_enum( const std::string& parent_class_typeinfo_name, const std::string& enum_name, const std::map<std::string, int>& value ){
+	    // find the parent class
+	    CLASS_ITERATOR it ;
+	    class_Base* target_class = NULL;
+	    for( it = classes.begin(); it != classes.end(); it++){
+	        if( it->second->has_typeinfo_name(parent_class_typeinfo_name) ){
+	            target_class = it->second ;
+	        }
+	    }
+	    
+	    // TODO: add the enum to the class
+	    target_class->add_enum( enum_name, value ) ;
+	}
+	
+	void class_Base::add_enum( const std::string& enum_name, const std::map<std::string, int>& value ){
+	    enums.insert( ENUM_MAP_PAIR( enum_name, value ) ) ;
+	}
+        
 	CppClass::CppClass( SEXP x) : S4(x){}
 	
 	CppClass::CppClass( Module* p, class_Base* cl, std::string& buffer ) : S4("C++Class") {
@@ -399,6 +433,7 @@ namespace Rcpp{
 		slot( "constructors") = cl->getConstructors( clxp.asSexp(), buffer ) ;
 		slot( "docstring"   ) = cl->docstring ;
 		slot( "typeid" )      = cl->get_typeinfo_name() ;
+		slot( "enums"  )      = cl->enums ;
 	}
 
 	CppObject::CppObject( Module* p, class_Base* clazz, SEXP xp ) : S4("C++Object") {
@@ -415,6 +450,28 @@ namespace Rcpp{
 			return CppClass( this, it->second, buffer ) ;
 		END_RCPP
 	}
+	
+	class_Base* Module::get_class_pointer(const std::string& cl){
+        CLASS_MAP::iterator it = classes.find(cl) ;
+        if( it == classes.end() ) throw std::range_error( "no such class" ) ;
+        return it->second ;	
+	}
+	
+	namespace internal{
+	    void* as_module_object_internal(SEXP obj){
+	        Environment env(obj) ;
+	        SEXP xp = env.get(".pointer") ;
+	        return R_ExternalPtrAddr(xp );
+	    }
+	}
+	
+	FunctionProxy GetCppCallable( const std::string& pkg, const std::string& mod, const std::string& fun){
+        Rcpp::Function require = Rcpp::Environment::base_env()["require"];
+        require("PackageA", Rcpp::Named("quietly") = true);
+        std::string pack( "Rcpp_module_" ) ;
+        pack += mod ;
+        return R_GetCCallable( pack.c_str(), fun.c_str() ) ;     
+    }
 	
 }
 

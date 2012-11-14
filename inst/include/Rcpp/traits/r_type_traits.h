@@ -3,7 +3,7 @@
 //
 // r_type_traits.h: Rcpp R/C++ interface class library -- traits to help wrap
 //
-// Copyright (C) 2010 - 2011 Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2010 - 2012 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -60,9 +60,30 @@ struct r_type_pairstring_string_tag{} ;
 struct r_type_pairstring_generic_tag{} ;
 
 /**
+ * identifies a module object pointer (i.e. something like object<T>
+ */ 
+struct r_type_module_object_pointer_tag{} ;
+
+/**
+ * identifies a module object. Implementers of modules can define the 
+ * r_type_traits to sghow that their object is handled
+ */ 
+struct r_type_module_object_tag{} ;
+
+/**
+ * identifies an enum. conversions from/to int is used
+ */ 
+struct r_type_enum_tag{} ;
+
+/**
  * R type trait. Helps wrap.
  */
 template <typename T> struct r_type_traits { typedef r_type_generic_tag r_category ; } ;
+
+/**
+ * module object type
+ */
+template <typename T> struct r_type_traits< Rcpp::object<T> >{ typedef r_type_module_object_pointer_tag r_category ; } ;
 
 /** 
  * special cases pair<string,T> to deal with map<string,T> etc ...
