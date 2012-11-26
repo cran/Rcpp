@@ -41,6 +41,8 @@
 #include <Rcpp/sugar/functions/ifelse.h>
 #include <Rcpp/sugar/functions/pmin.h>
 #include <Rcpp/sugar/functions/pmax.h>
+#include <Rcpp/sugar/functions/clamp.h>
+#include <Rcpp/sugar/functions/minmax.h>
 #include <Rcpp/sugar/functions/sign.h>
 #include <Rcpp/sugar/functions/diff.h>
 #include <Rcpp/sugar/functions/pow.h>
@@ -60,5 +62,10 @@
 #include <Rcpp/sugar/functions/which_max.h>
 
 #include <Rcpp/sugar/functions/unique.h>
+#include <Rcpp/sugar/functions/match.h>
+#include <Rcpp/sugar/functions/table.h>
+#include <Rcpp/sugar/functions/duplicated.h>
+#include <Rcpp/sugar/functions/self_match.h>
+#include <Rcpp/sugar/functions/setdiff.h>
 
 #endif

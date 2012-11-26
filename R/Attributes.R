@@ -138,6 +138,14 @@ sourceCpp <- function(file = "",
         dll <- dyn.load(context$dynlibPath)
         populate(Module(context$moduleName, PACKAGE = dll, mustStart = TRUE), 
                  env)
+    } else if (getOption("rcpp.warnNoExports", default=TRUE)) {
+        warning("No Rcpp::export attributes found in source")
+    }
+    
+    # source the embeddedR
+    if (length(context$embeddedR) > 0) {
+        srcConn <- textConnection(context$embeddedR)
+        source(file=srcConn, echo=TRUE)
     }
     
     # return (invisibly) a list of exported functions
@@ -214,6 +222,37 @@ evalCpp <- function(code,
  
                          
     code <- sprintf( "SEXP get_value(){ return wrap( %s ) ; }", code )
+    env <- new.env()
+    cppFunction(code, depends = depends, includes = includes, env = env, 
+                rebuild = rebuild, showOutput = showOutput, verbose = verbose )
+    fun <- env[["get_value"]]
+    fun()
+}
+
+areMacrosDefined <- function(names, 
+                    depends = character(), 
+                    includes = character(), 
+                    rebuild = FALSE,
+                    showOutput = verbose, 
+                    verbose = getOption( "verbose" ) ){
+ 
+                         
+    code <- sprintf( '
+        LogicalVector get_value(){ 
+            
+            return LogicalVector::create( 
+                %s
+            ) ;
+        }', 
+        
+        paste( sprintf( '    _["%s"] = 
+                #if defined(%s)
+                    true
+                #else
+                    false
+                #endif
+         ', names, names ), collapse = ",\n" )
+    )
     env <- new.env()
     cppFunction(code, depends = depends, includes = includes, env = env, 
                 rebuild = rebuild, showOutput = showOutput, verbose = verbose )

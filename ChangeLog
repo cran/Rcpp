@@ -1,3 +1,190 @@
+2012-11-26  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION: Release 0.10.1
+        * inst/NEWS.Rd: Release 0.10.1
+        * inst/include/Rcpp/config.h: Release 0.10.1
+        * debian/*: Similarly updated for new release to Debian
+
+	* DESCRIPTION: Added paragraph about Rcpp attributes
+	* debian/control: Idem
+
+2012-11-26 Romain Francois <romain@r-enthusiasts.com>
+
+        * include/Rcpp/Module.h: comment out the unused and unuseable
+	converter overload.
+        * include/Rcpp/sugar/functions/pmin.h: be consistent about how the
+	pmin_op helper struct is defined (always a struct).
+        * include/Rcpp/sugar/functions/pmax.h: same for pmax
+        * include/Rcpp/stats/random/rbeta.h: fixed constructor issue
+        * unitTests/runit.sugar.R: rework to use sourceCpp instead of inline
+        * include/Rcpp/vector/Vector.h: added ctor to deal with
+        SingleLogicalResult
+        * include/Rcpp/vector/Matrix.h: another const correctness fix
+
+2012-11-25  JJ Allaire <jj@rstudio.org>
+
+        * R/Attributes.R: use echo = TRUE for sourceCpp R code chunks
+        * src/Module.cpp: BEGIN_RCPP/END_RCPP in InternalFunction_invoke
+        * inst/doc/Rcpp-attributes/Rcpp-attributes.Rnw: add documentation
+        on correct semantics for signaling error conditions
+
+2012-11-24  JJ Allaire <jj@rstudio.org>
+
+        * inst/doc/Rcpp-attributes/Rcpp-attributes.Rnw: expand discussion
+        of binary compatibility issues.
+
+2012-11-23 Romain Francois <romain@r-enthusiasts.com>
+
+        * src/AttributesParser.cpp : attempt to fix build issue on r-forge
+        * include/Rcpp/DataFrame.h: nrows() method
+        * include/Rcpp/vector/RangeIndexer.h: now derives from VectorBase so
+	that we can use it in sugar.
+
+2012-11-22  JJ Allaire <jj@rstudio.org>
+
+        * include/exceptions.h: new exception constructor / stop function
+        * src/exceptions.cpp: new exception constructor / stop function
+        * include/RcppCommon.h: new exception constructor / stop function
+
+2012-11-22 Romain Francois <romain@r-enthusiasts.com>
+
+        * include/Rcpp/iostream.h: use delete rdbuf() as recommended by
+	Martyn Plummer
+        * include/Rcpp/sugar/functions/self_match.h: self_match, giving a
+        functionality similar to match( x, unique(x) )
+        * src/coerce.cpp: added coercion to STRSXP
+        * include/Rcpp/internal/r_coerce.h : added r_coerce<.,STRPSXP>
+        * include/Rcpp/sugar/functions/table.h: sugar table
+        * include/Rcpp/sugar/functions/duplicated.h: sugar duplicated
+
+2012-11-21  JJ Allaire <jj@rstudio.org>
+
+        * R/Rcpp.package.skeleton.R: add 'attributes' and 'cpp_files'
+        parameters to Rcpp.pacakge.skeleton
+        * inst/skeleton/rcpp_hello_world_attributes.cpp: version of hello world
+        that uses attributes
+        * man/Rcpp.package.skeleton.Rd: doc updates
+        * inst/doc/Rcpp-attributes/Rcpp-attributes.Rnw: doc updates
+        * DESCRIPTION: bump version to 0.10.0.3
+
+2012-11-21  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/examples/Misc/piBySimulation.r: New simple example using Rcpp
+	attributes in a 'compute pi by simulation in R and C++' exercise
+	* inst/examples/Misc/piSugar.cpp: Corresponding C++ variant
+
+2012-11-21  Romain Francois <romain@r-enthusiasts.com>
+
+        * include/Rcpp/iostream/Rostream.h: Fix warning given by -Wreorder
+        * include/Rcpp/sugar/functions/mapply/mapply_3.h: more flexible
+        * include/Rcpp/vector/Vector.h: More efficient assign_object, which
+	is used in the assignment operator
+        * include/Rcpp/sugar/functions/clamp.h: added clamp function
+
+2012-11-20  JJ Allaire <jj@rstudio.org>
+
+        * src/Attributes.cpp: ensure dynlib cache state is always updated
+        * inst/doc/Rcpp-attributes/Rcpp-attributes.Rnw: elaborate further
+        on exporting C++ interfaces from packages
+
+2012-11-20  Romain Francois <romain@r-enthusiasts.com>
+
+        * include/Rcpp/iostream/Rostream.h: change order of initiaization in
+	ctor. was making solaris compiler unhappy
+        * include/Rcpp/stats/random/rnorm.h: not using function pointer
+	generators, as this generates (anachronisms) warning on
+	solaris. Also, this version is more efficient since there is no need
+	to dereference the function pointer
+
+2012-11-19  JJ Allaire <jj@rstudio.org>
+
+        * src/AttributesParser.h: support for argument default values
+        * src/AttributesParser.cpp: support for argument default values
+        * src/Attributes.cpp: support for argument default values
+        * man/exportAttribute.Rd: documentation updates
+        * man/compileAttributes.Rd: documentation updates
+        * man/sourceCpp.Rd: documentation updates
+        * inst/doc/Rcpp-attributes/Rcpp-attributes.Rnw: add documentation
+        on changes to attributes in 0.10.1
+
+2012-11-18  JJ Allaire <jj@rstudio.org>
+
+        * R/Attributes.R: sourceCpp embedded R code; print warning if no
+	export attributes are found in source file
+        * src/AttributesParser.h: sourceCpp embedded R code
+        * src/AttributesParser.cpp: sourceCpp embedded R code; new scheme
+        for mixing user and generated C++ headers
+        * src/Attributes.cpp: sourceCpp embedded R code; include <Rcpp.h>
+        above generated modules
+        * man/sourceCpp.Rd: documentation updates
+        * man/interfacesAttribute.Rd: documentation updates
+
+2012-11-18  Romain Francois <romain@r-enthusiasts.com>
+
+        * include/Rcpp/vector/converter.h: allow CharacterVector::create(
+	NA_STRING )
+        * include/Rcpp/sugar/functions/mapply/mapply_2.h: more cases in mapply
+
+2012-11-17  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/doc/Rcpp-modules/Rcpp-modules.Rnw: Change free function name
+	'range' to 'uniformRange' to protect it from getting clobbered by the
+	new sugar function range.
+
+2012-11-17  Romain Francois <romain@r-enthusiasts.com>
+
+        * include/Rcpp/internal/wrap_end.h: have calls to wrap as late as
+	possible so that they "see" all (potentially user defined) overloads
+	of wrap.
+        * include/Rcpp/internal/SEXP_Iterator.h: directly iterate over SEXP.
+        const iterator for List and ExpressionVector
+
+2012-11-16  Romain Francois <romain@r-enthusiasts.com>
+
+        * include/Rcpp/vector/Vector.h : added static methods Vector::is_na
+	and Vector::get_na
+        * include/Rcpp/sugar/functions/setdiff.h: initial version of setdiff
+	and intersect
+        * include/Rcpp/vector/MatrixColumn.h: dealing with const-ness
+        * include/Rcpp/vector/MatrixRow.h: dealing with const-ness
+        * include/Rcpp/vector/traits.h: dealing with const-ness
+        * include/Rcpp/vector/proxy.h: dealing with const-ness
+        * include/Rcpp/vector/MatrixBase.h: dealing with const-ness
+        * include/Rcpp/vector/Vector.h: dealing with const-ness
+
+2012-11-15  Romain Francois <romain@r-enthusiasts.com>
+
+        * include/Rcpp/sugar/logical/SingleLogicalResult.h : apply patch
+	suggested by Karl Millar
+        * R/Attributes.R: new R function areMacrosDefined
+        * man/evalCpp.Rd: documentation update
+        * include/Rcpp/sugar/functions/match.h : generic version of match
+        * include/Rcpp/sugar/tools/iterator.h: help iterator that helps
+	writing match in terms of stl algorithms.
+        * include/Rcpp/vector/Vector.h: class no_init that can be used to create
+        an uninitialized vector. e.g. IntegerVector out = no_init(10) ;
+        * include/Rcpp/sugar/functions/unique.h: sugar version of %in% using
+	unordered_set
+        * include/Rcpp/sugar/functions/minmax.h: min, max, and range
+
+2012-11-14  JJ Allaire <jj@rstudio.org>
+
+        * src/Attributes.cpp: create sourceCpp context list using single
+	statement
+
+2012-11-14  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/announce/ANNOUNCE-0.10.0.txt: Fix typo spotted by Martin
+	Morgan in announcement mail
+
+2012-11-14  Romain Francois <romain@r-enthusiasts.com>
+
+        * include/Rcpp/internal/wrap.h: fix for wrap( std::complex<double> )
+        * include/Rcpp/module/class_Base.h: factored out from Module.h
+        * R/00_classes.R: the C++Class gains the parents slot to hold information
+        about parent classes of the class
+        * src/Module.cpp : The CppClass constructor fills the parents slot of C++Class
+
 2012-11-13  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION: Release 0.10.0

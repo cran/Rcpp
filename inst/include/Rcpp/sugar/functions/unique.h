@@ -36,14 +36,12 @@ public:
         return Vector<RTYPE>( set.begin(), set.end() ) ;
     }
     Vector<RTYPE> get_sorted( ) {
-        Vector<RTYPE> out( set.begin(), set.end() ) ;
-        std::sort( out.begin(), out.end() ) ;
-        return out ;
+        return Vector<RTYPE>( set.begin(), set.end() ).sort() ;
     }
     
 private:
     
-    RCPP_UNIQUE_SET<STORAGE> set ;
+    RCPP_UNORDERED_SET<STORAGE> set ;
     
 } ;
    
@@ -64,15 +62,12 @@ public:
         return CharacterVector( set.begin(), set.end() ) ;
     }
     CharacterVector get_sorted( ) {
-        CharacterVector out( set.begin(), set.end() ) ;
-        SEXP* p_out = get_string_ptr(out) ;
-        std::sort( p_out, p_out + set.size(), StringCompare() );
-        return out ;
+        return CharacterVector( set.begin(), set.end() ).sort() ;
     }
     
 private:
     
-    RCPP_UNIQUE_SET<std::string> set ;
+    RCPP_UNORDERED_SET<std::string> set ;
    
 } ;
 
@@ -80,33 +75,51 @@ private:
 template <>
 class Unique<STRSXP,CharacterVector> {
 public:
-    Unique( const CharacterVector& vec ) : 
-        set( get_string_ptr(vec), get_string_ptr(vec) + vec.size() )
-    {
-    }
+    Unique( const CharacterVector& vec ) : set( vec.begin(), vec.end() ) {}
     
     CharacterVector get( ) {
-        CharacterVector out(set.size()) ;
-        std::copy( set.begin(), set.end(), get_string_ptr(out) ) ;
-        return out ;
+        return CharacterVector( set.begin(), set.end() ) ;
     }
     
     CharacterVector get_sorted( ) {
-        int n = set.size() ;
-        CharacterVector out(n) ;
-        SEXP* p_out = get_string_ptr(out) ;
-        std::copy( set.begin(), set.end(), p_out ) ;
-        std::sort( p_out, p_out+n, StringCompare() ) ;
-        
-        return out ;
+        return CharacterVector( set.begin(), set.end() ).sort() ;
     }
 private:
     
-    RCPP_UNIQUE_SET<SEXP> set ;
+    RCPP_UNORDERED_SET<SEXP> set ;
    
 } ;
 
+template <typename SET, typename STORAGE>
+class InSet {
+public:
+    InSet( const SET& hash_ ) : hash(hash_), end(hash_.end()){}
+    
+    inline int operator()(STORAGE value){
+        return hash.find(value) != end ;    
+    }
+    
+private:
+    const SET& hash ;
+    typename SET::const_iterator end ;
+} ;
 
+template <int RTYPE, typename TABLE_T>
+class In {
+public:
+    In( const TABLE_T& table) : hash( get_const_begin(table), get_const_end(table) ){}
+    
+    template <typename T>
+    LogicalVector get( const T& x) const {
+        return LogicalVector( x.begin(), x.end(), InSet<SET,STORAGE>(hash) ) ;
+    }
+    
+private:
+    typedef typename traits::storage_type<RTYPE>::type STORAGE ;
+    typedef typename RCPP_UNORDERED_SET<STORAGE> SET ;
+    SET hash ;
+    
+} ;
 
 
 } // sugar
@@ -120,6 +133,11 @@ inline Vector<RTYPE> sort_unique( const VectorBase<RTYPE,NA,T>& t ){
 	return sugar::Unique<RTYPE,T>( t.get_ref() ).get_sorted() ;
 }
 
+template <int RTYPE, bool NA, typename T, bool RHS_NA, typename RHS_T>
+inline LogicalVector in( const VectorBase<RTYPE,NA,T>& x, const VectorBase<RTYPE,RHS_NA,RHS_T>& table ){
+    sugar::In<RTYPE,RHS_T> obj(table.get_ref()) ;
+    return obj.get( x.get_ref() );
+}
 
 
 } // Rcpp

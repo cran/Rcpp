@@ -134,7 +134,10 @@ namespace {
                                         it->function().arguments();
                     ostr << ", Rcpp::List::create("; 
                     for (size_t i=0; i<args.size(); i++) {
-                        ostr << "Rcpp::Named(\"" << args[i].name() << "\")";
+                        const Argument& arg = args[i];
+                        ostr << "Rcpp::Named(\"" << arg.name() << "\")";
+                        if (!arg.defaultValue().empty())
+                            ostr << " = " << arg.defaultValue();
                         if (i != (args.size()-1))
                             ostr << ", ";
                     }
@@ -431,22 +434,21 @@ namespace {
         std::vector<std::string> prototypes_;
         std::vector<std::string> signatures_;
     };
-    
-    // Class which manages generating the header file for the package
-    const char * const kTypesSuffix = "_types.h";
-    class CppIncludeGenerator : public ExportsGenerator {
+       
+    // Class which manages generating PackageName_RcppExports.h header file
+    const char * const kRcppExportsSuffix = "_RcppExports.h";
+    class CppExportsIncludeGenerator : public ExportsGenerator {
     public:
-        explicit CppIncludeGenerator(const std::string& packageDir, 
-                                     const std::string& package,
-                                     const std::string& fileSep)
+        CppExportsIncludeGenerator(const std::string& packageDir, 
+                                   const std::string& package,
+                                   const std::string& fileSep)
             : ExportsGenerator( 
                 packageDir +  fileSep + "inst" +  fileSep + "include" +
-                fileSep + package + ".h", 
+                fileSep + package + kRcppExportsSuffix, 
                 package,
                 "//")
         {
             includeDir_ = packageDir +  fileSep + "inst" +  fileSep + "include";
-            includeTypes_ = includeDir_ + fileSep + package + kTypesSuffix;
             hasCppInterface_ = false; 
         }
         
@@ -562,12 +564,6 @@ namespace {
                     ostr << std::endl;
                 }
                 
-                // if there is a types header then include it as well
-                if (FileInfo(includeTypes_).exists()) {
-                    ostr << "#include <" << package() << kTypesSuffix << ">"
-                         << std::endl << std::endl;
-                }
-                
                 // commit with preamble
                 return ExportsGenerator::commit(ostr.str());
             }
@@ -593,9 +589,76 @@ namespace {
         
     private:
         std::string includeDir_;
-        std::string includeTypes_;
         bool hasCppInterface_;
     };
+    
+     // Class which manages generating PackageName_RcppExports.h header file
+    class CppPackageIncludeGenerator : public ExportsGenerator {
+    public:
+        CppPackageIncludeGenerator(const std::string& packageDir, 
+                                   const std::string& package,
+                                   const std::string& fileSep)
+            : ExportsGenerator( 
+                packageDir +  fileSep + "inst" +  fileSep + "include" +
+                fileSep + package + ".h", 
+                package,
+                "//")
+        {
+            includeDir_ = packageDir +  fileSep + "inst" +  fileSep + "include";
+            hasCppInterface_ = false; 
+        }
+        
+        virtual void writeBegin() {
+        }
+        
+        virtual void writeFunctions(const SourceFileAttributes &attributes,
+                                    bool verbose) {     
+            // See if there is a C++ interface exported by any attributes
+            if (attributes.hasInterface(kInterfaceCpp)) 
+                hasCppInterface_ = true;  
+        }
+        
+        virtual void writeEnd() {
+            if (hasCppInterface_) {
+                // header guard
+                std::string guard = getHeaderGuard();
+                ostr() << "#ifndef " << guard << std::endl;
+                ostr() << "#define " << guard << std::endl << std::endl; 
+                
+                ostr() << "#include \"" << package() << kRcppExportsSuffix 
+                       << "\"" << std::endl;
+                
+                ostr() << std::endl;
+                ostr() << "#endif // " << getHeaderGuard() << std::endl;
+            }
+        }
+        
+        virtual bool commit(const std::vector<std::string>& includes) {
+            
+            if (hasCppInterface_) {
+                
+                // create the include dir if necessary
+                createDirectory(includeDir_);
+                
+                // commit 
+                return ExportsGenerator::commit();
+            }
+            else {
+                return ExportsGenerator::remove();
+            }
+        }
+        
+    private:
+    
+        std::string getHeaderGuard() const {
+            return package() + "_h";
+        }
+        
+    private:
+        std::string includeDir_;
+        bool hasCppInterface_;
+    };
+    
     
     // Class which manages generator RcppExports.R
     class RExportsGenerator : public ExportsGenerator {
@@ -763,9 +826,9 @@ BEGIN_RCPP
     // catch file exists exception if the include file already exists
     // and we are unable to overwrite it
     try {
-        generators.add(new CppIncludeGenerator(packageDir, 
-                                               packageName, 
-                                               fileSep));
+        generators.add(new CppExportsIncludeGenerator(packageDir, 
+                                                      packageName, 
+                                                      fileSep));
     }
     catch(const Rcpp::file_exists& e) {
         std::string msg = 
@@ -773,6 +836,15 @@ BEGIN_RCPP
             "cannot be overwritten by Rcpp::interfaces";
         throw Rcpp::exception(msg.c_str(), __FILE__, __LINE__);
     }
+    
+    // catch file exists exception for package include (because if it 
+    // already exists we simply leave it alone)
+    try {
+        generators.add(new CppPackageIncludeGenerator(packageDir, 
+                                                      packageName, 
+                                                      fileSep));
+    }
+    catch(const Rcpp::file_exists& e) {}
     
     // write begin
     generators.writeBegin();
@@ -833,9 +905,6 @@ namespace {
             if (!cppSourceFilenameInfo.exists())
                 throw Rcpp::file_not_found(cppSourcePath_);
                     
-            // get last modified time        
-            cppSourceLastModified_ = cppSourceFilenameInfo.lastModified();
-            
             // record the base name of the source file
             Rcpp::Function basename = Rcpp::Environment::base_env()["basename"];
             cppSourceFilename_ = Rcpp::as<std::string>(basename(cppSourcePath_));
@@ -892,6 +961,7 @@ namespace {
             generatedCpp_.clear();
             if (!sourceAttributes.empty()) {
                 std::ostringstream ostr;
+                ostr << "#include <Rcpp.h>" << std::endl;
                 ostr << "RCPP_MODULE(" << moduleName()  << ") {" << std::endl;
                 generateCppModuleFunctions(ostr, sourceAttributes, false);
                 ostr << "}" << std::endl;
@@ -920,6 +990,9 @@ namespace {
                         depends_.push_back(it->params()[i].name());
                  }   
             }
+            
+            // capture embededded R
+            embeddedR_ = sourceAttributes.embeddedR();
         }
         
         const std::string& moduleName() const {
@@ -955,6 +1028,8 @@ namespace {
         }
         
         const std::vector<std::string>& depends() const { return depends_; };
+        
+        const std::vector<std::string>& embeddedR() const { return embeddedR_; }
           
     private:
     
@@ -964,7 +1039,6 @@ namespace {
         
     private:
         std::string cppSourcePath_;
-        time_t cppSourceLastModified_;
         std::string generatedCpp_;
         std::string cppSourceFilename_;
         std::string moduleName_;
@@ -973,6 +1047,7 @@ namespace {
         std::string dynlibExt_;
         std::vector<std::string> exportedFunctions_;
         std::vector<std::string> depends_;
+        std::vector<std::string> embeddedR_;
     };
     
     // Dynlib cache that allows lookup by either file path or code contents
@@ -988,39 +1063,43 @@ namespace {
       
     public:
         // Insert into cache by file name
-        void insertFile(const std::string& file, const SourceCppDynlib& dynlib) {
+        SourceCppDynlib* insertFile(const std::string& file, 
+                                    const SourceCppDynlib& dynlib) {
             Entry entry;
             entry.file = file;
             entry.dynlib = dynlib;
             entries_.push_back(entry);
+            return &(entries_.rbegin()->dynlib);
         }
         
         // Insert into cache by code
-        void insertCode(const std::string& code, const SourceCppDynlib& dynlib) {
+        SourceCppDynlib* insertCode(const std::string& code, 
+                                    const SourceCppDynlib& dynlib) {
             Entry entry;
             entry.code = code;
             entry.dynlib = dynlib;
             entries_.push_back(entry);
+            return &(entries_.rbegin()->dynlib);
         }
     
         // Lookup by file
-        SourceCppDynlib lookupByFile(const std::string& file) {
+        SourceCppDynlib* lookupByFile(const std::string& file) {
             for (std::size_t i = 0; i < entries_.size(); i++) {
                 if (entries_[i].file == file)
-                    return entries_[i].dynlib;
+                    return &(entries_[i].dynlib);
             }
             
-            return SourceCppDynlib();
+            return NULL;
         }
         
         // Lookup by code
-        SourceCppDynlib lookupByCode(const std::string& code) {
+        SourceCppDynlib* lookupByCode(const std::string& code) {
             for (std::size_t i = 0; i < entries_.size(); i++) {
                 if (entries_[i].code == code)
-                    return entries_[i].dynlib;
+                    return &(entries_[i].dynlib);
             }
             
-            return SourceCppDynlib();
+            return NULL;
         }
       
     private:
@@ -1045,49 +1124,46 @@ BEGIN_RCPP
     
     // get dynlib (using cache if possible)
     static SourceCppDynlibCache s_dynlibCache;
-    SourceCppDynlib dynlib;
-    if (!code.empty())
-        dynlib = s_dynlibCache.lookupByCode(code);
-    else
-        dynlib = s_dynlibCache.lookupByFile(file);
-  
+    SourceCppDynlib* pDynlib = !code.empty() ? s_dynlibCache.lookupByCode(code) 
+                                             : s_dynlibCache.lookupByFile(file);
+   
     // check dynlib build state
     bool buildRequired = false;
     
     // if there is no dynlib in the cache then create one
-    if (dynlib.isEmpty()) {   
+    if (pDynlib == NULL) {   
         buildRequired = true;
-        dynlib = SourceCppDynlib(file, platform);
+        SourceCppDynlib newDynlib(file, platform);
         if (!code.empty())
-            s_dynlibCache.insertCode(code, dynlib);
+            pDynlib = s_dynlibCache.insertCode(code, newDynlib);
         else
-            s_dynlibCache.insertFile(file, dynlib);
+            pDynlib = s_dynlibCache.insertFile(file, newDynlib);
     }    
         
     // if the cached dynlib is dirty then regenerate the source
-    else if (dynlib.isSourceDirty()) {
+    else if (pDynlib->isSourceDirty()) {
         buildRequired = true;    
-        dynlib.regenerateSource();
+        pDynlib->regenerateSource();
     }
     
     // if the dynlib hasn't yet been built then note that
-    else if (!dynlib.isBuilt()) {
+    else if (!pDynlib->isBuilt()) {
         buildRequired = true; 
     }
     
     // return context as a list
-    Rcpp::List context;
-    
-    context["moduleName"] = dynlib.moduleName();
-    context["cppSourcePath"] = dynlib.cppSourcePath();
-    context["buildRequired"] = buildRequired;
-    context["buildDirectory"] = dynlib.buildDirectory();
-    context["generatedCpp"] = dynlib.generatedCpp();
-    context["exportedFunctions"] = dynlib.exportedFunctions();
-    context["cppSourceFilename"] = dynlib.cppSourceFilename();
-    context["dynlibFilename"] = dynlib.dynlibFilename();
-    context["dynlibPath"] = dynlib.dynlibPath();
-    context["depends"] = dynlib.depends();
-    return Rcpp::wrap(context);
+    using namespace Rcpp;
+    return List::create(
+        _["moduleName"] = pDynlib->moduleName(),
+        _["cppSourcePath"] = pDynlib->cppSourcePath(),
+        _["buildRequired"] = buildRequired,
+        _["buildDirectory"] = pDynlib->buildDirectory(),
+        _["generatedCpp"] = pDynlib->generatedCpp(),
+        _["exportedFunctions"] = pDynlib->exportedFunctions(),
+        _["cppSourceFilename"] = pDynlib->cppSourceFilename(),
+        _["dynlibFilename"] = pDynlib->dynlibFilename(),
+        _["dynlibPath"] = pDynlib->dynlibPath(),
+        _["depends"] = pDynlib->depends(),
+        _["embeddedR"] = pDynlib->embeddedR());
 END_RCPP
 }

@@ -22,6 +22,18 @@
 #ifndef Rcpp__vector__Vector_h
 #define Rcpp__vector__Vector_h
 
+class no_init {
+public:
+    no_init(int size_): size(size_){}
+    inline int get() const { return size; }
+    
+    template <int RTYPE>
+    operator Vector<RTYPE>(){ return Rf_allocVector(RTYPE, size) ; }
+    
+private:
+    int size ;
+} ;
+
 template <int RTYPE>
 class Vector :
     public RObject,       
@@ -30,6 +42,7 @@ class Vector :
 {
 public:
     typedef typename traits::r_vector_proxy<RTYPE>::type Proxy ;
+    typedef typename traits::r_vector_const_proxy<RTYPE>::type const_Proxy ;
     typedef typename traits::r_vector_name_proxy<RTYPE>::type NameProxy ;
     typedef typename traits::r_vector_proxy<RTYPE>::type value_type ;
     typedef typename traits::r_vector_iterator<RTYPE>::type iterator ;
@@ -70,40 +83,27 @@ public:
         return *this ;
     }
 	
+    static inline stored_type get_na() { return traits::get_na<RTYPE>(); }
+    static inline bool is_na( stored_type x){ return traits::is_na<RTYPE>(x); }
+    
 private:
     
-    // sugar
     template <typename T>
-    inline void assign_object( const T& x, traits::true_type ){
+    inline void assign_sugar_expression( const T& x ){
         int n = size() ;
         if( n == x.size() ){
-           
             // just copy the data 
-            iterator start = begin() ;
-            
-            int __trip_count = n >> 2 ;
-            int i = 0 ;
-            for ( ; __trip_count > 0 ; --__trip_count) { 
-            	start[i] = x[i] ; i++ ;            
-            	start[i] = x[i] ; i++ ;            
-            	start[i] = x[i] ; i++ ;            
-            	start[i] = x[i] ; i++ ;            
-            }                                            
-            switch (n - i){                          
-            case 3:                                    
-                start[i] = x[i] ; i++ ;             
-            case 2:                                    
-                start[i] = x[i] ; i++ ;             
-            case 1:                                    
-                start[i] = x[i] ; i++ ;             
-            case 0:                                    
-            default:                                   
-                {}                         
-            }
+            import_expression<T>(x, n ) ;
         } else{
             // different size, so we change the memory
             set_sexp( r_cast<RTYPE>( wrap(x) ) ); 
         }
+    }
+    
+    // sugar
+    template <typename T>
+    inline void assign_object( const T& x, traits::true_type ){
+        assign_sugar_expression( x.get_ref() ) ;
     }
     
     // anything else
@@ -136,43 +136,25 @@ public:
     Vector( const VectorBase<RTYPE,NA,VEC>& other ) : RObject() {
     	int n = other.size() ;
     	RObject::setSEXP( Rf_allocVector( RTYPE, n ) ) ;
-    	import_expression<NA,VEC>( other, n ) ;
+    	import_expression<VEC>( other.get_ref() , n ) ;
     }
+    
+    // should eally onlu be used for LogicalVector. 
+    template <bool NA, typename T>
+    Vector( const sugar::SingleLogicalResult<NA,T>& obj ) : RObject() {
+    	RObject::setSEXP( r_cast<RTYPE>( const_cast<sugar::SingleLogicalResult<NA,T>&>( obj ) .get_sexp() ) ) ;
+    }
+    
+    
     
 private:
 	  
     // TODO: do some dispatch when VEC == Vector so that we use std::copy
-    template <bool NA, typename VEC>
-    inline void import_expression( const VectorBase<RTYPE,NA,VEC>& other, int n ){
+    template <typename T>
+    inline void import_expression( const T& other, int n ){
         iterator start = begin() ; 
-        const VEC& ref = other.get_ref() ;
-        
-        int __trip_count = n >> 2 ;
-        int i = 0 ;
-    	for ( ; __trip_count > 0 ; --__trip_count) { 
-            start[i] = ref[i] ; i++ ;            
-            start[i] = ref[i] ; i++ ;            
-            start[i] = ref[i] ; i++ ;            
-            start[i] = ref[i] ; i++ ;            
-    	}                                            
-    	switch (n - i){                          
-        case 3:                                    
-            start[i] = ref[i] ; i++ ;             
-        case 2:                                    
-            start[i] = ref[i] ; i++ ;             
-        case 1:                                    
-            start[i] = ref[i] ; i++ ;             
-        case 0:                                    
-        default:                                   
-            {}                         
-    	}
+        RCPP_LOOP_UNROLL(start,other)
     }
-    
-    // template <>
-    // inline void import_expression<true,Vector>( const VectorBase<RTYPE,NA,VEC>& other, int n ){
-    //     const VEC& ref = other.get_ref() ;
-    //     std::copy( ref.begin(), ref.end(), begin() ) ;
-    // }
     
     template <typename T>
     inline void fill_or_generate( const T& t){
@@ -204,7 +186,7 @@ public:
         RObject::setSEXP( Rf_allocVector( RTYPE, size) ) ;
         fill( u ) ;
     }
-
+    
     Vector( const int& siz, stored_type (*gen)(void) ){
     	RObject::setSEXP( Rf_allocVector( RTYPE, siz) ) ;
         iterator first = begin(), last = end() ;
@@ -251,8 +233,30 @@ public:
     
    
     template <typename InputIterator>
-    Vector( InputIterator first, InputIterator last) : RObject(){
-        assign( first, last ) ;
+    Vector( InputIterator first, InputIterator last) : RObject( ){
+        int n = std::distance(first, last) ;
+        RObject::setSEXP( Rf_allocVector(RTYPE, n) ) ;
+        std::copy( first, last, begin() ) ; 
+    }
+
+    template <typename InputIterator>
+    Vector( InputIterator first, InputIterator last, int n) : RObject( ){
+        RObject::setSEXP( Rf_allocVector(RTYPE, n) ) ;
+        std::copy( first, last, begin() ) ; 
+    }
+
+    template <typename InputIterator, typename Func>
+    Vector( InputIterator first, InputIterator last, Func func) : 
+        RObject( )
+    {
+        RObject::setSEXP( Rf_allocVector( RTYPE, std::distance(first,last) ) ) ;
+        std::transform( first, last, begin(), func) ;
+    }
+    
+    template <typename InputIterator, typename Func>
+    Vector( InputIterator first, InputIterator last, Func func, int n) : RObject(  ){
+        RObject::setSEXP( Rf_allocVector( RTYPE, n ) ) ;
+        std::transform( first, last, begin(), func) ;
     }
 
     Vector( const std::string& st ) : RObject(){
@@ -395,19 +399,19 @@ public:
     inline const_iterator end() const{ return cache.get_const() + size() ; }
 	
     inline Proxy operator[]( int i ){ return cache.ref(i) ; }
-    inline Proxy operator[]( int i ) const { return cache.ref(i) ; }
+    inline const_Proxy operator[]( int i ) const { return cache.ref(i) ; }
+    
     inline Proxy operator()( const size_t& i) {
         return cache.ref( offset(i) ) ;
     }
-    // TODO: should it be const_Proxy
-    inline Proxy operator()( const size_t& i) const {
+    inline const_Proxy operator()( const size_t& i) const {
         return cache.ref( offset(i) ) ;
     }
+    
     inline Proxy operator()( const size_t& i, const size_t& j) {
         return cache.ref( offset(i,j) ) ;
     }
-    // TODO: should it be const_Proxy
-    inline Proxy operator()( const size_t& i, const size_t& j) const {
+    inline const_Proxy operator()( const size_t& i, const size_t& j) const {
         return cache.ref( offset(i,j) ) ;
     }
 	
@@ -418,6 +422,15 @@ public:
         return NameProxy( *this, name ) ;
     }
 	
+    Vector& sort(){
+        std::sort( 
+            internal::r_vector_start<RTYPE>(m_sexp), 
+            internal::r_vector_start<RTYPE>(m_sexp) + size(), 
+            typename traits::comparator_type<RTYPE>::type()
+            ) ;
+        return *this ;
+    }
+
     template <typename InputIterator>
     void assign( InputIterator first, InputIterator last){
         /* FIXME: we can do better than this r_cast to avoid 
@@ -437,10 +450,7 @@ public:
 
     template <typename InputIterator, typename F>
     static Vector import_transform( InputIterator first, InputIterator last, F f){
-        int n = std::distance( first, last ) ;
-        Vector v( n ) ;
-        std::transform( first, last, v.begin(), f) ;
-        return v ;
+        return Vector( first, last, f) ;
     }
 	
     template <typename T>
@@ -659,7 +669,7 @@ private:
 
 public:
 	
-    typedef internal::RangeIndexer<RTYPE,Vector> Indexer ;
+    typedef internal::RangeIndexer<RTYPE,true,Vector> Indexer ;
 	
     inline Indexer operator[]( const Range& range ){
         return Indexer( const_cast<Vector&>(*this), range );

@@ -260,7 +260,11 @@ namespace Rcpp{
 
 SEXP stack_trace( const char *file, int line) ;
 #define GET_STACKTRACE() stack_trace( __FILE__, __LINE__ )
-#define Rcpp_error(MESSAGE) throw new Rcpp::exception( MESSAGE, __FILE__, __LINE__ ) 
+#define Rcpp_error(MESSAGE) throw Rcpp::exception( MESSAGE, __FILE__, __LINE__ ) 
+
+namespace Rcpp {
+	  inline void stop(const std::string& message) { throw Rcpp::exception(message.c_str()); }
+} // namespace Rcpp
 
 #if RCPP_DEBUG_LEVEL > 0
     #include <typeinfo>
@@ -298,6 +302,7 @@ namespace Rcpp{
 #include <Rcpp/traits/storage_type.h>
 #include <Rcpp/traits/r_sexptype_traits.h>
 #include <Rcpp/traits/storage_type.h>
+#include <Rcpp/traits/comparator_type.h>
 #include <Rcpp/traits/r_type_traits.h>
 #include <Rcpp/traits/un_pointer.h>
 #include <Rcpp/traits/is_pointer.h>
@@ -339,6 +344,7 @@ namespace Rcpp{
 
 #include <Rcpp/internal/ListInitialization.h>
 #include <Rcpp/internal/Proxy_Iterator.h>
+#include <Rcpp/internal/SEXP_Iterator.h>
 
 RcppExport SEXP RcppXPtrExample_create_external_pointer() ;
 RcppExport SEXP RcppXPtrExample_get_external_pointer(SEXP ); 
