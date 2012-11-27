@@ -2,6 +2,61 @@
 \title{News for Package 'Rcpp'}
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+\section{Changes in Rcpp version 0.10.1 (2012-11-26)}{
+    \itemize{
+        \item Changes in Rcpp sugar: 
+        \itemize{
+          \item New functions: \code{setdiff}, \code{union_}, \code{intersect}
+            \code{setequal}, \code{in}, \code{min}, \code{max}, \code{range}, 
+            \code{match}, \code{table}, \code{duplicated}
+          \item New function: \code{clamp} which combines pmin and pmax, e.g. 
+          clamp( a, x, b) is the same as pmax( b, pmin(x, a) )
+          \item New function: \code{self_match} which implements something 
+          similar to \code{match( x, unique( x ) )}
+        }
+        \item Changes in Rcpp API:
+        \itemize{
+            \item The \code{Vector} template class (hence \code{NumericVector}
+            ...) get the \code{is_na} and the \code{get_na} static methods.
+            \item New helper class \code{no_init} that can be used to 
+            create a vector without initializing its data, e.g. : 
+            \code{ IntegerVector out = no_init(n) ; }
+            \item New exception constructor requiring only a message; \code{stop}
+            function to throw an exception
+            \item \code{DataFrame} gains a \code{nrows} method  
+        }
+        \item Changes in Rcpp attributes: 
+        \itemize{
+            \item Ability to embed R code chunks (via specially formatted
+            block comments) in C++ source files.
+            \item Allow specification of argument defaults for exported functions. 
+            \item New scheme for more flexible mixing of generated and user composed
+            C++ headers.
+            \item Print warning if no export attributes are found in source file.
+            \item Updated vignette with additional documentation on exposing
+            C++ interfaces from packages and signaling errors.
+        }
+        \item Changes in Rcpp modules: 
+        \itemize{
+            \item Enclose .External invocations in \code{BEGIN_RCPP}/\code{END_RCPP}
+        }
+        \item Changes in R code :
+        \itemize{
+            \item New function \code{areMacrosDefined}    
+             \item Additions to \code{Rcpp.package.skeleton}:
+             \itemize{
+                \item \code{attributes} parameter to generate a version of 
+            	\code{rcpp_hello_world} that uses \code{Rcpp::export}.
+            	\item \code{cpp_files} parameter to provide a list of C++
+            	files to include the in the \code{src} directory of the package.
+            }
+        }
+        \item Miscellaneous changes:
+        \itemize{
+          \item New example 'pi simulation' using R and C++ via Rcpp attributes
+	}
+    }
+}
 \section{Changes in Rcpp version 0.10.0 (2012-11-13)}{
   \itemize{
     \item Support for C++11 style attributes (embedded in comments) to enable

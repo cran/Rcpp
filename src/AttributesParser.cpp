@@ -60,7 +60,18 @@ namespace {
         if ( (quote == '\'' || quote == '\"') && (*(pStr->rbegin()) == quote) )
             *pStr = pStr->substr(1, pStr->length()-2);
     }
-      
+    
+    Rcpp::List regexMatches(Rcpp::CharacterVector lines, 
+                            const std::string& regex)
+    {
+        Rcpp::Environment base("package:base");
+        Rcpp::Function regexec = base["regexec"];
+        Rcpp::Function regmatches = base["regmatches"];
+        Rcpp::RObject result =  regexec(regex, lines);
+        Rcpp::List matches = regmatches(lines, result);
+        return matches;
+    }
+
 } // anonymous namespace
 
 namespace Rcpp {
@@ -135,6 +146,8 @@ namespace attributes_parser {
             if (!argument.name().empty()) {
                 os << " ";
                 os << argument.name();
+                if (!argument.defaultValue().empty())
+                    os << " = " << argument.defaultValue();
             }
         }
         return os;
@@ -231,12 +244,8 @@ namespace attributes_parser {
             
             // Scan for attributes 
             CommentState commentState;
-            Rcpp::Environment base("package:base");
-            Rcpp::Function regexec = base["regexec"];
-            Rcpp::Function regmatches = base["regmatches"];
-            Rcpp::RObject result =  regexec(
-                "^\\s*//\\s+\\[\\[Rcpp::(\\w+)(\\(.*?\\))?\\]\\]\\s*$", lines_);
-            Rcpp::List matches = regmatches(lines_, result);
+            Rcpp::List matches = regexMatches(lines_, 
+                "^\\s*//\\s+\\[\\[Rcpp::(\\w+)(\\(.*?\\))?\\]\\]\\s*$");
             for (int i = 0; i<matches.size(); i++) {   
                 
                 // track whether we are in a comment and bail if we are in one
@@ -272,6 +281,9 @@ namespace attributes_parser {
                     }
                 } 
             }
+            
+            // Parse embedded R
+            embeddedR_ = parseEmbeddedR(lines_, lines);
         }       
     }
    
@@ -378,7 +390,7 @@ namespace attributes_parser {
         // Start at the end and look for the () that deliniates the arguments
         // (bail with an empty result if we can't find them)
         std::string::size_type endParenLoc = signature.find_last_of(')');
-        std::string::size_type beginParenLoc = signature.find_last_of('(');
+        std::string::size_type beginParenLoc = signature.find_first_of('(');
         if (endParenLoc == std::string::npos || 
             beginParenLoc == std::string::npos ||
             endParenLoc < beginParenLoc) {
@@ -391,7 +403,7 @@ namespace attributes_parser {
         // delimites the type and name 
         Type type;
         std::string name;
-        std::string preambleText = signature.substr(0, beginParenLoc);
+        const std::string preambleText = signature.substr(0, beginParenLoc);
         for (std::string::const_reverse_iterator 
             it = preambleText.rbegin(); it != preambleText.rend(); ++it) {
             char ch = *it;
@@ -441,6 +453,16 @@ namespace attributes_parser {
                 // we don't warn here because the compilation will fail anyway
                 continue;
             }
+            
+            // If the argument has an = within it then it has a default value
+            std::string defaultValue;
+            std::string::size_type eqPos = arg.find_first_of('=');
+            if ( (eqPos != std::string::npos) && ((eqPos + 1) < arg.size()) ) {    
+                defaultValue = arg.substr(eqPos+1);
+                trimWhitespace(&defaultValue);    
+                arg = arg.substr(0, eqPos);
+                trimWhitespace(&arg);
+            }
                     
             // Scan backwards for whitespace to determine where the type ends
             // (we go backwards because whitespace is valid inside the type
@@ -470,7 +492,7 @@ namespace attributes_parser {
             }
             
             // add argument
-            arguments.push_back(Argument(name, type));
+            arguments.push_back(Argument(name, type, defaultValue));
         }
         
         return Function(type, name, arguments, signature);
@@ -507,23 +529,45 @@ namespace attributes_parser {
                                                 const std::string& argText) {
         
         int templateCount = 0;
+        int parenCount = 0;
+        bool insideQuotes = false;
         std::string currentArg;
         std::vector<std::string> args;
+        char prevChar = 0;
         for (std::string::const_iterator 
                             it = argText.begin(); it != argText.end(); ++it) {
             char ch = *it;
             
-            if (ch == ',' && templateCount == 0) {
+            if (ch == '"' && prevChar != '\\') {
+                insideQuotes = !insideQuotes;
+            }
+              
+            if ((ch == ',') && 
+                (templateCount == 0) &&
+                (parenCount == 0) &&
+                !insideQuotes) {
                 args.push_back(currentArg);
                 currentArg.clear();
                 continue;
             } else {
-                currentArg.push_back(ch);   
-                if (ch == '<')
-                    templateCount++;
-                else if (ch == '>')
-                    templateCount--;
+                currentArg.push_back(ch); 
+                switch(ch) {
+                    case '<':
+                        templateCount++;
+                        break;
+                    case '>':
+                        templateCount--;
+                        break;
+                    case '(':
+                        parenCount++;
+                        break;
+                    case ')':
+                        parenCount--;
+                        break;
+                }
             }
+            
+            prevChar = ch;
         }
         
         if (!currentArg.empty())
@@ -567,6 +611,44 @@ namespace attributes_parser {
             
         return Type(type, isConst, isReference);
     }
+    
+     // Parse embedded R code chunks from a file (receives the lines of the 
+    // file as a CharcterVector for using with regexec and as a standard
+    // stl vector for traversal/insepection)
+    std::vector<std::string> SourceFileAttributes::parseEmbeddedR(
+                                    Rcpp::CharacterVector linesVector,
+                                    const std::deque<std::string>& lines) {
+        Rcpp::List matches = regexMatches(linesVector, 
+                                          "^\\s*/\\*{3,}\\s+[Rr]\\s*$");
+        bool withinRBlock = false;
+        CommentState commentState;
+        std::vector<std::string> embeddedR;
+                
+        for (int i = 0; i<matches.size(); i++) {   
+         
+            // track comment state
+            std::string line = lines[i];
+            commentState.submitLine(line);
+         
+            // is this a line that begins an R code block?
+            const Rcpp::CharacterVector match = matches[i];
+            bool beginRBlock = match.size() > 0;
+             
+            // check state and do the right thing
+            if (beginRBlock) {
+                withinRBlock = true;
+            } 
+            else if (withinRBlock) {
+                if (commentState.inComment())
+                    embeddedR.push_back(line);
+                else
+                    withinRBlock = false;
+            }
+        }
+          
+        return embeddedR;
+    }
+      
     
     // Validation helpers
     

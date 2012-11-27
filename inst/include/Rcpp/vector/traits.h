@@ -31,11 +31,12 @@ namespace traits{
 		typedef typename r_vector_iterator<RTYPE>::type iterator ;
 		typedef typename r_vector_const_iterator<RTYPE>::type const_iterator ;
 		typedef typename r_vector_proxy<RTYPE>::type proxy ;
+		typedef typename r_vector_const_proxy<RTYPE>::type const_proxy ;
 		typedef typename storage_type<RTYPE>::type storage_type ;
 		
 		r_vector_cache() : start(0){} ;
 		void update( const VECTOR& v ) {
-			start = ::Rcpp::internal::r_vector_start<RTYPE,storage_type>(v.asSexp()) ;
+			start = ::Rcpp::internal::r_vector_start<RTYPE>(v.asSexp()) ;
 			RCPP_DEBUG_3( " cache<%d>::update( <%p> ), start = <%p>", RTYPE, reinterpret_cast<void*>(v.asSexp()),  reinterpret_cast<void*>(start) ) ;
 		}
 		inline iterator get() const { return start; }
@@ -56,6 +57,7 @@ namespace traits{
 		typedef typename r_vector_iterator<RTYPE>::type iterator ;
 		typedef typename r_vector_const_iterator<RTYPE>::type const_iterator ;
 		typedef typename r_vector_proxy<RTYPE>::type proxy ;
+		typedef typename r_vector_const_proxy<RTYPE>::type const_proxy ;
 		
 		proxy_cache(): p(0){}
 		~proxy_cache(){}
@@ -64,10 +66,16 @@ namespace traits{
 			RCPP_DEBUG_3( " cache<%d>::update( <%p> ), p = <%p>", RTYPE, reinterpret_cast<void*>(v.asSexp()),  reinterpret_cast<void*>(p) ) ;
 		}
 		inline iterator get() const { return iterator( proxy(*p, 0 ) ) ;}
-		inline const_iterator get_const() const { return const_iterator( *p ) ;}
+		// inline const_iterator get_const() const { return const_iterator( *p ) ;}
+		inline const_iterator get_const() const { return get_vector_ptr(*p) ; }
 		
-		inline proxy ref() const { return proxy(*p,0) ; }
-		inline proxy ref(int i) const { return proxy(*p,i);}
+		inline proxy ref() { return proxy(*p,0) ; }
+		inline proxy ref(int i) { return proxy(*p,i);}
+		
+		// inline const_proxy ref() const { return const_proxy(*p,0) ; }
+		// inline const_proxy ref(int i) const { return const_proxy(*p,i);}
+		inline const_proxy ref() const { return *get_vector_ptr(*p) ; }
+		inline const_proxy ref(int i) const { return get_vector_ptr(*p)[i] ;}
 		
 		private:
 			VECTOR* p ;

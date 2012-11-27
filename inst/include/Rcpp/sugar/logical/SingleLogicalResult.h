@@ -2,7 +2,7 @@
 //
 // SingleLogicalResult.h: Rcpp R/C++ interface class library -- 
 //
-// Copyright (C) 2010 - 2011 Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2010 - 2012 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -33,7 +33,7 @@ class forbidden_conversion<true>{} ;
 
 template <bool x>
 class conversion_to_bool_is_forbidden : 
-	conversion_to_bool_is_forbidden<x>{
+	forbidden_conversion<x>{
 	public:
 		void touch(){}
 }; 
@@ -66,12 +66,11 @@ public:
 		return Rcpp::traits::is_na<LGLSXP>( result ) ;
 	}
 	
-	operator SEXP(){
-		apply() ;
-		return Rf_ScalarLogical( result ) ;
+	inline operator SEXP(){
+		return get_sexp() ;
 	}
 	
-	operator bool(){
+	inline operator bool(){
 		conversion_to_bool_is_forbidden<!NA> x ;
 		x.touch() ;
 		return is_true() ;
@@ -82,6 +81,11 @@ public:
 	inline int get(){
 		apply();
 		return result;
+	}
+	
+	inline SEXP get_sexp(){
+	    apply() ;
+	    return Rf_ScalarLogical( result ) ;
 	}
 	
 protected:

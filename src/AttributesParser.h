@@ -58,8 +58,10 @@ namespace attributes_parser {
     class Argument {
     public:
         Argument() {}
-        Argument(const std::string& name, const Type& type) 
-            : name_(name), type_(type) 
+        Argument(const std::string& name, 
+                 const Type& type,
+                 const std::string& defaultValue) 
+            : name_(name), type_(type), defaultValue_(defaultValue) 
         {
         }
         
@@ -67,10 +69,12 @@ namespace attributes_parser {
         
         const std::string& name() const { return name_; }
         const Type& type() const { return type_; }
+        const std::string& defaultValue() const { return defaultValue_; }
         
     private:
         std::string name_;
         Type type_;
+        std::string defaultValue_;
     };
     
     // Function info  
@@ -210,6 +214,11 @@ namespace attributes_parser {
             else
                 return false;            
         }
+        
+        // Get lines of embedded R code
+        const std::vector<std::string>& embeddedR() const {
+            return embeddedR_;
+        }
          
     private:
     
@@ -221,6 +230,9 @@ namespace attributes_parser {
         std::string parseSignature(size_t lineNumber);
         std::vector<std::string> parseArguments(const std::string& argText); 
         Type parseType(const std::string& text); 
+        std::vector<std::string> parseEmbeddedR(
+                                        Rcpp::CharacterVector linesVector,
+                                        const std::deque<std::string>& lines);
         
         // Validation helpers
         bool isKnownAttribute(const std::string& name) const; 
@@ -254,6 +266,7 @@ namespace attributes_parser {
         std::string sourceFile_;
         CharacterVector lines_;
         std::vector<Attribute> attributes_;
+        std::vector<std::string> embeddedR_;
         std::vector<std::string> roxygenBuffer_;
     };
 
