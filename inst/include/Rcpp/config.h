@@ -1,6 +1,6 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 4 -*-
 //
-// config.h: Rcpp R/C++ interface class library -- Rcpp configuration of optional features
+// config.h: Rcpp R/C++ interface class library -- Rcpp configuration
 //
 // Copyright (C) 2010 - 2012  Dirk Eddelbuettel and Romain Francois
 //
@@ -22,20 +22,10 @@
 #ifndef RCPP__CONFIG_H
 #define RCPP__CONFIG_H
 
-#ifdef __GNUC__
-  // from http://sourceforge.net/apps/mediawiki/predef/index.php?title=Operating_Systems#MacOS
-  #ifdef __APPLE__ 
-    #include <Availability.h>
-    #ifndef __MAC_10_8
-        #define RCPP_HAS_DEMANGLING
-    #endif
-  #else
-      #define RCPP_HAS_DEMANGLING
-  #endif
-#endif
-
 #define Rcpp_Version(v,p,s) (((v) * 65536) + ((p) * 256) + (s))
-#define RCPP_VERSION Rcpp_Version(0,10,1)
+
+// All three digits have to be integers for g++-4.7 or later
+#define RCPP_VERSION Rcpp_Version(0,10,2)
                                                                                                                 
 #endif
 

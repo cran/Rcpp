@@ -2,6 +2,55 @@
 \title{News for Package 'Rcpp'}
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+\section{Changes in Rcpp version 0.10.2 (2012-12-21)}{
+  \itemize{
+    \item Changes in Rcpp API:
+    \itemize{
+      \item Source and header files were reorganized and consolidated so
+      that compile time are now significantly lower 
+      \item Added additional check in \code{Rstreambuf} deletetion
+      \item Added support for \code{clang++} when using \code{libc++},
+      and for anc \code{icpc} in \code{std=c++11} mode, thanks to a
+      patch by Yan Zhou
+      \item New class \code{Rcpp::String} to facilitate working with a single
+      element of a character vector
+      \item New utility class sugar::IndexHash inspired from Simon
+      Urbanek's fastmatch package
+      \item Implementation of the equality operator between two Rcomplex
+      \item \code{RNGScope} now has an internal counter that enables it
+      to be safely used multiple times in the same stack frame.
+      \item New class \code{Rcpp::Timer} for benchmarking
+    }
+    \item Changes in Rcpp sugar:
+    \itemize{
+        \item More efficient version of \code{match} based on \code{IndexHash}
+        \item More efficient version of \code{unique} base on \code{IndexHash}
+        \item More efficient version of \code{in} base on \code{IndexHash}
+        \item More efficient version of \code{duplicated} base on \code{IndexHash}
+        \item More efficient version of \code{self_match} base on \code{IndexHash}
+        \item New function \code{collapse} that implements paste(., collapse= "" )
+    }
+    \item Changes in Rcpp attributes: 
+    \itemize{
+        \item Use code generation rather than modules to implement
+        \code{sourceCpp} and \code{compileAttributes} (eliminates 
+        problem with exceptions not being able to cross shared library
+        boundaries on Windows)
+        \item Exported functions now automatically establish an \code{RNGScope}
+        \item Functions exported by \code{sourceCpp} now directly
+        reference the external function pointer rather than rely on 
+        dynlib lookup
+        \item On Windows, Rtools is automatically added to the PATH
+        during \code{sourceCpp} compilations
+        \item Diagnostics are printed to the console if \code{sourceCpp}
+        fails and C++ development tools are not installed
+        \item A warning is printed if when \code{compileAttributes} detects
+        \code{Rcpp::depends} attributes in source files that are not 
+        matched by Depends/LinkingTo entries in the package DESCRIPTION
+    }
+  }
+}
+
 \section{Changes in Rcpp version 0.10.1 (2012-11-26)}{
     \itemize{
         \item Changes in Rcpp sugar: 

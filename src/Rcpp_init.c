@@ -20,9 +20,7 @@
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 #include <R.h>
 #include <Rinternals.h>
-#include <R_ext/Rdynload.h>
-
-#include <Rcpp/routines.h>
+#include "internal.h"
 
 // borrowed from Matrix
 #define CALLDEF(name, n)  {#name, (DL_FUNC) &name, n}
@@ -32,11 +30,6 @@
 // TODO: check that having this static does not mess up with 
 //       RInside, and move it within init_Rcpp_routines otherwise
 static R_CallMethodDef callEntries[]  = {
-    CALLDEF(as_character_externalptr,1),
-    
-    CALLDEF(CppField__get,3),
-    CALLDEF(CppField__set,4),
-    
     CALLDEF(Class__name,1),
     CALLDEF(Class__has_default_constructor,1),
     
@@ -57,13 +50,13 @@ static R_CallMethodDef callEntries[]  = {
     
     CALLDEF(get_rcpp_cache,0),
     CALLDEF(rcpp_error_recorder,1),
-    CALLDEF(rcpp_set_current_error,1),
-    CALLDEF(rcpp_get_current_error,0),
-    CALLDEF(rcpp_set_error_occured,1), 
-    CALLDEF(rcpp_get_error_occured,0),
-    CALLDEF(rcpp_set_stack_trace,1), 
-    CALLDEF(rcpp_get_stack_trace,0),
+    CALLDEF(as_character_externalptr,1),
     
+    CALLDEF(CppField__get,3),
+    CALLDEF(CppField__set,4),
+    
+    CALLDEF(rcpp_capabilities,0),
+    CALLDEF(rcpp_can_use_cxx0x,0),
     {NULL, NULL, 0}
 }; 
 

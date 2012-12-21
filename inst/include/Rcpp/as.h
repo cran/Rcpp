@@ -22,6 +22,8 @@
 #ifndef Rcpp__as__h
 #define Rcpp__as__h
 
+#include <Rcpp/internal/Exporter.h>
+
 namespace Rcpp{
 
     namespace internal{
@@ -48,6 +50,16 @@ namespace Rcpp{
                 throw ::Rcpp::not_compatible( "expecting a single value");
             }
             return T( CHAR( STRING_ELT( ::Rcpp::r_cast<STRSXP>(x) ,0 ) ) ) ;
+        }
+        
+        template <typename T> T as(SEXP x, ::Rcpp::traits::r_type_RcppString_tag ) {
+            if( ! ::Rf_isString(x) ){
+                throw ::Rcpp::not_compatible( "expecting a string" ) ;
+            }
+            if (Rf_length(x) != 1) {
+                throw ::Rcpp::not_compatible( "expecting a single value");
+            }
+            return STRING_ELT( ::Rcpp::r_cast<STRSXP>(x) ,0 ) ;
         }
         
         template <typename T> T as(SEXP x, ::Rcpp::traits::r_type_generic_tag ) {

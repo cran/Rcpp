@@ -20,8 +20,18 @@
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <Rcpp.h>
+#include "internal.h"
 
 #define MAX_ARGS 65
+
+#define UNPACK_EXTERNAL_ARGS(__CARGS__,__P__)    \
+SEXP __CARGS__[MAX_ARGS] ;                       \
+int nargs = 0 ;                                  \
+for(; nargs<MAX_ARGS; nargs++){                  \
+	if( p == R_NilValue ) break ;                \
+	__CARGS__[nargs] = CAR(__P__) ;              \
+	__P__ = CDR(__P__) ;                         \
+}
 
 typedef Rcpp::XPtr<Rcpp::Module> XP_Module ; 
 typedef Rcpp::XPtr<Rcpp::class_Base> XP_Class ; 
@@ -117,31 +127,20 @@ extern "C" SEXP InternalFunction_invoke( SEXP args ){
 BEGIN_RCPP
 	SEXP p = CDR(args) ;
 	XP_Function fun( CAR(p) ) ; p = CDR(p) ;
-	
-	SEXP cargs[MAX_ARGS] ;
-    int nargs = 0 ;
-   	for(; nargs<MAX_ARGS; nargs++){
-   		if( p == R_NilValue ) break ;
-   		cargs[nargs] = CAR(p) ;
-   		p = CDR(p) ;
-   	}
-   	return fun->operator()( cargs ) ;
+	UNPACK_EXTERNAL_ARGS(cargs,p)
+	return fun->operator()( cargs ) ;
 END_RCPP
 }
 
 extern "C" SEXP Module__invoke( SEXP args){
+BEGIN_RCPP
 	SEXP p = CDR(args) ;
 	XP_Module module( CAR(p) ) ; p = CDR(p) ;
 	std::string fun = Rcpp::as<std::string>( CAR(p) ) ; p = CDR(p) ;
 	
-	SEXP cargs[MAX_ARGS] ;
-    int nargs = 0 ;
-   	for(; nargs<MAX_ARGS; nargs++){
-   		if( p == R_NilValue ) break ;
-   		cargs[nargs] = CAR(p) ;
-   		p = CDR(p) ;
-   	}
-   	return module->invoke( fun, cargs, nargs ) ;
+	UNPACK_EXTERNAL_ARGS(cargs,p)
+	return module->invoke( fun, cargs, nargs ) ;
+END_RCPP
 }
 
 extern "C" SEXP class__newInstance(SEXP args){
@@ -149,14 +148,8 @@ extern "C" SEXP class__newInstance(SEXP args){
 	
 	XP_Module module( CAR(p) ) ; p = CDR(p) ;
 	XP_Class clazz( CAR(p) ) ; p = CDR(p);
-	SEXP cargs[MAX_ARGS] ;
-    int nargs = 0 ;
-   	for(; nargs<MAX_ARGS; nargs++){
-   		if( p == R_NilValue ) break ;
-   		cargs[nargs] = CAR(p) ;
-   		p = CDR(p) ;
-   	}
-   	return clazz->newInstance(cargs, nargs ) ;
+	UNPACK_EXTERNAL_ARGS(cargs,p)
+	return clazz->newInstance(cargs, nargs ) ;
 }
 
 SEXP rcpp_dummy_pointer = R_NilValue; // relies on being set in .onLoad()
@@ -191,14 +184,8 @@ extern "C" SEXP CppMethod__invoke(SEXP args){
 	CHECK_DUMMY_OBJ(obj);
 	
 	// additional arguments, processed the same way as .Call does
-	SEXP cargs[MAX_ARGS] ;
-    int nargs = 0 ;
-   	for(; nargs<MAX_ARGS; nargs++){
-   		if( p == R_NilValue ) break ;
-   		cargs[nargs] = CAR(p) ;
-   		p = CDR(p) ;
-   	}
-   	
+	UNPACK_EXTERNAL_ARGS(cargs,p)
+	
    	return clazz->invoke( met, obj, cargs, nargs ) ;
 }
 
@@ -216,14 +203,8 @@ extern "C" SEXP CppMethod__invoke_void(SEXP args){
 	CHECK_DUMMY_OBJ(obj);
 	
 	// additional arguments, processed the same way as .Call does
-	SEXP cargs[MAX_ARGS] ;
-    int nargs = 0 ;
-   	for(; nargs<MAX_ARGS; nargs++){
-   		if( p == R_NilValue ) break ;
-   		cargs[nargs] = CAR(p) ;
-   		p = CDR(p) ;
-   	}
-   	clazz->invoke_void( met, obj, cargs, nargs ) ;
+	UNPACK_EXTERNAL_ARGS(cargs,p)
+	clazz->invoke_void( met, obj, cargs, nargs ) ;
    	return R_NilValue ;
 }
 
@@ -241,14 +222,8 @@ extern "C" SEXP CppMethod__invoke_notvoid(SEXP args){
 	CHECK_DUMMY_OBJ(obj);
 	
 	// additional arguments, processed the same way as .Call does
-	SEXP cargs[MAX_ARGS] ;
-    int nargs = 0 ;
-   	for(; nargs<MAX_ARGS; nargs++){
-   		if( p == R_NilValue ) break ;
-   		cargs[nargs] = CAR(p) ;
-   		p = CDR(p) ;
-   	}
-   	
+	UNPACK_EXTERNAL_ARGS(cargs,p)
+	
    	return clazz->invoke_notvoid( met, obj, cargs, nargs ) ;
 }
 
@@ -277,21 +252,19 @@ namespace Rcpp{
 	}
 	
 	SEXP Module::invoke( const std::string& name_, SEXP* args, int nargs){
-		BEGIN_RCPP
-			MAP::iterator it = functions.find( name_ );
-			if( it == functions.end() ){
-				throw std::range_error( "no such function" ) ; 
-			}
-			CppFunction* fun = it->second ;
-			if( fun->nargs() > nargs ){
-				throw std::range_error( "incorrect number of arguments" ) ; 	
-			}
-			 
-			return Rcpp::List::create( 
-				Rcpp::Named("result") = fun->operator()( args ), 
-				Rcpp::Named("void")   = fun->is_void() 
-			) ;
-		END_RCPP
+		MAP::iterator it = functions.find( name_ );
+		if( it == functions.end() ){
+			throw std::range_error( "no such function" ) ; 
+		}
+		CppFunction* fun = it->second ;
+		if( fun->nargs() > nargs ){
+			throw std::range_error( "incorrect number of arguments" ) ; 	
+		}
+		 
+		return Rcpp::List::create( 
+			Rcpp::Named("result") = fun->operator()( args ), 
+			Rcpp::Named("void")   = fun->is_void() 
+		) ;
 	}                                                                                  
 	
 	SEXP Module::get_function( const std::string& name ){
@@ -470,7 +443,7 @@ namespace Rcpp{
 	
 	FunctionProxy GetCppCallable( const std::string& pkg, const std::string& mod, const std::string& fun){
         Rcpp::Function require = Rcpp::Environment::base_env()["require"];
-        require("PackageA", Rcpp::Named("quietly") = true);
+        require(pkg, Rcpp::Named("quietly") = true);
         std::string pack( "Rcpp_module_" ) ;
         pack += mod ;
         return R_GetCCallable( pack.c_str(), fun.c_str() ) ;     

@@ -22,8 +22,9 @@
 
 if (.runThisTest) {
 
-.setUp <- function(){
-    sourceCpp( system.file( "unitTests/cpp/sugar.cpp", package = "Rcpp") )    
+.setUp <- function() {
+    #sourceCpp( system.file( "unitTests/cpp/sugar.cpp", package = "Rcpp") )
+    sourceCpp(file.path(pathRcppTests, "cpp/sugar.cpp"))
 }
 
 test.sugar.abs <- function( ){
@@ -660,6 +661,47 @@ test.sugar.signif <- function() {
     checkEquals( fx(x, 1), signif(x, 1) )
     checkEquals( fx(x, 2), signif(x, 2) )
     checkEquals( fx(x, 3), signif(x, 3) )
+}
+
+test.RangeIndexer <- function(){
+    x <- rnorm(10)
+    checkEquals( runit_RangeIndexer(x), max(x[1:5]) )
+}
+
+test.self_match <- function(){
+    x <- sample( letters, 1000, replace = TRUE )
+    checkEquals( runit_self_match(x), match(x,unique(x)) )
+}
+
+test.table <- function(){
+    x <- sample( letters, 1000, replace = TRUE )
+    checkTrue( all( runit_table(x) == table(x) ) )
+    checkTrue( all( names(runit_table(x)) == names(table(x)) ) )
+}
+
+test.duplicated <- function(){
+    x <- sample( letters, 1000, replace = TRUE )
+    checkEquals( runit_duplicated(x), duplicated(x) )
+}
+
+test.setdiff <- function(){
+    checkEquals( runit_setdiff( 1:10, 1:5 ), setdiff( 1:10, 1:5 ) )
+}
+
+test.union <- function(){
+    checkEquals( runit_union( 1:10, 1:5 ), union( 1:10, 1:5 ) )
+}
+
+test.intersect <- function(){
+    checkEquals( runit_intersect( 1:10, 1:5 ), intersect( 1:10, 1:5 ) )
+}
+
+test.clamp <- function(){
+    r_clamp <- function(a, x, b) pmax(a, pmin(x, b) )
+    checkEquals( 
+        runit_clamp( -1, seq(-3,3, length=100), 1 ), 
+        r_clamp( -1, seq(-3,3, length=100), 1 )
+    )
 }
 
 }

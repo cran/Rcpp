@@ -82,7 +82,7 @@ public:
         bool operator<=( const iterator& other ) { return index <= other.index ; }
         bool operator>=( const iterator& other ) { return index >= other.index ; }
                 
-        inline reference operator[]( int i){
+        inline reference operator[]( int i) const {
             return row[ index + i ] ;
         }
                 
@@ -156,7 +156,10 @@ private:
     typename MATRIX::iterator start ;
     int parent_nrow ;
         
-    inline int get_parent_index(int i) const { return i * parent_nrow ; } 
+    inline int get_parent_index(int i) const { 
+        RCPP_DEBUG_4( "MatrixRow<%d>[%p]::get_parent_index(%d) = %d", RTYPE, this, i, i*parent_nrow)
+        return i * parent_nrow ;
+    } 
 } ;
 
 #endif

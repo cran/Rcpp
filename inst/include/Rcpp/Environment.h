@@ -22,12 +22,6 @@
 #ifndef Rcpp_Environment_h
 #define Rcpp_Environment_h
 
-#include <RcppCommon.h>
-#include <Rcpp/exceptions.h>
-#include <Rcpp/Evaluator.h>
-#include <Rcpp/Symbol.h>
-#include <Rcpp/Language.h>
-
 #include <Rcpp/RObject.h>
 
 namespace Rcpp{ 
@@ -118,11 +112,7 @@ namespace Rcpp{
              * with GCC4.4 :
              * e["bla" ] = { 1,2,3};
              */
-            template <typename WRAPPABLE>
-            Binding& operator=(const WRAPPABLE& rhs){
-                env.assign( name, rhs ) ;
-                return *this ;
-            }
+            template <typename WRAPPABLE> Binding& operator=(const WRAPPABLE& rhs) ;
             
             /* rvalue */
             /**
@@ -132,11 +122,7 @@ namespace Rcpp{
              * which can either mean that a specialization exists
              * or that T has a T(SEXP) constructor
              */
-            template <typename T> 
-            operator T() const{
-                SEXP x = env.get(name) ;
-                return as<T>(x) ;
-            }
+            template <typename T> operator T() const ;
             
             
         private:
@@ -266,9 +252,7 @@ namespace Rcpp{
          * @param x wrappable object. anything that has a wrap( WRAPPABLE ) is fine
          */
         template <typename WRAPPABLE>
-        bool assign( const std::string& name, const WRAPPABLE& x) const {
-            return assign( name, wrap( x ) ) ;
-        }
+        bool assign( const std::string& name, const WRAPPABLE& x) const ;
     
         /**
          * @return true if this environment is locked

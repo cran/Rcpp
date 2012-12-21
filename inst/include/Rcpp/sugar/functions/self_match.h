@@ -67,7 +67,8 @@ private:
 
 template <int RTYPE, bool NA, typename T>
 inline IntegerVector self_match( const VectorBase<RTYPE,NA,T>& x ){
-    return sugar::SelfMatch<RTYPE,T>(x.get_ref()) ;
+    Vector<RTYPE> vec(x) ;
+    return sugar::SelfHash<RTYPE>(vec).fill_and_self_match() ;
 }
 
 
