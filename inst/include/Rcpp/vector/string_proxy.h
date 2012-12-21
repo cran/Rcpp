@@ -59,6 +59,8 @@ namespace internal{
 			return *this ;
 		}
 		
+		string_proxy& operator=( const String& s) ;
+		
 		/**
 		 * lhs use. Assigns the value of the referred element
 		 * of the character vector
@@ -70,10 +72,11 @@ namespace internal{
 			return *this ;
 		}
 		
-		string_proxy& operator=(const char& rhs){
-			set( Rf_mkChar( &rhs ) ) ;
+		string_proxy& operator=(const char* rhs){
+			set( Rf_mkChar( rhs ) ) ;
 			return *this ;	
 		}
+		
 		
 		string_proxy& operator=(SEXP rhs){
 			// TODO: check this is a CHARSXP

@@ -31,6 +31,7 @@
 
 #include <Rcpp/RObject.h>
 
+#include <Rcpp/Promise.h>
 #include <Rcpp/S4.h>
 #include <Rcpp/Reference.h>
 #include <Rcpp/clone.h>
@@ -65,8 +66,10 @@
 #include <Rmath.h>
 #include <Rcpp/sugar/undoRmath.h>
 
+#ifndef RCPP_NO_SUGAR
 #include <Rcpp/sugar/sugar.h>
 #include <Rcpp/stats/stats.h>
+#endif
 
 // wrappers for R API 'scalar' functions
 #include <Rcpp/Rmath.h>
@@ -74,5 +77,7 @@
 // this stays at the very end, because it needs to 
 // 'see' all versions of wrap
 #include <Rcpp/internal/wrap_end.h>
+
+#include <Rcpp/api/meat/meat.h>
 
 #endif

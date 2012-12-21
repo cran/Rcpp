@@ -9,8 +9,6 @@ Current active misfeatures
 
 Documentation
 
-    o   Add a vignette about Rcpp sugar [in progress]
-    
     o	Finish the quickref vignette
     
     o	Maybe a vignette about stats functions
@@ -23,6 +21,8 @@ API
 
     o   Fast indexing and g++ 4.5.0 or later: open issue of why this compiler
         gets upset when the previous version(s) coped just fine
+        
+    o   Vector::resize    
 
 Modules 
         
@@ -44,8 +44,6 @@ Syntactic sugar
 	
     o	Vector * Matrix, Matrix * Matrix
 
-    o   duplicated
-    
     o   operator% 
     
     o   operator/ needs to handle the case of division by 0
@@ -93,11 +91,19 @@ Attributes
      
     o   Add unit tests 
 
-    o   Add docstring parameter to Rcpp::export attribute
+    o   Add random = false parameter to Rcpp::export once we support parsing
+        key/value pairs in attribute parameters
 
     o   Rcpp.package.skeleton should look for Rcpp::depends in cpp_files
         and call inline plugins, etc. as necessary to create a package
-        that can build the cpp file(s)
+        that can build the cpp file(s). Note that packages exporting plugins
+        (e.g. Eigen, Armadillo) don't currently provide custom Makevars
+        so this won't quite work for those packages.
+
+    o   Detect useDynLib .registration = TRUE and in that case emit .Call
+        wrappers as symbols rather than strings w/ PACKAGE =
+
+    o   Solution for the problem of sharing/propagating typedefs to RcppExports 
 
     o   Allow sourceCpp to build an entire directory
 

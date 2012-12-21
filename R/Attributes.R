@@ -36,7 +36,8 @@ sourceCpp <- function(file = "",
     file <- normalizePath(file, winslash = "/")
      
     # get the context (does code generation as necessary)
-    context <- .Call("sourceCppContext", PACKAGE="Rcpp", file, code, .Platform)
+    context <- .Call("sourceCppContext", PACKAGE="Rcpp", 
+                     file, code, rebuild, .Platform)
     
     # perform a build if necessary
     if (context$buildRequired || rebuild) {
@@ -74,15 +75,17 @@ sourceCpp <- function(file = "",
         
         # on.exit handler calls hook and restores environment and working dir
         on.exit({
+            if (!succeeded)
+                .showBuildFailureDiagnostics()
             .callBuildCompleteHook(succeeded, output)
             setwd(cwd)
             .restoreEnvironment(envRestore)
         })
         
         # unload and delete existing dylib if necessary
-        if (file.exists(context$dynlibPath)) {
-            try(silent=T, dyn.unload(context$dynlibPath))
-            file.remove(context$dynlibPath)
+        if (file.exists(context$previousDynlibPath)) {
+            try(silent=T, dyn.unload(context$previousDynlibPath))
+            file.remove(context$previousDynlibPath)
         }
            
         # prepare the command (output if we are in showOutput mode)
@@ -109,6 +112,10 @@ sourceCpp <- function(file = "",
                 cat(result, "\n")
                 succeeded <- FALSE
                 stop("Error ", status, " occurred building shared library.")
+            } else if (!file.exists(context$dynlibFilename)) {
+                cat(result, "\n")
+                succeeded <- FALSE
+                stop("Error occurred building shared library.")
             } else {
                 succeeded <- TRUE
             }
@@ -134,10 +141,9 @@ sourceCpp <- function(file = "",
         removeObjs <- exports[exports %in% ls(envir = env, all.names = T)]
         remove(list = removeObjs, envir = env)
         
-        # load the module and populate the target environment
-        dll <- dyn.load(context$dynlibPath)
-        populate(Module(context$moduleName, PACKAGE = dll, mustStart = TRUE), 
-                 env)
+        # source the R script
+        scriptPath <- file.path(context$buildDirectory, context$rSourceFilename) 
+        source(scriptPath, local = env)
     } else if (getOption("rcpp.warnNoExports", default=TRUE)) {
         warning("No Rcpp::export attributes found in source")
     }
@@ -269,8 +275,10 @@ compileAttributes <- function(pkgdir = ".", verbose = getOption("verbose")) {
     descFile <- file.path(pkgdir,"DESCRIPTION")
     if (!file.exists(descFile))
         stop("pkgdir must refer to the directory containing an R package")
-    DESCRIPTION <- read.dcf(descFile, all = TRUE)
-    pkgname <- DESCRIPTION$Package
+    
+    pkgInfo <- tools:::.split_description(tools:::.read_description(descFile))
+    pkgname <- as.character(pkgInfo$DESCRIPTION["Package"])
+    depends <- unique(names(pkgInfo$Depends))
     
     # determine source directory
     srcDir <- file.path(pkgdir, "src")
@@ -294,27 +302,52 @@ compileAttributes <- function(pkgdir = ".", verbose = getOption("verbose")) {
     
     # generate the includes list based on LinkingTo. Specify plugins-only
     # because we only need as/wrap declarations
-    includes <- .linkingToIncludes(DESCRIPTION$LinkingTo, TRUE)
+    linkingTo <- as.character(pkgInfo$DESCRIPTION["LinkingTo"])
+    includes <- .linkingToIncludes(linkingTo, TRUE)
     
     # generate exports
     invisible(.Call("compileAttributes", PACKAGE="Rcpp", 
-                    pkgdir, pkgname, cppFiles, cppFileBasenames, 
+                    pkgdir, pkgname, depends, cppFiles, cppFileBasenames, 
                     includes, verbose, .Platform))
+}
+
+
+# Take an empty function body and connect it to the specified external symbol
+sourceCppFunction <- function(func, dll, symbol) {
+    
+    args <- names(formals(func))
+    
+    body <- quote( .Call( EXTERNALNAME, ARG ) )[ c(1:2, rep(3, length(args))) ]
+    
+    for (i in seq(along = args)) 
+        body[[i+2]] <- as.symbol(args[i])
+    
+    body[[1L]] <- .Call
+    body[[2L]] <- getNativeSymbolInfo(symbol, dll)$address
+    
+    body(func) <- body
+    
+    func
 }
 
 
 # Print verbose output
 .printVerboseOutput <- function(context) {
     
-    cat("\nGenerated Rcpp module declaration:",
-        "\n--------------------------------------------------------\n\n")
+    cat("\nGenerated extern \"C\" functions",
+        "\n--------------------------------------------------------\n")
     cat(context$generatedCpp, sep="")
+    
+    cat("\nGenerated R functions",
+        "\n-------------------------------------------------------\n\n")
+    cat(readLines(file.path(context$buildDirectory, 
+                            context$rSourceFilename)), 
+        sep="\n")
     
     cat("\nBuilding shared library", 
         "\n--------------------------------------------------------\n",
         "\nDIR: ", context$buildDirectory, "\n\n", sep="")
 }
-
 
 # Add LinkingTo dependencies if the sourceFile is in a package
 .getSourceCppDependencies <- function(depends, sourceFile) {
@@ -431,6 +464,15 @@ compileAttributes <- function(pkgdir = ".", verbose = getOption("verbose")) {
     # add cygwin message muffler
     buildEnv$CYGWIN = "nodosfilewarning"
     
+    # on windows see if we need to add Rtools to the path
+    # (don't do this for RStudio since it has it's own handling)
+    if (identical(Sys.info()[['sysname']], "Windows") &&
+        !nzchar(Sys.getenv("RSTUDIO"))) {
+        path <- .pathWithRtools()
+        if (!is.null(path))
+            buildEnv$PATH <- path
+    }
+    
     # create restore list
     restore <- list()
     for (name in names(buildEnv))
@@ -442,6 +484,49 @@ compileAttributes <- function(pkgdir = ".", verbose = getOption("verbose")) {
     # return restore list
     return (restore)
 }
+
+
+# If we don't have the GNU toolchain already on the path then see if 
+# we can find Rtools and add it to the path
+.pathWithRtools <- function() {
+    
+    # Only proceed if we don't have the required tools on the path
+    hasRtools <- nzchar(Sys.which("ls.exe")) && nzchar(Sys.which("gcc.exe"))
+    if (!hasRtools) {
+        
+        # Read the Rtools registry key
+        key <- NULL
+        try(key <- utils::readRegistry("SOFTWARE\\R-core\\Rtools",
+                                       hive = "HLM", view = "32-bit"), 
+            silent = TRUE)
+        
+        # If we found the key examine it
+        if (!is.null(key)) {
+            
+            # Check version -- we only support 2.15 and 2.16 right now
+            ver <- key$`Current Version`
+            if (identical("2.15", ver) || identical("2.16", ver)) {
+                
+                # See if the InstallPath leads to the expected directories
+                rToolsPath <- key$`InstallPath`
+                if (!is.null(rToolsPath)) {
+                    
+                    # Return modified PATH if execpted directories exist
+                    binPath <- file.path(rToolsPath, "bin", fsep="\\")
+                    gccPath <- file.path(rToolsPath, "gcc-4.6.3", "bin", fsep="\\")
+                    if (file.exists(binPath) && file.exists(gccPath))
+                        return(paste(binPath, 
+                                     gccPath, 
+                                     Sys.getenv("PATH"), 
+                                     sep=.Platform$path.sep))
+                }  
+            }
+        }
+    }
+    
+    return(NULL)
+}
+
 
 # Build CLINK_CPPFLAGS from include directories of LinkingTo packages
 .buildClinkCppFlags <- function(linkingToPackages) {
@@ -616,5 +701,67 @@ compileAttributes <- function(pkgdir = ".", verbose = getOption("verbose")) {
     
     linkingTo <- strsplit(linkingTo, "\\s*\\,")[[1]]
     gsub("\\s", "", linkingTo)
+}
+
+# show diagnostics for failed builds
+.showBuildFailureDiagnostics <- function() {
+    
+    # RStudio does it's own diagnostics so only do this for other environments
+    if (nzchar(Sys.getenv("RSTUDIO")))
+        return();
+        
+    # if we can't call R CMD SHLIB then notify the user they should 
+    # install the appropriate development tools
+    if (!.checkDevelTools()) {
+        msg <- paste("\nWARNING: The tools required to build C++ code for R ",
+                     "were not found.\n\n", sep="")
+        sysName <- Sys.info()[['sysname']]
+        if (identical(sysName, "Windows")) {
+            msg <- paste(msg, "Please download and install the appropriate ",
+                              "version of Rtools:\n\n",
+                              "http://cran.r-project.org/bin/windows/Rtools/\n",
+                              sep="");
+            
+        } else if (identical(sysName, "Darwin")) {
+            msg <- paste(msg, "Please install Command Line Tools for XCode ",
+                         "(or equivalent).\n", sep="")
+        } else {
+            msg <- paste(msg, "Please install GNU development tools ",
+                         "including a C++ compiler.\n", sep="")
+        }
+        message(msg)
+    }
+}
+
+# check if R development tools are installed (cache successful result)
+.hasDevelTools <- FALSE
+.checkDevelTools <- function() {  
+    
+    if (!.hasDevelTools) {     
+        # create temp source file
+        tempFile <- file.path(tempdir(), "foo.c")
+        cat("void foo() {}\n", file = tempFile)
+        on.exit(unlink(tempFile))
+        
+        # set working directory to tempdir (revert on exit)
+        oldDir <- setwd(tempdir())
+        on.exit(setwd(oldDir), add = TRUE)
+        
+        # attempt the compilation and note whether we succeed
+        cmd <- paste(R.home(component="bin"), .Platform$file.sep, "R ",
+                     "CMD SHLIB foo.c", sep = "") 
+        result <- suppressWarnings(system(cmd,
+                                          ignore.stderr = TRUE, 
+                                          intern = TRUE))
+        assignInMyNamespace(".hasDevelTools", is.null(attr(result, "status")))
+        
+        # if we build successfully then remove the shared library
+        if (.hasDevelTools) {
+            lib <- file.path(tempdir(), 
+                             paste("foo", .Platform$dynlib.ext, sep=''))
+            unlink(lib)
+        }
+    }
+    .hasDevelTools
 }
 
