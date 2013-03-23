@@ -3,7 +3,8 @@
 //
 // wrap.h: Rcpp R/C++ interface class library -- wrap implementations
 //
-// Copyright (C) 2010 - 2011  Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2010 - 2013  Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2013  Rice University
 //
 // This file is part of Rcpp.
 //
@@ -38,6 +39,51 @@ template <typename T> SEXP wrap( const T& object ) ;
 template <typename T> class CustomImporter ;
 
 namespace internal{
+	
+	char* get_string_buffer() ;
+	
+	inline SEXP make_charsexp__impl__wstring( const wchar_t* data ){
+		char* buffer = get_string_buffer() ;
+		wcstombs( buffer, data, MAXELTSIZE ) ;
+		return Rf_mkChar(buffer) ;
+	}
+	inline SEXP make_charsexp__impl__wstring( wchar_t data ){
+		wchar_t x[2] ; x[0] = data ; x[1] = '\0' ;
+		char* buffer = get_string_buffer() ;
+		wcstombs( buffer, x, MAXELTSIZE ) ;
+		return Rf_mkChar(buffer) ;
+	}
+	inline SEXP make_charsexp__impl__wstring( const std::wstring& st ){
+		return make_charsexp__impl__wstring( st.data()) ;	
+	}
+	inline SEXP make_charsexp__impl__cstring( const char* data ){
+		return Rf_mkChar( data ) ;
+	}
+	inline SEXP make_charsexp__impl__cstring( char data ){
+		char x[2]; x[0] = data ; x[1] = '\0' ;
+		return Rf_mkChar( x ) ;
+	}
+	
+	inline SEXP make_charsexp__impl__cstring( const std::string& st ){
+		return make_charsexp__impl__cstring( st.c_str() ) ;
+	}
+	
+	template <typename T>
+	inline SEXP make_charsexp__impl( const T& s, Rcpp::traits::true_type ){
+		return make_charsexp__impl__wstring(s) ;
+	}
+	
+	template <typename T>
+	inline SEXP make_charsexp__impl( const T& s, Rcpp::traits::false_type ){
+		return make_charsexp__impl__cstring(s) ;
+	}
+	
+	template <typename T> 
+	inline SEXP make_charsexp( const T& s) {
+		return make_charsexp__impl<T>( s, typename Rcpp::traits::is_wide_string<T>::type() ) ;
+	}
+	template <>
+	inline SEXP make_charsexp<Rcpp::String>( const Rcpp::String& );
 	
 	template <typename InputIterator> SEXP range_wrap(InputIterator first, InputIterator last) ;
 	template <typename InputIterator> SEXP rowmajor_wrap(InputIterator first, int nrow, int ncol) ;
@@ -162,16 +208,15 @@ inline SEXP range_wrap_dispatch___impl( InputIterator first, InputIterator last,
 	size_t size = std::distance( first, last ) ;
 	SEXP x = PROTECT( Rf_allocVector( STRSXP, size ) ) ;
 	size_t i = 0 ;
-	std::string buffer ;
 	while( i < size ){
-		buffer = *first ;
-		SET_STRING_ELT( x, i, Rf_mkChar( buffer.c_str()) ) ;
+		SET_STRING_ELT( x, i, make_charsexp(*first) ) ;
 		i++ ;
 		++first ;
 	}
 	UNPROTECT(1) ;
 	return x ;
 }
+
 // }}}
 
 // {{{ named range wrap
@@ -281,8 +326,9 @@ inline SEXP range_wrap_dispatch___impl( InputIterator first, InputIterator last,
 	return x ;
 }
 
+
 /**
- * Range based wrap for iterators over std::pair<const std::string, std::string>
+ * Range based wrap for iterators over std::pair<const std::(w)?string, std::(w)?string>
  *
  * This is mainly used for wrapping map<string,string> and friends 
  * which happens to produce iterators over pair<const string, string>
@@ -296,21 +342,14 @@ inline SEXP range_wrap_dispatch___impl( InputIterator first, InputIterator last,
 	size_t size = std::distance( first, last ) ;
 	SEXP x = PROTECT( Rf_allocVector( STRSXP, size ) ) ;
 	SEXP names = PROTECT( Rf_allocVector( STRSXP, size ) ) ;
-	size_t i = 0 ;
-	std::string buffer ;
-	while( i < size ){
-		buffer = first->second ;
-		SET_STRING_ELT( x, i, Rf_mkChar( buffer.c_str()) ) ;
-		
-		buffer = first->first ;
-		SET_STRING_ELT( names, i, Rf_mkChar( buffer.c_str()) ) ;
-		
-		i++ ;
-		++first ;
+	for( size_t i = 0; i < size ; i++, ++first){
+		SET_STRING_ELT( x, i, make_charsexp( first->second ) ) ;
+		SET_STRING_ELT( names, i, make_charsexp( first->first) ) ;
 	}
 	::Rf_setAttrib( x, R_NamesSymbol, names ) ;
 	UNPROTECT(2) ; /* x, names */
 	return x ;
+
 }
 // }}}
 
@@ -374,15 +413,14 @@ inline SEXP primitive_wrap__impl( const T& object, ::Rcpp::traits::r_type_primit
 }
 
 /**
- * primitive wrap for types that can be converted implicitely to std::string
+ * primitive wrap for types that can be converted implicitely to std::string or std::wstring
  * 
- * This produces a character vector of length 1 containing the std::string
+ * This produces a character vector of length 1 containing the std::string or wstring
  */
 template <typename T>
 inline SEXP primitive_wrap__impl( const T& object, ::Rcpp::traits::r_type_string_tag){
 	SEXP x = PROTECT( ::Rf_allocVector( STRSXP, 1) ) ;
-	std::string y = object ; /* give a chance to implicit conversion */
-	SET_STRING_ELT( x, 0, Rf_mkChar(y.c_str()) ) ;
+	SET_STRING_ELT( x, 0, make_charsexp(object) ) ;
 	UNPROTECT(1) ;
 	return x; 
 }
@@ -408,6 +446,7 @@ inline SEXP primitive_wrap(const T& object){
  */
 template <typename T>
 inline SEXP wrap_dispatch_unknown( const T& object, ::Rcpp::traits::true_type ){
+	RCPP_DEBUG_1( "wrap_dispatch_unknown<%s>(., false  )", DEMANGLE(T) )
 	// here we know (or assume) that T is convertible to SEXP
 	SEXP x = object ;
 	return x ;
@@ -426,7 +465,8 @@ inline SEXP wrap_dispatch_unknown( const T& object, ::Rcpp::traits::true_type ){
  */
 template <typename T>
 inline SEXP wrap_dispatch_unknown_iterable(const T& object, ::Rcpp::traits::false_type){
-	// here we know that T is not convertible to SEXP
+RCPP_DEBUG_1( "wrap_dispatch_unknown_iterable<%s>(., false  )", DEMANGLE(T) )
+		// here we know that T is not convertible to SEXP
 #ifdef HAS_STATIC_ASSERT
 	static_assert( !sizeof(T), "cannot convert type to SEXP" ) ;
 #else
@@ -439,6 +479,7 @@ inline SEXP wrap_dispatch_unknown_iterable(const T& object, ::Rcpp::traits::fals
 
 template <typename T>
 inline SEXP wrap_dispatch_unknown_iterable__logical( const T& object, ::Rcpp::traits::true_type){
+	RCPP_DEBUG_1( "wrap_dispatch_unknown_iterable__logical<%s>(., true  )", DEMANGLE(T) )
 	size_t size = object.size() ;
 	SEXP x = PROTECT( Rf_allocVector( LGLSXP, size ) );
 	std::copy( object.begin(), object.end(), LOGICAL(x) ) ; 
@@ -447,13 +488,23 @@ inline SEXP wrap_dispatch_unknown_iterable__logical( const T& object, ::Rcpp::tr
 }
 
 template <typename T>
-inline SEXP wrap_dispatch_unknown_iterable__logical( const T& object, ::Rcpp::traits::false_type){
+inline SEXP wrap_range_sugar_expression( const T& object, Rcpp::traits::false_type){
+	RCPP_DEBUG_1( "wrap_range_sugar_expression<%s>(., false  )", DEMANGLE(T) )
 	return range_wrap( object.begin(), object.end() ) ;
+}
+template <typename T>
+inline SEXP wrap_range_sugar_expression( const T& object, Rcpp::traits::true_type) ; 
+
+template <typename T>
+inline SEXP wrap_dispatch_unknown_iterable__logical( const T& object, ::Rcpp::traits::false_type){
+	RCPP_DEBUG_1( "wrap_dispatch_unknown_iterable__logical<%s>(., false  )", DEMANGLE(T) )
+	return wrap_range_sugar_expression( object, typename Rcpp::traits::is_sugar_expression<T>::type() ) ;
 }
 
 
 template <typename T>
 inline SEXP wrap_dispatch_unknown_iterable__matrix_interface( const T& object, ::Rcpp::traits::false_type ){
+	RCPP_DEBUG_1( "wrap_dispatch_unknown_iterable__matrix_interface<%s>(., false  )", DEMANGLE(T) )
 	return wrap_dispatch_unknown_iterable__logical( object, 
 			typename ::Rcpp::traits::expands_to_logical<T>::type() );
 }
@@ -507,7 +558,7 @@ inline SEXP wrap_dispatch_matrix_not_logical( const T& object, ::Rcpp::traits::r
 	int k=0 ;
 	for( int j=0; j<nc; j++)
 		for( int i=0; i<nr; i++, k++)
-			SET_STRING_ELT( res, k, object(i,j) ) ;
+			SET_STRING_ELT( res, k, make_charsexp(object(i,j)) ) ;
 	SEXP dim = PROTECT( Rf_allocVector( INTSXP, 2) ) ;
 	INTEGER(dim)[0] = nr ;
 	INTEGER(dim)[1] = nc ;
@@ -540,6 +591,7 @@ inline SEXP wrap_dispatch_matrix_logical( const T& object, ::Rcpp::traits::false
 
 template <typename T>
 inline SEXP wrap_dispatch_unknown_iterable__matrix_interface( const T& object, ::Rcpp::traits::true_type ){
+	RCPP_DEBUG_1( "wrap_dispatch_unknown_iterable__matrix_interface<%s>(., true  )", DEMANGLE(T) )
 	return wrap_dispatch_matrix_logical( object, typename ::Rcpp::traits::expands_to_logical<T>::type() ) ;
 }
 
@@ -558,6 +610,7 @@ inline SEXP wrap_dispatch_unknown_iterable__matrix_interface( const T& object, :
  */
 template <typename T>
 inline SEXP wrap_dispatch_unknown_iterable(const T& object, ::Rcpp::traits::true_type){
+	RCPP_DEBUG_1( "wrap_dispatch_unknown_iterable<%s>(., true  )", DEMANGLE(T) )
 	return wrap_dispatch_unknown_iterable__matrix_interface( object, 
 		typename ::Rcpp::traits::matrix_interface<T>::type() ) ;
 }
@@ -601,10 +654,8 @@ template <typename T, typename elem_type>
 inline SEXP wrap_dispatch_importer__impl( const T& object, ::Rcpp::traits::r_type_string_tag ){
 	int size = object.size() ;
 	SEXP x = PROTECT( Rf_allocVector( STRSXP, size ) );
-	std::string buf ;
 	for( int i=0; i<size; i++){
-		buf = object.get(i) ;
-		SET_STRING_ELT( x, i, Rf_mkChar( buf.c_str() ) ) ;
+		SET_STRING_ELT( x, i, make_charsexp(object.get(i)) ) ;
 	}
 	UNPROTECT(1) ;
 	return x ;
@@ -636,6 +687,7 @@ inline SEXP wrap_dispatch_importer( const T& object ){
  */
 template <typename T>
 inline SEXP wrap_dispatch_unknown( const T& object, ::Rcpp::traits::false_type){
+	RCPP_DEBUG_1( "wrap_dispatch_unknown<%s>(., false  )", DEMANGLE(T) )
 	return wrap_dispatch_unknown_iterable( object, typename ::Rcpp::traits::has_iterator<T>::type() ) ;
 }
 // }}}
@@ -667,11 +719,13 @@ inline SEXP wrap_dispatch( const T& object, ::Rcpp::traits::wrap_type_enum_tag )
 
 template <typename T>
 inline SEXP wrap_dispatch_eigen( const T& object, ::Rcpp::traits::false_type){
+	RCPP_DEBUG_1( "wrap_dispatch_eigen<%s>(., false  )", DEMANGLE(T) )
 	return wrap_dispatch_unknown( object, typename ::Rcpp::traits::is_convertible<T,SEXP>::type() ) ;
 }
 
 template <typename T>
 inline SEXP wrap_dispatch_eigen( const T& object, ::Rcpp::traits::true_type){
+	RCPP_DEBUG_1( "wrap_dispatch_eigen<%s>(., true  )", DEMANGLE(T) )
 	return ::Rcpp::RcppEigen::eigen_wrap( object ) ;
 }
 
@@ -682,6 +736,7 @@ inline SEXP wrap_dispatch_eigen( const T& object, ::Rcpp::traits::true_type){
  */
 template <typename T> 
 inline SEXP wrap_dispatch_unknown_importable( const T& object, ::Rcpp::traits::false_type){
+	RCPP_DEBUG_1( "wrap_dispatch_unknown_importable<%s>(., false  )", DEMANGLE(T) )
 	return wrap_dispatch_eigen( object, typename traits::is_eigen_base<T>::type() ) ;
 }
 
@@ -690,6 +745,7 @@ inline SEXP wrap_dispatch_unknown_importable( const T& object, ::Rcpp::traits::f
  */
 template <typename T> 
 inline SEXP wrap_dispatch_unknown_importable( const T& object, ::Rcpp::traits::true_type){
+	RCPP_DEBUG_1( "wrap_dispatch_unknown_importable<%s>(., true  )", DEMANGLE(T) )
 	return wrap_dispatch_importer<T,typename T::r_import_type>( object ) ;
 }
 
@@ -700,6 +756,7 @@ inline SEXP wrap_dispatch_unknown_importable( const T& object, ::Rcpp::traits::t
  */
 template <typename T> 
 inline SEXP wrap_dispatch( const T& object, ::Rcpp::traits::wrap_type_unknown_tag ){
+	RCPP_DEBUG_1( "wrap_dispatch<%s>(., wrap_type_unknown_tag )", DEMANGLE(T) )
 	return wrap_dispatch_unknown_importable( object, typename ::Rcpp::traits::is_importer<T>::type() ) ;
 }
 	// }}}
@@ -726,11 +783,9 @@ template <typename value_type, typename InputIterator>
 inline SEXP rowmajor_wrap__dispatch( InputIterator first, int nrow, int ncol, ::Rcpp::traits::r_type_string_tag ){
 	SEXP out = PROTECT( ::Rf_allocVector( STRSXP, nrow * ncol) );
 	int i=0, j=0 ;
-	std::string buffer ;
 	for( j=0; j<ncol; j++){
 		for( i=0; i<nrow; i++, ++first ){
-			buffer = *first ;
-			SET_STRING_ELT( out, j + ncol*i, ::Rf_mkChar(buffer.c_str()) ) ;
+			SET_STRING_ELT( out, j + ncol*i, make_charsexp(*first) ) ;
 		}
 	}
 	SEXP dims = PROTECT( ::Rf_allocVector( INTSXP, 2) ); 
@@ -804,6 +859,7 @@ inline SEXP rowmajor_wrap(InputIterator first, int nrow, int ncol){
  */
 template <typename T> 
 inline SEXP wrap(const T& object){
+	RCPP_DEBUG_1( "inline SEXP wrap<%s>(const T& object)", DEMANGLE(T) ) 
 	return internal::wrap_dispatch( object, typename ::Rcpp::traits::wrap_type_traits<T>::wrap_category() ) ;
 }
 

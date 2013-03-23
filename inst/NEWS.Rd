@@ -2,6 +2,55 @@
 \title{News for Package 'Rcpp'}
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+\section{Changes in Rcpp version 0.10.3 (2013-03-23)}{
+  \itemize{
+    \item Changes in R code:
+    \itemize{
+      \item Prevent build failures on Windowsn when Rcpp is installed 
+      in a library path with spaces (transform paths in the same manner
+      that R does before passing them to the build system).
+    }
+    \item Changes in Rcpp attributes: 
+    \itemize{
+        \item Rcpp modules can now be used with \code{sourceCpp}
+        \item Standalone roxygen chunks (e.g. to document a class) are now
+        transposed into RcppExports.R
+        \item Added \code{Rcpp::plugins} attribute for binding 
+        directly to inline plugins. Plugins can be registered using
+        the new \code{registerPlugin} function.
+        \item Added built-in \code{cpp11} plugin for specifying
+        the use of C++11 in a translation unit
+        \item Merge existing values of build related environment 
+        variables for sourceCpp
+        \item Add global package include file to RcppExports.cpp
+        if it exists
+        \item Stop with an error if the file name passed to 
+        \code{sourceCpp} has spaces in it
+        \item Return invisibly from void functions
+        \item Ensure that line comments invalidate block comments when
+        parsing for attributes
+        \item Eliminated spurious empty hello world function definition
+        in Rcpp.package.skeleton
+    }
+    \item Changes in Rcpp API:
+    \itemize{
+      \item The very central use of R API R_PreserveObject and 
+      R_ReleaseObject has been replaced by a new system based on the 
+      functions Rcpp_PreserveObject, Rcpp_ReleaseObject and Rcpp_ReplaceObject
+      which shows better performance and is implemented using a generic vector
+      treated as a stack instead of a pairlist in the R
+      implementation. However, as this preserve / release code is still
+      a little rough at the edges, a new #define is used (in config.h)
+      to disable it for now. 
+      \item Platform-dependent code in Timer.cpp now recognises a few
+      more BSD variants thanks to contributed defined() test suggestions
+      \item Support for wide character strings has been added throughout the 
+      API. In particular String, CharacterVector, wrap and as are aware of 
+      wide character strings
+    }
+  }
+}
+
 \section{Changes in Rcpp version 0.10.2 (2012-12-21)}{
   \itemize{
     \item Changes in Rcpp API:

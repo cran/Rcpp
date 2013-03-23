@@ -96,6 +96,7 @@ namespace attributes {
     // Known attribute names & parameters
     const char * const kExportAttribute = "export";
     const char * const kDependsAttribute = "depends";
+    const char * const kPluginsAttribute = "plugins";
     const char * const kInterfacesAttribute = "interfaces";
     const char * const kInterfaceR = "r";
     const char * const kInterfaceCpp = "cpp";
@@ -257,10 +258,16 @@ namespace attributes {
         virtual ~SourceFileAttributes() {};
         virtual const std::string& sourceFile() const = 0;
         virtual bool hasInterface(const std::string& name) const = 0;
+     
         typedef std::vector<Attribute>::const_iterator const_iterator;
         virtual const_iterator begin() const = 0;
         virtual const_iterator end() const = 0;
-        virtual bool empty() const = 0;  
+        
+        virtual const std::vector<std::string>& modules() const = 0;
+        
+        virtual const std::vector<std::vector<std::string> >& roxygenChunks() const = 0;
+                  
+        virtual bool hasGeneratorOutput() const = 0;  
     };
     
 
@@ -287,6 +294,7 @@ namespace attributes {
     public:
         bool inComment() const { return inComment_; }
         void submitLine(const std::string& line); 
+        void reset() { inComment_ = false; }
     private:
         bool inComment_;
     };
@@ -308,7 +316,23 @@ namespace attributes {
         }
         virtual const_iterator begin() const { return attributes_.begin(); }
         virtual const_iterator end() const { return attributes_.end(); }
-        virtual bool empty() const { return attributes_.empty(); }
+        
+        virtual const std::vector<std::string>& modules() const
+        {
+            return modules_;
+        }
+        
+        virtual const std::vector<std::vector<std::string> >& roxygenChunks() const {
+            return roxygenChunks_;                                                    
+        }
+        
+        virtual bool hasGeneratorOutput() const 
+        { 
+            return !attributes_.empty() || 
+                   !modules_.empty() ||
+                   !roxygenChunks_.empty(); 
+        }
+        
         virtual bool hasInterface(const std::string& name) const {
             
             for (const_iterator it=begin(); it != end(); ++it) {
@@ -357,7 +381,9 @@ namespace attributes {
         std::string sourceFile_;
         CharacterVector lines_;
         std::vector<Attribute> attributes_;
+        std::vector<std::string> modules_;
         std::vector<std::string> embeddedR_;
+        std::vector<std::vector<std::string> > roxygenChunks_; 
         std::vector<std::string> roxygenBuffer_;
     };
 
@@ -794,7 +820,8 @@ namespace attributes {
         std::string contents = buffer.str();
         
         // Check for attribute signature
-        if (contents.find("[[Rcpp::") != std::string::npos) { 
+        if (contents.find("[[Rcpp::") != std::string::npos ||
+            contents.find("RCPP_MODULE") != std::string::npos) { 
             
             // Now read into a list of strings (which we can pass to regexec)
             // First read into a std::deque (which will handle lots of append
@@ -846,7 +873,33 @@ namespace attributes {
                         std::string roxLine = "#" + line.substr(2);
                         roxygenBuffer_.push_back(roxLine);
                     }
+                    
+                    // a non-roxygen line causes us to clear the roxygen buffer
+                    else if (!roxygenBuffer_.empty()) {
+                        roxygenChunks_.push_back(roxygenBuffer_);   
+                        roxygenBuffer_.clear();
+                    }
                 } 
+            }
+            
+             // Scan for Rcpp modules 
+            commentState.reset();
+            Rcpp::List modMatches = regexMatches(lines_, 
+                "^\\s*RCPP_MODULE\\s*\\(\\s*(\\w+)\\s*\\).*$");
+            for (int i = 0; i<modMatches.size(); i++) {   
+                
+                // track whether we are in a comment and bail if we are in one
+                std::string line = lines[i];
+                commentState.submitLine(line);
+                if (commentState.inComment())
+                    continue;
+                
+                // get the module declaration
+                Rcpp::CharacterVector match = modMatches[i];
+                if (match.size() > 0) {
+                    const char * name = match[1];
+                    modules_.push_back(name);
+                }
             }
             
             // Parse embedded R
@@ -1185,6 +1238,7 @@ namespace attributes {
                                                                         const {
         return name == kExportAttribute || 
                name == kDependsAttribute ||
+               name == kPluginsAttribute ||
                name == kInterfacesAttribute;
     }
 
@@ -1243,9 +1297,21 @@ namespace attributes {
     void CommentState::submitLine(const std::string& line) {
         std::size_t pos = 0;
         while (pos != std::string::npos) {
+            
+            // check for a // which would invalidate any other token found
+            std::size_t lineCommentPos = line.find("//", pos);
+            
+            // look for the next token
             std::string token = inComment() ? "*/" : "/*";
             pos = line.find(token, pos);
+            
+            // process the comment token if found
             if (pos != std::string::npos) {
+                
+                // break if the line comment precedes the comment token
+                if (lineCommentPos != std::string::npos && lineCommentPos < pos)
+                    break;
+                
                 inComment_ = !inComment_;
                 pos += token.size();
             }
@@ -1728,6 +1794,17 @@ namespace attributes {
                                         const SourceFileAttributes& attributes,
                                         bool verbose) {
         
+        // write standalone roxygen chunks
+        const std::vector<std::vector<std::string> >& roxygenChunks = 
+                                                    attributes.roxygenChunks();
+        for (std::size_t i = 0; i<roxygenChunks.size(); i++) {
+            const std::vector<std::string>& chunk = roxygenChunks[i];
+            for (std::size_t l = 0; l < chunk.size(); l++)
+                ostr() << chunk[l] << std::endl;
+            ostr() << "NULL" << std::endl << std::endl;
+        }
+        
+        // write exported functions
         if (attributes.hasInterface(kInterfaceR)) {    
             // process each attribute
             for(std::vector<Attribute>::const_iterator 
@@ -2317,19 +2394,29 @@ namespace {
      
             rOfs.close();
                
-            // discover exported functions, and dependencies
+            // discover exported functions and dependencies
             exportedFunctions_.clear();
             depends_.clear();
+            plugins_.clear();
             for (SourceFileAttributesParser::const_iterator 
               it = sourceAttributes.begin(); it != sourceAttributes.end(); ++it) {
+                 
                  if (it->name() == kExportAttribute && !it->function().empty()) 
                     exportedFunctions_.push_back(it->exportedName());
                 
                  else if (it->name() == kDependsAttribute) {
                      for (size_t i = 0; i<it->params().size(); ++i)
                         depends_.push_back(it->params()[i].name());
-                 }   
+                 }
+                 
+                 else if (it->name() == kPluginsAttribute) {
+                     for (size_t i = 0; i<it->params().size(); ++i)
+                        plugins_.push_back(it->params()[i].name());
+                 }
             }
+            
+            // capture modules
+            modules_ = sourceAttributes.modules();
             
             // capture embededded R
             embeddedR_ = sourceAttributes.embeddedR();
@@ -2378,7 +2465,13 @@ namespace {
             return exportedFunctions_;
         }
         
+        const std::vector<std::string>& modules() const {
+            return modules_;
+        }
+        
         const std::vector<std::string>& depends() const { return depends_; };
+        
+        const std::vector<std::string>& plugins() const { return plugins_; };
         
         const std::vector<std::string>& embeddedR() const { return embeddedR_; }
           
@@ -2410,10 +2503,27 @@ namespace {
                 ostr <<  attribute.exportedName()
                      << " <- Rcpp:::sourceCppFunction("
                      << "function(" << generateRArgList(function) << ") {}, " 
+                     << (function.type().isVoid() ? "TRUE" : "FALSE") << ", "
                      << dllInfo << ", " 
                      << "'" << contextId_ + "_" + function.name() 
                      << "')" << std::endl;
-            }        
+            }   
+            
+            // modules
+            std::vector<std::string> modules = attributes.modules();
+            if (modules.size() > 0)
+            {
+                // modules require definition of C++Object to be loaded
+                ostr << "library(Rcpp)" << std::endl;
+                
+                // load each module
+                for (std::vector<std::string>::const_iterator 
+                    it = modules.begin(); it != modules.end(); ++it)
+                {
+                    ostr << *it << " <- Rcpp::Module(\"" << *it << "\"," 
+                         << dllInfo << ")" << std::endl;
+                }
+            }
                            
         }
         
@@ -2435,7 +2545,9 @@ namespace {
         std::string previousDynlibFilename_;
         std::string dynlibExt_;
         std::vector<std::string> exportedFunctions_;
+        std::vector<std::string> modules_;
         std::vector<std::string> depends_;
+        std::vector<std::string> plugins_;
         std::vector<std::string> embeddedR_;
     };
     
@@ -2551,12 +2663,14 @@ BEGIN_RCPP
         _["buildDirectory"] = pDynlib->buildDirectory(),
         _["generatedCpp"] = pDynlib->generatedCpp(),
         _["exportedFunctions"] = pDynlib->exportedFunctions(),
+        _["modules"] = pDynlib->modules(),
         _["cppSourceFilename"] = pDynlib->cppSourceFilename(),
         _["rSourceFilename"] = pDynlib->rSourceFilename(),
         _["dynlibFilename"] = pDynlib->dynlibFilename(),
         _["dynlibPath"] = pDynlib->dynlibPath(),
         _["previousDynlibPath"] = pDynlib->previousDynlibPath(),
         _["depends"] = pDynlib->depends(),
+        _["plugins"] = pDynlib->plugins(),
         _["embeddedR"] = pDynlib->embeddedR());
 END_RCPP
 }
@@ -2629,10 +2743,10 @@ BEGIN_RCPP
     std::set<std::string> dependsAttribs;
     for (std::size_t i=0; i<cppFiles.size(); i++) {
         
-        // parse attributes (continue if there are none)
+        // parse file (continue if there is no generator output)
         std::string cppFile = cppFiles[i];
         SourceFileAttributesParser attributes(cppFile);
-        if (attributes.empty())
+        if (!attributes.hasGeneratorOutput())
             continue;
             
         // confirm we have attributes

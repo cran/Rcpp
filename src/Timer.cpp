@@ -25,9 +25,9 @@
 #if defined(_WIN32) 
     #define WIN32_LEAN_AND_MEAN
     #include <windows.h>
-#elif defined(__MACH__) || defined(__APPLE__)
+#elif defined(__APPLE__)
     #include <mach/mach_time.h>
-#elif defined(linux) || defined(__linux)
+#elif defined(linux) || defined(__linux) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__GLIBC__) || defined(__GNU__)
     #include <time.h>
 #elif defined(sun) || defined(__sun) || defined(_AIX)
     #include <sys/time.h>
@@ -49,7 +49,7 @@ namespace Rcpp{
         return 1.0e9 * time_var.QuadPart / frequency.QuadPart;
     }
 
-#elif defined(__MACH__) || defined(__APPLE__)
+#elif defined(__APPLE__)
      
     nanotime_t get_nanotime(void) {
         nanotime_t time;
@@ -61,9 +61,10 @@ namespace Rcpp{
         /* Convert to nanoseconds */
         return time * (info.numer / info.denom);
     }
-#elif defined(linux) || defined(__linux)
 
-    static const nanotime_t nanoseconds_in_second = 1000000000LL;
+#elif defined(linux) || defined(__linux) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__GLIBC__) || defined(__GNU__)
+
+    static const nanotime_t nanoseconds_in_second = static_cast<nanotime_t>(1000000000.0);
     
     nanotime_t get_nanotime(void) {
         struct timespec time_var;
