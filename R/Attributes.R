@@ -34,6 +34,14 @@ sourceCpp <- function(file = "",
     
     # resolve the file path
     file <- normalizePath(file, winslash = "/")
+    
+    # validate that there are no spaces in the path on windows
+    if (.Platform$OS.type == "windows") {
+        if (grepl(' ', basename(file), fixed=TRUE)) {
+            stop("The filename '", basename(file), "' contains spaces. This ",
+                 "is not permitted.")
+        }
+    }
      
     # get the context (does code generation as necessary)
     context <- .Call("sourceCppContext", PACKAGE="Rcpp", 
@@ -57,7 +65,7 @@ sourceCpp <- function(file = "",
         .validatePackages(depends, context$cppSourceFilename)
         
         # temporarily modify environment for the build
-        envRestore <- .setupBuildEnvironment(depends, file)
+        envRestore <- .setupBuildEnvironment(depends, context$plugins, file)
         
         # temporarily setwd to build directory
         cwd <- getwd()
@@ -133,19 +141,21 @@ sourceCpp <- function(file = "",
                 "force a rebuild)\n\n", sep="")
     }
     
-    # load the module if we have exported functions (else there is no module)
-    if (length(context$exportedFunctions) > 0) {
+    # load the module if we have exported symbols
+    if (length(context$exportedFunctions) > 0 || length(context$modules) > 0) {
         
         # remove existing objects of the same name from the environment
-        exports <- context$exportedFunctions
+        exports <- c(context$exportedFunctions, context$modules)
         removeObjs <- exports[exports %in% ls(envir = env, all.names = T)]
         remove(list = removeObjs, envir = env)
         
         # source the R script
         scriptPath <- file.path(context$buildDirectory, context$rSourceFilename) 
         source(scriptPath, local = env)
+        
     } else if (getOption("rcpp.warnNoExports", default=TRUE)) {
-        warning("No Rcpp::export attributes found in source")
+        warning("No Rcpp::export attributes or RCPP_MODULE declarations ",
+                "found in source")
     }
     
     # source the embeddedR
@@ -154,29 +164,47 @@ sourceCpp <- function(file = "",
         source(file=srcConn, echo=TRUE)
     }
     
-    # return (invisibly) a list of exported functions
-    invisible(context$exportedFunctions)
+    # return (invisibly) a list containing exported functions and modules
+    invisible(list(functions = context$exportedFunctions,
+                   modules = context$modules))
 }
 
 # Define a single C++ function
 cppFunction <- function(code, 
                         depends = character(),
+                        plugins = character(),
                         includes = character(),
                         env = parent.frame(),
                         rebuild = FALSE,
                         showOutput = verbose,
                         verbose = getOption("verbose")) {
     
-    # generate required scaffolding
+    # process depends
     if (!is.null(depends) && length(depends) > 0) {
         depends <- paste(depends, sep=", ")
         scaffolding <- paste("// [[Rcpp::depends(", depends, ")]]", sep="")
         scaffolding <- c(scaffolding, "", .linkingToIncludes(depends, FALSE), 
-                         recursive=T)
+                         recursive=TRUE)
     }
     else {
         scaffolding <- "#include <Rcpp.h>"
     }
+    
+    # process plugins
+    if (!is.null(plugins) && length(plugins) > 0) {
+        plugins <- paste(plugins, sep=", ")
+        pluginsAttrib <- paste("// [[Rcpp::plugins(", plugins, ")]]", sep="")
+        scaffolding <- c(scaffolding, pluginsAttrib)
+        
+        # append plugin includes
+        for (pluginName in plugins) {
+            plugin <- .plugins[[pluginName]]
+            settings <- plugin()
+            scaffolding <- c(scaffolding, settings$includes, recursive=TRUE)
+        }
+    }
+    
+    # remainder of scaffolding
     scaffolding <- c(scaffolding, 
                      "",
                      "using namespace Rcpp;", 
@@ -208,12 +236,12 @@ cppFunction <- function(code,
                           verbose = verbose)
     
     # verify that a single function was exported and return it
-    if (length(exported) == 0)
+    if (length(exported$functions) == 0)
         stop("No function definition found")
-    else if (length(exported) > 1)
+    else if (length(exported$functions) > 1)
         stop("More than one function definition")
     else {
-        functionName <- exported[[1]]
+        functionName <- exported$functions[[1]]
         invisible(get(functionName, env))
     }
 }
@@ -279,6 +307,8 @@ compileAttributes <- function(pkgdir = ".", verbose = getOption("verbose")) {
     pkgInfo <- tools:::.split_description(tools:::.read_description(descFile))
     pkgname <- as.character(pkgInfo$DESCRIPTION["Package"])
     depends <- unique(names(pkgInfo$Depends))
+    if (is.null(depends))
+        depends <- character()
     
     # determine source directory
     srcDir <- file.path(pkgdir, "src")
@@ -305,15 +335,37 @@ compileAttributes <- function(pkgdir = ".", verbose = getOption("verbose")) {
     linkingTo <- as.character(pkgInfo$DESCRIPTION["LinkingTo"])
     includes <- .linkingToIncludes(linkingTo, TRUE)
     
+    # if a master include file is defined for the package then include it
+    pkgHeader <- paste(pkgname, ".h", sep="")
+    pkgHeaderPath <- file.path(pkgdir, "inst", "include",  pkgHeader)
+    if (file.exists(pkgHeaderPath)) {
+        pkgInclude <- paste("#include \"../inst/include/", 
+                            pkgHeader, "\"", sep="")
+        includes <- c(includes, pkgInclude)
+    } 
+    
     # generate exports
     invisible(.Call("compileAttributes", PACKAGE="Rcpp", 
                     pkgdir, pkgname, depends, cppFiles, cppFileBasenames, 
                     includes, verbose, .Platform))
 }
 
+# setup plugins environment
+.plugins <- new.env()
+
+# built-in C++11 plugin
+.plugins[["cpp11"]] <- function() {
+    list(env = list(PKG_CXXFLAGS ="-std=c++11"))
+}
+
+# register a plugin
+registerPlugin <- function(name, plugin) {
+    .plugins[[name]] <- plugin    
+}
+
 
 # Take an empty function body and connect it to the specified external symbol
-sourceCppFunction <- function(func, dll, symbol) {
+sourceCppFunction <- function(func, isVoid, dll, symbol) {
     
     args <- names(formals(func))
     
@@ -324,6 +376,9 @@ sourceCppFunction <- function(func, dll, symbol) {
     
     body[[1L]] <- .Call
     body[[2L]] <- getNativeSymbolInfo(symbol, dll)$address
+    
+    if (isVoid)
+        body <- call("invisible", body)
     
     body(func) <- body
     
@@ -393,11 +448,52 @@ sourceCppFunction <- function(func, dll, symbol) {
 # Setup the build environment based on the specified dependencies. Returns an
 # opaque object that can be passed to .restoreEnvironment to reverse whatever
 # changes that were made
-.setupBuildEnvironment <- function(depends, sourceFile) {
+.setupBuildEnvironment <- function(depends, plugins, sourceFile) {
     
-    # discover dependencies
+    # setup 
     buildEnv <- list()
     linkingToPackages <- c("Rcpp")
+    
+    # merge values into the buildEnv
+    mergeIntoBuildEnv <- function(name, value) {
+        
+        # protect against null or empty string
+        if (is.null(value) || !nzchar(value))
+            return;
+        
+        # if it doesn't exist already just set it
+        if (is.null(buildEnv[[name]])) {
+            buildEnv[[name]] <<- value
+        }
+        # if it's not identical then append
+        else if (!identical(buildEnv[[name]], value)) {
+            buildEnv[[name]] <<- paste(buildEnv[[name]], value);
+        }
+        else {
+            # it already exists and it's the same value, this 
+            # likely means it's a flag-type variable so we 
+            # do nothing rather than appending it
+        }   
+    }
+    
+    # update dependencies from a plugin
+    setDependenciesFromPlugin <- function(plugin) {
+        
+        # get the plugin settings 
+        settings <- plugin()
+        
+        # merge environment variables
+        pluginEnv <- settings$env
+        for (name in names(pluginEnv)) {
+            mergeIntoBuildEnv(name, pluginEnv[[name]])
+        }
+        
+        # capture any LinkingTo elements defined by the plugin
+        linkingToPackages <<- unique(c(linkingToPackages, 
+                                      settings$LinkingTo))
+    }
+    
+    # add packages to linkingTo and introspect for plugins
     for (package in depends) {
         
         # add a LinkingTo for this package
@@ -405,35 +501,16 @@ sourceCppFunction <- function(func, dll, symbol) {
         
         # see if the package exports a plugin
         plugin <- .getInlinePlugin(package)
-        if (!is.null(plugin)) {
-            
-            # get the plugin settings 
-            settings <- plugin()
-            
-            # merge environment variables
-            pluginEnv <- settings$env
-            for (name in names(pluginEnv)) {
-                # if it doesn't exist already just set it
-                if (is.null(buildEnv[[name]])) {
-                    buildEnv[[name]] <- pluginEnv[[name]]
-                }
-                # if it's not identical then append
-                else if (!identical(buildEnv[[name]],
-                                    pluginEnv[[name]])) {
-                    buildEnv[[name]] <- paste(buildEnv[[name]], 
-                                              pluginEnv[[name]]);
-                }
-                else {
-                    # it already exists and it's the same value, this 
-                    # likely means it's a flag-type variable so we 
-                    # do nothing rather than appending it
-                }   
-            }
-            
-            # capture any LinkingTo elements defined by the plugin
-            linkingToPackages <- unique(c(linkingToPackages, 
-                                          settings$LinkingTo))
-        }
+        if (!is.null(plugin))
+           setDependenciesFromPlugin(plugin) 
+    }
+    
+    # process plugins
+    for (pluginName in plugins) {
+        plugin <- .plugins[[pluginName]]
+        if (is.null(plugin))
+            stop("Inline plugin '", pluginName, "' could not be found.")
+        setDependenciesFromPlugin(plugin)
     }
     
     # if there is no buildEnv from a plugin then use the Rcpp plugin
@@ -450,17 +527,23 @@ sourceCppFunction <- function(func, dll, symbol) {
     
     # set CLINK_CPPFLAGS based on the LinkingTo dependencies
     buildEnv$CLINK_CPPFLAGS <- .buildClinkCppFlags(linkingToPackages)
-    
-    # if the source file is in a package then add standard package
-    # include directories
+     
+    # if the source file is in a package then add src and inst/include
     if (.isPackageSourceFile(sourceFile)) {
         srcDir <- dirname(sourceFile)
+        srcDir <- asBuildPath(srcDir)
         incDir <- file.path(dirname(sourceFile), "..", "inst", "include")
+        incDir <- asBuildPath(incDir)
+        dirFlags <- paste0('-I"', c(srcDir, incDir), '"', collapse=" ")
         buildEnv$CLINK_CPPFLAGS <- paste(buildEnv$CLINK_CPPFLAGS, 
-                                         paste0('-I"', c(srcDir, incDir), '"'), 
+                                         dirFlags, 
                                          collapse=" ")
     }
-
+    
+    # merge existing environment variables
+    for (name in names(buildEnv))
+        mergeIntoBuildEnv(name, Sys.getenv(name))
+    
     # add cygwin message muffler
     buildEnv$CYGWIN = "nodosfilewarning"
     
@@ -533,6 +616,7 @@ sourceCppFunction <- function(func, dll, symbol) {
     pkgCxxFlags <- NULL
     for (package in linkingToPackages) {
         packagePath <- find.package(package, NULL, quiet=TRUE)
+        packagePath <- asBuildPath(packagePath)
         pkgCxxFlags <- paste(pkgCxxFlags, 
             paste0('-I"', packagePath, '/include"'), 
             collapse=" ")

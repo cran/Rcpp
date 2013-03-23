@@ -2,7 +2,7 @@
 //
 // MatrixRow.h: Rcpp R/C++ interface class library -- matrices row
 //
-// Copyright (C) 2010 - 2012 Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2010 - 2013 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -28,6 +28,7 @@ public:
     typedef Matrix<RTYPE> MATRIX ;
     typedef typename MATRIX::Proxy Proxy ;
     typedef typename MATRIX::Proxy reference ;
+    typedef typename MATRIX::const_Proxy const_reference ;
     typedef typename MATRIX::value_type value_type ;
     
     class iterator {
@@ -40,25 +41,28 @@ public:
         typedef typename std::iterator_traits<vector_iterator>::pointer pointer ;
         
         typedef std::random_access_iterator_tag iterator_category ;
-                
+            
+        iterator( const iterator& other) : row(other.row), index(other.index){}
         iterator( MatrixRow& row_, int index_ ) : row(row_), index(index_){}
                 
         iterator& operator++(){ 
             index++;
             return *this ;
         }
-        iterator& operator++(int) { 
-            index++;
-            return *this ;
+        iterator operator++(int) { 
+            iterator orig(*this); 
+            index++ ;
+            return orig ;
         }
         
         iterator& operator--(){ 
             index-- ;
             return *this ;
         } 
-        iterator& operator--(int){ 
+        iterator operator--(int){ 
+            iterator orig(*this); 
             index-- ;
-            return *this ;
+            return orig ;
         }
                                     
         iterator operator+(difference_type n) const { return iterator( row, index + n ) ; }
@@ -98,7 +102,8 @@ public:
     MatrixRow( MATRIX& object, int i ) : 
         parent(object), 
         start(parent.begin() + i), 
-        parent_nrow(parent.nrow()) 
+        parent_nrow(parent.nrow()), 
+        row(i)
     {
         if( i < 0 || i >= parent.nrow() ) throw index_out_of_bounds() ;
     }
@@ -106,7 +111,8 @@ public:
     MatrixRow( const MatrixRow& other ) : 
         parent(other.parent), 
         start(other.start), 
-        parent_nrow(other.parent_nrow)
+        parent_nrow(other.parent_nrow), 
+        row(other.row)
     {} ;
         
     template <int RT, bool NA, typename T>
@@ -128,7 +134,7 @@ public:
     }
         
     inline reference operator[]( int i ) const {
-        return start[ get_parent_index(i) ] ;
+        return parent[ row + i * parent_nrow ] ;
     }
         
     inline iterator begin(){
@@ -155,9 +161,11 @@ private:
     MATRIX& parent; 
     typename MATRIX::iterator start ;
     int parent_nrow ;
+    int row ;
         
     inline int get_parent_index(int i) const { 
         RCPP_DEBUG_4( "MatrixRow<%d>[%p]::get_parent_index(%d) = %d", RTYPE, this, i, i*parent_nrow)
+        Rprintf( "MatrixRow::get_parent_index(int = %d), parent_nrow = %d >> %d\n", i, parent_nrow, i*parent_nrow ) ;
         return i * parent_nrow ;
     } 
 } ;

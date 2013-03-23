@@ -1,8 +1,10 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 8 -*-
+/* :tabSize=4:indentSize=4:noTabs=false:folding=explicit:collapseFolds=1: */
 //
-// InternalFunction.h: Rcpp R/C++ interface class library -- exposing C++ functions
+// char_type.h: Rcpp R/C++ interface class library -- 
 //
-// Copyright (C) 2010 - 2012 Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2013 Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2013 Rice University
 //
 // This file is part of Rcpp.
 //
@@ -15,38 +17,29 @@
 // WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-//
+//                         
 // You should have received a copy of the GNU General Public License
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef Rcpp_InternalFunction_h
-#define Rcpp_InternalFunction_h
+#ifndef Rcpp__traits__char_type__h
+#define Rcpp__traits__char_type__h
 
-#include <RcppCommon.h>
+namespace Rcpp{
+namespace traits{
 
-#include <Rcpp/grow.h>
-#include <Rcpp/RObject.h>
-
-namespace Rcpp{ 
-
-/** 
- * functions
- */
-class InternalFunction : public RObject {
-public:
-
-#include <Rcpp/generated/InternalFunction__ctors.h>	
-		
-private:
+    template <typename T>
+    struct char_type {
+    	typedef typename T::value_type type ; 
+    } ;
 	
-	inline void set( SEXP xp){
-		Environment RCPP = Environment::Rcpp_namespace() ;
-		Function intf = RCPP["internal_function"] ;
-		setSEXP( intf( xp ) ) ; 
-	}
-	
-};
-
-} // namespace Rcpp
+    template <> struct char_type< const wchar_t* > {
+    	typedef wchar_t type ;	
+    } ;
+    template <> struct char_type< const char* > {
+    	typedef char type ;
+    } ;
+    
+} // traits
+} // Rcpp
 
 #endif

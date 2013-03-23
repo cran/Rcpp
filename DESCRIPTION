@@ -1,7 +1,7 @@
 Package: Rcpp
 Title: Seamless R and C++ Integration
-Version: 0.10.2
-Date: $Date: 2012-12-21 06:24:27 -0600 (Fri, 21 Dec 2012) $
+Version: 0.10.3
+Date: $Date: 2013-03-23 09:49:00 -0500 (Sat, 23 Mar 2013) $
 Author: Dirk Eddelbuettel and Romain Francois, with contributions by
         Douglas Bates, John Chambers and JJ Allaire
 Maintainer: Dirk Eddelbuettel <edd@debian.org>
@@ -40,7 +40,7 @@ Description: The Rcpp package provides R functions as well as a C++
         Rcpp modules and their implementation is based on previous work
         in the inline package.
  .
- Many examples are included, and over 870 unit tests in over 390 unit
+ Many examples are included, and over 870 unit tests in over 400 unit
         test functions provide additional usage examples.
  .
  An earlier version of Rcpp, containing what we now call the 'classic
@@ -59,6 +59,7 @@ BugReports:
         http://r-forge.r-project.org/tracker/?atid=637&group_id=155&func=browse
 MailingList: Please send questions and comments regarding Rcpp to
         rcpp-devel@lists.r-forge.r-project.org
-Packaged: 2012-12-21 12:29:41.246628 UTC; edd
+Packaged: 2013-03-23 14:53:30.454975 UTC; edd
+NeedsCompilation: yes
 Repository: CRAN
-Date/Publication: 2012-12-21 16:38:58
+Date/Publication: 2013-03-23 17:05:30

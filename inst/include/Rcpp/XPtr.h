@@ -2,7 +2,7 @@
 //
 // XPtr.h: Rcpp R/C++ interface class library -- smart external pointers
 //
-// Copyright (C) 2009 - 2011	Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2009 - 2013	Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -27,14 +27,6 @@
 namespace Rcpp{
     
 template <typename T>
-void delete_finalizer(SEXP p){
-    if( TYPEOF(p) == EXTPTRSXP ){
-	T* ptr = (T*) R_ExternalPtrAddr(p) ;
-	delete ptr ;
-    }
-}
-
-template <typename T>
 void standard_delete_finalizer(T* obj){
     delete obj ;   
 }
@@ -43,6 +35,7 @@ template <typename T, void Finalizer(T*) >
 void finalizer_wrapper(SEXP p){
     if( TYPEOF(p) == EXTPTRSXP ){
 	T* ptr = (T*) R_ExternalPtrAddr(p) ;
+	RCPP_DEBUG_3( "finalizer_wrapper<%s>(SEXP p = <%p>). ptr = %p", DEMANGLE(T), p, ptr  )
 	Finalizer(ptr) ;
     }
 }
@@ -57,10 +50,10 @@ public:
      * @param xp external pointer to wrap
      */
     explicit XPtr(SEXP m_sexp, SEXP tag = R_NilValue, SEXP prot = R_NilValue) : RObject(m_sexp){
-	if( TYPEOF(m_sexp) != EXTPTRSXP )
-	    throw ::Rcpp::not_compatible( "expecting an external pointer" ) ;
-    	R_SetExternalPtrTag( m_sexp, tag ) ;
-    	R_SetExternalPtrProtected( m_sexp, prot ) ;
+        if( TYPEOF(m_sexp) != EXTPTRSXP )
+            throw ::Rcpp::not_compatible( "expecting an external pointer" ) ;
+        R_SetExternalPtrTag( m_sexp, tag ) ;
+        R_SetExternalPtrProtected( m_sexp, prot ) ;
     } ;
 		
     /**
@@ -74,13 +67,18 @@ public:
      *        so you need to make sure the pointer can be "delete" d
      *        this way (has to be a C++ object)
      */
-     explicit XPtr(T* p, bool set_delete_finalizer = true, SEXP tag = R_NilValue, SEXP prot = R_NilValue){
-         setSEXP( R_MakeExternalPtr( (void*)p , tag, prot) ) ;
+    explicit XPtr(T* p, bool set_delete_finalizer = true, SEXP tag = R_NilValue, SEXP prot = R_NilValue){
+        RCPP_DEBUG_2( "XPtr(T* p = <%p>, bool set_delete_finalizer = %s, SEXP tag = R_NilValue, SEXP prot = R_NilValue)", p, ( set_delete_finalizer ? "true" : "false" ) )
+        SEXP x = PROTECT( R_MakeExternalPtr( (void*)p , tag, prot) ) ; 
+        #if RCPP_DEBUG_LEVEL > 0
+        Rf_PrintValue( x ) ;
+        #endif
+        setSEXP( x ) ;
+        UNPROTECT(1); 
         if( set_delete_finalizer ){
-    	setDeleteFinalizer() ;
+            setDeleteFinalizer() ;
         }
-    
-     }
+    }
 
     XPtr( const XPtr& other ) : RObject( other.asSexp() ) {}
     

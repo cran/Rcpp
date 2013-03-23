@@ -3,7 +3,8 @@
 //
 // r_type_traits.h: Rcpp R/C++ interface class library -- traits to help wrap
 //
-// Copyright (C) 2010 - 2012 Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2010 - 2013 Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2013 Rice University
 //
 // This file is part of Rcpp.
 //
@@ -50,7 +51,7 @@ struct r_type_generic_tag{} ;
 struct r_type_pairstring_primitive_tag{} ;
 
 /**
- * Identifies that the associated type is pair<const std::string,std::string>
+ * Identifies that the associated type is pair<const std::(w)?string,std::(w)?string>
  */
 struct r_type_pairstring_string_tag{} ;
 
@@ -98,7 +99,9 @@ template<> struct r_type_traits< std::pair<const std::string,Rbyte> >{ typedef r
 template<> struct r_type_traits< std::pair<const std::string,Rcomplex> >{ typedef r_type_pairstring_primitive_tag r_category ; } ;
 template<> struct r_type_traits< std::pair<const std::string,bool> >{ typedef r_type_pairstring_primitive_tag r_category ; } ;
 template<> struct r_type_traits< std::pair<const std::string,std::string> >{ typedef r_type_pairstring_string_tag r_category ; } ;
+template<> struct r_type_traits< std::pair<const std::string,std::wstring> >{ typedef r_type_pairstring_string_tag r_category ; } ;
 template<> struct r_type_traits< std::pair<const std::string,char> >{ typedef r_type_pairstring_string_tag r_category ; } ;
+template<> struct r_type_traits< std::pair<const std::string,wchar_t> >{ typedef r_type_pairstring_string_tag r_category ; } ;
 
 template<> struct r_type_traits< std::pair<const std::string,unsigned int> >{ typedef r_type_pairstring_primitive_tag r_category ; } ;
 template<> struct r_type_traits< std::pair<const std::string,float> >{ typedef r_type_pairstring_primitive_tag r_category ; } ;
@@ -110,11 +113,14 @@ template<> struct r_type_traits<Rbyte>{ typedef r_type_primitive_tag r_category 
 template<> struct r_type_traits<Rcomplex>{ typedef r_type_primitive_tag r_category ; } ;
 template<> struct r_type_traits<bool>{ typedef r_type_primitive_tag r_category ; } ;
 template<> struct r_type_traits<std::string>{ typedef r_type_string_tag r_category ; } ;
+template<> struct r_type_traits<std::wstring>{ typedef r_type_string_tag r_category ; } ;
 template<> struct r_type_traits<char>{ typedef r_type_string_tag r_category ; } ;
+template<> struct r_type_traits<wchar_t>{ typedef r_type_string_tag r_category ; } ;
 
 template<> struct r_type_traits<unsigned int>{ typedef r_type_primitive_tag r_category ; } ;
 template<> struct r_type_traits<float>{ typedef r_type_primitive_tag r_category ; } ;
 template<> struct r_type_traits<const char*>{ typedef r_type_string_tag r_category ; } ;
+template<> struct r_type_traits<const wchar_t*>{ typedef r_type_string_tag r_category ; } ;
 
 /* long */
 template<> struct r_type_traits<long>{ typedef r_type_primitive_tag r_category ; } ;

@@ -4,6 +4,16 @@
 @String{RFoundation = "R Foundation for Statistical Computing" }
 @String{R-Forge = "http://R-Forge.R-Project.org/" }
 
+@Misc{Cpp11,
+  author =       "ISO/IEC",
+  organization = "{International Organization for Standardization}",
+  title =        "\proglang{C++} 2011 Standard Document 14882:2011",
+  howpublished = {ISO/IEC Standard Group for Information Technology / Programming Languages / C++},
+  year =         2011,
+  url =         "http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=50372",
+  urlansi =     "http://webstore.ansi.org/RecordDetail.aspx?sku=ISO/IEC%2014882:2011"
+}
+
 @manual{Abrahams+Grosse-Kunstleve:2003:Boost.Python,
   author =	 { David Abrahams and Ralf W. Grosse-Kunstleve },
   organization = "Boost Consulting",
@@ -82,7 +92,7 @@
   title =	 {RInside: C++ classes to embed R in C++ applications},
   author =	 {Dirk Eddelbuettel and Romain Fran\c{c}ois},
   year =	 2012,
-  note =	 {R package version 0.2.7},
+  note =	 {R package version 0.2.10},
   url =		 CRAN # "package=RInside"
 }
 
@@ -90,16 +100,24 @@
   title =	 {RProtoBuf: R Interface to the Protocol Buffers API},
   author =	 {Romain Fran\c{c}ois and Dirk Eddelbuettel},
   year =	 2012,
-  note =	 {R package version 0.2.5},
+  note =	 {R package version 0.2.6},
   url =		 CRAN # "package=RProtoBuf"
 }
 
 @Manual{CRAN:RQuantLib,
   title =	 {RQuantLib: {R} interface to the {QuantLib} library},
   author =	 {Dirk Eddelbuettel and Khanh Nguyen},
-  year =	 2011,
-  note =	 {R package version 0.3.8},
+  year =	 2013,
+  note =	 {R package version 0.3.10},
   url =		 CRAN # "package=RQuantLib"
+}
+
+@Manual{CRAN:rbenchmark,
+  title =	 {\pkg{rbenchmark}: Benchmarking routine for \proglang{R}},
+  author =	 {Wacek Kusnierczyk},
+  year =	 2012,
+  note =	 {R package version 1.0.0},
+  url =		 CRAN # "package=rbenchmark"
 }
 
 @Article{JSS:Rcpp,
@@ -117,7 +135,7 @@
   title =	 {{Rcpp}: Seamless {R} and {C++} Integration},
   author =	 {Dirk Eddelbuettel and Romain Fran\c{c}ois},
   year =	 2012,
-  note =	 {R package version 0.9.13},
+  note =	 {R package version 0.10.3},
   url =		 CRAN # "package=Rcpp"
 }
 
@@ -126,8 +144,8 @@
                   templated linear algebra library},
   author =	 {Romain Fran\c{c}ois and Dirk Eddelbuettel and
                   Douglas Bates},
-  year =	 2012,
-  note =	 {R package version 0.3.2.4},
+  year =	 2013,
+  note =	 {R package version 0.3.800.1},
   url =		 CRAN # "package=RcppArmadillo"
 }
 
@@ -135,7 +153,7 @@
   title =	 {RcppClassic: Deprecated 'classic' Rcpp API},
   author =	 {Dirk Eddelbuettel and Romain Fran\c{c}ois},
   year =	 2012,
-  note =	 {R package version 0.9.2},
+  note =	 {R package version 0.9.3},
   url =		 CRAN # "package=RcppClassic"
 }
 
@@ -147,12 +165,33 @@
   url =		 CRAN # "package=RcppDE"
 }
 
+@Manual{CRAN:RcppEigen,
+  title =	 {RcppEigen: Rcpp integration for the Eigen templated linear 
+		  algebra library}, 
+  author =	 {Douglas Bates and Romain Fran\c{c}ois and Dirk Eddelbuettel},
+  year =	 2013,
+  note =	 {{R} package version 0.3.1.2.1},
+  url =		 CRAN # "package=RcppEigen"
+}
+
+@Article{JSS:RcppEigen,
+  title =	 {Fast and Elegant Numerical Linear Algebra Using the
+                  {RcppEigen} Package},
+  author =	 {Douglas Bates and Dirk Eddelbuettel},
+  journal =	 {Journal of Statistical Software},
+  year =	 {2013},
+  volume =	 {52},
+  number =	 {5},
+  pages =	 {1--24},
+  url =		 {http://www.jstatsoft.org/v52/i05/},
+}
+
 @Manual{CRAN:RcppExamples,
   title =	 {RcppExamples: Examples using {Rcpp} to interface {R}
                   and {C++}},
   author =	 {Dirk Eddelbuettel and Romain Fran\c{c}ois},
-  year =	 2012,
-  note =	 {R package version 0.1.4},
+  year =	 2013,
+  note =	 {R package version 0.1.6},
   url =		 CRAN # "package=RcppExamples"
 }
 
@@ -185,7 +224,7 @@
   title =	 {highlight: Syntax highlighter},
   author =	 {Romain Fran\c{c}ois},
   year =	 2012,
-  note =	 {R package version 0.3.2},
+  note =	 {Archived R package with last version 0.3.2},
   url =		 CRAN # "package=highlight"
 }
 
@@ -194,9 +233,17 @@
                   R},
   author =	 {Oleg Sklyar and Duncan Murdoch and Mike Smith and
                   Dirk Eddelbuettel and Romain Fran\c{c}ois},
-  year =	 2012,
-  note =	 {R package version 0.3.10},
+  year =	 2013,
+  note =	 {R package version 0.3.11},
   url =		 CRAN # "package=inline"
+}
+
+@Manual{CRAN:Matrix,
+  title =	 {\pkg{Matrix}: Sparse and Dense Matrix Classes and Methods},
+  author =	 {Douglas Bates and Martin Maechler},
+  year =	 2013,
+  note =	 {R package version 1.0-11},
+  url =		 CRAN # "package=Matrix"
 }
 
 @Manual{CRAN:minqa,
@@ -213,8 +260,36 @@
   title =	 {roxygen2: In-source documentation for R},
   author =	 {Hadley Wickham and Peter Danenberg and Manuel Eugster},
   year =	 2011,
-  note =	 {R package version 2.2.12},
+  note =	 {R package version 2.2.2},
   url =		 CRAN # "package=roxygen2"
+}
+
+@Book{Eddelbuettel:2013:Rcpp,
+  author =	 {Dirk Eddelbuettel},
+  title =	 {Seamless R and C++ Integration with Rcpp},
+  publisher =	 {Springer},
+  year =	 2013,
+  address =	 {New York},
+  isbn =	 {978-1-4614-6867-7}
+}
+
+@Article{Eddelbuettel+Sanderson:2013:RcppArmadillo,
+  title =	 {{RcppArmadillo}: Accelerating {R} with High-Performance {C++} Linear Algebra},
+  author =	 {Dirk Eddelbuettel and Conrad Sanderson},
+  journal =	 {Computational Statistics and Data Analysis},
+  year =	 2013,
+  volume =	 {(in press)},
+  doi =          {10.1016/j.csda.2013.02.005},
+  url =          {http://dx.doi.org/10.1016/j.csda.2013.02.005}
+}
+
+; see http://eigen.tuxfamily.org/index.php?title=BibTeX
+; replaced 'howpublished' with 'url' and updated year to 2011, and again to 2012
+@MISC{Eigen:Web,
+  author =	 {Ga\"{e}l Guennebaud and Beno\^{i}t Jacob and others},
+  title =	 {Eigen v3},
+  year =	 2012,
+  url =		 {http://eigen.tuxfamily.org},
 }
 
 @Book{Gentleman:2009:RProgramming,

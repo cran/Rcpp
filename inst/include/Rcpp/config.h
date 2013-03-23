@@ -2,7 +2,7 @@
 //
 // config.h: Rcpp R/C++ interface class library -- Rcpp configuration
 //
-// Copyright (C) 2010 - 2012  Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2010 - 2013  Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -25,7 +25,11 @@
 #define Rcpp_Version(v,p,s) (((v) * 65536) + ((p) * 256) + (s))
 
 // All three digits have to be integers for g++-4.7 or later
-#define RCPP_VERSION Rcpp_Version(0,10,2)
+#define RCPP_VERSION Rcpp_Version(0,10,3)
+
+// Rcpp 0.10.3 has initial support for new preserve/release semantics
+// This switch enables a rollback to the standard R preserve/release semantics
+#define RCPP_USE_NEW_PRESERVE_RELEASE 0
                                                                                                                 
 #endif
 
