@@ -219,6 +219,40 @@ IntegerVector integer_erase( IntegerVector y ){
 }
 
 // [[Rcpp::export]]
+List integer_erase_range( IntegerVector x, IntegerVector y ){
+    x.erase(x.begin()+5, x.end()-1 );
+    y.erase(y.begin()+5, y.end()-1 );
+    return List::create( x, y ) ;
+}
+
+// [[Rcpp::export]]
+List integer_erase_range_2( IntegerVector x, IntegerVector y ){
+    IntegerVector::iterator it = x.begin()+1 ;
+    while( it != x.end() ){
+        it = x.erase(it) ;    
+    }
+    it = y.begin() + 1 ;
+    while( it != y.end() ){
+        it = y.erase(it) ;    
+    }
+    return List::create( x, y ) ;
+}
+
+// [[Rcpp::export]]
+List List_erase_range_2( List x, List y ){
+    List::iterator it = x.begin()+1 ;
+    while( it != x.end() ){
+        it = x.erase(it) ;    
+    }
+    it = y.begin() + 1 ;
+    while( it != y.end() ){
+        it = y.erase(it) ;    
+    }
+    return List::create( x, y ) ;
+}
+
+
+// [[Rcpp::export]]
 IntegerVector integer_erase2( IntegerVector y ){
     y.erase(1,2) ;
     return y ;
@@ -382,7 +416,7 @@ List list_erase( List list ){
 
 // [[Rcpp::export]]
 List list_erase_range( List list ){
-    list.erase( 0, 1 ) ;
+    list.erase( 0, 2 ) ;
     return list ;
 }
 
@@ -629,6 +663,17 @@ IntegerVector IntegerVector_int_init(){
 // [[Rcpp::export]]
 bool containsElementNamed( List l, CharacterVector n){
     return l.containsElementNamed(n[0]);
+}
+
+// [[Rcpp::export]]
+List CharacterVectorEqualityOperator( CharacterVector x, CharacterVector y){
+    int n = x.size() ;
+    LogicalVector eq(n), neq(n);
+    for( int i=0; i<n; i++){
+        eq[i]  = x[i] == y[i] ;
+        neq[i] = x[i] != y[i] ; 
+    }
+    return List::create(eq, neq) ;
 }
 
 #if defined(HAS_INIT_LISTS)

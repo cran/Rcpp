@@ -1,3 +1,175 @@
+2013-06-23  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION: Release 0.10.4
+        * inst/NEWS.Rd: Release 0.10.4
+        * inst/include/Rcpp/config.h: Release 0.10.4
+        * debian/*: Similarly updated for new release to Debian
+
+2013-06-19  Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/NEWS.Rd: Document planned depreciation of old RCPP_FUNCION_*
+	macros which are redundant thanks to Rcpp Modules and Rcpp Attributes
+
+        * include/Rcpp/vector/string_proxy.h : added operator
+	string_proxy::operator==( const string_proxy& ) so that me may
+	compare x[i] and y[i] (x and y being CharacterVector)
+
+        * include/Rcpp/module/Module_generated_Pointer_CppMethod.h : remove
+	const and reference to OUT type in several places, that was causing
+	problems e.g.  on making the Rcpp-modules vignette
+
+        * include/Rcpp/module/Module_generated_CppMethod.h : idem
+
+2013-06-18  Romain Francois <romain@r-enthusiasts.com>
+
+        * include/Rcpp/module/Module_generated_CppFunction.h : using
+	BEGIN_RCPP / END_RCPP as suggested by Ben North on Rcpp-devel. This
+	should reduce cross dll exceptions issues on windows.
+
+2013-06-14  Romain Francois <romain@r-enthusiasts.com>
+
+	* include/Rcpp/stats/random/runif.h : removed unused max variable
+	* include/Rcpp/stats/random/rf.h : removed unused n1 and n2 variables
+
+2013-06-13  Romain Francois <romain@r-enthusiasts.com>
+
+	* src/Module.cpp: small buglet in macro. Reported on Rcpp-devel
+
+2013-06-12  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/doc/Makefile: Force serial build of vignettes in yet another
+	effort to not let R-Forge fail when trying to rebuild them
+
+2013-06-08  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/doc/Rcpp.bib: Updated entries
+
+	* inst/doc/Rcpp-introduction.Rnw: Added pointer to 'Rcpp Attributes'
+	vignette, as well as to 'Rcpp Sugar' and 'Rcpp Modules' vignettes.
+	* inst/doc/Rcpp-FAQ/Rcpp-FAQ.Rnw: Idem
+
+2013-06-06  Romain Francois <romain@r-enthusiasts.com>
+
+        * unitTests/cpp/Vector.cpp : more unit tests for erase
+        * unitTests/runit.Vector.R : more unit tests for erase
+
+2013-06-05  Romain Francois <romain@r-enthusiasts.com>
+
+        * include/Rcpp/api/meat/Vector.h : fixed Vector<>::erase(iterator,
+	iterator) and correct return value of erase
+        * unitTests/cpp/Vector.cpp : added regression test for the above fix
+        * unitTests/runit.Vector.R : added regression test for the above fix
+        * include/Rcpp/module/class.h : removed useless typedef
+
+2013-05-31  Romain Francois <romain@r-enthusiasts.com>
+
+        * unitTests/runit.sugar.R : new test for is_infinite and is_nan
+        * unitTests/cpp/sugar.cpp : new test for is_infinite and is_nan
+        * include/Rcpp/sugar/functions/is_infinite.h : new function
+	is_infinite
+        * include/Rcpp/traits/is_infinite.h : new function is_infinite
+        * include/Rcpp/sugar/functions/is_nan.h : new function is_nan
+        * include/Rcpp/traits/is_nan.h : new function is_nan
+
+2013-05-30  Romain Francois <romain@r-enthusiasts.com>
+
+        * include/Rcpp/sugar/functions/all.h : bug fixed for the NA=false
+	case
+        * include/Rcpp/sugar/functions/is_na.h : header
+        * include/Rcpp/sugar/functions/is_finite.h : added sugar is_finite
+	function
+        * include/Rcpp/traits/is_finite.h : added is_finite trait
+        * unitTests/runit.sugar.R : added test for is_finite
+        * unitTests/cpp/S4.cpp : new cpp file to host S4 unit tests
+        * unitTests/runit.S4.R : rework unit tests to use attributes
+        * unitTests/runit.Reference.R : unit tests for Rcpp::Reference
+        * unitTests/cpp/Reference.cpp : unit tests c++ code
+
+2013-05-26  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/api.cpp: Minor tweak for internal formatting
+
+2013-05-24  J.J. Allaire <jj@rstudio.org>
+
+        * R/Attributes.R: Disallow compilation for files that don't have
+        extensions supported by R CMD SHLIB
+
+2013-05-21  J.J. Allaire <jj@rstudio.org>
+
+        * R/Attributes.R: Lookup plugins in inline package if they aren't
+        found within the Rcpp package
+        * man/pluginsAttribute.Rd: Documentation updates.
+
+2013-05-17  J.J. Allaire <jj@rstudio.org>
+
+        * src/attributes.cpp: prevent gc problems with RNGScope destructor
+        in attributes generated functions; don't include package header
+        file in generated cpp exports file
+        * src/api.cpp: use unsigned long for RNG scope counter
+
+2013-04-28  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/api.cpp (Rcpp): No longer use Rd_format(Real|Complex) which is
+	a very verboten R internal; formatting to string is now very bare
+	bones
+
+2013-04-27  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/Makevars: Improved use as well as a new possible overrride of
+	/usr/bin/install_name_tool on OS X, once again contributed by Simon
+
+2013-04-16  Romain Francois <romain@r-enthusiasts.com>
+
+        * include/Rcpp/sugar/functions/na_omit.h : new function na_omit to
+	remove missing values from a vector.
+        * src/attributes.cpp : portability fix (from Martyn Plummer)
+        * include/Rcpp/api/meat/Vector.h : portability fix (from Martyn
+	Plummer)
+
+2013-04-14  Romain Francois <romain@r-enthusiasts.com>
+
+        * include/Rcpp/traits/is_na.h: complex version did not work.
+        added default for VECSXP and EXPRSXP versions
+
+2013-04-02  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/Date.cpp: Corrected operator-() for Date and Datetime objects
+	to behave more inline with C++ standard
+
+	* inst/include/Rcpp/Date.h: operator-() for Dates now returns a
+	double as the date itself is fractional double since epoch
+
+	* inst/unitTests/cpp/dates.cpp: New file with C++ portion of tests
+	factored out from R unit test file
+	* inst/unitTests/runit.Date.R: Rewritten for use with new C++ tests
+
+2013-04-02 Romain Francois <romain@r-enthusiasts.com>
+
+        * include/Rcpp/generated/DataFrame_generated.h : DateFrame::create
+        uses List::create and then feeds to the DataFrame constructor, which
+        seems to work better than the previous approach of calling back to the
+        data.frame function in R
+        * include/Rcpp/DataFrame.h : private function from_list, to help
+        the new implementation of DataFrame::create
+        * src/api.cpp : impl of DataFrame::from_list
+
+2013-03-31  Dirk Eddelbuettel  <edd@debian.org>
+
+	* debian/control (Build-Depends): Modified for Debian-only rebuilds
+	under (rc version of upcoming) R 3.0.0 release
+	* debian/changelog: Entry for Debian build 0.10.3-2
+
+2013-03-29  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/api.cpp (Rcpp): Re-enable coerce_to_string<>() for real and
+	complex types with Poor Man's Versions (TM) of Rf_EncodeReal and
+	Rf_EncodeComplex which the Powers That Be disallow from being used
+
+2013-03-27 Romain Francois <romain@r-enthusiasts.com>
+
+        * include/Rcpp/vector/MatrixRow.h : removed unintended printed
+	messaged (reported on Rcpp-devel by Michaeal Love)
+
 2013-03-23  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION: Release 0.10.3
@@ -1384,7 +1556,7 @@
 	  This covered svn revisions 3264 to 3308.
 
 	* DESCRIPTION: Remove (for now) Depends: on int64
-	* inst/doc/Rcpp-FAQ/Rcpp-FAQ.Rnw: Dito for int64_t example
+	* inst/doc/Rcpp-FAQ/Rcpp-FAQ.Rnw: Ditto for int64_t example
 
 	* inst/unitTests/runit.Module.client.package.R: On Windows,
 	deactivate 'test.Module.package'

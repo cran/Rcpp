@@ -211,17 +211,43 @@ test.IntegerVector.erase <- function(){
     checkEquals( fun(x), target, msg = "IntegerVector erase" )
 }
 
+test.IntegerVector.erase.range <- function(){
+    x <- y <- 1:10
+    names(y) <- letters[1:10]
+    res <- integer_erase_range( x, y )
+    checkEquals( res[[1L]], c(1:5, 10L) , msg = "IntegerVector erase range unnamed" )
+
+    z <- y[-(6:9)]
+    checkEquals( res[[2L]], z , msg = "IntegerVector erase range named" )
+}
+
+test.IntegerVector.erase.range.2 <- function(){
+    x <- y <- 1:10
+    names(y) <- letters[1:10]
+    res <- integer_erase_range_2( x, y )
+    checkEquals( res[[1L]], 1L , msg = "IntegerVector erase range 2 unnamed" )
+    checkEquals( res[[2L]], c("a" = 1L ) , msg = "IntegerVector erase range 2 named" )
+}
+
+
+test.IntegerVector.erase.range.2 <- function(){
+    x <- y <- as.list(1:10)
+    names(y) <- letters[1:10]
+    res <- List_erase_range_2( x, y )
+    checkEquals( res[[1L]], list( 1L ) , msg = "List erase range 2 unnamed" )
+    checkEquals( res[[2L]], list("a" = 1L ) , msg = "List erase range 2 named" )
+}
+
 test.IntegerVector.erase2 <- function(){
-    fun <- integer_erase2
-    checkEquals( fun(1:4), c(1L, 4L), msg = "IntegerVector erase2" )
+    checkEquals( integer_erase2(1:4), c(1L, 3L, 4L), msg = "IntegerVector erase2" )
 
     x <- 1:4
     names(x) <- letters[1:4]
 
-    target <- c(1L, 4L)
-    names(target) <- c( "a", "d" )
+    target <- c(1L, 3L, 4L)
+    names(target) <- c( "a", "c", "d" )
 
-    checkEquals( fun(x), target, msg = "IntegerVector erase2" )
+    checkEquals( integer_erase2(x), target, msg = "IntegerVector erase2" )
 }
 
 test.IntegerVector.fill <- function(){
@@ -562,6 +588,13 @@ test.containsElementNamed <- function() {
     checkEquals(fun(x, "foo"), TRUE, msg = "containsElementNamed with element")
     checkEquals(fun(x, "bar"), FALSE, msg = "containsElementNamed without element")
     checkEquals(fun(x, ""), FALSE, msg = "containsElementNamed with empty element")
+}
+
+test.CharacterVector.equality.operator <- function(){
+    res <- CharacterVectorEqualityOperator( letters, letters )
+    checkEquals( res, 
+        list( rep( TRUE, 26L ), rep( FALSE, 26L) ), 
+        msg = 'CharacterVector element equality operator' )    
 }
 
 # test graveyard. Might come back when we can use C++11

@@ -2,6 +2,73 @@
 \title{News for Package 'Rcpp'}
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+  \section{Changes in Rcpp version 0.10.4 (2013-06-23)}{
+  \itemize{
+    \item Changes in R code: None beyond those detailed for Rcpp Attributes
+    \item Changes in Rcpp attributes:
+    \itemize{
+      \item Fixed problem whereby the interaction between the gc and the 
+      RNGScope destructor could cause a crash.
+      \item Don't include package header file in generated C++ interface
+      header files.
+      \item Lookup plugins in \pkg{inline} package if they aren't found
+      within the \pkg{Rcpp} package.
+      \item Disallow compilation for files that don't have extensions 
+      supported by R CMD SHLIB
+    }
+    \item Changes in Rcpp API:
+    \itemize{
+      \item The \code{DataFrame::create} set of functions has been reworked
+      to just use \code{List::create} and feed to the \code{DataFrame}
+      constructor
+      \item The \code{operator-()} semantics for \code{Date} and
+      \code{Datetime} are now more inline with standard C++ behaviour;
+      with thanks to Robin Girard for the report.
+      \item RNGScope counter now uses unsigned long rather than int.
+      \item \code{Vector<*>::erase(iterator, iterator)} was fixed. Now
+      it does not remove the element pointed by last (similar to what is
+      done on stl types and what was intended initially). Reported on
+      Rcpp-devel by Toni Giorgino.
+      \item Added equality operator between elements of
+      \code{CharacterVector}s.  
+    }
+    \item Changes in Rcpp sugar:
+    \itemize{
+      \item New function \code{na_omit} based on the StackOverflow thread
+      \url{http://stackoverflow.com/questions/15953768/}
+      \item New function \code{is_finite} and \code{is_infinite} that
+      reproduces the behavior of R's \code{is.finite} and
+      \code{is.infinite} functions 
+    }
+    \item Changes in Rcpp build tools:
+    \itemize{
+      \item Fix by Martyn Plummer for Solaris in handling of
+      \code{SingleLogicalResult}.      
+      \item The \code{src/Makevars} file can now optionally override the
+      path for \code{/usr/bin/install_name_tool} which is used on OS X.
+      \item Vignettes are trying harder not to be built in parallel.
+    }
+    \item Changes in Rcpp documentation:
+    \itemize{
+      \item Updated the bibliography in \code{Rcpp.bib} (which is also
+      sourced by packages using Rcpp).
+      \item Updated the \code{THANKS} file.
+    }
+    \item Planned Deprecation of \code{RCPP_FUNCTION_*}:
+    \itemize{
+      \item The set of macros \code{RCPP_FUNCTION_} etc ... from the 
+      \code{preprocessor_generated.h} file will be deprecated in the next version
+      of \pkg{Rcpp}, i.e they will still be available but will generate some
+      warning in addition to their expected behavior. 
+      \item In the first release that is at least 12 months after this announcement, the
+      macros will be removed from \pkg{Rcpp}. 
+      \item Users of these macros (if there are any) should start replacing them 
+      with more up to date code, such as using Rcpp attributes or Rcpp
+      modules.  
+    }
+  }
+}
+
 \section{Changes in Rcpp version 0.10.3 (2013-03-23)}{
   \itemize{
     \item Changes in R code:
