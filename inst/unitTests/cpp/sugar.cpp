@@ -180,8 +180,23 @@ LogicalVector runit_isna( NumericVector xx){
 }
 
 // [[Rcpp::export]]
+LogicalVector runit_isfinite( NumericVector xx){
+    return is_finite(xx) ;
+}
+
+// [[Rcpp::export]]
+LogicalVector runit_isinfinite( NumericVector xx){
+    return is_infinite(xx) ;
+}
+
+// [[Rcpp::export]]
+LogicalVector runit_isnan( NumericVector xx){
+    return is_nan(xx) ;
+}
+
+// [[Rcpp::export]]
 LogicalVector runit_isna_isna( NumericVector xx ){
-    return wrap( is_na( is_na( xx ) ) ) ;
+    return is_na( is_na( xx ) ) ;
 }
 
 // [[Rcpp::export]]

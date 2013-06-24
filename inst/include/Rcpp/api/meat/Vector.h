@@ -151,11 +151,11 @@ namespace Rcpp{
         import_sugar_expression( other, typename traits::same_type<Vector,VEC>::type() ) ;
     }
     
-    template <>
+    template <int RTYPE>
     template <bool NA, typename T>
-    Vector<LGLSXP>::Vector( const sugar::SingleLogicalResult<NA,T>& obj ) : RObject(const_cast<sugar::SingleLogicalResult<NA,T>&>( obj ).get_sexp() ) {
+    Vector<RTYPE>::Vector( const sugar::SingleLogicalResult<NA,T>& obj ) : RObject( r_cast<RTYPE>( const_cast<sugar::SingleLogicalResult<NA,T>&>(obj).get_sexp() ) ) {
         update_vector() ;
-        RCPP_DEBUG_2( "Vector<%d>( const sugar::SingleLogicalResult<NA,T>& ) [T = %s]", LGLSXP, DEMANGLE(T) )
+        RCPP_DEBUG_2( "Vector<%d>( const sugar::SingleLogicalResult<NA,T>& ) [T = %s]", RTYPE, DEMANGLE(T) )
     }
     
     
@@ -239,7 +239,7 @@ namespace Rcpp{
     
     template <int RTYPE>
     typename Vector<RTYPE>::iterator Vector<RTYPE>::erase_single__impl( iterator position ){
-        if( position < begin() || position >= end() ) throw index_out_of_bounds( ) ;
+        if( position < begin() || position > end() ) throw index_out_of_bounds( ) ;
         int n = size() ;
         Vector target( n - 1 ) ;
         iterator target_it(target.begin()) ;
@@ -247,16 +247,16 @@ namespace Rcpp{
         iterator this_end(end()) ;
         SEXP names = RCPP_GET_NAMES(RObject::m_sexp) ;
         if( names == R_NilValue ){
-            for( ; it < position; ++it, ++target_it){
+            int i=0; 
+            for( ; it < position; ++it, ++target_it, i++){
                 *target_it = *it;
             }
-            iterator result(target_it) ;
             ++it ;
             for( ; it < this_end ; ++it, ++target_it){
                 *target_it = *it;
             }
             set_sexp( target.asSexp() ) ;
-            return result ;
+            return begin()+i ;
         } else {
             SEXP newnames = PROTECT(::Rf_allocVector( STRSXP, n-1 ));
             int i= 0 ;
@@ -264,7 +264,7 @@ namespace Rcpp{
                 *target_it = *it;
                 SET_STRING_ELT( newnames, i , STRING_ELT(names,i) ) ;
             }
-            iterator result(target_it) ;
+            int result=i ;
             ++it ;
             i++ ;
             for( ; it < this_end ; ++it, ++target_it, i++){
@@ -274,18 +274,18 @@ namespace Rcpp{
             target.attr( "names" ) = newnames ;
             UNPROTECT(1) ; /* newnames */
             set_sexp( target.asSexp() ) ;
-            return result ;
+            return begin()+result ;
         }
     }
     
     template <int RTYPE>
     typename Vector<RTYPE>::iterator Vector<RTYPE>::erase_range__impl( iterator first, iterator last ){
         if( first > last ) throw std::range_error("invalid range") ;
-        if( last >= end() || first < begin() ) throw index_out_of_bounds() ;
+        if( last > end() || first < begin() ) throw index_out_of_bounds() ;
 		
         iterator it = begin() ;
         iterator this_end = end() ;
-        int nremoved = std::distance(first,last)+1 ;
+        int nremoved = std::distance(first,last) ;
         int target_size = size() - nremoved  ;
         Vector target( target_size ) ;
         iterator target_it = target.begin() ;
@@ -293,11 +293,12 @@ namespace Rcpp{
         SEXP names = RCPP_GET_NAMES(RObject::m_sexp) ;
         iterator result ;
         if( names == R_NilValue ){
-            for( ; it < first; ++it, ++target_it ){
+            int i=0; 
+            for( ; it < first; ++it, ++target_it, i++ ){
                 *target_it = *it ;
             }
-            result = it ;
-            for( it = last +1 ; it < this_end; ++it, ++target_it ){
+            result = begin() + i + 1 ;
+            for( it = last ; it < this_end; ++it, ++target_it ){
                 *target_it = *it ;
             }
         } else{
@@ -307,8 +308,8 @@ namespace Rcpp{
                 *target_it = *it ;
                 SET_STRING_ELT( newnames, i, STRING_ELT(names, i ) );
             }
-            result = it ;
-            for( it = last +1 ; it < this_end; ++it, ++target_it, i++ ){
+            result = begin() + i + 1 ;
+            for( it = last ; it < this_end; ++it, ++target_it, i++ ){
                 *target_it = *it ;
                 SET_STRING_ELT( newnames, i, STRING_ELT(names, i + nremoved ) );
             }

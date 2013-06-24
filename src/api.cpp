@@ -3,7 +3,7 @@
 //
 // api.cpp: Rcpp R/C++ interface class library -- Rcpp api
 //
-// Copyright (C) 2012 - 2013 Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2012 - 2013  Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -453,7 +453,7 @@ namespace Rcpp {
         }
         node = x ;
     }
-        
+     
     DottedPair::Proxy& DottedPair::Proxy::operator=(const Proxy& rhs){
         return set(rhs) ;
     }
@@ -1208,6 +1208,38 @@ namespace Rcpp {
     } 
     int DataFrame::nrows() const { return Rf_length( VECTOR_ELT(m_sexp, 0) ); }
         
+    DataFrame DataFrame::from_list( Rcpp::List obj ){
+        bool use_default_strings_as_factors = true ;
+        bool strings_as_factors = true ;
+        int strings_as_factors_index = -1 ;
+        int n = obj.size() ;
+        CharacterVector names = obj.attr( "names" ) ;
+        if( !names.isNULL() ){
+            for( int i=0; i<n; i++){
+                if( names[i] == "stringsAsFactors" ){
+                    strings_as_factors_index = i ;
+                    use_default_strings_as_factors = false ;        
+                    if( !as<bool>(obj[i]) ) strings_as_factors = false ;
+                    break ;         
+                }
+            }
+        }
+        if( use_default_strings_as_factors ) 
+            return DataFrame(obj) ;
+        SEXP as_df_symb = Rf_install("as.data.frame");
+        SEXP strings_as_factors_symb = Rf_install("stringsAsFactors");
+        
+        obj.erase(strings_as_factors_index) ;
+        names.erase(strings_as_factors_index) ;
+        obj.attr( "names") = names ;
+        SEXP call  = PROTECT( Rf_lang3(as_df_symb, obj, wrap( strings_as_factors ) ) ) ;
+        SET_TAG( CDDR(call),  strings_as_factors_symb ) ;   
+        SEXP res = PROTECT( Evaluator::run( call ) ) ; 
+        DataFrame out( res ) ;
+        UNPROTECT(2) ;
+        return out ;
+    }
+    
     // }}}
     
 } // namespace Rcpp
@@ -1702,37 +1734,57 @@ char* get_string_buffer(){
     return buffer ;    
 }
 
-// static const char* dropTrailing0(char *s, char cdec) {
-//     /* Note that  's'  is modified */
-//     char *p = s;
-//     for (p = s; *p; p++) {
-// 	if(*p == cdec) {
-// 	    char *replace = p++;
-// 	    while ('0' <= *p  &&  *p <= '9')
-// 		if(*(p++) != '0')
-// 		    replace = p;
-// 	    if(replace != p)
-// 		while((*(replace++) = *(p++)))
-// 		    ;
-// 	    break;
-// 	}
-//     }
-//     return s;
-// }
+static const char* dropTrailing0(char *s, char cdec) {
+    /* Note that  's'  is modified */
+    char *p = s;
+    for (p = s; *p; p++) {
+	if(*p == cdec) {
+	    char *replace = p++;
+	    while ('0' <= *p  &&  *p <= '9')
+		if(*(p++) != '0')
+		    replace = p;
+	    if(replace != p)
+		while((*(replace++) = *(p++)))
+		    ;
+	    break;
+	}
+    }
+    return s;
+}
 
-// template <> const char* coerce_to_string<REALSXP>(double x){
-//     int w,d,e ;
-//     Rf_formatReal( &x, 1, &w, &d, &e, 0 ) ;
-//     char* tmp = const_cast<char*>( Rf_EncodeReal(x, w, d, e, '.') );
-// 	return dropTrailing0(tmp, '.');
-        
-// }
-// template <> const char* coerce_to_string<CPLXSXP>(Rcomplex x){
-//     int wr, dr, er, wi, di, ei;
-//     Rf_formatComplex(&x, 1, &wr, &dr, &er, &wi, &di, &ei, 0);
-//     return Rf_EncodeComplex(x, wr, dr, er, wi, di, ei, '.' );
-// }
+template <> const char* coerce_to_string<REALSXP>(double x){
+    //int w,d,e ;
+    // cf src/main/format.c in R's sources:
+    //   The return values are
+    //     w : the required field width
+    //     d : use %w.df in fixed format, %#w.de in scientific format
+    //     e : use scientific format if != 0, value is number of exp digits - 1
+    //
+    //   nsmall specifies the minimum number of decimal digits in fixed format:
+    //   it is 0 except when called from do_format.
+    //Rf_formatReal( &x, 1, &w, &d, &e, 0 ) ;
+    // we are no longer allowed to use this:
+    //     char* tmp = const_cast<char*>( Rf_EncodeReal(x, w, d, e, '.') );
+    // so approximate it poorly as
+    static char tmp[128];
+    snprintf(tmp, 127, "%f", x); 
+    return dropTrailing0(tmp, '.');
+}
 
+template <> const char* coerce_to_string<CPLXSXP>(Rcomplex x){
+    //int wr, dr, er, wi, di, ei;
+    //Rf_formatComplex(&x, 1, &wr, &dr, &er, &wi, &di, &ei, 0);
+    // we are no longer allowed to use this:
+    //     Rf_EncodeComplex(x, wr, dr, er, wi, di, ei, '.' );
+    // so approximate it poorly as
+    static char tmp1[128], tmp2[128], tmp3[256];
+    //snprintf(tmp, 127, "%*.*f+%*.*fi", wr, dr, x.r, wi, di, x.i);
+    //snprintf(tmp, 127, "%f+%fi", x.r, x.i); // FIXEM: barebones default formatting
+    snprintf(tmp1, 127, "%f", x.r); 
+    snprintf(tmp2, 127, "%f", x.i); 
+    snprintf(tmp3, 255, "%s+%si", dropTrailing0(tmp1, '.'), dropTrailing0(tmp2, '.'));
+    return tmp3;
+}
 
 } // internal
 } // Rcpp
@@ -1892,7 +1944,7 @@ namespace Rcpp{
 namespace Rcpp{
     namespace internal{
         namespace {
-            int RNGScopeCounter = 0;
+            unsigned long RNGScopeCounter = 0;
         }
         
         void enterRNGScope() {       

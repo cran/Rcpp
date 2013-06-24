@@ -10,6 +10,9 @@ Current active misfeatures
     o   DataFrame::create(Named("a")=b, Named("b")=b) fails with
         NumericVectors
 
+    o   Single char variables do not seem to covered correctly by as<>()
+        and wrap() (cf http://stackoverflow.com/questions/16535899/)
+
 Documentation
 
     o	Finish the quickref vignette
@@ -112,6 +115,8 @@ Attributes
 
     o   Solution for the problem of sharing/propagating typedefs to RcppExports 
 
+    o   Allow use of 'inline' keyword on exported functions
+
     o   Allow sourceCpp to build an entire directory
 
     o   Consider allowing local includes in sourceCpp (but compilation cache
@@ -123,7 +128,11 @@ Attributes
     o   Additional high-level mechanism for specifying additional build
         configuration (perhaps cxxflags and libs attributes)
 
-    o   Allow definition of Rcpp modules within sourceCpp code
+    o   Verify whether sourceCpp still needs to check for spaces in the path
+        of source file names on Windows
+
+    o   Consider adding -Wall and -Wpedantic for sourceCpp builds
+
 
 Testing
 
