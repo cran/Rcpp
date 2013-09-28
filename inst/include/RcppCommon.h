@@ -110,6 +110,8 @@ namespace Rcpp{
 #include <Rcpp/internal/export.h>
 #include <Rcpp/internal/r_coerce.h>
 #include <Rcpp/as.h>
+#include <Rcpp/InputParameter.h>
+#include <Rcpp/is.h>
 
 #include <Rcpp/vector/VectorBase.h>
 #include <Rcpp/vector/MatrixBase.h>
@@ -130,5 +132,7 @@ namespace Rcpp{
 // "Rcout" iostream class contributed by Jelmer Ypma
 #include <Rcpp/iostream/Rstreambuf.h>
 #include <Rcpp/iostream/Rostream.h>
+
+#include <Rcpp/longlong.h>
 
 #endif

@@ -87,7 +87,12 @@ public:
         RCPP_DEBUG_2( "Vector<%d>( const std::string& = %s )", RTYPE, st.c_str() )
         update_vector();
     }
-	Vector( const int& siz, stored_type (*gen)(void) ) : RObject(Rf_allocVector( RTYPE, siz)) {
+    Vector( const char* st ) : RObject( internal::vector_from_string<RTYPE>(st) ){
+        RCPP_DEBUG_2( "Vector<%d>( const char* = %s )", RTYPE, st.c_str() )
+        update_vector();
+    }
+	
+    Vector( const int& siz, stored_type (*gen)(void) ) : RObject(Rf_allocVector( RTYPE, siz)) {
         RCPP_DEBUG_2( "Vector<%d>( const int& siz = %s, stored_type (*gen)(void) )", RTYPE, siz )
         update_vector() ;
         iterator first = begin(), last = end() ;
@@ -494,7 +499,7 @@ private:
     inline void fill_or_generate__impl( const T& t, traits::false_type) ;
 
     template <typename U>
-    void fill_dispatch( traits::false_type, const U& u){
+    void fill__dispatch( traits::false_type, const U& u){
         // when this is not trivial, this is SEXP
         SEXP elem = PROTECT( converter_type::get( u ) ); 
         iterator it(begin());

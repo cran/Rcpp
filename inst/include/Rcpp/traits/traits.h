@@ -59,6 +59,8 @@
 #include <Rcpp/traits/remove_reference.h>
 #include <Rcpp/traits/remove_const_and_reference.h>
 #include <Rcpp/traits/result_of.h>
+#include <Rcpp/traits/is_module_object.h>
+#include <Rcpp/traits/is_primitive.h>
 
 #endif
 

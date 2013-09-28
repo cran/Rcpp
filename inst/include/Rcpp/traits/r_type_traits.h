@@ -61,15 +61,36 @@ struct r_type_pairstring_string_tag{} ;
 struct r_type_pairstring_generic_tag{} ;
 
 /**
- * identifies a module object pointer (i.e. something like object<T>
+ * Identifies a pair<const KEY, VALUE>, used to wrap map<KEY, VALUE>
+ * VALUE can be anything that wraps, KEY can be anything we can build a String from
+ */
+struct r_type_pair_tag{} ;
+
+/**
+ * identifies a module object pointer
  */ 
 struct r_type_module_object_pointer_tag{} ;
 
 /**
+ * identifies a module object const pointer 
+ */ 
+struct r_type_module_object_const_pointer_tag{} ;
+
+/**
  * identifies a module object. Implementers of modules can define the 
- * r_type_traits to sghow that their object is handled
+ * r_type_traits to show that their object is handled
  */ 
 struct r_type_module_object_tag{} ;
+
+/**
+ * identifies a reference to a module object. 
+ */ 
+struct r_type_module_object_reference_tag{} ;
+
+/**
+ * identifies a const reference to a module object. 
+ */ 
+struct r_type_module_object_const_reference_tag{} ;
 
 /**
  * identifies an enum. conversions from/to int is used
@@ -87,6 +108,12 @@ template <typename T> struct r_type_traits { typedef r_type_generic_tag r_catego
  * module object type
  */
 template <typename T> struct r_type_traits< Rcpp::object<T> >{ typedef r_type_module_object_pointer_tag r_category ; } ;
+
+
+template <typename KEY, typename VALUE> 
+struct r_type_traits< std::pair<const KEY,VALUE> > { 
+	typedef r_type_pair_tag r_category ; 
+} ;
 
 /** 
  * special cases pair<string,T> to deal with map<string,T> etc ...
@@ -109,6 +136,7 @@ template<> struct r_type_traits< std::pair<const std::string,float> >{ typedef r
 template<> struct r_type_traits<int>{ typedef r_type_primitive_tag r_category ; } ;
 template<> struct r_type_traits<const int>{ typedef r_type_primitive_tag r_category ; } ;
 template<> struct r_type_traits<double>{ typedef r_type_primitive_tag r_category ; } ;
+template<> struct r_type_traits<const double>{ typedef r_type_primitive_tag r_category ; } ;
 template<> struct r_type_traits<Rbyte>{ typedef r_type_primitive_tag r_category ; } ;
 template<> struct r_type_traits<Rcomplex>{ typedef r_type_primitive_tag r_category ; } ;
 template<> struct r_type_traits<bool>{ typedef r_type_primitive_tag r_category ; } ;
@@ -149,14 +177,6 @@ template<> struct r_type_traits< std::pair<const std::string,std::complex<double
 /* std::complex<float> */
 template<> struct r_type_traits< std::complex<float> >{ typedef r_type_primitive_tag r_category ; } ;
 template<> struct r_type_traits< std::pair<const std::string,std::complex<float> > >{ typedef r_type_primitive_tag r_category ; } ;
-
-/* long long int */
-#ifdef RCPP_HAS_LONG_LONG_TYPES
-template<> struct r_type_traits<rcpp_long_long_type>{ typedef r_type_primitive_tag r_category ; } ;
-template<> struct r_type_traits< std::pair<const std::string,rcpp_long_long_type> >{ typedef r_type_primitive_tag r_category ; } ;
-template<> struct r_type_traits<rcpp_ulong_long_type>{ typedef r_type_primitive_tag r_category ; } ;
-template<> struct r_type_traits< std::pair<const std::string,rcpp_ulong_long_type> >{ typedef r_type_primitive_tag r_category ; } ;
-#endif
 
 } // traits
 } // Rcpp

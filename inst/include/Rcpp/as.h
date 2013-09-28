@@ -89,14 +89,33 @@ namespace Rcpp{
         }
         
         /** handling object<T> */ 
+        template <typename T> T as(SEXP x, ::Rcpp::traits::r_type_module_object_const_pointer_tag ) {
+            typedef typename Rcpp::traits::remove_const<T>::type T_NON_CONST ;
+            return const_cast<T>( (T_NON_CONST)as_module_object_internal(x) ) ;
+        }
+        
         template <typename T> T as(SEXP x, ::Rcpp::traits::r_type_module_object_pointer_tag ) {
-            return as_module_object<typename T::object_type>( x ) ;
+            return as_module_object<typename traits::un_pointer<T>::type>( x ) ;
         }
         
         /** handling T such that T is exposed by a module */
         template <typename T> T as(SEXP x, ::Rcpp::traits::r_type_module_object_tag ){
             T* obj = as_module_object<T>(x) ;
             return *obj ;
+        }
+        
+        /** handling T such that T is a reference of a class handled by a module */
+        template <typename T> T as(SEXP x, ::Rcpp::traits::r_type_module_object_reference_tag ){
+            typedef typename traits::remove_reference<T>::type KLASS ;
+            KLASS* obj = as_module_object<KLASS>(x) ;
+            return *obj ;
+        }
+        
+        /** handling T such that T is a reference of a class handled by a module */
+        template <typename T> T as(SEXP x, ::Rcpp::traits::r_type_module_object_const_reference_tag ){
+            typedef typename traits::remove_const_and_reference<T>::type KLASS ;
+            KLASS* obj = as_module_object<KLASS>(x) ;
+            return const_cast<T>( *obj ) ;
         }
         
         /** handling enums by converting to int first */
@@ -124,6 +143,10 @@ namespace Rcpp{
      */
     template <typename T> T as( SEXP m_sexp) {
         return internal::as<T>( m_sexp, typename traits::r_type_traits<T>::r_category() ) ;
+    }
+    
+    template <> inline char as<char>( SEXP m_sexp ){
+        return internal::check_single_string(m_sexp)[0] ;    
     }
     
     template <typename T> 

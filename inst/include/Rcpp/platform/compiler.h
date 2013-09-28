@@ -2,7 +2,7 @@
 //
 // compiler.h: Rcpp R/C++ interface class library -- check compiler
 //
-// Copyright (C) 2012 Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2012 - 2013  Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -21,6 +21,9 @@
 
 #ifndef Rcpp__platform__compiler_h
 #define Rcpp__platform__compiler_h
+
+// NB: A vast list valid identifiers is at these wiki pages:
+//     http://sourceforge.net/p/predef/wiki/Home/
 
 #undef GOOD_COMPILER_FOR_RCPP
 #ifdef __GNUC__
@@ -113,7 +116,7 @@
 // Check TR1 Headers
 #if defined(__INTEL_COMPILER) || (defined(__GNUC__) && !defined(__clang__))
     #if defined(__GLIBCXX__)
-        #if GCC_VERSION >= 40400
+        #if GCC_VERSION >= 40400 || ( GCC_VERSION >= 40201 && defined(__APPLE__) )
             #define HAS_TR1_UNORDERED_MAP
             #define HAS_TR1_UNORDERED_SET
         #endif
@@ -171,24 +174,7 @@
 #endif
 
 #ifdef __GNUC__
-  #ifdef __APPLE__ 
-    #include <Availability.h>
-    #ifndef __MAC_10_8
-        #define RCPP_HAS_DEMANGLING
-    #endif
-  #else
-      #define RCPP_HAS_DEMANGLING
-  #endif
-#endif
-
-#ifdef __GNUC__
-#ifdef __GXX_EXPERIMENTAL_CXX0X__
-#ifdef __LONG_LONG_MAX__
-    __extension__ typedef long long int rcpp_long_long_type;
-    __extension__ typedef unsigned long long int rcpp_ulong_long_type;
-    #define RCPP_HAS_LONG_LONG_TYPES
-#endif
-#endif
+  #define RCPP_HAS_DEMANGLING
 #endif
 
 #endif

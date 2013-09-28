@@ -676,6 +676,11 @@ List CharacterVectorEqualityOperator( CharacterVector x, CharacterVector y){
     return List::create(eq, neq) ;
 }
 
+// [[Rcpp::export]]
+List List_rep_ctor(IntegerVector x){
+    return List(3, x) ;
+}
+
 #if defined(HAS_INIT_LISTS)
     RawVector raw_initializer_list(){
         RawVector x = {0,1,2,3} ;
@@ -715,5 +720,51 @@ List CharacterVectorEqualityOperator( CharacterVector x, CharacterVector y){
         CharacterVector x = {"foo", "bar"} ;
         return x ;
     }
+    
+    List List_insert(){
+        List list(x) ;
+        list.insert( list.begin(), 10 ) ;
+        list.insert( list.end(), Named("foo", "bar" ) ) ;
+        return list ;
+	}
 #endif
 
+// [[Rcpp::export]]
+int stdVectorDouble(std::vector<double> x) { 
+    return x.size();
+}
+
+// [[Rcpp::export]]
+int stdVectorDoubleConst(const std::vector<double> x) { 
+    return x.size();
+}
+
+// [[Rcpp::export]]
+int stdVectorDoubleRef(std::vector<double> & x) { 
+    return x.size();
+}
+
+// [[Rcpp::export]]
+int stdVectorDoubleConstRef(const std::vector<double> & x) { 
+    return x.size();
+}
+
+// [[Rcpp::export]]
+int stdVectorInt(std::vector<int> x) { 
+    return x.size();
+}
+
+// [[Rcpp::export]]
+int stdVectorIntConst(const std::vector<int> x) { 
+    return x.size();
+}
+
+// [[Rcpp::export]]
+int stdVectorIntRef(std::vector<int> & x) { 
+    return x.size();
+}
+
+// [[Rcpp::export]]
+int stdVectorIntConstRef(const std::vector<int> & x) { 
+    return x.size();
+}
