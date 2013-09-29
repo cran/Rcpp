@@ -10,9 +10,6 @@ Current active misfeatures
     o   DataFrame::create(Named("a")=b, Named("b")=b) fails with
         NumericVectors
 
-    o   Single char variables do not seem to covered correctly by as<>()
-        and wrap() (cf http://stackoverflow.com/questions/16535899/)
-
 Documentation
 
     o	Finish the quickref vignette
@@ -45,9 +42,6 @@ Syntactic sugar
 	maybe we should use LazyVector like in outer to somehow cache the
 	result when it is judged expensive to calculate
 	
-    o   The current impl of "diff" might cause problems (e.g. with
-        ifelse) due to laziness, it is probably best to not make it lazy
-
     o 	crossprod
 	
     o	Vector * Matrix, Matrix * Matrix
@@ -56,11 +50,6 @@ Syntactic sugar
     
     o   operator/ needs to handle the case of division by 0
 
-    o   min, max with specialization of the binary operators, so that we can do 
-        things like this lazily: 
-        
-        min( x ) < 4
-    
     o   matrix functions : apply
     
     o   for character vectors: nchar, grepl, sub, gsub

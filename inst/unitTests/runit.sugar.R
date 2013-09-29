@@ -22,10 +22,7 @@
 
 if (.runThisTest) {
 
-.setUp <- function() {
-    #sourceCpp( system.file( "unitTests/cpp/sugar.cpp", package = "Rcpp") )
-    sourceCpp(file.path(pathRcppTests, "cpp/sugar.cpp"))
-}
+.setUp <- Rcpp:::unit_test_setup( "sugar.cpp" )
 
 test.sugar.abs <- function( ){
 	x <- rnorm(10)
@@ -214,9 +211,13 @@ test.sugar.assignment <- function( ){
 }
 
 test.sugar.diff <- function( ){
-	fx <- runit_diff
-	x <- rnorm( 100 )
-	checkEquals( fx(x) , diff(x) )
+    x <- as.integer(round(rnorm(100,1,100)))
+    checkEquals( runit_diff_int(x) , diff(x) )
+    x <- rnorm( 100 )
+    checkEquals( runit_diff(x) , diff(x) )
+    y    <- rnorm(100)
+    pred <- sample( c(T,F), 99, replace = TRUE )
+    checkEquals( runit_diff_ifelse(pred, x, y ), ifelse( pred, diff(x), diff(y) ) )
 }
 
 test.sugar.exp <- function( ){
@@ -267,26 +268,26 @@ test.sugar.isna <- function( ){
 }
 
 test.sugar.isfinite <- function( ){
-	checkEquals( 
-	    runit_isfinite( c(1, NA, Inf, -Inf, NaN) ) , 
-	    c(TRUE, FALSE, FALSE, FALSE, FALSE), 
+	checkEquals(
+	    runit_isfinite( c(1, NA, Inf, -Inf, NaN) ) ,
+	    c(TRUE, FALSE, FALSE, FALSE, FALSE),
 	    msg = "is_finite"
 	)
 }
 
 test.sugar.isinfinite <- function( ){
-	checkEquals( 
-	    runit_isinfinite( c(1, NA, Inf, -Inf, NaN) ) , 
-	    c(FALSE, FALSE, TRUE, TRUE, FALSE), 
+	checkEquals(
+	    runit_isinfinite( c(1, NA, Inf, -Inf, NaN) ) ,
+	    c(FALSE, FALSE, TRUE, TRUE, FALSE),
 	    msg = "is_infinite"
 	)
 }
 
 
 test.sugar.isnan <- function( ){
-	checkEquals( 
-	    runit_isnan( c(1, NA, Inf, -Inf, NaN) ) , 
-	    c(FALSE, FALSE, FALSE, FALSE, TRUE), 
+	checkEquals(
+	    runit_isnan( c(1, NA, Inf, -Inf, NaN) ) ,
+	    c(FALSE, FALSE, FALSE, FALSE, TRUE),
 	    msg = "is_nan"
 	)
 }
@@ -723,10 +724,32 @@ test.intersect <- function(){
 
 test.clamp <- function(){
     r_clamp <- function(a, x, b) pmax(a, pmin(x, b) )
-    checkEquals( 
-        runit_clamp( -1, seq(-3,3, length=100), 1 ), 
+    checkEquals(
+        runit_clamp( -1, seq(-3,3, length=100), 1 ),
         r_clamp( -1, seq(-3,3, length=100), 1 )
     )
+}
+
+test.vector.scalar.ops <- function( ){
+    x <- rnorm(10)
+    checkEquals(vector_scalar_ops(x), list(x + 2, 2 - x, x * 2, 2 / x), "sugar vector scalar operations")
+}
+
+test.vector.scalar.logical <- function( ){
+    x <- rnorm(10) + 2
+    checkEquals(vector_scalar_logical(x), list(x < 2, 2 > x, x <= 2, 2 != x), "sugar vector scalar logical operations")
+}
+
+test.vector.vector.ops <- function( ){
+    x <- rnorm(10)
+    y <- runif(10)
+    checkEquals(vector_vector_ops(x,y), list(x + y, y - x, x * y, y / x), "sugar vector vector operations")
+}
+
+test.vector.vector.logical <- function( ){
+    x <- rnorm(10)
+    y <- runif(10)
+    checkEquals(vector_vector_logical(x,y), list(x < y, x > y, x <= y, x >= y, x == y, x != y), "sugar vector vector operations")
 }
 
 }

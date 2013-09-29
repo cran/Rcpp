@@ -185,7 +185,7 @@ inline SEXP range_wrap_dispatch___impl( InputIterator first, InputIterator last,
  * This produces an unnamed generic vector (list)
  */
 template <typename InputIterator, typename T>
-inline SEXP range_wrap_dispatch___impl( InputIterator first, InputIterator last, ::Rcpp::traits::r_type_generic_tag ){ 
+inline SEXP range_wrap_dispatch___generic( InputIterator first, InputIterator last ){ 
 	size_t size = std::distance( first, last ) ;
 	SEXP x = PROTECT( Rf_allocVector( VECSXP, size ) );
 	size_t i =0 ;
@@ -197,6 +197,35 @@ inline SEXP range_wrap_dispatch___impl( InputIterator first, InputIterator last,
 	UNPROTECT(1) ;
 	return x ;
 }
+
+template <typename InputIterator, typename T>
+inline SEXP range_wrap_dispatch___impl( InputIterator first, InputIterator last, ::Rcpp::traits::r_type_generic_tag ){ 
+	return range_wrap_dispatch___generic<InputIterator, T>( first, last ) ;
+}
+
+// modules
+template <typename InputIterator, typename T>
+inline SEXP range_wrap_dispatch___impl( InputIterator first, InputIterator last, ::Rcpp::traits::r_type_module_object_pointer_tag ){ 
+	return range_wrap_dispatch___generic<InputIterator, T>( first, last ) ;
+}
+template <typename InputIterator, typename T>
+inline SEXP range_wrap_dispatch___impl( InputIterator first, InputIterator last, ::Rcpp::traits::r_type_module_object_const_pointer_tag ){ 
+	return range_wrap_dispatch___generic<InputIterator, T>( first, last ) ;
+}
+template <typename InputIterator, typename T>
+inline SEXP range_wrap_dispatch___impl( InputIterator first, InputIterator last, ::Rcpp::traits::r_type_module_object_tag ){ 
+	return range_wrap_dispatch___generic<InputIterator, T>( first, last ) ;
+}
+template <typename InputIterator, typename T>
+inline SEXP range_wrap_dispatch___impl( InputIterator first, InputIterator last, ::Rcpp::traits::r_type_module_object_reference_tag ){ 
+	return range_wrap_dispatch___generic<InputIterator, T>( first, last ) ;
+}
+template <typename InputIterator, typename T>
+inline SEXP range_wrap_dispatch___impl( InputIterator first, InputIterator last, ::Rcpp::traits::r_type_module_object_const_reference_tag ){ 
+	return range_wrap_dispatch___generic<InputIterator, T>( first, last ) ;
+}
+
+
 
 /**
  * Range based wrap implementation for iterators over std::string
@@ -351,6 +380,40 @@ inline SEXP range_wrap_dispatch___impl( InputIterator first, InputIterator last,
 	return x ;
 
 }
+
+/** 
+ * iterating over pair<const int, VALUE>
+ * where VALUE is some primitive type
+ */
+template <typename InputIterator, typename KEY, typename VALUE, int RTYPE>
+inline SEXP range_wrap_dispatch___impl__pair( InputIterator first, InputIterator last, Rcpp::traits::true_type ) ;
+
+/** 
+ * iterating over pair<const int, VALUE>
+ * where VALUE is a type that needs wrapping
+ */
+template <typename InputIterator, typename KEY, typename VALUE, int RTYPE>
+inline SEXP range_wrap_dispatch___impl__pair( InputIterator first, InputIterator last, Rcpp::traits::false_type ) ;
+
+
+/**
+ * Range wrap dispatch for iterators over std::pair<const int, T>
+ */
+template<typename InputIterator, typename T>
+inline SEXP range_wrap_dispatch___impl( InputIterator first, InputIterator last, ::Rcpp::traits::r_type_pair_tag ){
+	typedef typename T::second_type VALUE ;
+	typedef typename T::first_type KEY ;
+	
+	return range_wrap_dispatch___impl__pair<
+			InputIterator,
+			KEY, 
+			VALUE, 
+			Rcpp::traits::r_sexptype_traits<VALUE>::rtype
+		>( first, last, 
+		typename Rcpp::traits::is_primitive<VALUE>::type()
+		) ;
+}
+
 // }}}
 
 /**

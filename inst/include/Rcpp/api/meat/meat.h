@@ -1,8 +1,8 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; indent-tabs-mode: nil; -*-
 //
-// backward.h: Rcpp R/C++ interface class library -- 
+// meat.h: Rcpp R/C++ interface class library -- 
 //
-// Copyright (C) 2012    Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2012 - 2013    Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -28,5 +28,8 @@
 #include <Rcpp/api/meat/Vector.h>
 #include <Rcpp/api/meat/Matrix.h>
 #include <Rcpp/api/meat/Reference.h>
+#include <Rcpp/api/meat/is.h>
+#include <Rcpp/api/meat/export.h>
+#include <Rcpp/api/meat/wrap.h>
 
 #endif

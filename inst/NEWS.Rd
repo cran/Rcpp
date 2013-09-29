@@ -2,7 +2,96 @@
 \title{News for Package 'Rcpp'}
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
-  \section{Changes in Rcpp version 0.10.4 (2013-06-23)}{
+\section{Changes in Rcpp version 0.10.5 (2013-09-28)}{
+  \itemize{
+    \item Changes in R code:
+    \itemize{
+      \item New R function \code{demangle} that calls the \code{DEMANGLE} macro.  
+      \item New R function \code{sizeof} to query the byte size of a type. This
+      returns an object of S3 class \code{bytes} that has a \code{print} method
+      showing bytes and bits. 
+    }
+    \item Changes in Rcpp API:
+    \itemize{
+      \item Add \code{defined(__sun)} to lists of operating systems to
+      test for when checking for lack of \code{backtrace()} needed for
+      stack traces.
+      \item \code{as<T*>}, \code{as<const T*>}, \code{as<T&>} and
+      \code{as<const T&>} are now supported, when 
+      T is a class exposed by modules, i.e. with \code{RCPP_EXPOSED_CLASS}
+      \item \code{DoubleVector} as been added as an alias to 
+      \code{NumericVector}
+      \item New template function \code{is<T>} to identify if an R object 
+      can be seen as a \code{T}. For example \code{is<DataFrame>(x)}. 
+      This is a building block for more expressive dispatch in various places
+      (modules and attributes functions). 
+      \item \code{wrap} can now handle more types, i.e. types that iterate over 
+      \code{std::pair<const KEY, VALUE>} where KEY can be converted to a 
+      \code{String} and \code{VALUE} is either a primitive type (int, double)
+      or a type that wraps. Examples :
+      \itemize{
+        \item \code{std::map<int, double>} : we can make a String from an int, 
+        and double is primitive
+        \item \code{boost::unordered_map<double, std::vector<double> >}: we can make
+        a String from a double and \code{std::vector<double>} can wrap itself
+      }
+      Other examples of this are included at the end of the \code{wrap} unit test
+      file (\code{runit.wrap.R} and \code{wrap.cpp}).
+      \item \code{wrap} now handles containers of classes handled by modules. e.g.
+      if you expose a class \code{Foo} via modules, then you can wrap 
+      \code{vector<Foo>}, ... An example is included in the \code{wrap} unit test
+      file
+      \item \code{RcppLdFlags()}, often used in \code{Makevars} files of
+      packages using \pkg{Rcpp}, is now exported from the package namespace.
+    }
+    \item Changes in Attributes:
+    \itemize{
+      \item Objects exported by a module (i.e. by a \code{RCPP_MODULE} call
+      in a file that is processed by \code{sourceCpp}) are now directly 
+      available in the environment. We used to make the module object
+      available, which was less useful.
+      \item A plugin for \code{openmp} has been added to support use of OpenMP.
+      \item \code{Rcpp::export} now takes advantage of the more flexible 
+      \code{as<>}, handling constness and referenceness of the input types. 
+      For users, it means that for the parameters of function exported by modules, 
+      we can now use references, pointers and const versions of them.
+      The file \code{Module.cpp} file has an example. 
+      \item{No longer call non-exported functions from the tools package}
+      \item{No longer search the inline package as a fallback when loading
+      plugins for the the \code{Rcpp::plugins} attribute}.
+    }
+    \item Changes in Modules:
+    \itemize{
+      \item We can now expose functions and methods that take
+      \code{T&} or \code{const T&} as arguments. In these situations
+      objects are no longer copied as they used to be. 
+    }
+    \item Changes in sugar:
+    \itemize{
+      \item \code{is_na} supports classes \code{DatetimeVector} and 
+      \code{DateVector}
+    }
+    \item Changes in Rcpp documentation:
+    \itemize{
+      \item The vignettes have been moved from \code{inst/doc/} to the
+      \code{vignettes} directory which is now preferred.
+      \item The appearance of the vignettes has been refreshed by
+      switching to the Bistream Charter font, and microtype package.
+    }
+    \item Deprecation of \code{RCPP_FUNCTION_*}:
+    \itemize{
+      \item The macros from the \code{preprocessor_generated.h} file
+      have been deprecated. They are still available, but they print a
+      message in addition to their expected behavior.
+      \item The macros will be permanently removed in the first \pkg{Rcpp} 
+      release after July 2014. 
+      \item Users of these macros should start replacing them with more
+      up-to-date code, such as using 'Rcpp attributes' or 'Rcpp modules'.  
+    }
+  }
+}
+
+\section{Changes in Rcpp version 0.10.4 (2013-06-23)}{
   \itemize{
     \item Changes in R code: None beyond those detailed for Rcpp Attributes
     \item Changes in Rcpp attributes:

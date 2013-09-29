@@ -1,10 +1,11 @@
 ### R code from vignette source 'Rcpp-quickref.Rnw'
 
 ###################################################
-### code chunk number 1: Rcpp-quickref.Rnw:19-22
+### code chunk number 1: Rcpp-quickref.Rnw:26-30
 ###################################################
 options( width= 50)
 library( "Rcpp" )
-rcpp.version <- packageDescription( "Rcpp" )$Version
+prettyVersion <- packageDescription("Rcpp")$Version
+prettyDate <- format(Sys.Date(), "%B %e, %Y")
 
 

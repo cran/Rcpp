@@ -3,7 +3,7 @@
 //
 // r_sexptype_traits.h: Rcpp R/C++ interface class library -- traits to help wrap
 //
-// Copyright (C) 2010 - 2011 Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2010 - 2013 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -34,12 +34,14 @@ template <typename T> struct r_sexptype_traits{ enum{ rtype = VECSXP }; } ;
 template<> struct r_sexptype_traits<int>{ enum{ rtype = INTSXP } ; } ;
 template<> struct r_sexptype_traits<const int>{ enum{ rtype = INTSXP } ; } ;
 template<> struct r_sexptype_traits<double>{ enum{ rtype = REALSXP } ; } ;
+template<> struct r_sexptype_traits<const double>{ enum{ rtype = REALSXP } ; } ;
 template<> struct r_sexptype_traits<bool>{ enum{ rtype = LGLSXP } ; } ;
 template<> struct r_sexptype_traits<std::string>{ enum{ rtype = STRSXP } ; } ;
 template<> struct r_sexptype_traits<Rcomplex>{ enum{ rtype = CPLXSXP } ; } ;
 template<> struct r_sexptype_traits<Rbyte>{ enum{ rtype = RAWSXP } ; } ;
 
-template<> struct r_sexptype_traits<unsigned int>{ enum{ rtype = INTSXP } ; } ;
+
+template<> struct r_sexptype_traits<unsigned int>{ enum{ rtype = REALSXP } ; } ;
 template<> struct r_sexptype_traits<float>{ enum{ rtype = REALSXP } ; } ;
 
 /* long are represented as numeric vectors which allows more precision 
@@ -57,16 +59,9 @@ template<> struct r_sexptype_traits<long double>{ enum{ rtype = REALSXP } ; } ;
 template<> struct r_sexptype_traits<short>{ enum{ rtype = INTSXP } ; } ;
 template<> struct r_sexptype_traits<unsigned short>{ enum{ rtype = INTSXP } ; } ;
 
-/* long long int */
-#ifdef RCPP_HAS_LONG_LONG_TYPES
-template<> struct r_sexptype_traits<rcpp_long_long_type>{ enum{ rtype = REALSXP } ; } ;
-template<> struct r_sexptype_traits<rcpp_ulong_long_type>{ enum{ rtype = REALSXP } ; } ;
-#endif
-
 /* std::complex */
 template<> struct r_sexptype_traits< std::complex<double> >{ enum{ rtype = CPLXSXP } ; } ;
 template<> struct r_sexptype_traits< std::complex<float> >{ enum{ rtype = CPLXSXP } ; } ;
-
 
 /**
  * Indicates if a primitive type needs a static_cast
