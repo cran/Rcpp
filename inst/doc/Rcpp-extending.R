@@ -1,14 +1,14 @@
 ### R code from vignette source 'Rcpp-extending.Rnw'
 
 ###################################################
-### code chunk number 1: Rcpp-extending.Rnw:34-36
+### code chunk number 1: Rcpp-extending.Rnw:36-38
 ###################################################
 prettyVersion <- packageDescription("Rcpp")$Version
 prettyDate <- format(Sys.Date(), "%B %e, %Y")
 
 
 ###################################################
-### code chunk number 2: Rcpp-extending.Rnw:43-65
+### code chunk number 2: Rcpp-extending.Rnw:45-67
 ###################################################
 link <- function( f, package, text = f, root = "http://finzi.psych.upenn.edu/R/library/" ){
 	h <- if( missing(package) ) {
@@ -35,7 +35,7 @@ require(Rcpp)
 
 
 ###################################################
-### code chunk number 4: Rcpp-extending.Rnw:103-119
+### code chunk number 4: Rcpp-extending.Rnw:105-121
 ###################################################
 code <- '
 // we get a list from R
@@ -56,13 +56,13 @@ writeLines( code, "code.cpp" )
 
 
 ###################################################
-### code chunk number 5: Rcpp-extending.Rnw:121-122
+### code chunk number 5: Rcpp-extending.Rnw:123-124
 ###################################################
 external_highlight( "code.cpp", type = "LATEX", doc = FALSE )
 
 
 ###################################################
-### code chunk number 6: Rcpp-extending.Rnw:125-131
+### code chunk number 6: Rcpp-extending.Rnw:127-133
 ###################################################
 fx <- cxxfunction( signature( input_ = "list"),
 	paste( readLines( "code.cpp" ), collapse = "\n" ),
@@ -73,7 +73,7 @@ fx( input )
 
 
 ###################################################
-### code chunk number 14: Rcpp-extending.Rnw:337-338
+### code chunk number 14: Rcpp-extending.Rnw:339-340
 ###################################################
 unlink( "code.cpp" )
 

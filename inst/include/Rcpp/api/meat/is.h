@@ -30,28 +30,28 @@ namespace internal{
         SEXP dim = Rf_getAttrib( x, R_DimSymbol) ;
         return dim != R_NilValue && Rf_length(dim) == 2 ;
     }
-    
     template <> inline bool is__simple<int>( SEXP x ){
         return is_atomic(x) && TYPEOF(x) == INTSXP ;
     }
-
     template <> inline bool is__simple<double>( SEXP x ){
         return is_atomic(x) && TYPEOF(x) == REALSXP ;
     }
-    
     template <> inline bool is__simple<bool>( SEXP x ){
         return is_atomic(x) && TYPEOF(x) == LGLSXP ;
     }
-    
     template <> inline bool is__simple<std::string>( SEXP x ){
         return is_atomic(x) && TYPEOF(x) == STRSXP ;
     }
-    
     template <> inline bool is__simple<String>( SEXP x ){
         return is_atomic(x) && TYPEOF(x) == STRSXP ;
     }
-    
-    template <> inline bool is__simple<RObject>( SEXP x ){
+    template <> inline bool is__simple<CharacterVector>(SEXP x) {
+        return TYPEOF(x) == STRSXP;
+    }
+    template <> inline bool is__simple<CharacterMatrix>(SEXP x) {
+        return TYPEOF(x) == STRSXP && is_matrix(x);
+    }
+    template <> inline bool is__simple<RObject>(SEXP) {
         return true ;
     }
     template <> inline bool is__simple<IntegerVector>( SEXP x ){
@@ -68,6 +68,12 @@ namespace internal{
     }
     template <> inline bool is__simple<LogicalVector>( SEXP x ){
         return TYPEOF(x) == LGLSXP ;
+    }
+    template <> inline bool is__simple<Language>( SEXP x ){
+        return TYPEOF(x) == LANGSXP ;
+    }
+    template <> inline bool is__simple<DottedPair>( SEXP x ){
+        return (TYPEOF(x) == LANGSXP) || (TYPEOF(x) == LISTSXP);
     }
     template <> inline bool is__simple<List>( SEXP x ){
         return TYPEOF(x) == VECSXP ;

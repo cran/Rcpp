@@ -1,7 +1,7 @@
 ### R code from vignette source 'Rcpp-modules.Rnw'
 
 ###################################################
-### code chunk number 1: Rcpp-modules.Rnw:27-30
+### code chunk number 1: Rcpp-modules.Rnw:30-33
 ###################################################
 suppressMessages(require(Rcpp))
 prettyVersion <- packageDescription("Rcpp")$Version
@@ -9,14 +9,14 @@ prettyDate <- format(Sys.Date(), "%B %e, %Y")
 
 
 ###################################################
-### code chunk number 7: Rcpp-modules.Rnw:201-203 (eval = FALSE)
+### code chunk number 7: Rcpp-modules.Rnw:204-206 (eval = FALSE)
 ###################################################
 ## f1 <- cxxfunction( , "", includes = unifModCode, plugin = "Rcpp" )
 ## getDynLib(f1)  ## will display information about 'f1' just created
 
 
 ###################################################
-### code chunk number 8: Rcpp-modules.Rnw:209-228 (eval = FALSE)
+### code chunk number 8: Rcpp-modules.Rnw:212-231 (eval = FALSE)
 ###################################################
 ## setClass( "Uniform", representation( pointer = "externalptr" ) )
 ## 
@@ -40,7 +40,7 @@ prettyDate <- format(Sys.Date(), "%B %e, %Y")
 
 
 ###################################################
-### code chunk number 10: Rcpp-modules.Rnw:279-293 (eval = FALSE)
+### code chunk number 10: Rcpp-modules.Rnw:282-296 (eval = FALSE)
 ###################################################
 ## inc <- '
 ## using namespace Rcpp;
@@ -59,7 +59,7 @@ prettyDate <- format(Sys.Date(), "%B %e, %Y")
 
 
 ###################################################
-### code chunk number 11: Rcpp-modules.Rnw:303-306 (eval = FALSE)
+### code chunk number 11: Rcpp-modules.Rnw:306-309 (eval = FALSE)
 ###################################################
 ## require(nameOfMyModulePackage)
 ## mod <- new( mod )
@@ -67,7 +67,7 @@ prettyDate <- format(Sys.Date(), "%B %e, %Y")
 
 
 ###################################################
-### code chunk number 14: Rcpp-modules.Rnw:358-367 (eval = FALSE)
+### code chunk number 14: Rcpp-modules.Rnw:361-370 (eval = FALSE)
 ###################################################
 ## require( Rcpp )
 ## 
@@ -81,7 +81,7 @@ prettyDate <- format(Sys.Date(), "%B %e, %Y")
 
 
 ###################################################
-### code chunk number 15: Rcpp-modules.Rnw:374-382 (eval = FALSE)
+### code chunk number 15: Rcpp-modules.Rnw:377-385 (eval = FALSE)
 ###################################################
 ## require(myModulePackage)    ## or whichever name was chose
 ## 
@@ -94,14 +94,14 @@ prettyDate <- format(Sys.Date(), "%B %e, %Y")
 
 
 ###################################################
-### code chunk number 17: Rcpp-modules.Rnw:419-421 (eval = FALSE)
+### code chunk number 17: Rcpp-modules.Rnw:422-424 (eval = FALSE)
 ###################################################
 ## mod <- Module("mod", getDynLib(fx))
 ## show(mod$norm)
 
 
 ###################################################
-### code chunk number 19: Rcpp-modules.Rnw:447-452 (eval = FALSE)
+### code chunk number 19: Rcpp-modules.Rnw:450-455 (eval = FALSE)
 ###################################################
 ## norm <- mod$norm
 ## norm()
@@ -111,21 +111,21 @@ prettyDate <- format(Sys.Date(), "%B %e, %Y")
 
 
 ###################################################
-### code chunk number 21: Rcpp-modules.Rnw:473-475 (eval = FALSE)
+### code chunk number 21: Rcpp-modules.Rnw:476-478 (eval = FALSE)
 ###################################################
 ## norm <- mod$norm
 ## args(norm)
 
 
 ###################################################
-### code chunk number 23: Rcpp-modules.Rnw:494-496 (eval = FALSE)
+### code chunk number 23: Rcpp-modules.Rnw:497-499 (eval = FALSE)
 ###################################################
 ## norm <- mod$norm
 ## args( norm )
 
 
 ###################################################
-### code chunk number 25: Rcpp-modules.Rnw:544-553 (eval = FALSE)
+### code chunk number 25: Rcpp-modules.Rnw:547-556 (eval = FALSE)
 ###################################################
 ## ## assumes   fx_unif <- cxxfunction(...)   has ben run
 ## unif_module <- Module( "unif_module", getDynLib(fx_unif ) )
@@ -139,7 +139,7 @@ prettyDate <- format(Sys.Date(), "%B %e, %Y")
 
 
 ###################################################
-### code chunk number 35: Rcpp-modules.Rnw:718-724 (eval = FALSE)
+### code chunk number 35: Rcpp-modules.Rnw:721-727 (eval = FALSE)
 ###################################################
 ## Bar <- mod_bar$Bar
 ## b <- new( Bar, 10 )
@@ -150,7 +150,7 @@ prettyDate <- format(Sys.Date(), "%B %e, %Y")
 
 
 ###################################################
-### code chunk number 38: Rcpp-modules.Rnw:801-805 (eval = FALSE)
+### code chunk number 38: Rcpp-modules.Rnw:804-808 (eval = FALSE)
 ###################################################
 ## setMethod( "show", yada$World , function(object) {
 ##     msg <- paste( "World object with message : ", object$greet() )
@@ -159,7 +159,7 @@ prettyDate <- format(Sys.Date(), "%B %e, %Y")
 
 
 ###################################################
-### code chunk number 40: Rcpp-modules.Rnw:868-881 (eval = FALSE)
+### code chunk number 40: Rcpp-modules.Rnw:871-884 (eval = FALSE)
 ###################################################
 ## ## for code compiled on the fly using cxxfunction() into 'fx_vec', we use
 ## mod_vec <- Module( "mod_vec", getDynLib(fx_vec), mustStart = TRUE )
@@ -177,19 +177,19 @@ prettyDate <- format(Sys.Date(), "%B %e, %Y")
 
 
 ###################################################
-### code chunk number 41: Rcpp-modules.Rnw:895-896
+### code chunk number 41: Rcpp-modules.Rnw:898-899
 ###################################################
 options( prompt = " ", continue = " " )
 
 
 ###################################################
-### code chunk number 42: Rcpp-modules.Rnw:899-900 (eval = FALSE)
+### code chunk number 42: Rcpp-modules.Rnw:902-903 (eval = FALSE)
 ###################################################
 ## import( Rcpp )
 
 
 ###################################################
-### code chunk number 43: Rcpp-modules.Rnw:907-910 (eval = FALSE)
+### code chunk number 43: Rcpp-modules.Rnw:910-913 (eval = FALSE)
 ###################################################
 ## .onLoad <- function(libname, pkgname) {
 ##     loadRcppModules()
@@ -197,7 +197,7 @@ options( prompt = " ", continue = " " )
 
 
 ###################################################
-### code chunk number 44: Rcpp-modules.Rnw:936-939 (eval = FALSE)
+### code chunk number 44: Rcpp-modules.Rnw:939-942 (eval = FALSE)
 ###################################################
 ## loadModule("yada")
 ## loadModule("stdVector")
@@ -205,7 +205,7 @@ options( prompt = " ", continue = " " )
 
 
 ###################################################
-### code chunk number 45: Rcpp-modules.Rnw:951-956 (eval = FALSE)
+### code chunk number 45: Rcpp-modules.Rnw:954-959 (eval = FALSE)
 ###################################################
 ## yada <- Module( "yada" )
 ## 
@@ -215,19 +215,19 @@ options( prompt = " ", continue = " " )
 
 
 ###################################################
-### code chunk number 46: Rcpp-modules.Rnw:959-960
+### code chunk number 46: Rcpp-modules.Rnw:962-963
 ###################################################
 options( prompt = "> ", continue = "+ " )
 
 
 ###################################################
-### code chunk number 47: Rcpp-modules.Rnw:970-971 (eval = FALSE)
+### code chunk number 47: Rcpp-modules.Rnw:973-974 (eval = FALSE)
 ###################################################
 ## Rcpp.package.skeleton( "testmod", module = TRUE )
 
 
 ###################################################
-### code chunk number 48: Rcpp-modules.Rnw:984-986 (eval = FALSE)
+### code chunk number 48: Rcpp-modules.Rnw:987-989 (eval = FALSE)
 ###################################################
 ## yada <- Module( "yada" )
 ## prompt( yada, "yada-module.Rd" )

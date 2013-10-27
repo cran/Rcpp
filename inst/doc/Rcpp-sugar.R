@@ -1,14 +1,14 @@
 ### R code from vignette source 'Rcpp-sugar.Rnw'
 
 ###################################################
-### code chunk number 1: Rcpp-sugar.Rnw:29-31
+### code chunk number 1: Rcpp-sugar.Rnw:32-34
 ###################################################
 prettyVersion <- packageDescription("Rcpp")$Version
 prettyDate <- format(Sys.Date(), "%B %e, %Y")
 
 
 ###################################################
-### code chunk number 2: Rcpp-sugar.Rnw:38-56
+### code chunk number 2: Rcpp-sugar.Rnw:41-59
 ###################################################
 link <- function( f, package, text = f, root = "http://finzi.psych.upenn.edu/R/library/" ){
 	h <- if( missing(package) ) {
@@ -31,7 +31,7 @@ linkS4class <- function( cl, package, text = cl, root = "http://finzi.psych.upen
 
 
 ###################################################
-### code chunk number 4: Rcpp-sugar.Rnw:113-116 (eval = FALSE)
+### code chunk number 4: Rcpp-sugar.Rnw:116-119 (eval = FALSE)
 ###################################################
 ## foo <- function(x, y){
 ## 	ifelse( x < y, x*x, -(y*y) )
