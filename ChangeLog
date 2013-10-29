@@ -1,3 +1,79 @@
+2013-10-28 Romain Francois <romain@r-enthusiasts.com>
+
+        * include/Rcpp/protection/Armor.h : Armor::operator SEXP has to be const
+        for it to work properly with wrap. 
+
+2013-10-27  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION: Release 0.10.6
+        * inst/NEWS.Rd: Release 0.10.6
+        * inst/include/Rcpp/config.h: Release 0.10.5
+        * debian/*: Similarly updated for new release to Debian
+
+2013-10-17  JJ Allaire <jj@rstudio.org>
+
+        * R/Attributes.R: sourceCpp now correctly binds to Rtools 3.0 and 3.1
+
+2013-10-16  Dirk Eddelbuettel  <edd@debian.org>
+
+	* R/Rcpp.package.skeleton.R (Rcpp.package.skeleton): Deprecate
+	namespace argument which package.skeleton() no longer uses
+	* man/Rcpp.package.skeleton.Rd: Updated documentation accordingly
+
+2013-10-16 Romain Francois <romain@r-enthusiasts.com>
+
+        * include/Rcpp/api/meat/is.h : added missing implementation for
+	is<Language> and is<DottedPair>
+
+2013-10-14 Romain Francois <romain@r-enthusiasts.com>
+
+	* inst/include/Rcpp/protection/protection.h: added
+	Shield/Shelter/Armor
+	* DESCRIPTION: bump to version 0.10.5.3
+
+2013-10-12  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Depends): Rolled Depends: on R to "R (>= 3.0.0)" as
+	required by the vignette building code (with thanks to Uwe Ligges)
+
+2013-10-08  Dirk Eddelbuettel  <edd@debian.org>
+
+	* NAMESPACE: Export LdFlags as well as RcppLdFlags
+	* man/RcppLdFlags.Rd: Updated
+
+2013-10-06  John M Chambers  <jmc@r-project.org>
+
+	* R/exposeClass.R: avoid warning from unclosed file()
+
+2013-10-06  John M Chambers  <jmc@r-project.org>
+
+	* NAMESPACE: change classModule to exposeClass
+	* R/classModule.R: delete
+	* man/classModule.Rd: delete
+	* R/exposeClass.R: add
+	* man/exposeClass.Rd: add
+	* man/setRcppClass.Rd: update, clarify, recommend exposeClass()
+
+2013-10-03  John M Chambers  <jmc@r-project.org>
+
+	* R/classModule.R: new function to write module file for class
+	* man/classModule.Rd: documentation for new function classModule()
+	* NAMESPACE: export classModule
+	* R/loadModule.R: clean up an error message
+	* R/RcppClass.R: defaults for module consistent w. classModule()
+	* man/setRcppClass.Rd: add defaults, explain need for saveAs
+
+2013-10-02  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/traits/is_na.h: More fixes thanks to Thomas Tse
+
+2013-10-01  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/api/meat/is.h: Applied patch by Thomas Tse to
+	provide missing Character(Vector|Matrix)
+
+        * DESCRIPTION: Bump to development release 0.10.5.1
+
 2013-09-28  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION: Release 0.10.5

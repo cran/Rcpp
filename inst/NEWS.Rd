@@ -2,6 +2,39 @@
 \title{News for Package 'Rcpp'}
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+\section{Changes in Rcpp version 0.10.5.2 (2013-10-08)}{
+  \itemize{
+    \item Changes in Rcpp API:
+    \itemize{
+      \item The function \code{exposeClass} takes a description of the
+        constructors, fields and methods to be exposed from a C++
+        class, and writes C++ and R files in the package.  Inherited
+        classes can be dealt with, but require data type information.
+        This approach avoids hand-coding module files.
+      \item Two missing \code{is<>()} templates for
+        \code{CharacterVector} and \code{CharacterMatrix} have been added,
+        and some tests for \code{is_na()} and \code{is_finite()} have been
+        corrected thanks to Thomas Tse.   
+    }
+    \item Changes in R code:
+    \itemize{
+      \item Export linking helper function \code{LdFlags} as well as
+        \code{RcppLdFlags}.
+      \item Function \code{Rcpp.package.skeleton()} no longer passes a
+        \code{namespace} argument on to \code{package.skeleton()}
+    }
+    \item Changes in R setup:
+    \itemize{
+      \item Raise requirement for R itself to be version 3.0.0 or later
+      as needed by the vignette processing
+    }
+    \item Changes in Rcpp attributes: 
+    \itemize{
+      \item \code{sourceCpp} now correctly binds to Rtools 3.0 and 3.1
+    }
+  }
+}
+
 \section{Changes in Rcpp version 0.10.5 (2013-09-28)}{
   \itemize{
     \item Changes in R code:
