@@ -3,7 +3,6 @@
 // string_proxy.h: Rcpp R/C++ interface class library -- 
 //
 // Copyright (C) 2010 - 2013 Dirk Eddelbuettel and Romain Francois
-// Copyright (C) 2013 Rice University
 //
 // This file is part of Rcpp.
 //
@@ -23,6 +22,7 @@
 #ifndef Rcpp__vector__string_proxy_h
 #define Rcpp__vector__string_proxy_h
  
+namespace Rcpp{
 namespace internal{
 	
 	template<int RTYPE> class string_proxy {
@@ -40,10 +40,7 @@ namespace internal{
 		 * @param v reference to the associated character vector
 		 * @param index index 
 		 */
-		string_proxy( VECTOR& v, int index_ ) : 
-			parent(&v), index(index_){
-				RCPP_DEBUG_2( "string_proxy( VECTOR& = <%p>, index_ = %d) ", v.asSexp(), index_ ) ;
-		}
+		string_proxy( VECTOR& v, int index_ ) : parent(&v), index(index_){}
 			
 		string_proxy( const string_proxy& other ) : 
 			parent(other.parent), index(other.index){} ;
@@ -59,6 +56,8 @@ namespace internal{
 			set( other.get() ) ;
 			return *this ;
 		}
+		
+		string_proxy& operator=( const const_string_proxy<RTYPE>& other) ;
 		
 		string_proxy& operator=( const String& s) ;
 		
@@ -136,10 +135,9 @@ namespace internal{
 		friend std::string operator+( const std::string& x, const string_proxy<RT>& proxy);
 		
 		void swap( string_proxy& other ){
-			SEXP tmp = PROTECT( STRING_ELT(*parent, index)) ;
+			Shield<SEXP> tmp( STRING_ELT(*parent, index)) ;
 			SET_STRING_ELT( *parent, index, STRING_ELT( *(other.parent), other.index) ) ;
 			SET_STRING_ELT( *(other.parent), other.index, tmp ) ;
-			UNPROTECT(1) ; /* tmp */
 		}
 		
 		VECTOR* parent; 
@@ -242,68 +240,7 @@ namespace internal{
 		return x + static_cast<const char*>(y) ;
 	}
 	
-	template <int RTYPE> 
-	class generic_proxy{
-		public:
-			typedef typename ::Rcpp::Vector<RTYPE> VECTOR ;
-			
-			generic_proxy(): parent(0), index(-1){}
-			
-			generic_proxy( const generic_proxy& other ) : 
-				parent(other.parent), index(other.index){} ;
-			
-			generic_proxy( VECTOR& v, int i ) : parent(&v), index(i){} ;
-		
-			generic_proxy& operator=(SEXP rhs) { 
-				set(rhs) ;
-				return *this ;
-			}
-			
-			generic_proxy& operator=(const generic_proxy& rhs) {
-				set(rhs.get());
-				return *this ;	
-			}
-	               
-			template <typename T>
-			generic_proxy& operator=( const T& rhs){
-				set(wrap(rhs)) ;
-				return *this; 
-			}
-			
-			operator SEXP() const { 
-			    return get() ;
-			}
-			
-			template <typename U> operator U() const {
-				return ::Rcpp::as<U>(get()) ;
-			}
-			
-			// helping the compiler (not sure why it can't help itself)
-			operator bool() const { return ::Rcpp::as<bool>(get()) ; }
-			operator int() const { return ::Rcpp::as<int>(get()) ; }
-			
-			void swap(generic_proxy& other){
-				SEXP tmp = PROTECT(get()) ;
-				set( other.get() ) ;
-				other.set(tmp) ;
-				UNPROTECT(1) ;
-			}
-			
-			VECTOR* parent; 
-			int index ;
-			inline void move(int n) { index += n ; }
-			
-			void import( const generic_proxy& other){
-				parent = other.parent ;
-				index  = other.index ;
-			}
-			
-		private:
-			inline void set(SEXP x) { SET_VECTOR_ELT( *parent, index, x ) ;} 
-			inline SEXP get() const { return VECTOR_ELT(*parent, index ); } 
-		
-	}  ;
-	
+}
 }
 
 #endif

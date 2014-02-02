@@ -2,7 +2,57 @@
 \title{News for Package 'Rcpp'}
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
-\section{Changes in Rcpp version 0.10.5.2 (2013-10-08)}{
+\section{Changes in Rcpp version 0.11.0 (2014-02-02)}{
+  \itemize{
+    \item Changes in Rcpp API:
+    \itemize{
+      \item Functions provided/used by \cpkg{Rcpp} are now registered
+      with R and instantiated by client package alleviating the new for
+      explicit linking against \code{libRcpp} which is therefore no
+      longer created.
+      \item Updated the \code{Rcpp.package.skeleton()} function accordingly.
+      \item New class \code{StretchyList} for pair lists with fast addition of
+      elements at the front and back. This abstracts the 3 functions
+      \code{NewList}, \code{GrowList} and \code{Insert} used in various 
+      packages and in parsers in R. 
+      \item The function \code{dnt}, \code{pnt}, \code{qnt} sugar
+      functions were incorrectly expanding to the no-degree-of-freedoms
+      variant.
+      \item Unit tests for \code{pnt} were added.
+      \item The sugar table function did not handle NAs and NaNs properly
+      for numeric vectors. Fixed and tests added.
+      \item The internal coercion mechanism mapping numerics to strings has
+      been updated to better match \R (specifically with \code{Inf}, \code{-Inf},
+      and \code{NaN}.)
+      \item Applied two bug fixes to Vector \code{sort()} and \code{RObject}
+      definition spotted and corrected by Kevin Ushey
+      \item New \code{checkUserInterrupt()} function that provides a C++ friendly 
+      implementation of \code{R_CheckUserInterrupt}.
+    }
+    \item Changes in Rcpp attributes:
+    \itemize{
+      \item Embedded R code chunks in sourceCpp are now executed within
+      the working directory of the C++ source file.
+      \item Embedded R code chunks in sourceCpp can now be disabled.
+    }
+    \item Changes in Rcpp documentation:
+    \itemize{
+      \item The Rcpp-FAQ and Rcpp-package vignettes have been updated and expanded.
+      \item Vignettes are now typeset with grey background for code boxes.
+      \item The bibtex reference file has been update to reflexct
+      current package versions.
+    }
+    \item Changes in Rcpp unit tests:
+    \itemize{
+      \item The file \code{tests/doRUnit.R} was rewritten following the
+      pattern deployed in \cpkg{RProtoBuf} which is due to Murray Stokely
+      \item The function \code{test()} was rewritten; it provides an
+      easy entry point to running unit tests of the installed package 
+    }
+  }
+}
+
+\section{Changes in Rcpp version 0.10.6 (2013-10-27)}{
   \itemize{
     \item Changes in Rcpp API:
     \itemize{

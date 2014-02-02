@@ -3,7 +3,6 @@
 // String.h: Rcpp R/C++ interface class library -- single string
 //
 // Copyright (C) 2012 - 2013 Dirk Eddelbuettel and Romain Francois
-// Copyright (C) 2012 - 2013 Rice University
 //
 // This file is part of Rcpp.
 //
@@ -51,6 +50,7 @@ namespace Rcpp {
     class String {
     public:
         typedef internal::string_proxy<STRSXP> StringProxy;
+        typedef internal::const_string_proxy<STRSXP> const_StringProxy;
         
         /** default constructor */
         String( ): data( Rf_mkChar("") ), buffer(), valid(true), buffer_ready(true) {
@@ -70,6 +70,10 @@ namespace Rcpp {
         /** from string proxy */
         String( const StringProxy& proxy ): data( proxy.get() ), valid(true), buffer_ready(false){
             RCPP_STRING_DEBUG( "String( const StringProxy&)" ) ; 
+        }
+        /** from string proxy */
+        String( const const_StringProxy& proxy ): data( proxy.get() ), valid(true), buffer_ready(false){
+            RCPP_STRING_DEBUG( "String( const const_StringProxy&)" ) ; 
         }
         
         /** from a std::string */
@@ -250,6 +254,12 @@ namespace Rcpp {
             valid = false ;
             return *this ;
         }
+        
+        template <typename LHS, typename RHS>
+        inline String& replace_all( const LHS& s, const RHS& news ){
+            return replace_all( String( s ), String(news) ) ;
+        }
+        
         inline String& replace_all( const Rcpp::String& s, const char* news ){
             // replace NA -> do nothing
             if( s.is_na() ) return *this ;
@@ -385,7 +395,7 @@ namespace Rcpp {
         template <int RTYPE>
         SEXP string_element_converter<RTYPE>::get( const Rcpp::String& input) {
             RCPP_DEBUG( "string_element_converter::get< Rcpp::String >()" )
-		     return input.get_sexp() ;   
+            return input.get_sexp() ;   
 		}
         
         template <>
@@ -396,10 +406,10 @@ namespace Rcpp {
 	    template <int RTYPE>
 	    template <typename T>
         string_proxy<RTYPE>& string_proxy<RTYPE>::operator+=(const T& rhs) {
-        	String tmp = get() ;
-        	tmp += rhs ;
-        	set( tmp ) ;
-        	return *this ;
+            String tmp = get() ;
+            tmp += rhs ;
+            set( tmp ) ;
+            return *this ;
         }
 		
 	}
@@ -407,12 +417,11 @@ namespace Rcpp {
 	
 	template <>
     inline SEXP wrap<Rcpp::String>( const Rcpp::String& object) {
-    	RCPP_STRING_DEBUG( "wrap<String>()" ) ;
-    	SEXP res = PROTECT( Rf_allocVector( STRSXP, 1 ) ) ;
-    	SEXP data = object.get_sexp(); 
-    	SET_STRING_ELT( res, 0, data ) ;
-    	UNPROTECT(1) ;
-    	return res ;
+        RCPP_STRING_DEBUG( "wrap<String>()" ) ;
+        Shield<SEXP> res( Rf_allocVector( STRSXP, 1 ) ) ;
+        SEXP data = object.get_sexp(); 
+        SET_STRING_ELT( res, 0, data ) ;
+        return res ;
     }
 
     

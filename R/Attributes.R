@@ -20,16 +20,21 @@
 sourceCpp <- function(file = "",
                       code = NULL,
                       env = globalenv(),
+                      embeddedR = TRUE,
                       rebuild = FALSE,
                       showOutput = verbose,
                       verbose = getOption("verbose")) {
 
-    # resolve code into a file if necessary
+    # resolve code into a file if necessary. also track the working
+    # directory to source the R embedded code chunk within
     if (!missing(code)) {
+        rWorkingDir <- getwd() 
         file <- tempfile(fileext = ".cpp")
         con <- file(file, open = "w")
         writeLines(code, con)
         close(con)
+    } else {
+        rWorkingDir <- dirname(file)
     }
 
     # resolve the file path
@@ -165,8 +170,9 @@ sourceCpp <- function(file = "",
     }
 
     # source the embeddedR
-    if (length(context$embeddedR) > 0) {
+    if (embeddedR && (length(context$embeddedR) > 0)) {
         srcConn <- textConnection(context$embeddedR)
+        setwd(rWorkingDir) # will be reset by previous on.exit handler
         source(file=srcConn, echo=TRUE)
     }
 
@@ -352,7 +358,7 @@ compileAttributes <- function(pkgdir = ".", verbose = getOption("verbose")) {
         dir.create(rDir)
 
     # get a list of all source files
-    cppFiles <- list.files(srcDir, pattern=glob2rx("*.c*"))
+    cppFiles <- list.files(srcDir, pattern="\\.c(c|pp)$")
 
     # derive base names (will be used for modules)
     cppFileBasenames <- tools::file_path_sans_ext(cppFiles)
@@ -372,7 +378,7 @@ compileAttributes <- function(pkgdir = ".", verbose = getOption("verbose")) {
     if (file.exists(pkgHeaderPath)) {
         pkgInclude <- paste("#include \"../inst/include/",
                             pkgHeader, "\"", sep="")
-        includes <- c(includes, pkgInclude)
+        includes <- c(pkgInclude, includes)
     }
 
     # generate exports
@@ -406,7 +412,7 @@ sourceCppFunction <- function(func, isVoid, dll, symbol) {
 
     args <- names(formals(func))
 
-    body <- quote( .Call( EXTERNALNAME, ARG ) )[ c(1:2, rep(3, length(args))) ]
+    body <- quote( CALL_PLACEHOLDER ( EXTERNALNAME, ARG ) )[ c(1:2, rep(3, length(args))) ]
 
     for (i in seq(along = args))
         body[[i+2]] <- as.symbol(args[i])
@@ -581,14 +587,7 @@ sourceCppFunction <- function(func, isVoid, dll, symbol) {
     # if there is no buildEnv from a plugin then use the Rcpp plugin
     if (length(buildEnv) == 0) {
         buildEnv <- inlineCxxPlugin()$env
-    } else {
-        # we are using a plugin -- confirm that the plugin includes the Rcpp
-        # PKG_LIBS and if it doesn't then add them
-        pkgLibs <- buildEnv$PKG_LIBS
-        rcppLibs <- Rcpp::RcppLdFlags()
-        if (is.null(pkgLibs) || !grepl(rcppLibs, pkgLibs, fixed = TRUE))
-            buildEnv$PKG_LIBS <- paste(pkgLibs, rcppLibs)
-    }
+    } 
 
     # set CLINK_CPPFLAGS based on the LinkingTo dependencies
     buildEnv$CLINK_CPPFLAGS <- .buildClinkCppFlags(linkingToPackages)

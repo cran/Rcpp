@@ -24,6 +24,7 @@
 #define RcppCommon_h
 
 // #define RCPP_DEBUG_LEVEL 1
+// #define RCPP_DEBUG_MODULE_LEVEL 1
 
 #include <Rcpp/platform/compiler.h>
 #include <Rcpp/config.h>
@@ -38,11 +39,6 @@
 #include <R_ext/Parse.h>
 #include <R_ext/Rdynload.h>
 #include <Rversion.h>
-
-#ifdef __cplusplus
-extern "C" 
-#endif 
-const char * sexp_to_name(int sexp_type);
 
 /**
  * \brief Rcpp API
@@ -80,9 +76,61 @@ namespace Rcpp{
 #include <limits>
 #include <typeinfo>
 #include <Rcpp/sprintf.h>
+#include <R_ext/Callbacks.h>
 
+#include <Rmath.h>
+#include <Rcpp/sugar/undoRmath.h>
 
+namespace Rcpp{
+    
+    SEXP Rcpp_eval(SEXP expr_, SEXP env = R_GlobalEnv ) ;
+    class Module ; 
+    
+    namespace traits{
+        template <typename T> class named_object ;
+    }
+    
+    inline SEXP Rcpp_PreserveObject(SEXP x){ 
+        if( x != R_NilValue ) {
+            R_PreserveObject(x); 
+        }
+        return x ;
+    }
+    
+    inline void Rcpp_ReleaseObject(SEXP x){
+        if (x != R_NilValue) {
+            R_ReleaseObject(x); 
+        }
+    }
+    
+    inline SEXP Rcpp_ReplaceObject(SEXP x, SEXP y){
+        if( Rf_isNull(x) ){
+            Rcpp_PreserveObject( y ) ;    
+        } else if( Rf_isNull(y) ){
+            Rcpp_ReleaseObject( x ) ;
+        } else {
+            // if we are setting to the same SEXP as we already have, do nothing 
+            if (x != y) {
+                
+                // the previous SEXP was not NULL, so release it 
+                Rcpp_ReleaseObject(x);
+                
+                // the new SEXP is not NULL, so preserve it 
+                Rcpp_PreserveObject(y);
+                        
+            }
+        }
+        return y ;
+    }   
+
+}
+
+#include <Rcpp/storage/storage.h>
 #include <Rcpp/protection/protection.h>
+#include <Rcpp/routines.h>
+#include <Rcpp/exceptions.h>
+#include <Rcpp/proxy/proxy.h>
+
 #include <Rcpp/lang.h>
 #include <Rcpp/complex.h>
 #include <Rcpp/barrier.h>
@@ -90,6 +138,8 @@ namespace Rcpp{
 #define RcppExport extern "C"
 
 #include <Rcpp/exceptions.h>
+
+#include <Rcpp/Interrupt.h>
 
 namespace Rcpp{
     template <typename T> class object ;
@@ -128,12 +178,7 @@ namespace Rcpp{
 
 #include <Rcpp/sugar/sugar_forward.h>
 
-#include <Rcpp/cache.h>
-
-// "Rcout" iostream class contributed by Jelmer Ypma
 #include <Rcpp/iostream/Rstreambuf.h>
-#include <Rcpp/iostream/Rostream.h>
-
 #include <Rcpp/longlong.h>
 
 #endif

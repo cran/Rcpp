@@ -2,7 +2,7 @@
 //
 // SubMatrix.h: Rcpp R/C++ interface class library -- sub matrices
 //
-// Copyright (C) 2010 - 2011 Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2010 - 2013 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -22,6 +22,8 @@
 #ifndef Rcpp__vector__SubMatrix_h
 #define Rcpp__vector__SubMatrix_h
    
+namespace Rcpp{
+    
 template <int RTYPE>
 class SubMatrix : public Rcpp::MatrixBase< RTYPE, true, SubMatrix<RTYPE> > {
 public:
@@ -53,8 +55,8 @@ private:
     int m_nr, nc, nr ;
 } ;
 
-template <int RTYPE>
-Matrix<RTYPE>::Matrix( const SubMatrix<RTYPE>& sub ) : VECTOR( Rf_allocMatrix( RTYPE, sub.nrow(), sub.ncol() )), nrows(sub.nrow()) {
+template <int RTYPE, template <class> class StoragePolicy >
+Matrix<RTYPE,StoragePolicy>::Matrix( const SubMatrix<RTYPE>& sub ) : VECTOR( Rf_allocMatrix( RTYPE, sub.nrow(), sub.ncol() )), nrows(sub.nrow()) {
     int nc = sub.ncol() ;
     iterator start = VECTOR::begin() ;
 	iterator rhs_it ;
@@ -66,12 +68,12 @@ Matrix<RTYPE>::Matrix( const SubMatrix<RTYPE>& sub ) : VECTOR( Rf_allocMatrix( R
 	}
 }
 
-template <int RTYPE>
-Matrix<RTYPE>& Matrix<RTYPE>::operator=( const SubMatrix<RTYPE>& sub ){
+template <int RTYPE, template <class> class StoragePolicy >
+Matrix<RTYPE,StoragePolicy>& Matrix<RTYPE,StoragePolicy>::operator=( const SubMatrix<RTYPE>& sub ){
     int nc = sub.ncol(), nr = sub.nrow() ;
     if( nc != nrow() || nr != ncol() ){
         nrows = nr ;
-        VECTOR::set_sexp( Rf_allocMatrix( RTYPE, nr, nc ) ) ;
+        VECTOR::set__( Rf_allocMatrix( RTYPE, nr, nc ) ) ;
 	}
 	iterator start = VECTOR::begin() ;
 	iterator rhs_it ;
@@ -100,5 +102,6 @@ RCPP_WRAP_SUBMATRIX(RAWSXP)
 // RCPP_WRAP_SUBMATRIX(EXPRSXP)
 #undef RCPP_WRAP_SUBMATRIX
 
+}
 
 #endif

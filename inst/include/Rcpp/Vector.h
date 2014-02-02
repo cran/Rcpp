@@ -2,7 +2,7 @@
 //
 // Vector.h: Rcpp R/C++ interface class library -- vectors
 //
-// Copyright (C) 2010 - 2012 Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2010 - 2013 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -23,47 +23,43 @@
 #define Rcpp__Vector_h
 
 #include <RcppCommon.h>
-#include <Rcpp/Evaluator.h>
 #include <Rcpp/exceptions.h>
-#include <Rcpp/RObject.h>
 #include <Rcpp/r_cast.h>
 
 namespace Rcpp{
     namespace traits{
          template <int RTYPE, bool NA, typename VECTOR> struct Extractor ;  
     }
-}
+    template <int RTYPE> class MatrixRow ;
+    template <int RTYPE> class MatrixColumn ;
+    template <int RTYPE> class SubMatrix ;
 
-namespace Rcpp{
+    class Dimension ;
+    template <bool NA,typename T> class SingleLogicalResult ;
+
+}
 
 #include <Rcpp/vector/00_forward_Vector.h>
-}
 #include <Rcpp/vector/no_init.h>
-namespace Rcpp{
+
 #include <Rcpp/vector/00_forward_proxy.h>
-#include <Rcpp/vector/00_forward_eval_methods.h>
+#include <Rcpp/vector/vector_from_string.h>
 
 #include <Rcpp/vector/converter.h>
-
-template <int RTYPE> class MatrixRow ;
-template <int RTYPE> class MatrixColumn ;
-template <int RTYPE> class SubMatrix ;
-
 #include <Rcpp/vector/RangeIndexer.h>
-
 #include <Rcpp/vector/Vector.h>
-
 #include <Rcpp/vector/proxy.h>
 #include <Rcpp/vector/traits.h>
-
 #include <Rcpp/vector/Matrix.h>
 #include <Rcpp/vector/SubMatrix.h>
 #include <Rcpp/vector/MatrixRow.h>
 #include <Rcpp/vector/MatrixColumn.h>
-
 #include <Rcpp/vector/instantiation.h>
+
 #include <Rcpp/vector/string_proxy.h>
-}
+#include <Rcpp/vector/const_string_proxy.h>
+#include <Rcpp/vector/generic_proxy.h>
+#include <Rcpp/vector/const_generic_proxy.h>
 
 #include <Rcpp/String.h>
 #include <Rcpp/vector/LazyVector.h>
