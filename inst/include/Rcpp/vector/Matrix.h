@@ -2,7 +2,7 @@
 //
 // Matrix.h: Rcpp R/C++ interface class library -- matrices
 //
-// Copyright (C) 2010 - 2012 Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2010 - 2013 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -22,10 +22,10 @@
 #ifndef Rcpp__vector__Matrix_h
 #define Rcpp__vector__Matrix_h
 
-class Dimension ;
-
-template <int RTYPE> 
-class Matrix : public Vector<RTYPE>, public MatrixBase<RTYPE,true, Matrix<RTYPE> > {
+namespace Rcpp{
+    
+template <int RTYPE, template <class> class StoragePolicy = PreserveStorage > 
+class Matrix : public Vector<RTYPE, StoragePolicy>, public MatrixBase<RTYPE, true, Matrix<RTYPE,StoragePolicy> > {
     int nrows ; 
     
 public:
@@ -35,7 +35,7 @@ public:
     typedef MatrixColumn<RTYPE> Column ;
     typedef SubMatrix<RTYPE> Sub ;
         
-    typedef Vector<RTYPE> VECTOR ;
+    typedef Vector<RTYPE, StoragePolicy> VECTOR ;
     typedef typename VECTOR::iterator iterator ;
     typedef typename VECTOR::const_iterator const_iterator ;
     typedef typename VECTOR::converter_type converter_type ;
@@ -107,11 +107,6 @@ private:
     
     inline int offset( int i, int j) const { return i + nrows * j ; }
     
-    void update_matrix(){
-        RCPP_DEBUG_1( "%s::update_matrix", DEMANGLE(Matrix) ) ;
-        VECTOR::update_vector() ;
-    }
-    
     template <typename U>
     void fill_diag__dispatch( traits::false_type, const U& u) ;
         
@@ -123,5 +118,6 @@ private:
         
 } ;
 
+}
 
 #endif

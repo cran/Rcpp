@@ -2,7 +2,7 @@
 //
 // proxy.h: Rcpp R/C++ interface class library -- proxies
 //
-// Copyright (C) 2010 - 2012 Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2010 - 2013 Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -22,6 +22,7 @@
 #ifndef Rcpp__vector__proxy_h
 #define Rcpp__vector__proxy_h
 
+namespace Rcpp{
 namespace internal{
 	
 	template <int RTYPE> class simple_name_proxy {
@@ -134,11 +135,9 @@ namespace internal{
 	public:
 		typedef ::Rcpp::Vector<RTYPE> VECTOR ;
 		generic_name_proxy( VECTOR& v, const std::string& name_) :
-			parent(v), name(name_){
-				RCPP_DEBUG_2( "generic_name_proxy( VECTOR& = %p, const string& = %s)", v.asSexp(), name_.c_str() );
-		} ;
+			parent(v), name(name_){}
 		generic_name_proxy( const generic_name_proxy& other ) : 
-			parent(other.parent), name(other.name){} ;
+			parent(other.parent), name(other.name){}
 		~generic_name_proxy(){} ;
 		
 		generic_name_proxy& operator=( SEXP rhs ){
@@ -229,7 +228,16 @@ namespace traits {
 	struct r_vector_const_proxy{
 		typedef const typename storage_type<RTYPE>::type& type ;
 	} ;                                            
-
+	template<> struct r_vector_const_proxy<STRSXP> {
+		typedef ::Rcpp::internal::const_string_proxy<STRSXP> type ;
+	} ;
+	template<> struct r_vector_const_proxy<VECSXP> {
+		typedef ::Rcpp::internal::const_generic_proxy<VECSXP> type ;
+	} ;
+	template<> struct r_vector_const_proxy<EXPRSXP> {
+		typedef ::Rcpp::internal::const_generic_proxy<EXPRSXP> type ;
+	} ;
+	
 	template <int RTYPE>
 	struct r_vector_iterator {
 		typedef typename storage_type<RTYPE>::type* type ;
@@ -247,7 +255,6 @@ namespace traits {
 	template<> struct r_vector_iterator<STRSXP> : proxy_based_iterator<STRSXP>{} ;
 
 }  // traits
-
-
+}
 
 #endif

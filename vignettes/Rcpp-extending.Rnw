@@ -33,39 +33,24 @@
 \newcommand{\hlboxbacktick}{   \hlnormalsizeboxbacktick}
 \newcommand{\hlboxunderscore}{ \hlnormalsizeboxunderscore}
 
+%% This corresponds to setting boxes=TRUE for highlight
+\newsavebox{\hlbox}
+\definecolor{hlBg}{rgb}{0.949019607843137,0.949019607843137,0.949019607843137}
+\definecolor{hlBd}{rgb}{0,0,0}
+\renewenvironment{Hchunk}{\vspace{0.5em}\noindent\begin{lrbox}{\hlbox}\begin{minipage}[b]{.9\textwidth}}%
+    {\end{minipage}\end{lrbox}\fcolorbox{hlBd}{hlBg}{\usebox{\hlbox}}\vspace{0.5em}}
+
 <<echo=FALSE,print=FALSE>>=
 prettyVersion <- packageDescription("Rcpp")$Version
 prettyDate <- format(Sys.Date(), "%B %e, %Y")
+require(inline)
+require(highlight)
+require(Rcpp)
 @
 
 \author{Dirk Eddelbuettel \and Romain Fran\c{c}ois}
 \title{Extending \pkg{Rcpp}}
 \date{\pkg{Rcpp} version \Sexpr{prettyVersion} as of \Sexpr{prettyDate}}
-
-<<echo=FALSE>>=
-link <- function( f, package, text = f, root = "http://finzi.psych.upenn.edu/R/library/" ){
-	h <- if( missing(package) ) {
-		as.character( help( f ) )
-	} else {
-		as.character( help( f, package = paste( package, sep = "" ) ) )
-	}
-	if( ! length(h) ){
-		sprintf( "\\\\textbf{%s}", f )
-	} else {
-		rx <- "^.*/([^/]*?)/help/(.*?)$"
-		package <- sub( rx, "\\1", h, perl = TRUE )
-		page <- sub( rx, "\\2", h, perl = TRUE )
-		sprintf( "\\\\href{%s%s/html/%s.html}{\\\\texttt{%s}}", root, package, page, text )
-	}
-}
-linkS4class <- function( cl, package, text = cl, root = "http://finzi.psych.upenn.edu/R/library/" ){
-	link( sprintf("%s-class", cl), package, text, root )
-}
-
-require(inline)
-require(highlight)
-require(Rcpp)
-@
 
 \begin{document}
 \maketitle
@@ -94,7 +79,7 @@ versa.  The corresponding function declarations are as follows:
 
 <<lang=cpp>>=
 // conversion from R to C++
-template <typename T> T as( SEXP m_sexp) ;
+template <typename T> T as( SEXP x) ;
 
 // conversion from C++ to R
 template <typename T> SEXP wrap(const T& object) ;

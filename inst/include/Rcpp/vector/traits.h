@@ -22,6 +22,7 @@
 #ifndef Rcpp__vector__traits_h
 #define Rcpp__vector__traits_h
  
+namespace Rcpp{
 namespace traits{
 
 	template <int RTYPE>
@@ -36,8 +37,7 @@ namespace traits{
 		
 		r_vector_cache() : start(0){} ;
 		inline void update( const VECTOR& v ) {
-		    start = ::Rcpp::internal::r_vector_start<RTYPE>(v.asSexp()) ;
-			RCPP_DEBUG_3( " cache<%d>::update( <%p> ), start = <%p>", RTYPE, reinterpret_cast<void*>(v.asSexp()),  reinterpret_cast<void*>(start) )
+		    start = ::Rcpp::internal::r_vector_start<RTYPE>(v) ;
 		}
 		inline iterator get() const { return start; }
 		inline const_iterator get_const() const { return start; }
@@ -63,7 +63,6 @@ namespace traits{
 		~proxy_cache(){}
 		void update( const VECTOR& v ){
 			p = const_cast<VECTOR*>(&v) ;
-			RCPP_DEBUG_3( " cache<%d>::update( <%p> ), p = <%p>", RTYPE, reinterpret_cast<void*>(v.asSexp()),  reinterpret_cast<void*>(p) ) ;
 		}
 		inline iterator get() const { return iterator( proxy(*p, 0 ) ) ;}
 		// inline const_iterator get_const() const { return const_iterator( *p ) ;}
@@ -72,10 +71,8 @@ namespace traits{
 		inline proxy ref() { return proxy(*p,0) ; }
 		inline proxy ref(int i) { return proxy(*p,i);}
 		
-		// inline const_proxy ref() const { return const_proxy(*p,0) ; }
-		// inline const_proxy ref(int i) const { return const_proxy(*p,i);}
-		inline const_proxy ref() const { return *get_vector_ptr(*p) ; }
-		inline const_proxy ref(int i) const { return get_vector_ptr(*p)[i] ;}
+		inline const_proxy ref() const { return const_proxy(*p,0) ; }
+		inline const_proxy ref(int i) const { return const_proxy(*p,i);}
 		
 		private:
 			VECTOR* p ;
@@ -90,5 +87,6 @@ namespace traits{
 	template <> struct r_vector_cache_type<STRSXP>  { typedef proxy_cache<STRSXP> type ;  } ;
 		
 } // traits 
+}
 
 #endif

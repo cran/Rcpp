@@ -36,10 +36,10 @@ public:
 // [[Rcpp::export]]
 SEXP symbol_(){
     return LogicalVector::create( 
-        Symbol( Rf_install("foobar") ).asSexp() == Rf_install("foobar"), 
-        Symbol( Rf_mkChar("foobar") ).asSexp() == Rf_install("foobar"), 
-        Symbol( Rf_mkString("foobar") ).asSexp() == Rf_install("foobar"), 
-        Symbol( "foobar" ).asSexp() == Rf_install("foobar") 
+        Symbol( Rf_install("foobar") ) == Rf_install("foobar"), 
+        Symbol( Rf_mkChar("foobar") ) == Rf_install("foobar"), 
+        Symbol( Rf_mkString("foobar") ) == Rf_install("foobar"), 
+        Symbol( "foobar" ) == Rf_install("foobar") 
     ) ;
 }
 
@@ -60,12 +60,12 @@ int Dimension_const( SEXP ia ){
 
 // [[Rcpp::export]] 
 SEXP evaluator_error(){
-    return Rcpp::Evaluator::run( Rf_lang2( Rf_install("stop"), Rf_mkString( "boom" ) ) ) ;
+    return Rcpp_eval( Rf_lang2( Rf_install("stop"), Rf_mkString( "boom" ) ) ) ;
 }
 
 // [[Rcpp::export]]
 SEXP evaluator_ok(SEXP x){
-    return Rcpp::Evaluator::run( Rf_lang2( Rf_install("sample"), x ) ) ;
+    return Rcpp_eval( Rf_lang2( Rf_install("sample"), x ) ) ;
 }
 
 // [[Rcpp::export]]
@@ -105,5 +105,49 @@ void test_rcout(std::string tfile, std::string teststring){
     
     // close testfile
     testfile.close();
+}
+
+// [[Rcpp::export]]
+LogicalVector na_proxy(){
+    CharacterVector s("foo") ;
+    return LogicalVector::create( 
+        NA_REAL    == NA, 
+        NA_INTEGER == NA,
+        NA_STRING  == NA,
+        true       == NA, 
+        false      == NA, 
+        1.2        == NA, 
+        12         == NA,
+        "foo"      == NA,
+        s[0]       == NA, 
+        
+        NA         == NA_REAL, 
+        NA         == NA_INTEGER,
+        NA         == NA_STRING,
+        NA         == true, 
+        NA         == false,
+        NA         == 1.2  , 
+        NA         == 12   ,
+        NA         == "foo", 
+        NA         == s[0]
+        ) ;
+}      
+
+// [[Rcpp::export]]
+StretchyList stretchy_list(){
+    StretchyList out ;
+    out.push_back( 1 ) ;
+    out.push_front( "foo" ) ;
+    out.push_back( 3.2 ) ;
+    return out;
+}
+
+// [[Rcpp::export]]
+StretchyList named_stretchy_list(){
+    StretchyList out ;
+    out.push_back( _["b"] = 1 ) ;
+    out.push_front( _["a"] = "foo" ) ;
+    out.push_back( _["c"] = 3.2 ) ;
+    return out;
 }
 
