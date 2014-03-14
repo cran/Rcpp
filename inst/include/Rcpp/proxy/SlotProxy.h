@@ -23,7 +23,7 @@ namespace Rcpp{
 template <typename CLASS>
 class SlotProxyPolicy {
 public:
-    
+
     class SlotProxy : public GenericProxy<SlotProxy>{
     public:
         SlotProxy( CLASS& v, const std::string& name) : parent(v), slot_name(Rf_install(name.c_str())) {
@@ -37,9 +37,14 @@ public:
             return *this ;    
         }
               
-        template <typename T> SlotProxy& operator=(const T& rhs) ;
+        template <typename T> SlotProxy& operator=(const T& rhs) {
+          set( wrap(rhs) );
+          return *this;
+        }
             
-        template <typename T> operator T() const ;
+        template <typename T> operator T() const {
+          return as<T>( get() );
+        }
         inline operator SEXP() const { 
             return get() ; 
         }
@@ -58,10 +63,15 @@ public:
     
     class const_SlotProxy : public GenericProxy<const_SlotProxy> {
     public:
-        const_SlotProxy( const CLASS& v, const std::string& name) ;
-        const_SlotProxy& operator=(const const_SlotProxy& rhs) ;
-              
-        template <typename T> operator T() const ;
+        const_SlotProxy( const CLASS& v, const std::string& name) : parent(v), slot_name(Rf_install(name.c_str())) {
+            if( !R_has_slot( v, slot_name) ){
+                throw no_such_slot() ; 
+            }  
+        }
+        
+        template <typename T> operator T() const {
+          return as<T>( get() );
+        }
         inline operator SEXP() const { 
             return get() ; 
         }

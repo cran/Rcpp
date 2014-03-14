@@ -1,4 +1,8 @@
-// Copyright (C) 2013 Romain Francois
+// -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 8 -*-
+//
+// num2type.h: Rcpp R/C++ interface class library -- convert number to type
+//
+// Copyright (C) 2014 Dirk Eddelbuettel, Romain Francois and Kevin Ushey
 //
 // This file is part of Rcpp.
 //
@@ -15,31 +19,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef Rcpp_api_meat_TagProxy_h
-#define Rcpp_api_meat_TagProxy_h
+#ifndef Rcpp__traits__num2type__h
+#define Rcpp__traits__num2type__h
 
 namespace Rcpp{
+namespace traits{
 
-    template <typename CLASS>
-    template <typename U>
-    typename TagProxyPolicy<CLASS>::TagProxy& TagProxyPolicy<CLASS>::TagProxy::operator=( const U& rhs ){
-        set( wrap( rhs ) ) ;
-        return *this ;
-    }
+template <std::size_t N>
+struct num2type {};
     
-    template <typename CLASS>
-    template <typename U>
-    TagProxyPolicy<CLASS>::TagProxy::operator U() const{
-        return as<U>( get() ) ;
-    }
-    
-    template <typename CLASS>
-    template <typename U>
-    TagProxyPolicy<CLASS>::const_TagProxy::operator U() const{
-        return as<U>( get() ) ;
-    }
-    
-    
+}
 }
 
 #endif

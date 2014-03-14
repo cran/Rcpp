@@ -2,6 +2,57 @@
 \title{News for Package 'Rcpp'}
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+\section{Changes in Rcpp version 0.11.1 (2014-03-13)}{
+  \itemize{
+    \item Changes in Rcpp API:
+    \itemize{
+      \item Preserve backwards compatibility with \cpkg{Rcpp} 0.10.* by
+      allowing \code{RObject} extraction from vectors (or lists) of Rcpp
+      objects
+      \item Add missing default constructor to Reference class that was
+      omitted in the header-only rewrite
+      \item Fixes for \code{NA} and \code{NaN} handling of the
+      \code{IndexHash} class, as well as the vector \code{.sort()}
+      method. These fixes ensure that sugar functions depending on
+      \code{IndexHash} (i.e. \code{unique()}, \code{sort_unique()},
+      \code{match()}) will now properly handle \code{NA} and \code{NaN}
+      values for numeric vectors.
+      \item \code{DataFrame::nrows} now more accurately mimics R's
+      internal behavior (checks the row.names attribute)
+      \item Numerous changes to permit compilation on the Solaris OS 
+      \item Rcpp vectors gain a subsetting method -- it is now possible
+      to subset an Rcpp vector using \code{CharacterVector}s (subset
+      by name), \code{LogicalVector}s (logical subsetting), and
+      \code{IntegerVector}s (0-based index subsetting). Such subsetting
+      will also work with Rcpp sugar expressions, enabling expressions
+      such as \code{x[ x > 0]}.
+      \item Comma initialization (e.g. 
+      \code{CharacterVector x = "a", "b", "c";}, has been disabled, as
+      it causes problems with the behavior of the \code{=} operator with
+      \code{Rcpp::List}s. Users who want to re-enable this functionality 
+      can use \code{#define RCPP_COMMA_INITIALIZATION}, but be aware of
+      the above caveat. The more verbose 
+      \code{CharacterVector x = CharacterVector::create("a", "b", "c")}
+      is preferred.
+    }
+    \item Changes in Rcpp Attributes
+    \itemize{
+      \item Fix issue preventing packages with \code{Rcpp::interfaces}
+      attribute from compiling.
+      \item Fix behavior with attributes parsing of \code{::create} for default
+      arguments, and also allow constructors of a given size
+      (e.g. \code{NumericVector v = NumericVector(10))} gives a default
+      value of \code{numeric(10)} at the R level). Also make NAs preserve
+      type when exported to R (e.g. \code{NA_STRING} as a default argument
+      maps to \code{NA_character_} at the R level)
+    }
+    \item Changes in Rcpp modules
+    \itemize{
+      \item Corrected the \code{un_pointer} implementation for \code{object} 
+    }
+  }
+}
+      
 \section{Changes in Rcpp version 0.11.0 (2014-02-02)}{
   \itemize{
     \item Changes in Rcpp API:

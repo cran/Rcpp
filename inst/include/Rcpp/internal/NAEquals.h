@@ -1,4 +1,6 @@
-// Copyright (C) 2013 Romain Francois
+// NAEquals.h: Rcpp R/C++ interface class library -- for allowing NA == NA
+//
+// Copyright (C) 2014 Kevin Ushey
 //
 // This file is part of Rcpp.
 //
@@ -15,29 +17,30 @@
 // You should have received a copy of the GNU General Public License
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef Rcpp_api_meat_SlotProxy_h
-#define Rcpp_api_meat_SlotProxy_h
+#ifndef Rcpp__internal__NAEquals__h
+#define Rcpp__internal__NAEquals__h
 
-namespace Rcpp{
+namespace Rcpp {
+  
+namespace internal {
+  
+template <typename T>
+struct NAEquals {
+    inline bool operator()(T left, T right) const {
+        return left == right;
+    }
+};
 
-    template <typename CLASS>
-    template <typename T> 
-    typename SlotProxyPolicy<CLASS>::SlotProxy& SlotProxyPolicy<CLASS>::SlotProxy::operator=( const T& rhs ){
-        set( wrap( rhs ) ) ;
-        return *this ;
+// TODO: check different kinds of NA, NaNs
+template <>
+struct NAEquals<double> {
+    inline bool operator()(double left, double right) const {
+        return memcmp(&left, &right, sizeof(double)) == 0;
     }
-    
-    template <typename CLASS>
-    template <typename T>
-    SlotProxyPolicy<CLASS>::SlotProxy::operator T() const {
-        return as<T>(get()) ;    
-    }
-
-    template <typename CLASS>
-    template <typename T>
-    SlotProxyPolicy<CLASS>::const_SlotProxy::operator T() const {
-        return as<T>(get()) ;    
-    }
+};
 
 }
+
+}
+
 #endif

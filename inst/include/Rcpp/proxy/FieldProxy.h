@@ -34,9 +34,16 @@ public:
             return *this ;
         }
               
-        template <typename T> FieldProxy& operator=(const T& rhs) ;
+        template <typename T> FieldProxy& operator=(const T& rhs) {
+            SEXP tmp = PROTECT( wrap(rhs) );
+            set(tmp);
+            UNPROTECT(1);
+            return *this;
+        }
             
-        template <typename T> operator T() const ;
+        template <typename T> operator T() const {
+          return as<T>( get() );
+        }
         inline operator SEXP() const { 
             return get() ; 
         }
@@ -61,7 +68,9 @@ public:
         const_FieldProxy( const CLASS& v, const std::string& name) :
             parent(v), field_name(name) {}
               
-        template <typename T> operator T() const ;
+        template <typename T> operator T() const {
+          return as<T>( get() );
+        }
         inline operator SEXP() const { 
             return get() ; 
         }

@@ -23,6 +23,18 @@
 #ifndef Rcpp__traits__traits__h
 #define Rcpp__traits__traits__h
 
+namespace Rcpp {    
+namespace traits {
+    
+template <typename T>
+struct identity { typedef T type; };
+
+template <int I>
+struct int2type { enum { value = I }; };
+
+}
+}
+
 #include <Rcpp/traits/integral_constant.h>
 #include <Rcpp/traits/same_type.h>
 #include <Rcpp/traits/is_wide_string.h>
@@ -38,11 +50,11 @@
 #include <Rcpp/traits/storage_type.h>
 #include <Rcpp/traits/r_sexptype_traits.h>
 #include <Rcpp/traits/storage_type.h>
-#include <Rcpp/traits/comparator_type.h>
 #include <Rcpp/traits/r_type_traits.h>
 #include <Rcpp/traits/un_pointer.h>
 #include <Rcpp/traits/is_pointer.h>
 #include <Rcpp/traits/wrap_type_traits.h>
+#include <Rcpp/traits/longlong.h>
 #include <Rcpp/traits/module_wrap_traits.h>
 #include <Rcpp/traits/is_na.h>
 #include <Rcpp/traits/is_finite.h>

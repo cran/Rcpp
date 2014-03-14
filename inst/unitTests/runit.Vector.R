@@ -152,11 +152,6 @@ if (.runThisTest) {
         checkEquals( fun( x ), 1L, msg = "IntegerVector names based indexing" )
     }
 
-    test.IntegerVector.comma <- function(){
-        fun <- integer_comma
-        checkEquals( fun(), 0:3, msg = "IntegerVector comma initialization" )
-    }
-
     test.IntegerVector.push.back <- function(){
         fun <- integer_push_back
         checkEquals( fun(1:4), 1:5, msg = "IntegerVector push back" )
@@ -520,11 +515,6 @@ if (.runThisTest) {
         checkEquals( fun(x), "foo", msg = "CharacterVector names based indexing" )
     }
 
-    test.CharacterVector.comma <- function(){
-        fun <- character_comma
-        checkEquals( fun(), c("foo","bar", "bling" ), msg = "CharacterVector comma operator" )
-    }
-
     test.CharacterVector.listOf <- function() {
         fun <- character_listOf
         checkEquals(fun(list(foo=c("tic","tac","toe"),
@@ -658,5 +648,23 @@ if (.runThisTest) {
         res <- CharacterVector_test_const_proxy( letters )
         checkEquals( res, letters )
     }
+  
+    test.sort <- function() {
+        num <- setNames( c(1, -1, 4, NA, 5, NaN), letters[1:5] )
+        checkIdentical( sort_numeric(num), sort(num, na.last=TRUE) )
+        int <- as.integer(num)
+        checkIdentical( sort_integer(int), sort(int, na.last=TRUE) )
+        char <- setNames( sample(letters, 5), LETTERS[1:5] )
+        checkIdentical( sort_character(char), sort(char, na.last=TRUE) )
+        lgcl <- as.logical(int)
+        checkIdentical( sort_logical(lgcl), sort(lgcl, na.last=TRUE) )
+    }
+    
+    test.List.assign.SEXP <- function() {
+        l <- list(1, 2, 3)
+        other <- list_sexp_assign(l)
+        checkIdentical(l, other)
+    }
+    
 }
 

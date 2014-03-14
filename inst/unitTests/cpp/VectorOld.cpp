@@ -1,9 +1,8 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 8 -*-
-/* :tabSize=4:indentSize=4:noTabs=false:folding=explicit:collapseFolds=1: */
 //
-// comparator_type.h: Rcpp R/C++ interface class library -- comparator
+// Vector-old.cpp: Rcpp R/C++ interface class library -- Vector unit tests
 //
-// Copyright (C) 2012 Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2014    Dirk Eddelbuettel, Romain Francois and Kevin Ushey
 //
 // This file is part of Rcpp.
 //
@@ -20,29 +19,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef Rcpp__traits__comparator_type__h
-#define Rcpp__traits__comparator_type__h
+#define RCPP_COMMA_INITIALIZATION
+#include <Rcpp.h>
+using namespace Rcpp;
 
-namespace Rcpp{
-namespace traits{
-   
-class StringCompare {
-public:
-    inline bool operator()( SEXP x, SEXP y) const {
-        return strcmp( char_nocheck(x), char_nocheck(y) ) < 0 ; 
-    }
-} ;
-	
-template <int RTYPE> struct comparator_type {
-	typedef std::less< typename storage_type<RTYPE>::type > type ;	
-} ;
-template <> struct comparator_type<STRSXP>{
-	typedef StringCompare type ;
-} ;
-   
-
+// [[Rcpp::export]]
+IntegerVector integer_comma(){
+    IntegerVector x(4) ;
+    x = 0, 1, 2, 3 ;
+    return x ;
 }
-}     
 
-#endif
-
+// [[Rcpp::export]]
+CharacterVector character_comma(){
+    CharacterVector x(3) ;
+    x = "foo", "bar", "bling" ;
+    return x ;
+}

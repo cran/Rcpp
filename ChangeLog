@@ -1,3 +1,74 @@
+2014-03-13  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION: Release 0.11.0
+        * inst/NEWS.Rd: Release 0.11.0
+        * inst/include/Rcpp/config.h: Release 0.11.0
+        * debian/*: Similarly updated for new release to Debian
+
+2014-03-09  Kevin Ushey  <kevinushey@gmail.com>
+
+	* inst/include/Rcpp/vector/const_string_proxy.h: Workaround for issue
+	with constructing proxies from CHARSXPs
+
+2014-03-08  Kevin Ushey  <kevinushey@gmail.com>
+
+	* inst/include/Rcpp/proxy/proxy.h: Make sure proxies know about the
+	const char* wrap shortcut
+
+2014-03-08  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/proxy/Binding.h: Remove spurious ';' [g++ -pedantic]
+	* inst/include/Rcpp/proxy/ProtectedProxy.h: Idem
+	* inst/include/Rcpp/proxy/TagProxy.h: Idem
+	* inst/include/Rcpp/proxy/AttributeProxy.h: Idem
+
+2014-03-05  Kevin Ushey <kevinushey@gmail.com>
+
+        * inst/include/Rcpp/proxy/FieldProxy.h: bandaid for protection issue
+        in operator= of FieldProxy
+        * R/unit.tests.R: modify Rcpp:::test so we can run tests with
+        gctorture(TRUE)
+
+2014-03-03  Kevin Ushey <kevinushey@gmail.com>
+
+        * inst/include/Rcpp/proxy/SlotProxy.h: Add missing const_SlotProxy ctor
+        definition
+
+2014-02-24  Kevin Ushey  <kevinushey@gmail.com>
+
+        * R/Rcpp.package.skeleton.R: make sure we add loadModule
+        to NAMESPACE when module is TRUE
+
+2014-02-23  Kevin Ushey  <kevinushey@gmail.com>
+
+        * inst/include/Rcpp/DataFrame.h: better nrows behavior
+
+2014-02-17  Romain Francois  <romain@r-enthusiasts.com>
+
+        * inst/include/Rcpp/traits/un_pointer.h: fix bug in un_pointer for object<T>
+
+2014-02-17  Kevin Ushey <kevinushey@gmail.com>
+
+        * src/attributes.cpp: Fix attributes behavior with
+        ::create, and also add an option for a default constructor
+        (e.g. NumericVector v = NumericVector(10)) gives a default
+        value of 'numeric(10)' at the R level). Also make NAs
+        keep their type when exposed to R.
+
+2014-02-16  JJ Allaire <jj@rstudio.org>
+
+        * src/attributes.cpp Replace (incorrect) call to
+        Rcpp::internal::jumpToTop with Rf_onintr
+
+2014-02-07  Kevin Ushey  <kevinushey@gmail.com>
+
+	* inst/include/Rcpp/Reference.h: Add default ctor
+
+2014-02-03  Kevin Ushey  <kevinushey@gmail.com>
+
+	* inst/include/Rcpp/vector/Vector.h: Enable conversion from
+	Rcpp vectors to RObject
+
 2014-02-02  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION: Release 0.11.0
