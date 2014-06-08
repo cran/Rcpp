@@ -24,9 +24,9 @@
 #include <Rcpp.h>
 #include "internal.h"
 
-typedef Rcpp::XPtr<Rcpp::Module> XP_Module ; 
-typedef Rcpp::XPtr<Rcpp::class_Base> XP_Class ; 
-typedef Rcpp::XPtr<Rcpp::CppFunction> XP_Function ; 
+typedef Rcpp::XPtr<Rcpp::Module> XP_Module ;
+typedef Rcpp::XPtr<Rcpp::class_Base> XP_Class ;
+typedef Rcpp::XPtr<Rcpp::CppFunction> XP_Function ;
 
 RCPP_FUN_1( bool, Class__has_default_constructor, XP_Class cl ){
     return cl->has_default_constructor() ;
@@ -96,10 +96,10 @@ RCPP_FUN_1( Rcpp::CharacterVector, Module__complete, XP_Module module ){
 	return module->complete() ;
 }
 RCPP_FUN_1( Rcpp::CharacterVector, CppClass__complete, XP_Class cl){
-	return cl->complete(); 
+	return cl->complete();
 }
 
-// these operate directly on the external pointers, rather than 
+// these operate directly on the external pointers, rather than
 // looking up the property in the map
 RCPP_FUN_3(SEXP, CppField__get, XP_Class cl, SEXP field_xp, SEXP obj){
 	return cl->getProperty( field_xp, obj ) ;
@@ -128,7 +128,7 @@ BEGIN_RCPP
 	SEXP p = CDR(args) ;
 	XP_Module module( CAR(p) ) ; p = CDR(p) ;
 	std::string fun = Rcpp::as<std::string>( CAR(p) ) ; p = CDR(p) ;
-	
+
 	UNPACK_EXTERNAL_ARGS(cargs,p)
 	return module->invoke( fun, cargs, nargs ) ;
 END_RCPP
@@ -136,7 +136,7 @@ END_RCPP
 
 SEXP class__newInstance(SEXP args){
 	SEXP p = CDR(args) ;
-	
+
 	XP_Module module( CAR(p) ) ; p = CDR(p) ;
 	XP_Class clazz( CAR(p) ) ; p = CDR(p);
 	UNPACK_EXTERNAL_ARGS(cargs,p)
@@ -144,10 +144,10 @@ SEXP class__newInstance(SEXP args){
 }
 
 // relies on being set in .onLoad()
-SEXP rcpp_dummy_pointer = R_NilValue; 
+SEXP rcpp_dummy_pointer = R_NilValue;
 
 #define CHECK_DUMMY_OBJ(p) if(p == rcpp_dummy_pointer) forward_exception_to_r( Rcpp::not_initialized())
-	
+
 
 SEXP class__dummyInstance(SEXP args) {
 	SEXP p;
@@ -163,36 +163,36 @@ SEXP class__dummyInstance(SEXP args) {
 
 SEXP CppMethod__invoke(SEXP args){
 	SEXP p = CDR(args) ;
-	
+
 	// the external pointer to the class
 	XP_Class clazz( CAR(p) ) ; p = CDR(p);
-	
+
 	// the external pointer to the method
 	SEXP met = CAR(p) ; p = CDR(p) ;
-	
+
 	// the external pointer to the object
 	SEXP obj = CAR(p); p = CDR(p) ;
 	CHECK_DUMMY_OBJ(obj);
-	
+
 	// additional arguments, processed the same way as .Call does
 	UNPACK_EXTERNAL_ARGS(cargs,p)
-	
+
    	return clazz->invoke( met, obj, cargs, nargs ) ;
 }
 
 SEXP CppMethod__invoke_void(SEXP args){
 	SEXP p = CDR(args) ;
-	
+
 	// the external pointer to the class
 	XP_Class clazz( CAR(p) ) ; p = CDR(p);
-	
+
 	// the external pointer to the method
 	SEXP met = CAR(p) ; p = CDR(p) ;
-	
+
 	// the external pointer to the object
 	SEXP obj = CAR(p); p = CDR(p) ;
 	CHECK_DUMMY_OBJ(obj);
-	
+
 	// additional arguments, processed the same way as .Call does
 	UNPACK_EXTERNAL_ARGS(cargs,p)
 	clazz->invoke_void( met, obj, cargs, nargs ) ;
@@ -201,20 +201,20 @@ SEXP CppMethod__invoke_void(SEXP args){
 
 SEXP CppMethod__invoke_notvoid(SEXP args){
 	SEXP p = CDR(args) ;
-	
+
 	// the external pointer to the class
 	XP_Class clazz( CAR(p) ) ; p = CDR(p);
-	
+
 	// the external pointer to the method
 	SEXP met = CAR(p) ; p = CDR(p) ;
-	
+
 	// the external pointer to the object
 	SEXP obj = CAR(p); p = CDR(p) ;
 	CHECK_DUMMY_OBJ(obj);
-	
+
 	// additional arguments, processed the same way as .Call does
 	UNPACK_EXTERNAL_ARGS(cargs,p)
-	
+
    	return clazz->invoke_notvoid( met, obj, cargs, nargs ) ;
 }
 
@@ -222,10 +222,10 @@ namespace Rcpp{
 	static Module* current_scope  ;
 }
 
-Rcpp::Module* getCurrentScope(){ 
-    return Rcpp::current_scope ; 
+Rcpp::Module* getCurrentScope(){
+    return Rcpp::current_scope ;
 }
-void setCurrentScope( Rcpp::Module* scope ){ 
-    Rcpp::current_scope = scope ; 
+void setCurrentScope( Rcpp::Module* scope ){
+    Rcpp::current_scope = scope ;
 }
 

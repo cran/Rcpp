@@ -28,7 +28,7 @@ sourceCpp <- function(file = "",
     # resolve code into a file if necessary. also track the working
     # directory to source the R embedded code chunk within
     if (!missing(code)) {
-        rWorkingDir <- getwd() 
+        rWorkingDir <- getwd()
         file <- tempfile(fileext = ".cpp")
         con <- file(file, open = "w")
         writeLines(code, con)
@@ -128,11 +128,11 @@ sourceCpp <- function(file = "",
             # examine status
             status <- attr(result, "status")
             if (!is.null(status)) {
-                cat(result, "\n")
+                cat(result, sep = "\n")
                 succeeded <- FALSE
                 stop("Error ", status, " occurred building shared library.")
             } else if (!file.exists(context$dynlibFilename)) {
-                cat(result, "\n")
+                cat(result, sep = "\n")
                 succeeded <- FALSE
                 stop("Error occurred building shared library.")
             } else {
@@ -270,7 +270,7 @@ cppFunction <- function(code,
         manipulate_this_type <- do.call( cppFunction, dots )
         res <- manipulate_this_type()
         if( ! is.null(class) ){
-            class(res) <- class    
+            class(res) <- class
         }
         res
     }
@@ -281,7 +281,7 @@ sizeof   <- .type_manipulate( "sizeof", "bytes" )
 
 print.bytes <- function( x, ...){
     writeLines( sprintf( "%d bytes (%d bits)", x, 8 * x ) )
-    invisible( x )    
+    invisible( x )
 }
 
 # Evaluate a simple c++ expression
@@ -343,10 +343,11 @@ compileAttributes <- function(pkgdir = ".", verbose = getOption("verbose")) {
         stop("pkgdir must refer to the directory containing an R package")
     pkgDesc <- read.dcf(descFile)[1,]
     pkgname = .readPkgDescField(pkgDesc, "Package")
-    depends <- .readPkgDescField(pkgDesc, "Depends", character())
+    depends <- c(.readPkgDescField(pkgDesc, "Depends", character()),
+                 .readPkgDescField(pkgDesc, "Imports", character()))
     depends <- unique(.splitDepends(depends))
     depends <- depends[depends != "R"]
-
+                 
     # determine source directory
     srcDir <- file.path(pkgdir, "src")
     if (!file.exists(srcDir))
@@ -392,7 +393,22 @@ compileAttributes <- function(pkgdir = ".", verbose = getOption("verbose")) {
 
 # built-in C++11 plugin
 .plugins[["cpp11"]] <- function() {
-    list(env = list(PKG_CXXFLAGS ="-std=c++11"))
+    if (getRversion() >= "3.1")
+        list(env = list(USE_CXX1X = "yes"))
+    else if (.Platform$OS.type == "windows")
+        list(env = list(PKG_CXXFLAGS = "-std=c++0x"))
+    else
+        list(env = list(PKG_CXXFLAGS ="-std=c++11"))
+}
+
+# built-in C++11 plugin for older g++ compiler
+.plugins[["cpp0x"]] <- function() {
+    list(env = list(PKG_CXXFLAGS ="-std=c++0x"))
+}
+
+# built-in C++1y plugin for C++14 and C++17 standard under development
+.plugins[["cpp1y"]] <- function() {
+    list(env = list(PKG_CXXFLAGS ="-std=c++1y"))
 }
 
 ## built-in OpenMP++11 plugin
@@ -508,7 +524,7 @@ sourceCppFunction <- function(func, isVoid, dll, symbol) {
 
 # Lookup a plugin
 .findPlugin <- function(pluginName) {
-    
+
     plugin <- .plugins[[pluginName]]
     if (is.null(plugin))
         stop("Inline plugin '", pluginName, "' could not be found ",
@@ -587,7 +603,7 @@ sourceCppFunction <- function(func, isVoid, dll, symbol) {
     # if there is no buildEnv from a plugin then use the Rcpp plugin
     if (length(buildEnv) == 0) {
         buildEnv <- inlineCxxPlugin()$env
-    } 
+    }
 
     # set CLINK_CPPFLAGS based on the LinkingTo dependencies
     buildEnv$CLINK_CPPFLAGS <- .buildClinkCppFlags(linkingToPackages)
@@ -913,4 +929,3 @@ sourceCppFunction <- function(func, isVoid, dll, symbol) {
     }
     .hasDevelTools
 }
-
