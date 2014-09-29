@@ -1,3 +1,230 @@
+2014-09-27  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION: Release 0.11.3
+        * inst/NEWS.Rd: Release 0.11.3
+        * inst/include/Rcpp/config.h: Release 0.11.3
+
+        * ChangeLog: Added a few more entries based on commit log
+        * inst/NEWS.Rd: Idem
+
+2014-09-26  JJ Allaire <jj@rstudio.org>
+
+        * DESCRIPTION: Bump version to enable checking for dryRun.
+
+2014-09-23  JJ Allaire <jj@rstudio.org>
+
+        * R/Attributes.R: Add dryRun parameter to sourceCpp.
+
+2014-09-21  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION: Shorten Description: to single paragraph
+
+2014-09-21  Kevin Ushey  <kevinushey@gmail.com>
+
+        * inst/unitTests/runit.environments.R: Use 'checkIdentical' as it's a
+        more appropriate expression of intent
+
+2014-09-15  Dirk Eddelbuettel  <edd@debian.org>
+
+        * R/Rcpp.package.skeleton.R: Use more neutral default name, email settings
+        * man/Rcpp.package.skeleton.Rd: Document these
+
+2014-09-14  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/unitTests/testRcppClass/man/Rcpp_class_examples.Rd: Similar
+        update to yesterday's update for testRcppModule
+
+2014-09-13  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/skeleton/Rcpp_modules_examples.Rd: Added to document modules examples
+
+        * inst/unitTests/testRcppModule/NAMESPACE: Updated for current Modules use
+        * inst/unitTests/testRcppModule/R/zzz.R: Updated for current Modules use
+        * inst/unitTests/testRcppModule/man/Rcpp_modules_examples.Rd: Also added here
+
+2014-09-10  Dirk Eddelbuettel  <edd@debian.org>
+
+        * R/R/Rcpp.package.skeleton.R: If available, pkgKitten used for skeleton pkg
+
+2014-09-09  Dirk Eddelbuettel  <edd@debian.org>
+
+        * R/unit.tests.R: Fully qualify three functions from RUnit via ::
+
+2014-09-03  Kevin Ushey  <kevinushey@gmail.com>
+
+        * inst/include/Rcpp/Environment.h: make new_env a free function
+
+2014-09-02  Kevin Ushey  <kevinushey@gmail.com>
+
+        * inst/include/Rcpp/api/meat/proxy.h: Finish meat reintroduction + tests
+        * inst/unitTests/runit.wrap.R: Idem
+        * inst/unitTests/cpp/wrap.cpp: Idem
+        * inst/include/Rcpp/proxy/FieldProxy.h: Idem
+
+2014-09-02  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/include/Rcpp/vector/Vector.h: Reversing change from Aug 30: the
+        Vector ctor from char* and string are used for CharacterVector()
+
+2014-09-02  JJ Allaire <jj@rstudio.org>
+
+        * R/Attributes.R: Include LinkingTo in DESCRIPTION fields scanned
+        to confirm that C++ dependencies are referenced by package.
+
+2014-09-01  Yixuan Qiu <yixuan.qiu@cos.name>
+
+        * inst/include/Rcpp/vector/Vector.h: fix return value of range eraser
+
+2014-09-01  Kevin Ushey  <kevinushey@gmail.com>
+
+        * inst/include/Rcpp/vector/ListOf.h: `size()` member function should
+        return `R_len_t` rather than `int`
+
+2014-08-30  Kevin Ushey  <kevinushey@gmail.com>
+
+        * inst/include/Rcpp/Environment.h: Add 'new_env' function
+
+2014-08-30  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/include/Rcpp/vector/Vector.h: Mark two 'from string' ctors as
+        deprecated following a suggestion by Yixuan Qiu [reversed on 2014-09-02]
+
+2014-08-18  Dirk Eddelbuettel  <edd@debian.org>
+
+        * vignettes/Rcpp-FAQ.Rnw: Added a new entry regarding licensing of
+        packages stressing that any combined work linking to the GPL-ed R will
+        also be under the terms of the GNU General Public License.
+
+2014-08-13  Kevin Ushey  <kevinushey@gmail.com>
+
+        * inst/include/Rcpp/api/meat/meat.h: Reintroduce meat
+        * inst/include/Rcpp/api/meat/proxy.h: Idem
+        * inst/include/Rcpp/proxy/AttributeProxy.h: Idem
+        * inst/include/Rcpp/proxy/Binding.h: Idem
+        * inst/include/Rcpp/proxy/NamesProxy.h: Idem
+        * inst/include/Rcpp/proxy/SlotProxy.h: Idem
+        * inst/include/Rcpp/proxy/TagProxy.h: Idem
+        * inst/include/Rcpp/proxy/proxy.h: Idem
+
+2014-08-08  Christian Authmann <authmanc@Mathematik.Uni-Marburg.de>
+
+        * inst/unitTests/cpp/InternalFunction.cpp: New unit test support
+        * inst/unitTests/cpp/InternalFunctionCPP11.cpp: Idem
+        * inst/unitTests/runit.InternalFunction.R: Idem
+        * inst/unitTests/runit.InternalFunctionCPP11.R: Idem
+
+2014-08-06  Christian Authmann <authmanc@Mathematik.Uni-Marburg.de>
+
+        * inst/include/Rcpp/InternalFunctionWithStdFunction.h: Extend the
+        existing Rcpp::InternalFunction interface to work with std::function,
+        conditional on a sufficient C++11 support by the compiler
+
+2014-08-05  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/include/Rcpp/Date.h: Remove a const qualifier which triggers a
+        warnings as 'type qualifiers ignored on function return type'
+
+2014-08-03  Dirk Eddelbuettel  <edd@debian.org>
+
+        * vignettes/Rcpp-FAQ.Rnw: Updated with respect to OS X installations
+        requiring Fortran (to e.g. build against RcppArmadillo)
+
+2014-07-29  Kevin Ushey  <kevinushey@gmail.com>
+
+        * inst/include/Rcpp/vector/no_init.h: Add no_init for matrices
+        * inst/include/Rcpp/vector/Matrix.h: Idem
+        * inst/include/Rcpp/vector/Vector.h: Idem
+        * inst/unitTests/runit.Matrix.R: Idem
+        * inst/unitTests/cpp/Matrix.cpp: Idem
+
+2014-07-29  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/include/Rcpp/vector/proxy.h: Removed operator bool() cast as
+        discussed by Christian Authmann on rcpp-devel
+
+2014-07-28  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/include/Rcpp/generated/InternalFunction__ctors.h: Updated from
+        corrected creator script
+
+2014-07-25  Romain Francois  <romain@r-enthusiasts.com>
+
+        * inst/include/Rcpp/Benchmark/Timer.h: Added new static method
+        get_timers() to return a vector of timers useful for multithreaded
+        contexts; also removed two unused old member functions (cf #157)
+
+2014-07-14  Kevin Ushey  <kevinushey@gmail.com>
+
+        * inst/unitTests/runit.Matrix.R: DimNames Proxy
+        * inst/unitTests/cpp/Matrix.cpp: Idem
+        * inst/include/Rcpp/vector/Matrix.h: Idem
+        * inst/include/Rcpp/vector/DimNameProxy.h: Idem
+
+2014-07-12  Kevin Ushey  <kevinushey@gmail.com>
+
+        * R/Attributes.R: Strip version in .parseLinkingTo
+
+2014-07-12  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/include/Rcpp/generated/InternalFunction__ctors.h: Regenerated
+        with tighter whitespace and updated header information from updated
+        generator script in corresponding rcpp-scripts repo
+        * inst/include/Rcpp/module/Module_generated_CppFunction.h: Idem
+        * inst/include/Rcpp/module/Module_generated_CppMethod.h: Idem
+        * inst/include/Rcpp/module/Module_generated_Pointer_CppMethod.h: Idem
+        * inst/include/Rcpp/module/Module_generated_Pointer_method.h: Idem
+        * inst/include/Rcpp/module/Module_generated_function.h: Idem
+        * inst/include/Rcpp/module/Module_generated_get_signature.h: Idem
+        * inst/include/Rcpp/module/Module_generated_method.h: Idem
+
+2014-07-09  Kevin Ushey  <kevinushey@gmail.com>
+
+        * inst/include/Rcpp/Language.h: OUT -> RESULT_TYPE
+        * inst/include/Rcpp/generated/InternalFunction__ctors.h: Idem
+        * inst/include/Rcpp/module/Module_generated_CppFunction.h: Idem
+        * inst/include/Rcpp/module/Module_generated_CppMethod.h: Idem
+        * inst/include/Rcpp/module/Module_generated_Pointer_CppMethod.h: Idem
+        * inst/include/Rcpp/module/Module_generated_Pointer_method.h: Idem
+        * inst/include/Rcpp/module/Module_generated_function.h: Idem
+        * inst/include/Rcpp/module/Module_generated_get_signature.h: Idem
+        * inst/include/Rcpp/module/Module_generated_method.h: Idem
+        * inst/include/Rcpp/module/get_return_type.h: Idem
+        * inst/include/Rcpp/sugar/block/SugarBlock_1.h: Idem
+        * inst/include/Rcpp/sugar/block/SugarBlock_2.h: Idem
+        * inst/include/Rcpp/sugar/block/SugarBlock_3.h: Idem
+        * inst/include/Rcpp/sugar/block/SugarMath.h: Idem
+        * inst/include/Rcpp/sugar/functions/complex.h: Idem
+
+2014-07-08  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/include/Rcpp/InternalFunction.h: Add missing update(SEXP) method
+        per GitHub Pull Request #152, with thanks to Omar Andres Zapata Mesa
+        * inst/THANKS: Updated
+
+2014-07-04  Dirk Eddelbuettel  <edd@debian.org>
+
+        * vignettes/Rcpp-unitTests.Rnw: Commented-out copy of results to /tmp
+
+2014-06-29  JJ Allaire <jj@rstudio.org>
+
+        * R/Attributes.R: fix setwd problem when sourceCpp used a
+        relative path and included an R code chunk
+
+2014-06-20  Dirk Eddelbuettel  <edd@debian.org>
+
+        * include/Rcpp/sugar/functions/ifelse.h: Applied pull request #150 by
+        Romain to have operator{} return the correct NA type
+
+2014-06-11  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/include/Rcpp/macros/macros.h: No longer include
+        macros/preprocessor_generated.h which was deprecated as of Rcpp 0.10.5
+        * inst/include/Rcpp/macros/preprocessor_generated.h: Removed
+
+2014-06-08  Dirk Eddelbuettel  <edd@debian.org>
+
+        * cleanup: Do not remove 'build/Rcpp.pdf', thanks to hint by Kurt / CRAN
+
 2014-06-06  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION: Release 0.11.2

@@ -23,7 +23,8 @@ sourceCpp <- function(file = "",
                       embeddedR = TRUE,
                       rebuild = FALSE,
                       showOutput = verbose,
-                      verbose = getOption("verbose")) {
+                      verbose = getOption("verbose"),
+                      dryRun = FALSE) {
 
     # resolve code into a file if necessary. also track the working
     # directory to source the R embedded code chunk within
@@ -34,7 +35,7 @@ sourceCpp <- function(file = "",
         writeLines(code, con)
         close(con)
     } else {
-        rWorkingDir <- dirname(file)
+        rWorkingDir <- normalizePath(dirname(file))
     }
 
     # resolve the file path
@@ -112,6 +113,7 @@ sourceCpp <- function(file = "",
                      "CMD SHLIB ",
                      "-o ", shQuote(context$dynlibFilename), " ",
                      ifelse(rebuild, "--preclean ", ""),
+                     ifelse(dryRun, "--dry-run ", ""),
                      shQuote(context$cppSourceFilename), sep="")
         if (showOutput)
             cat(cmd, "\n")
@@ -151,6 +153,10 @@ sourceCpp <- function(file = "",
             cat("\nNo rebuild required (use rebuild = TRUE to ",
                 "force a rebuild)\n\n", sep="")
     }
+
+    # return immediately if this was a dry run
+    if (dryRun)
+        return(invisible(NULL))
 
     # load the module if we have exported symbols
     if (length(context$exportedFunctions) > 0 || length(context$modules) > 0) {
@@ -344,7 +350,8 @@ compileAttributes <- function(pkgdir = ".", verbose = getOption("verbose")) {
     pkgDesc <- read.dcf(descFile)[1,]
     pkgname = .readPkgDescField(pkgDesc, "Package")
     depends <- c(.readPkgDescField(pkgDesc, "Depends", character()),
-                 .readPkgDescField(pkgDesc, "Imports", character()))
+                 .readPkgDescField(pkgDesc, "Imports", character()),
+                 .readPkgDescField(pkgDesc, "LinkingTo", character()))
     depends <- unique(.splitDepends(depends))
     depends <- depends[depends != "R"]
                  
@@ -865,7 +872,8 @@ sourceCppFunction <- function(func, isVoid, dll, symbol) {
         return (character())
 
     linkingTo <- strsplit(linkingTo, "\\s*\\,")[[1]]
-    gsub("\\s", "", linkingTo)
+    result <- gsub("\\s", "", linkingTo)
+    gsub("\\(.*", "", result)
 }
 
 # show diagnostics for failed builds
