@@ -2,13 +2,64 @@
 \title{News for Package 'Rcpp'}
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+\section{Changes in Rcpp version 0.11.4 (2015-01-20)}{
+  \itemize{
+    \item Changes in Rcpp API:
+    \itemize{
+      \item The \code{ListOf<T>} class gains the \code{.attr} and
+      \code{.names} methods common to other Rcpp vectors.
+      \item The \code{[dpq]nbinom_mu()} scalar functions are now available via 
+      the \code{R::} namespace when R 3.1.2 or newer is used.
+      \item Add an additional test for AIX before attempting to include \code{execinfo.h}.
+      \item \code{Rcpp::stop} now supports improved \code{printf}-like syntax
+      using the small tinyformat header-only library (following a similar
+      implementation in Rcpp11)
+      \item Pairlist objects are now protected via an additional \code{Shield<>}
+      as suggested by Martin Morgan on the rcpp-devel list.
+      \item Sorting is now prohibited at compile time for objects of type
+      \code{List}, \code{RawVector} and \code{ExpressionVector}.
+      \item Vectors now have a \code{Vector::const\_iterator} that is 'const correct'
+      thanks to fix by Romain following bug report in rcpp-devel by Martyn Plummer.
+      \item The \code{mean()} sugar function now uses a more robust two-pass
+      method, and new unit tests for \code{mean()} were added at the same time.
+      \item The \code{mean()} and \code{var()} functions now support all core
+      vector types.
+      \item The \code{setequal()} sugar function has been corrected via
+      suggestion by Qiang Kou following a bug report by Søren Højsgaard.
+      \item The macros \code{major}, \code{minor}, and \code{makedev} no longer leak
+      in from the (Linux) system header \code{sys/sysmacros.h}.
+      \item The \code{push_front()} string function was corrected..
+    }
+    \item Changes in Rcpp Attributes:
+    \itemize{
+      \item Only look for plugins in the package's namespace
+      (rather than entire search path).
+      \item Also scan header files for definitions of functions to be considerd
+      by Attributes.
+      \item Correct the regular expression for source files which are scanned.
+    }
+    \item Changes in Rcpp unit tests
+    \itemize{
+      \item Added a new binary test which will load a pre-built package to
+      ensure that the Application Binary Interface (ABI) did not change; this
+      test will (mostly or) only run at Travis where we have reasonable control
+      over the platform running the test and can provide a binary.
+      \item New unit tests for sugar functions \code{mean}, \code{setequal} and
+      \code{var} were added as noted above. 
+    }
+    \item Changes in Rcpp Examples:
+    \itemize{
+      \item For the (old) examples \code{ConvolveBenchmarks} and \code{OpenMP},
+      the respective \code{Makefile} was renamed to \code{GNUmakefile} to please
+      \code{R CMD check} as well as the CRAN Maintainers.
+    }
+  }
+}
+
 \section{Changes in Rcpp version 0.11.3 (2014-09-27)}{
   \itemize{
     \item Changes in Rcpp API:
     \itemize{
-      \item New \code{Rcpp::InternalFunction} interface using
-        \code{std::function}; only enabled on compilers that claim full c++11
-        support.
       \item The deprecation of \code{RCPP_FUNCTION_*} which was announced with
         release 0.10.5 last year is proceeding as planned, and the file
         \code{macros/preprocessor_generated.h} has been removed.

@@ -89,13 +89,13 @@ public:
         fill( u ) ;
     }
 
-    // constructor for CharacterVector() 
+    // constructor for CharacterVector()
     Vector( const std::string& st ){
         RCPP_DEBUG_2( "Vector<%d>( const std::string& = %s )", RTYPE, st.c_str() )
         Storage::set__( internal::vector_from_string<RTYPE>(st) ) ;
     }
 
-    // constructor for CharacterVector() 
+    // constructor for CharacterVector()
     Vector( const char* st ) {
         RCPP_DEBUG_2( "Vector<%d>( const char* = %s )", RTYPE, st )
         Storage::set__(internal::vector_from_string<RTYPE>(st) ) ;
@@ -117,6 +117,16 @@ public:
         if( dims.size() > 1 ){
             AttributeProxyPolicy<Vector>::attr( "dim" ) = dims;
         }
+    }
+
+    // Enable construction from bool for LogicalVectors
+    // SFINAE only work for template. Add template class T and then restict T to
+    // bool.
+    template <typename T>
+    Vector(T value,
+           typename Rcpp::traits::enable_if<traits::is_bool<T>::value && RTYPE == LGLSXP, void>::type* = 0) {
+        Storage::set__(Rf_allocVector(RTYPE, 1));
+        fill(value);
     }
 
     template <typename U>
@@ -339,6 +349,13 @@ public:
     }
 
     Vector& sort(){
+        // sort() does not apply to List, RawVector or ExpressionVector.
+        //
+        // The function below does nothing for qualified Vector types,
+        // and is undefined for other types. Hence there will be a
+        // compiler error when sorting List, RawVector or ExpressionVector.
+        internal::Sort_is_not_allowed_for_this_type<RTYPE>::do_nothing();
+        
         typename traits::storage_type<RTYPE>::type* start = internal::r_vector_start<RTYPE>( Storage::get__() ) ;
         std::sort(
             start,

@@ -366,7 +366,7 @@ compileAttributes <- function(pkgdir = ".", verbose = getOption("verbose")) {
         dir.create(rDir)
 
     # get a list of all source files
-    cppFiles <- list.files(srcDir, pattern="\\.c(c|pp)$")
+    cppFiles <- list.files(srcDir, pattern = "\\.((c(c|pp))|(h(pp)?))$")
 
     # derive base names (will be used for modules)
     cppFileBasenames <- tools::file_path_sans_ext(cppFiles)
@@ -525,7 +525,7 @@ sourceCppFunction <- function(func, isVoid, dll, symbol) {
 
 # Get the inline plugin for the specified package (return NULL if none found)
 .getInlinePlugin <- function(package) {
-    tryCatch(get("inlineCxxPlugin", asNamespace(package)),
+    tryCatch(get("inlineCxxPlugin", asNamespace(package), inherits = FALSE),
              error = function(e) NULL)
 }
 
