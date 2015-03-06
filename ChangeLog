@@ -1,10 +1,146 @@
+2015-03-04  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION: Release 0.11.5
+        * inst/NEWS.Rd: Release 0.11.5
+        * inst/include/Rcpp/config.h: Release 0.11.5
+
+        * debian/*: Changes for Debian release of 0.11.5
+        
+2015-03-03  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/include/Rcpp/routines.h: Additional application of the
+        'attribute_hidden' macro for a number of routines in Rcpp::internal
+
+2015-03-02  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/include/Rcpp/print.h (Rcpp): New inline function Rcpp::print()
+        * inst/include/RcppCommon.h: Include new header
+
+        * src/api.cpp: Commented-out print() in global namespace
+        * src/Rcpp_init.cpp: Commented-out registration of print()
+        * inst/include/Rcpp/routines.h: Commented-out initialization
+
+2015-03-01  Dirk Eddelbuettel  <edd@debian.org>
+
+        * src/api.cpp: New function print() as a wrapper around Rf_PrintValue()
+        * src/Rcpp_init.cpp: Corresponding registration for print()
+        * inst/include/Rcpp/routines.h: Corresponding initialization
+
+2015-02-25  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/include/Rcpp/routines.h: Use the 'attribute_hidden' define from
+        the R header R_ext/Visibility.h to protect symbols (cf #264)
+
+        * inst/include/RcppCommon.h: Also include R_ext/Visibility.h
+
+2015-02-24  JJ Allaire  <jj@rstudio.org>
+
+        * src/attributes.cpp: Guard against includes referencing themselves
+        (and thus creating an endless loop of include processing); Process
+        attributes in included files; Automatically build implementation files
+        (*.cc; *.cpp) corresponding to local header files if they exist.
+
+2015-02-20  Lionel Henry  <lionel.hry@gmail.com>
+
+        * inst/include/Rcpp/Function.h New Function constructors that will
+        perform function-lookup in an environment or in a namespace.
+
+2015-02-19  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION: Bump Version: and Date:
+
+2015-02-19  Lionel Henry  <lionel.hry@gmail.com>
+
+        * inst/include/Rcpp/Environment.h Allow new_env() to create an
+        environment with a specified parent
+
+2015-02-19  JJ Allaire  <jj@rstudio.org>
+
+        * vignettes/Rcpp-attributes.Rnw: Add note on using inline
+        keyword from shared header files.
+
+2015-02-17  JJ Allaire  <jj@rstudio.org>
+
+        * vignettes/Rcpp-attributes.Rnw: Update attributes vignette
+        with docs on new features.
+
+2015-02-14  JJ Allaire  <jj@rstudio.org>
+
+        * src/attributes.cpp: Allow includes of local files
+        (e.g. #include "foo.hpp") in sourceCpp
+        * Rcpp.Rproj: Specify Sweave as Rnw handler for RStudio
+        * vignettes/*.Rnw: Add driver magic comment and turn off
+        Sweave concordance.
+        * vignettes/.gitignore: Ignore artifacts of PDF preview
+
+2015-02-13  Dirk Eddelbuettel  <edd@debian.org>
+
+        * .travis.yml (install): Switch to using ppa:edd/misc to install all the
+        R packages needed for the Travis CI run as r-cran-* binary packages
+
+2015-02-13  JJ Allaire  <jj@rstudio.org>
+
+        * src/attributes.cpp: Allow 'R' to come immediately after '***'
+        for defining embedded R code chunks in sourceCpp
+
+2015-02-12  JJ Allaire  <jj@rstudio.org>
+
+        * DESCRIPTION: bump version
+        * src/attributes.cpp: Add rng parameter to Rcpp::export to
+        prevent inclusion of RNGScope in generated code; recognize
+        Rtools 3.2
+
+2015-02-06  Kevin Ushey  <kevinushey@gmail.com>
+
+        * inst/include/Rcpp/vector/Subsetter.h: compare CHARSXP pointers
+        rather than string contents in subsetter
+
+2015-02-03  JJ Allaire  <jj@rstudio.org>
+
+        * src/attributes.cpp: Simplify generated attributes code for
+        RNGScope (use RObject and it's destructor rather than SEXP
+        protect/unprotect).
+        * vignettes/Rcpp-package.Rnw: Update docs on generated code.
+
+2015-02-03  JJ Allaire  <jj@rstudio.org>
+
+        * inst/include/Rcpp/exceptions.h: Add Rcpp::warning function as
+        wrapper for Rf_warning
+
+2014-02-03  JJ Allaire  <jj@rstudio.org>
+
+        * inst/include/Rcpp/XPtr.h: Improvements to XPtr including new
+        checked_get and release functions and improved behavior (throw
+        an exception rather than crash) when a NULL external pointer is
+        dereferenced.
+        * inst/unitTests/runit.XPTr.R: tests for XPtr improvements.
+        * inst/unitTests/cpp/XPtr.cpp: tests for XPtr improvements.
+
+2014-02-03  JJ Allaire  <jj@rstudio.org>
+
+        * R/Attributes.R: Include pkg_types.h file in RcppExports.cpp
+        if it's present in inst/include or src
+        * src/attributes.cpp: Include pkg_types.h file in generated
+        C++ interface file if it's present in inst/include or src
+
+2015-02-02  JJ Allaire  <jj@rstudio.org>
+
+        * R/exceptions.R: Evaluate R code within an R_toplevelExec block
+        * include/Rcpp/api/meat/Rcpp_eval.h: Evaluate R code within an
+        R_toplevelExec block
+
+2015-01-25  Kevin Ushey  <kevinushey@gmail.com>
+
+        * inst/include/Rcpp/utils/tinyformat.h: define an error handler for
+        tinyformat (using ::Rcpp::stop) to not spill assert
+
 2015-01-20  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION: Release 0.11.4
         * inst/NEWS.Rd: Release 0.11.4
         * inst/include/Rcpp/config.h: Release 0.11.4
 
-        * debian/*: Changes for Debian release of 0.11.3
+        * debian/*: Changes for Debian release of 0.11.4
 
 2015-01-19  Kevin Ushey  <kevinushey@gmail.com>
 

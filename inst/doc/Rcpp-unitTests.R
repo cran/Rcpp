@@ -1,7 +1,7 @@
 ### R code from vignette source 'Rcpp-unitTests.Rnw'
 
 ###################################################
-### code chunk number 1: Rcpp-unitTests.Rnw:13-17
+### code chunk number 1: Rcpp-unitTests.Rnw:14-18
 ###################################################
 require(Rcpp)
 prettyVersion <- packageDescription("Rcpp")$Version

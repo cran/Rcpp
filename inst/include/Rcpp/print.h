@@ -1,8 +1,6 @@
-// -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 4 -*-
+// -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; indent-tabs-mode: nil; -*-
 //
-// config.h: Rcpp R/C++ interface class library -- Rcpp configuration
-//
-// Copyright (C) 2010 - 2015  Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2015  Dirk Eddelbuettel
 //
 // This file is part of Rcpp.
 //
@@ -19,18 +17,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef RCPP__CONFIG_H
-#define RCPP__CONFIG_H
+#ifndef RCPP_PRINT_H
+#define RCPP_PRINT_H
 
-#define Rcpp_Version(v,p,s) (((v) * 65536) + ((p) * 256) + (s))
+namespace Rcpp {
 
-#define RcppDevVersion(maj, min, rev, dev)  (((maj)*1e6) + ((min)*1e4) + ((rev)*1e2) + (dev))
+inline void print(SEXP s) {
+    Rf_PrintValue(s);           // defined in Rinternals.h
+}
 
-// the currently released version
-#define RCPP_VERSION Rcpp_Version(0,11,5)
-
-// the current source snapshot
-#define RCPP_DEV_VERSION RcppDevVersion(0,11,5,0)
+}
 
 #endif
 

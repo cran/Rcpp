@@ -53,6 +53,33 @@ namespace attributes {
         std::string path() const { return path_; }
         bool exists() const { return exists_; }
         time_t lastModified() const { return lastModified_; }
+        
+        std::string extension() const {
+            std::string::size_type pos = path_.find_last_of('.');
+            if (pos != std::string::npos)
+                return path_.substr(pos);
+            else
+                return "";
+        }
+        
+        bool operator<(const FileInfo& other) const {
+            return path_ < other.path_;
+        };
+        
+        bool operator==(const FileInfo& other) const {
+            return path_ == other.path_ &&
+                   exists_ == other.exists_ &&
+                   lastModified_ == other.lastModified_;
+        };
+        
+        bool operator!=(const FileInfo& other) const {
+            return ! (*this == other);
+        };
+        
+        std::ostream& operator<<(std::ostream& os) const {
+            os << path_;
+            return os;
+        }
 
     private:
         std::string path_;
@@ -103,11 +130,17 @@ namespace attributes {
 
     // Known attribute names & parameters
     const char * const kExportAttribute = "export";
+    const char * const kExportName = "name";
+    const char * const kExportRng = "rng";
     const char * const kDependsAttribute = "depends";
     const char * const kPluginsAttribute = "plugins";
     const char * const kInterfacesAttribute = "interfaces";
     const char * const kInterfaceR = "r";
     const char * const kInterfaceCpp = "cpp";
+    const char * const kParamValueFalse = "false";
+    const char * const kParamValueTrue = "true";
+    const char * const kParamValueFALSE = "FALSE";
+    const char * const kParamValueTRUE = "TRUE";
 
     // Type info
     class Type {
@@ -118,7 +151,17 @@ namespace attributes {
         {
         }
         bool empty() const { return name().empty(); }
-
+        
+        bool operator==(const Type& other) const {
+            return name_ == other.name_ &&
+                   isConst_ == other.isConst_ &&
+                   isReference_ == other.isReference_;
+        };
+        
+        bool operator!=(const Type& other) const {
+            return !(*this == other);
+        };
+        
         const std::string& name() const { return name_; }
         std::string full_name() const {
             std::string res ;
@@ -150,6 +193,17 @@ namespace attributes {
         }
 
         bool empty() const { return type().empty(); }
+        
+        bool operator==(const Argument& other) const {
+            return name_ == other.name_ &&
+                   type_ == other.type_ &&
+                   defaultValue_ == other.defaultValue_;
+        };
+        
+        bool operator!=(const Argument& other) const {
+            return !(*this == other);
+        };
+        
 
         const std::string& name() const { return name_; }
         const Type& type() const { return type_; }
@@ -167,14 +221,13 @@ namespace attributes {
         Function() {}
         Function(const Type& type,
                  const std::string& name,
-                 const std::vector<Argument>& arguments,
-                 const std::string& source)
-            : type_(type), name_(name), arguments_(arguments), source_(source)
+                 const std::vector<Argument>& arguments)
+            : type_(type), name_(name), arguments_(arguments)
         {
         }
 
         Function renamedTo(const std::string& name) const {
-            return Function(type(), name, arguments(), source());
+            return Function(type(), name, arguments());
         }
 
         std::string signature() const { return signature(name()); }
@@ -185,17 +238,25 @@ namespace attributes {
         }
 
         bool empty() const { return name().empty(); }
+        
+        bool operator==(const Function& other) const {
+            return type_ == other.type_ &&
+                   name_ == other.name_ &&
+                   arguments_ == other.arguments_;
+        };
+        
+        bool operator!=(const Function& other) const {
+            return !(*this == other);
+        };
 
         const Type& type() const { return type_; }
         const std::string& name() const { return name_; }
         const std::vector<Argument>& arguments() const { return arguments_; }
-        const std::string& source() const { return source_; }
-
+      
     private:
         Type type_;
         std::string name_;
         std::vector<Argument> arguments_;
-        std::string source_;
     };
 
     // Attribute parameter (with optional value)
@@ -204,6 +265,16 @@ namespace attributes {
         Param() {}
         explicit Param(const std::string& paramText);
         bool empty() const { return name().empty(); }
+        
+        bool operator==(const Param& other) const {
+            return name_ == other.name_ &&
+                   value_ == other.value_;
+        };
+        
+        bool operator!=(const Param& other) const {
+            return !(*this == other);
+        };
+        
 
         const std::string& name() const { return name_; }
         const std::string& value() const { return value_; }
@@ -226,6 +297,18 @@ namespace attributes {
         }
 
         bool empty() const { return name().empty(); }
+        
+        bool operator==(const Attribute& other) const {
+            return name_ == other.name_ &&
+                   params_ == other.params_ &&
+                   function_ == other.function_ &&
+                   roxygen_ == other.roxygen_;
+        };
+        
+        bool operator!=(const Attribute& other) const {
+            return !(*this == other);
+        };
+        
 
         const std::string& name() const { return name_; }
 
@@ -244,10 +327,30 @@ namespace attributes {
         }
 
         std::string exportedName() const {
-            if (!params().empty())
+
+            // check for explicit name parameter
+            if (hasParameter(kExportName))
+            {
+                return paramNamed(kExportName).value();
+            }
+            // otherwise un-named parameter in the first slot
+            else if (!params().empty() && params()[0].value().empty())
+            {
                 return params()[0].name();
-            else
+            }
+            // otherwise the actual function name
+            {
                 return function().name();
+            }
+        }
+
+        bool rng() const {
+            Param rngParam = paramNamed(kExportRng);
+            if (!rngParam.empty())
+                return rngParam.value() == kParamValueTrue ||
+                       rngParam.value() == kParamValueTRUE;
+            else
+                return true;
         }
 
         const std::vector<std::string>& roxygen() const { return roxygen_; }
@@ -258,18 +361,6 @@ namespace attributes {
         Function function_;
         std::vector<std::string> roxygen_;
     };
-
-    class FunctionMap {
-        std::map< std::string, std::vector<Function> > map_ ;
-
-    public:
-        FunctionMap(){};
-        ~FunctionMap(){} ;
-
-        void insert( const Function& fun ){
-            map_[ fun.name() ].push_back( fun ) ;
-        }
-    } ;
 
     // Operator << for parsed types
     std::ostream& operator<<(std::ostream& os, const Type& type);
@@ -329,7 +420,8 @@ namespace attributes {
     // Class used to parse and return attribute information from a source file
     class SourceFileAttributesParser : public SourceFileAttributes {
     public:
-        explicit SourceFileAttributesParser(const std::string& sourceFile);
+        explicit SourceFileAttributesParser(const std::string& sourceFile,
+                                            bool parseDependencies);
 
     private:
         // prohibit copying
@@ -379,6 +471,11 @@ namespace attributes {
         const std::vector<std::string>& embeddedR() const {
             return embeddedR_;
         }
+        
+        // Get source dependencies
+        const std::vector<FileInfo>& sourceDependencies() const {
+            return sourceDependencies_;
+        };
 
     private:
 
@@ -408,9 +505,9 @@ namespace attributes {
         std::string sourceFile_;
         CharacterVector lines_;
         std::vector<Attribute> attributes_;
-        FunctionMap functionMap_ ;
         std::vector<std::string> modules_;
         std::vector<std::string> embeddedR_;
+        std::vector<FileInfo> sourceDependencies_;
         std::vector<std::vector<std::string> > roxygenChunks_;
         std::vector<std::string> roxygenBuffer_;
     };
@@ -664,6 +761,143 @@ namespace attributes {
             return matches;
         }
 
+        template <typename Stream>
+        void readFile(const std::string& file, Stream& os) {
+            std::ifstream ifs(file.c_str());
+            if (ifs.fail())
+                throw Rcpp::file_io_error(file);
+            os << ifs.rdbuf();
+            ifs.close();
+        }
+
+        template <typename Collection>
+        void readLines(std::istream& is, Collection* pLines) {
+            pLines->clear();
+            std::string line;
+            while(std::getline(is, line)) {
+                // strip \r (for the case of windows line terminators on posix)
+                if (line.length() > 0 && *line.rbegin() == '\r')
+                    line.erase(line.length()-1, 1);
+                stripTrailingLineComments(&line);
+                pLines->push_back(line);
+            }
+        }
+        
+        bool addUniqueDependency(Rcpp::CharacterVector include, 
+                                 std::vector<FileInfo>* pDependencies) {
+            
+            // return false if we already have this include
+            std::string path = Rcpp::as<std::string>(include);
+            for (size_t i = 0; i<pDependencies->size(); ++i) {
+                if (pDependencies->at(i).path() == path)
+                    return false;
+            }
+            
+            // add it and return true
+            pDependencies->push_back(FileInfo(path));
+            return true;
+        }
+        
+        void parseSourceDependencies(const std::string& sourceFile,
+                                     std::vector<FileInfo>* pDependencies) {
+            
+            // import R functions
+            Rcpp::Environment baseEnv = Rcpp::Environment::base_env();
+            Rcpp::Function dirname = baseEnv["dirname"];
+            Rcpp::Function filepath = baseEnv["file.path"];
+            Rcpp::Function normalizePath = baseEnv["normalizePath"];
+            Rcpp::Function fileExists = baseEnv["file.exists"];
+            Rcpp::Environment toolsEnv = Rcpp::Environment::namespace_env(
+                                                                    "tools");
+            Rcpp::Function filePathSansExt = toolsEnv["file_path_sans_ext"];
+            
+            // get the path to the source file's directory
+            Rcpp::CharacterVector sourceDir = dirname(sourceFile);
+            
+            // read the source file into a buffer
+            std::stringstream buffer;
+            readFile(sourceFile, buffer);
+           
+            // Now read into a list of strings (which we can pass to regexec)
+            // First read into a std::deque (which will handle lots of append
+            // operations efficiently) then copy into an R chracter vector
+            std::deque<std::string> lines;
+            readLines(buffer, &lines);
+            Rcpp::CharacterVector linesVector = Rcpp::wrap(lines);        
+            
+            // look for local includes
+            Rcpp::List matches = regexMatches(
+                            linesVector, "^\\s*#include\\s*\"([^\"]+)\"\\s*$");
+            
+            // accumulate local includes (skip commented sections)
+            CommentState commentState;
+            std::vector<FileInfo> newDependencies;
+            for (int i = 0; i<matches.size(); i++) {
+                std::string line = lines[i];
+                commentState.submitLine(line);
+                if (!commentState.inComment()) {
+                    // get the match
+                    const Rcpp::CharacterVector match = matches[i];
+                    if (match.size() == 2) {
+                        // compose a full file path for the match
+                        Rcpp::CharacterVector include = 
+                            filepath(sourceDir, std::string(match[1]));
+                        // if it exists then normalize and add to our list
+                        LogicalVector exists = fileExists(include);
+                        if (exists[0]) {
+                            include = normalizePath(include);
+                            if (addUniqueDependency(include, pDependencies)) {
+                                newDependencies.push_back(
+                                    FileInfo(Rcpp::as<std::string>(include)));
+                            }
+                            
+                            std::vector<std::string> exts;
+                            exts.push_back(".cc");
+                            exts.push_back(".cpp");
+                            for (size_t i = 0; i<exts.size(); ++i) {
+                                
+                                // look for corresponding cpp file and add it
+                                std::string file = Rcpp::as<std::string>(
+                                    filePathSansExt(include)) + exts[i];
+                                
+                                exists = fileExists(file);
+                                if (exists[0]) {
+                                    if (addUniqueDependency(file, 
+                                                            pDependencies)) {
+                                        FileInfo fileInfo(file);
+                                        newDependencies.push_back(fileInfo);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // look for dependencies recursively
+            for (size_t i = 0; i<newDependencies.size(); i++) {
+                FileInfo dependency = newDependencies[i];
+                parseSourceDependencies(dependency.path(), pDependencies);
+            }
+        }
+        
+        // parse the source dependencies from the passed lines
+        std::vector<FileInfo> parseSourceDependencies(
+                                        const std::string& sourceFile) {
+            
+            // parse dependencies
+            std::vector<FileInfo> dependencies;
+            parseSourceDependencies(sourceFile, &dependencies);
+            
+            // remove main source file
+            dependencies.erase(std::remove(dependencies.begin(), 
+                                           dependencies.end(), 
+                                           FileInfo(sourceFile)), 
+                               dependencies.end()); 
+            
+            return dependencies;
+        }
+
         // Parse embedded R code chunks from a file (receives the lines of the
         // file as a CharcterVector for using with regexec and as a standard
         // stl vector for traversal/insepection)
@@ -671,7 +905,7 @@ namespace attributes {
                                         Rcpp::CharacterVector linesVector,
                                         const std::deque<std::string>& lines) {
             Rcpp::List matches = regexMatches(linesVector,
-                                              "^\\s*/\\*{3,}\\s+[Rr]\\s*$");
+                                              "^\\s*/\\*{3,}\\s*[Rr]\\s*$");
             bool withinRBlock = false;
             CommentState commentState;
             std::vector<std::string> embeddedR;
@@ -740,6 +974,7 @@ namespace attributes {
         }
         else {
             name_ = paramText;
+            trimWhitespace(&name_);
             stripQuotes(&name_);
         }
     }
@@ -766,22 +1001,32 @@ namespace attributes {
         return os;
     }
 
-    // Argument operator <<
-    std::ostream& operator<<(std::ostream& os, const Argument& argument) {
+    // Print argument
+    void printArgument(std::ostream& os, 
+                       const Argument& argument, 
+                       bool printDefault = true) {
         if (!argument.empty()) {
             os << argument.type();
             if (!argument.name().empty()) {
                 os << " ";
                 os << argument.name();
-                if (!argument.defaultValue().empty())
+                if (printDefault && !argument.defaultValue().empty())
                     os << " = " << argument.defaultValue();
             }
         }
+    }
+
+    // Argument operator <<
+    std::ostream& operator<<(std::ostream& os, const Argument& argument) {
+        printArgument(os, argument);
         return os;
     }
 
-    // Function operator <<
-    std::ostream& operator<<(std::ostream& os, const Function& function) {
+    // Print function
+    void printFunction(std::ostream& os, 
+                       const Function& function, 
+                       bool printArgDefaults = true) {    
+        
         if (!function.empty()) {
             if (!function.type().empty()) {
                 os << function.type();
@@ -791,12 +1036,17 @@ namespace attributes {
             os << "(";
             const std::vector<Argument>& arguments = function.arguments();
             for (std::size_t i = 0; i<arguments.size(); i++) {
-                os << arguments[i];
+                printArgument(os, arguments[i], printArgDefaults);
                 if (i != (arguments.size()-1))
                     os << ", ";
             }
             os << ")";
         }
+    }
+
+    // Function operator <<
+    std::ostream& operator<<(std::ostream& os, const Function& function) {
+        printFunction(os, function);
         return os;
     }
 
@@ -833,18 +1083,16 @@ namespace attributes {
     }
 
     // Parse the attributes from a source file
-    SourceFileAttributesParser::SourceFileAttributesParser
-                                            (const std::string& sourceFile)
+    SourceFileAttributesParser::SourceFileAttributesParser(
+                                             const std::string& sourceFile,
+                                             bool parseDependencies)
         : sourceFile_(sourceFile)
     {
         // First read the entire file into a std::stringstream so we can check
         // it for attributes (we don't want to do any of our more expensive
         // processing steps if there are no attributes to parse)
-        std::ifstream ifs(sourceFile_.c_str());
-        if (ifs.fail())
-            throw Rcpp::file_io_error(sourceFile_);
         std::stringstream buffer;
-        buffer << ifs.rdbuf();
+        readFile(sourceFile_, buffer);
         std::string contents = buffer.str();
 
         // Check for attribute signature
@@ -854,15 +1102,8 @@ namespace attributes {
             // Now read into a list of strings (which we can pass to regexec)
             // First read into a std::deque (which will handle lots of append
             // operations efficiently) then copy into an R chracter vector
-            std::string line;
             std::deque<std::string> lines;
-            while(std::getline(buffer, line)) {
-                // strip \r (for the case of windows line terminators on posix)
-                if (line.length() > 0 && *line.rbegin() == '\r')
-                    line.erase(line.length()-1, 1);
-                stripTrailingLineComments(&line);
-                lines.push_back(line);
-            }
+            readLines(buffer, &lines);
             lines_ = Rcpp::wrap(lines);
 
             // Scan for attributes
@@ -892,10 +1133,6 @@ namespace attributes {
                     Attribute attr = parseAttribute(
                         Rcpp::as<std::vector<std::string> >(match),  i);
                     attributes_.push_back(attr);
-
-                    if( attr.isExportedFunction() ){
-                        functionMap_.insert(attr.function());
-                    }
                 }
 
                 // if it's not an attribute line then it could still be a
@@ -938,6 +1175,36 @@ namespace attributes {
 
             // Parse embedded R
             embeddedR_ = parseEmbeddedR(lines_, lines);
+            
+            // Recursively parse dependencies if requested
+            if (parseDependencies) {
+                
+                // get source dependencies
+                sourceDependencies_ = parseSourceDependencies(sourceFile);
+                
+                // parse attributes and modules from each dependent file
+                for (size_t i = 0; i<sourceDependencies_.size(); i++) {
+                    
+                    // perform parse
+                    std::string dependency = sourceDependencies_[i].path();
+                    SourceFileAttributesParser parser(dependency, false);
+                    
+                    // copy to base attributes (if it's a new attribute)
+                    for (SourceFileAttributesParser::const_iterator 
+                            it = parser.begin(); it != parser.end(); ++it) {
+                        if (std::find(attributes_.begin(),
+                                      attributes_.end(),
+                                      *it) == attributes_.end()) {
+                            attributes_.push_back(*it);
+                        }
+                    }
+                   
+                    // copy to base modules
+                    std::copy(parser.modules().begin(),
+                              parser.modules().end(),
+                              std::back_inserter(modules_));
+                }
+            }
         }
     }
 
@@ -984,6 +1251,37 @@ namespace attributes {
                 function = parseFunction(lineNumber + 1);
             else
                 rcppExportWarning("No function found", lineNumber);
+
+            // validate parameters
+            for (std::size_t i=0; i<params.size(); i++) {
+
+                std::string name = params[i].name();
+                std::string value = params[i].value();
+
+                // un-named parameter that isn't the first parameter
+                if (value.empty() && (i > 0)) {
+                    rcppExportWarning("No value specified for parameter '" +
+                                      name + "'",
+                                      lineNumber);
+                }
+                // parameter that isn't name or rng
+                else if (!value.empty() &&
+                         (name != kExportName) &&
+                         (name != kExportRng)) {
+                    rcppExportWarning("Unrecognized parameter '" + name + "'",
+                                      lineNumber);
+                }
+                // rng that isn't true or false
+                else if (name == kExportRng) {
+                    if (value != kParamValueFalse && 
+                        value != kParamValueTrue &&
+                        value != kParamValueFALSE &&
+                        value != kParamValueTRUE) {
+                        rcppExportWarning("rng value must be true or false",
+                                          lineNumber);
+                    }
+                }
+            }
         }
 
         // validate interfaces parameter
@@ -1014,7 +1312,7 @@ namespace attributes {
     std::vector<Param> SourceFileAttributesParser::parseParameters(
                                                     const std::string& input) {
 
-        const std::string delimiters(" ,");
+        const std::string delimiters(",");
 
         std::vector<Param> params;
         std::string::size_type current;
@@ -1150,7 +1448,7 @@ namespace attributes {
             arguments.push_back(Argument(name, type, defaultValue));
         }
 
-        return Function(type, name, arguments, signature);
+        return Function(type, name, arguments);
     }
 
 
@@ -1694,7 +1992,8 @@ namespace attributes {
                 ostr() << "        }" << std::endl;
                 ostr() << "        RObject __result;" << std::endl;
                 ostr() << "        {" << std::endl;
-                ostr() << "            RNGScope __rngScope;" << std::endl;
+                if (it->rng())
+                    ostr() << "            RNGScope __rngScope;" << std::endl;
                 ostr() << "            __result = " << ptrName << "(";
 
                 const std::vector<Argument>& args = function.arguments();
@@ -1750,9 +2049,23 @@ namespace attributes {
             if (!includes.empty()) {
                 for (std::size_t i=0;i<includes.size(); i++)
                 {
-                    // don't do inst/include here
-                    if (includes[i].find("#include \"../inst/include/")
-                                                       == std::string::npos)
+                    // some special processing is required here. we exclude
+                    // the package header file (since it includes this file)
+                    // and we transorm _types includes into local includes
+                    std::string preamble = "#include \"../inst/include/";
+                    std::string pkgInclude = preamble + package() + ".h\"";
+                    if (includes[i] == pkgInclude)
+                        continue;
+
+                    // check for _types
+                    std::string typesInclude = preamble + package() + "_types.h";
+                    if (includes[i].find(typesInclude) != std::string::npos)
+                    {
+                        std::string include = "#include \"" +
+                                      includes[i].substr(preamble.length());
+                        ostr << include << std::endl;
+                    }
+                    else
                     {
                         ostr << includes[i] << std::endl;
                     }
@@ -2186,7 +2499,8 @@ namespace attributes {
             // include prototype if requested
             if (includePrototype) {
                 ostr << "// " << function.name() << std::endl;
-                ostr << function << ";";
+                printFunction(ostr, function, false);
+                ostr << ";";
             }
 
             // write the C++ callable SEXP-based function (this version
@@ -2211,21 +2525,20 @@ namespace attributes {
             ostr << args << ") {" << std::endl;
             ostr << "BEGIN_RCPP" << std::endl;
             if (!function.type().isVoid())
-                ostr << "    SEXP __sexp_result;" << std::endl;
-            ostr << "    {" << std::endl;
-            if (!cppInterface)
-                ostr << "        Rcpp::RNGScope __rngScope;" << std::endl;
+                ostr << "    Rcpp::RObject __result;" << std::endl;
+            if (!cppInterface && attribute.rng())
+                ostr << "    Rcpp::RNGScope __rngScope;" << std::endl;
             for (size_t i = 0; i<arguments.size(); i++) {
                 const Argument& argument = arguments[i];
 
-                ostr << "        Rcpp::traits::input_parameter< "
+                ostr << "    Rcpp::traits::input_parameter< "
                      << argument.type().full_name() << " >::type " << argument.name()
-                     << "(" << argument.name() << "SEXP );" << std::endl;
+                     << "(" << argument.name() << "SEXP);" << std::endl;
             }
 
-            ostr << "        ";
+            ostr << "    ";
             if (!function.type().isVoid())
-                ostr << function.type() << " __result = ";
+                ostr << "__result = Rcpp::wrap(";
             ostr << function.name() << "(";
             for (size_t i = 0; i<arguments.size(); i++) {
                 const Argument& argument = arguments[i];
@@ -2233,18 +2546,13 @@ namespace attributes {
                 if (i != (arguments.size()-1))
                     ostr << ", ";
             }
+            if (!function.type().isVoid())
+                ostr << ")";
             ostr << ");" << std::endl;
 
             if (!function.type().isVoid())
             {
-                ostr << "        PROTECT(__sexp_result = Rcpp::wrap(__result));"
-                     << std::endl;
-            }
-            ostr << "    }" << std::endl;
-            if (!function.type().isVoid())
-            {
-                ostr << "    UNPROTECT(1);" << std::endl;
-                ostr << "    return __sexp_result;" << std::endl;
+                ostr << "    return __result;" << std::endl;
             }
             else
             {
@@ -2260,7 +2568,8 @@ namespace attributes {
                      << std::endl;
                 ostr << "    SEXP __result;" << std::endl;
                 ostr << "    {" << std::endl;
-                ostr << "        Rcpp::RNGScope __rngScope;" << std::endl;
+                if (attribute.rng())
+                    ostr << "        Rcpp::RNGScope __rngScope;" << std::endl;
                 ostr << "        __result = PROTECT(" << funcName
                      << kTrySuffix << "(";
                 for (size_t i = 0; i<arguments.size(); i++) {
@@ -2519,6 +2828,12 @@ namespace {
             if (!FileInfo(dynlibPath()).exists())
                 return true;
 
+            // variation in source dependencies means we're dirty
+            std::vector<FileInfo> sourceDependencies = parseSourceDependencies(
+                                                            cppSourcePath_);
+            if (sourceDependencies != sourceDependencies_)
+                return true;
+        
             // not dirty
             return false;
         }
@@ -2534,14 +2849,14 @@ namespace {
             filecopy(cppSourcePath_, generatedCppSourcePath(), true);
 
             // parse attributes
-            SourceFileAttributesParser sourceAttributes(cppSourcePath_);
+            SourceFileAttributesParser sourceAttributes(cppSourcePath_, true);
 
             // generate cpp for attributes and append them
             std::ostringstream ostr;
             // always include Rcpp.h in case the user didn't
             ostr << std::endl << std::endl;
             ostr << "#include <Rcpp.h>" << std::endl;
-            generateCpp(ostr, sourceAttributes, false, false, contextId_);
+            generateCpp(ostr, sourceAttributes, true, false, contextId_);
             generatedCpp_ = ostr.str();
             std::ofstream cppOfs(generatedCppSourcePath().c_str(),
                                  std::ofstream::out | std::ofstream::app);
@@ -2596,6 +2911,9 @@ namespace {
 
             // capture embededded R
             embeddedR_ = sourceAttributes.embeddedR();
+            
+            // capture source dependencies
+            sourceDependencies_ = sourceAttributes.sourceDependencies();
         }
 
         const std::string& contextId() const {
@@ -2604,6 +2922,17 @@ namespace {
 
         const std::string& cppSourcePath() const {
             return cppSourcePath_;
+        }
+        
+        const std::vector<std::string> cppDependencySourcePaths() {
+            std::vector<std::string> dependencies;
+            for (size_t i = 0; i<sourceDependencies_.size(); ++i) {
+                FileInfo dep = sourceDependencies_[i];
+                if (dep.extension() == ".cc" || dep.extension() == ".cpp") {
+                    dependencies.push_back(dep.path());
+                }
+            }
+            return dependencies;
         }
 
         std::string buildDirectory() const {
@@ -2725,6 +3054,7 @@ namespace {
         std::vector<std::string> depends_;
         std::vector<std::string> plugins_;
         std::vector<std::string> embeddedR_;
+        std::vector<FileInfo> sourceDependencies_;
     };
 
     // Dynlib cache that allows lookup by either file path or code contents
@@ -2835,6 +3165,7 @@ BEGIN_RCPP
     return List::create(
         _["contextId"] = pDynlib->contextId(),
         _["cppSourcePath"] = pDynlib->cppSourcePath(),
+        _["cppDependencySourcePaths"] = pDynlib->cppDependencySourcePaths(),
         _["buildRequired"] = buildRequired,
         _["buildDirectory"] = pDynlib->buildDirectory(),
         _["generatedCpp"] = pDynlib->generatedCpp(),
@@ -2921,7 +3252,7 @@ BEGIN_RCPP
 
         // parse file (continue if there is no generator output)
         std::string cppFile = cppFiles[i];
-        SourceFileAttributesParser attributes(cppFile);
+        SourceFileAttributesParser attributes(cppFile, false);
         if (!attributes.hasGeneratorOutput())
             continue;
 

@@ -70,6 +70,7 @@ namespace Rcpp{
 #include <typeinfo>
 #include <Rcpp/sprintf.h>
 #include <R_ext/Callbacks.h>
+#include <R_ext/Visibility.h>
 #include <Rcpp/utils/tinyformat.h>
 
 #include <Rmath.h>
@@ -172,6 +173,7 @@ namespace Rcpp{
 #include <Rcpp/internal/SEXP_Iterator.h>
 #include <Rcpp/internal/converter.h>
 
+#include <Rcpp/print.h>
 #include <Rcpp/algo.h>
 
 #include <Rcpp/sugar/sugar_forward.h>

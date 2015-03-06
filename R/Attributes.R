@@ -114,7 +114,10 @@ sourceCpp <- function(file = "",
                      "-o ", shQuote(context$dynlibFilename), " ",
                      ifelse(rebuild, "--preclean ", ""),
                      ifelse(dryRun, "--dry-run ", ""),
-                     shQuote(context$cppSourceFilename), sep="")
+                     paste(shQuote(context$cppDependencySourcePaths), 
+                           collapse = " "), " ",
+                     shQuote(context$cppSourceFilename), " ", 
+                     sep="")
         if (showOutput)
             cat(cmd, "\n")
 
@@ -380,14 +383,23 @@ compileAttributes <- function(pkgdir = ".", verbose = getOption("verbose")) {
     linkingTo <- .readPkgDescField(pkgDesc, "LinkingTo")
     includes <- .linkingToIncludes(linkingTo, TRUE)
 
-    # if a master include file is defined for the package then include it
-    pkgHeader <- paste(pkgname, ".h", sep="")
+    # if a master include file or types file is in inst/include then use it
+    typesHeader <- c(paste0(pkgname, "_types.h"), paste0(pkgname, "_types.hpp"))
+    pkgHeader <- c(paste0(pkgname, ".h"), typesHeader)
     pkgHeaderPath <- file.path(pkgdir, "inst", "include",  pkgHeader)
-    if (file.exists(pkgHeaderPath)) {
+    pkgHeader <- pkgHeader[file.exists(pkgHeaderPath)]
+    if (length(pkgHeader) > 0) {
         pkgInclude <- paste("#include \"../inst/include/",
                             pkgHeader, "\"", sep="")
         includes <- c(pkgInclude, includes)
     }
+
+    # if a _types file is in src then include it
+    pkgHeader <- typesHeader
+    pkgHeaderPath <- file.path(pkgdir, "src", pkgHeader)
+    pkgHeader <- pkgHeader[file.exists(pkgHeaderPath)]
+    if (length(pkgHeader) > 0)
+        includes <- c(paste0("#include \"", pkgHeader ,"\""), includes)
 
     # generate exports
     invisible(.Call("compileAttributes", PACKAGE="Rcpp",
@@ -615,17 +627,23 @@ sourceCppFunction <- function(func, isVoid, dll, symbol) {
     # set CLINK_CPPFLAGS based on the LinkingTo dependencies
     buildEnv$CLINK_CPPFLAGS <- .buildClinkCppFlags(linkingToPackages)
 
-    # if the source file is in a package then add src and inst/include
+    # add the source file's directory to the compliation
+    srcDir <- dirname(sourceFile)
+    srcDir <- asBuildPath(srcDir)
+    buildDirs <- srcDir
+    
+    # if the source file is in a package then add inst/include
     if (.isPackageSourceFile(sourceFile)) {
-        srcDir <- dirname(sourceFile)
-        srcDir <- asBuildPath(srcDir)
         incDir <- file.path(dirname(sourceFile), "..", "inst", "include")
         incDir <- asBuildPath(incDir)
-        dirFlags <- paste0('-I"', c(srcDir, incDir), '"', collapse=" ")
-        buildEnv$CLINK_CPPFLAGS <- paste(buildEnv$CLINK_CPPFLAGS,
-                                         dirFlags,
-                                         collapse=" ")
+        buildDirs <- c(buildDirs, incDir)
     }
+    
+    # set CLINK_CPPFLAGS with directory flags
+    dirFlags <- paste0('-I"', buildDirs, '"', collapse=" ")
+    buildEnv$CLINK_CPPFLAGS <- paste(buildEnv$CLINK_CPPFLAGS,
+                                     dirFlags,
+                                     collapse=" ")
 
     # merge existing environment variables
     for (name in names(buildEnv))
@@ -676,7 +694,8 @@ sourceCppFunction <- function(func, isVoid, dll, symbol) {
             # Check version -- we only support 2.15 and 2.16 right now
             ver <- key$`Current Version`
             if (identical("2.15", ver) || identical("2.16", ver) ||
-                identical("3.0", ver) || identical("3.1", ver)) {
+                identical("3.0", ver) || identical("3.1", ver) ||
+                identical("3.2", ver)) {
 
                 # See if the InstallPath leads to the expected directories
                 rToolsPath <- key$`InstallPath`

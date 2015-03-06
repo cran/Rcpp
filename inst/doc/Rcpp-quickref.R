@@ -1,7 +1,7 @@
 ### R code from vignette source 'Rcpp-quickref.Rnw'
 
 ###################################################
-### code chunk number 1: Rcpp-quickref.Rnw:28-32
+### code chunk number 1: Rcpp-quickref.Rnw:29-33
 ###################################################
 options( width= 50)
 library( "Rcpp" )

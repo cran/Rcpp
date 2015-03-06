@@ -123,7 +123,10 @@ namespace tinyformat {}
 namespace tfm = tinyformat;
 
 // Error handling; calls assert() by default.
-// #define TINYFORMAT_ERROR(reasonString) your_error_handler(reasonString)
+namespace Rcpp {
+    void stop(const std::string& message);
+}
+#define TINYFORMAT_ERROR(REASON) ::Rcpp::stop(REASON)
 
 // Define for C++11 variadic templates which make the code shorter & more
 // general.  If you don't define this, C++11 support is autodetected below.
@@ -133,13 +136,13 @@ namespace tfm = tinyformat;
 //------------------------------------------------------------------------------
 // Implementation details.
 #include <algorithm>
-#include <cassert>
+// #include <cassert>
 #include <iostream>
 #include <sstream>
 
-#ifndef TINYFORMAT_ERROR
-#   define TINYFORMAT_ERROR(reason) assert(0 && reason)
-#endif
+// #ifndef TINYFORMAT_ERROR
+// #   define TINYFORMAT_ERROR(reason) assert(0 && reason)
+// #endif
 
 #if !defined(TINYFORMAT_USE_VARIADIC_TEMPLATES) && !defined(TINYFORMAT_NO_VARIADIC_TEMPLATES)
 #   ifdef __GXX_EXPERIMENTAL_CXX0X__
@@ -202,7 +205,7 @@ template<int n> struct is_wchar<wchar_t[n]> {};
 template<typename T, typename fmtT, bool convertible = is_convertible<T, fmtT>::value>
 struct formatValueAsType
 {
-    static void invoke(std::ostream& /*out*/, const T& /*value*/) { assert(0); }
+    static void invoke(std::ostream& /*out*/, const T& /*value*/) {}
 };
 // Specialized version for types that can actually be converted to fmtT, as
 // indicated by the "convertible" template parameter.
@@ -856,7 +859,7 @@ class FormatListN : public FormatList
         template<TINYFORMAT_ARGTYPES(n)>                       \
         FormatListN(TINYFORMAT_VARARGS(n))                     \
             : FormatList(&m_formatterStore[0], n)              \
-        { assert(n == N); init(0, TINYFORMAT_PASSARGS(n)); }   \
+        { init(0, TINYFORMAT_PASSARGS(n)); }                   \
                                                                \
         template<TINYFORMAT_ARGTYPES(n)>                       \
         void init(int i, TINYFORMAT_VARARGS(n))                \
