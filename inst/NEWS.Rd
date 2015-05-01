@@ -2,6 +2,27 @@
 \title{News for Package 'Rcpp'}
 \newcommand{\cpkg}{\href{http://CRAN.R-project.org/package=#1}{\pkg{#1}}}
 
+\section{Changes in Rcpp version 0.11.6 (2015-05-01)}{
+  \itemize{
+    \item Changes in Rcpp API:
+    \itemize{
+      \item The unwinding of exceptions was refined to protect against inadvertent
+      memory leaks.
+      \item Header files now try even harder not to let macro definitions leak.
+      \item Matrices have a new default constructor for zero-by-zero dimension
+      matrices (via a pull request by Dmitrii Meleshko).
+      \item A new \code{empty()} string constructor was added (via another pull
+      request).
+      \item Better support for Vectors with a storage policy different from the 
+      default, i.e. \code{NoProtectStorage}, was added.
+    }
+    \item Changes in Rcpp Attributes:
+    \itemize{
+      \item Rtools 3.3 is now supported.
+    }
+  }
+}
+
 \section{Changes in Rcpp version 0.11.5 (2015-03-04)}{
   \itemize{
     \item Changes in Rcpp API:

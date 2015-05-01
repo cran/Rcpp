@@ -1,3 +1,81 @@
+2015-05-01  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION: Release 0.11.6
+        * inst/NEWS.Rd: Release 0.11.6
+        * inst/include/Rcpp/config.h: Release 0.11.6
+
+        * debian/*: Changes for Debian release of 0.11.5
+
+2015-04-27  JJ Allaire  <jj@rstudio.org>
+
+        * src/Module.cpp: Revert parts of PR291 pertaining to Modules and {BEGIN/END}_RCPP
+        * inst/include/Rcpp/api/meat/module/Module.h: Ditto
+        * inst/include/Rcpp/InternalFunctionWithStdFunction.h: Ditto
+        * inst/include/Rcpp/module/Module_generated_CppFunction.h: Ditto
+        * inst/include/Rcpp/module/class.h: Ditto
+
+2014-04-25  Romain Francois  <romain@r-enthusiasts.com>
+
+        * inst/include/Rcpp/vector/Vector.h: update the parameterization of Vector cache
+        * inst/include/Rcpp/vector/traits.h: ...
+        * inst/include/Rcpp/vector/00_forward_proxy.h: ...
+        * inst/unitTests/runit.Vector.R: test for above changes
+        * inst/unitTests/cpp/Vector.cpp: ...
+
+2015-04-22  Kevin Ushey  <kevinushey@gmail.com>
+
+        * inst/include/Rcpp/utils/tinyformat.h: don't use C++11 features
+
+2015-04-14  Dirk Eddelbuettel  <edd@debian.org>
+
+        * .travis.yml (sudo): Adding 'sudo: required' to force older Travis backend
+
+2014-04-14  Romain Francois  <romain@r-enthusiasts.com>
+
+        * inst/include/Rcpp/api/meat/is.h: added is__simple<Rcomplex>
+        * inst/include/Rcpp/config.h: not using floating point arithmetic in preprocessor
+
+2015-04-12  Dirk Eddelbuettel  <edd@debian.org>
+
+        * vignettes/Rcpp-FAQ.Rnw: Also load Rcpp to make cppFunction visible
+
+2014-04-11  Romain Francois  <romain@r-enthusiasts.com>
+
+        * inst/include/Rcpp/macros/macros.h: Reworked BEGIN_RCPP and END_RCPP
+        * inst/include/Rcpp/*: Removed BEGIN_RCPP and END_RCPP from a few files
+        * src/Module.cpp: But added here
+
+2015-04-19  Jonathan Marshall <jmarshall@xbmc.org>
+
+        * inst/include/Rcpp/vector/string_proxy.h: Adds empty() constructor
+        * inst/include/Rcpp/vector/const_string_proxy.h: Ditto
+
+2015-03-18  Dmitrii Meleshko  <Dmitrii@MeleshkoDima.none>
+
+        * inst/include/Rcpp/vector/Matrix.h: Added default ctor for 0x0 matrix
+
+2015-03-18  JJ Allaire  <jj@rstudio.org>
+
+        * R/Attributes.R:  Revert to use of gcc 4.6.3 with Rtools 3.3
+
+2015-03-16  JJ Allaire  <jj@rstudio.org>
+
+        * src/attributes.cpp: Fix failing local include test (normalize path of
+        base source file so comparisons work on Windows).
+
+2015-03-15  Dirk Eddelbuettel  <edd@debian.org>
+
+        * R/Attributes.R (.rtoolsPath): Replace trimws() use with a local variant
+
+2015-03-11  JJ Allaire  <jj@rstudio.org>
+
+        * R/Attributes.R:  Rtools 3.3 is now located and used for compilation under R 3.2.
+
+2015-03-11  Kevin Ushey  <kevinushey@gmail.com>
+
+        * inst/include/RcppCommon.h: Move headers into major/minor protection
+        * inst/include/Rcpp/r/headers.h: New file
+
 2015-03-04  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION: Release 0.11.5
@@ -5,7 +83,7 @@
         * inst/include/Rcpp/config.h: Release 0.11.5
 
         * debian/*: Changes for Debian release of 0.11.5
-        
+
 2015-03-03  Dirk Eddelbuettel  <edd@debian.org>
 
         * inst/include/Rcpp/routines.h: Additional application of the

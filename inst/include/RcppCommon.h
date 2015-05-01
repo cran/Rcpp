@@ -2,8 +2,8 @@
 //
 // RcppCommon.h: Rcpp R/C++ interface class library -- common include and defines statements
 //
-// Copyright (C) 2008 - 2009 Dirk Eddelbuettel
-// Copyright (C) 2009 - 2013 Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2008 - 2009  Dirk Eddelbuettel
+// Copyright (C) 2009 - 2015  Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -26,28 +26,23 @@
 // #define RCPP_DEBUG_LEVEL 1
 // #define RCPP_DEBUG_MODULE_LEVEL 1
 
-#include <Rcpp/platform/compiler.h>
-#include <Rcpp/config.h>
-#include <Rcpp/macros/macros.h>
-
-
 #include <Rcpp/r/headers.h>
 
 /**
  * \brief Rcpp API
  */
-namespace Rcpp{
+namespace Rcpp {
 
     /**
      * \brief traits used to dispatch wrap
      */
-    namespace traits{
+    namespace traits {
     } // traits
 
     /**
      * \brief internal implementation details
      */
-    namespace internal{
+    namespace internal {
     } // internal
 } // Rcpp
 
@@ -76,33 +71,33 @@ namespace Rcpp{
 #include <Rmath.h>
 #include <Rcpp/sugar/undoRmath.h>
 
-namespace Rcpp{
+namespace Rcpp {
 
-    SEXP Rcpp_eval(SEXP expr_, SEXP env = R_GlobalEnv ) ;
-    class Module ;
+    SEXP Rcpp_eval(SEXP expr_, SEXP env = R_GlobalEnv);
+    class Module;
 
-    namespace traits{
-        template <typename T> class named_object ;
+    namespace traits {
+        template <typename T> class named_object;
     }
 
-    inline SEXP Rcpp_PreserveObject(SEXP x){
-        if( x != R_NilValue ) {
+    inline SEXP Rcpp_PreserveObject(SEXP x) {
+        if (x != R_NilValue) {
             R_PreserveObject(x);
         }
-        return x ;
+        return x;
     }
 
-    inline void Rcpp_ReleaseObject(SEXP x){
+    inline void Rcpp_ReleaseObject(SEXP x) {
         if (x != R_NilValue) {
             R_ReleaseObject(x);
         }
     }
 
-    inline SEXP Rcpp_ReplaceObject(SEXP x, SEXP y){
-        if( Rf_isNull(x) ){
-            Rcpp_PreserveObject( y ) ;
-        } else if( Rf_isNull(y) ){
-            Rcpp_ReleaseObject( x ) ;
+    inline SEXP Rcpp_ReplaceObject(SEXP x, SEXP y) {
+        if (Rf_isNull(x)) {
+            Rcpp_PreserveObject(y);
+        } else if (Rf_isNull(y)) {
+            Rcpp_ReleaseObject(x);
         } else {
             // if we are setting to the same SEXP as we already have, do nothing
             if (x != y) {
@@ -115,7 +110,7 @@ namespace Rcpp{
 
             }
         }
-        return y ;
+        return y;
     }
 
 }
@@ -136,12 +131,12 @@ namespace Rcpp{
 
 #include <Rcpp/Interrupt.h>
 
-namespace Rcpp{
-    template <typename T> class object ;
-    class String ;
-	namespace internal{
-		template <typename Class> SEXP make_new_object( Class* ptr ) ;
-	}
+namespace Rcpp {
+    template <typename T> class object;
+    class String;
+        namespace internal {
+            template <typename Class> SEXP make_new_object(Class* ptr);
+        }
 }
 
 #include <Rcpp/longlong.h>
