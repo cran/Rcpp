@@ -297,6 +297,7 @@ print.bytes <- function( x, ...){
 # Evaluate a simple c++ expression
 evalCpp <- function(code,
                     depends = character(),
+                    plugins = character(), 
                     includes = character(),
                     rebuild = FALSE,
                     showOutput = verbose,
@@ -305,7 +306,8 @@ evalCpp <- function(code,
 
     code <- sprintf( "SEXP get_value(){ return wrap( %s ) ; }", code )
     env <- new.env()
-    cppFunction(code, depends = depends, includes = includes, env = env,
+    cppFunction(code, depends = depends, plugins = plugins,
+                includes = includes, env = env,
                 rebuild = rebuild, showOutput = showOutput, verbose = verbose )
     fun <- env[["get_value"]]
     fun()
@@ -963,7 +965,7 @@ sourceCppFunction <- function(func, isVoid, dll, symbol) {
         result <- suppressWarnings(system(cmd,
                                           ignore.stderr = TRUE,
                                           intern = TRUE))
-        assignInMyNamespace(".hasDevelTools", is.null(attr(result, "status")))
+        utils::assignInMyNamespace(".hasDevelTools", is.null(attr(result, "status")))
 
         # if we build successfully then remove the shared library
         if (.hasDevelTools) {

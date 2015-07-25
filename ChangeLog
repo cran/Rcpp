@@ -1,10 +1,135 @@
+2015-07-24  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION: Release 0.12.0
+        * inst/NEWS.Rd: Release 0.12.0
+	* vignettes/Rcpp.bib: Release 0.12.0
+        * inst/include/Rcpp/config.h: Release 0.12.0
+
+        * debian/*: Changes for Debian release of 0.12.0
+
+2015-07-23  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/include/Rcpp/Symbol.h: Use Rf_installChar(x) instead of
+        Rf_install(CHAR(X)) if R 3.2.0 or later is used
+
+2015-07-07  Qiang Kou <qkou@umaikl.iu.edu>
+
+        * src/include/Rcpp/String.h: Ensure proper initialization of String
+        objects from two constructors
+        * inst/unitTests/cpp/String.cpp: New unit test
+        * inst/unitTests/runit.String.R: Ditto
+
+2015-07-21  Kevin Ushey  <kevinushey@gmail.com>
+
+        * inst/include/Rcpp/api/meat/Rcpp_eval.h: don't use 'CDDDR'
+
+2015-07-20  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION: Rolled minor Date and Version
+
+        * R/Attributes.R: Use explicit 'utils::assignInMyNamespace'
+
+        * R/Rcpp.package.skeleton.R: Use explicit 'utils::package.skeleton'
+
+2015-07-17  JJ Allaire <jj@rstudio.org>
+
+        * Rcpp.Rproj: don't use devtools mode in RStudio (enables the
+        Test Package command to invoke the RUnit based test-suite)
+        * src/attributes.cpp: Correctly handle signature termination
+        characters ('{' or ';') contained in quotes
+
+2015-07-16  Kevin Ushey  <kevinushey@gmail.com>
+
+        * inst/include/Rcpp/api/meat/Rcpp_eval.h: Don't use 'R_ToplevelExec';
+        ensure Rcpp_eval respects previously established handlers. Capture
+        errors + interrupts with R-level 'tryCatch'.
+        * inst/NEWS.Rd: Add news entry
+
+2015-07-14  JJ Allaire <jj@rstudio.org>
+
+        * src/attributes.cpp: fix crash on second call to sourceCpp
+
+2015-07-07  Qiang Kou <qkou@umaikl.iu.edu>
+
+        * src/include/Rcpp/String.h: Use Rcpp_PreserveObject and
+        Rcpp_ReplaceObject to protect underlying SEXP inside String objects
+
+2015-07-07  Matt P. Dziubinski  <matdzb@gmail.com>
+
+        * inst/include/Rcpp/sugar/functions/var.h: Variance -- changed from
+        the unstable formula back to the stable (two-pass) formula, fixed
+        support for complex numbers (formula correction).
+        * inst/unitTests/runit.sugar.var.R: Added tests for complex variance
+        computation, applied simple code refactoring.
+
+2015-07-04  Dirk Eddelbuettel  <edd@debian.org>
+
+        * vignettes/Rcpp.bib: Updated reference to several CRAN packages
+
+2015-07-02  Kevin Ushey  <kevinushey@gmail.com>
+
+        * .clang_format: Added
+
+2015-06-25  Kevin Ushey  <kevinushey@gmail.com>
+
+	* inst/include/Rcpp/api/meat/Rcpp_eval.h: reset error after Rcpp_eval
+	* inst/unitTests/cpp/Function.cpp: unit tests
+	* inst/unitTests/runit.Function.R: unit tests
+        * inst/include/Rcpp/Function.h: catch empty error messages
+        * inst/include/Rcpp/api/meat/Rcpp_eval.h: protect call
+
+2015-06-24  Qiang Kou <qkou@umaikl.iu.edu>
+
+        * inst/include/Rcpp/String.h: Support encodings
+        * src/String.cpp: Ditto
+        * inst/unitTests/runit.String.R: Add unit tests
+
+2015-06-18  Dirk Eddelbuettel  <edd@debian.org>
+
+        * R/Attributes.R (evalCpp): Add support for plugings argument
+        * man/evalCpp.Rd: Document argument
+
+2015-06-07  JJ Allaire <jj@rstudio.org>
+
+        * src/attributes.cpp: Don't load sourceCpp dynamic library if it's
+        already been loaded
+
+2015-06-05  Dirk Eddelbuettel  <edd@debian.org>
+
+        * R/Rcpp.package.skeleton.R (Rcpp.package.skeleton): Remove
+        `character.only=TRUE` from `requireNamespace()` as it happens to flip
+        the boolean value too
+
+2015-06-03  Qiang Kou <qkou@umaikl.iu.edu>
+
+        * inst/include/Rcpp/*: Finish changing R_len_t to R_xlen_t
+        * src/*: Ditto
+
+2014-05-27  Romain Francois  <romain@r-enthusiasts.com>
+
+        * inst/include/Rcpp/DataFrame.h: Safe DataFram constructor
+
+2015-05-16  Qiang Kou <qkou@umaikl.iu.edu>
+
+        * inst/include/Rcpp/*: Begin changing R_len_t to R_xlen_t
+        * src/*: Ditto
+
+2015-05-17  Matt P. Dziubinski  <matdzb@gmail.com>
+
+        * inst/include/Rcpp/platform/compiler.h: Added RCPP_USING_CXX0X_OR_LATER
+        * inst/include/Rcpp/sugar/functions/sapply.h: Updated to support lambda functions
+
+2015-05-01  Kevin Ushey  <kevinushey@gmail.com>
+
+        * vignettes/Rcpp-FAQ.Rnw: Notes on installing gfortran
+
 2015-05-01  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION: Release 0.11.6
         * inst/NEWS.Rd: Release 0.11.6
         * inst/include/Rcpp/config.h: Release 0.11.6
 
-        * debian/*: Changes for Debian release of 0.11.5
+        * debian/*: Changes for Debian release of 0.11.6
 
 2015-04-27  JJ Allaire  <jj@rstudio.org>
 

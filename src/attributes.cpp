@@ -1460,19 +1460,34 @@ namespace attributes {
     // Parse the text of a function signature from the specified line
     std::string SourceFileAttributesParser::parseSignature(size_t lineNumber) {
 
-        // Look for the next {
+        // Look for the signature termination ({ or ; not inside quotes)
+        // on this line and then subsequent lines if necessary
         std::string signature;
         for (int i = lineNumber; i<lines_.size(); i++) {
             std::string line;
             line = lines_[i];
-            std::string::size_type end = line.find_first_of("{;");
-            if (end == std::string::npos) {
-                signature.append(line);
-                signature.push_back(' ');
-            } else {
-                signature.append(line.substr(0, end));
-                return signature;
+            bool insideQuotes = false;
+            char prevChar = 0;
+            // scan for { or ; not inside quotes
+            for (size_t c = 0; c < line.length(); ++c) {
+                // alias character
+                char ch = line.at(c);  
+                // update quotes state
+                if (ch == '"' && prevChar != '\\')
+                    insideQuotes = !insideQuotes;
+                // found signature termination, append and return
+                if (!insideQuotes && ((ch == '{') || (ch == ';'))) {
+                    signature.append(line.substr(0, c));
+                    return signature;
+                }
+                // record prev char (used to check for escaped quote i.e. \")
+                prevChar = ch;
             }
+            
+            // if we didn't find a terminator on this line then just append the line
+            // and move on to the next line
+            signature.append(line);
+            signature.push_back(' ');
         }
 
         // Not found
@@ -2813,7 +2828,7 @@ namespace {
             dircreate(buildDirectory_);
 
             // generate a random context id
-            contextId_ = "sourceCpp_" + createRandomizer();
+            contextId_ = "sourceCpp_" + uniqueToken();
 
             // regenerate the source code
             regenerateSource();
@@ -2847,7 +2862,7 @@ namespace {
 
             // create new dynlib filename
             previousDynlibFilename_ = dynlibFilename_;
-            dynlibFilename_ = "sourceCpp_" + createRandomizer() + dynlibExt_;
+            dynlibFilename_ = "sourceCpp_" + uniqueToken() + dynlibExt_;
 
             // copy the source file to the build dir
             Rcpp::Function filecopy = Rcpp::Environment::base_env()["file.copy"];
@@ -3037,10 +3052,9 @@ namespace {
 
         }
 
-        std::string createRandomizer() {
-            Rcpp::Function sample = Rcpp::Environment::base_env()["sample"];
+        std::string uniqueToken() {
             std::ostringstream ostr;
-            ostr << Rcpp::as<int>(sample(100000, 1));
+            ostr << s_nextUniqueToken++;
             return ostr.str();
         }
 
@@ -3060,7 +3074,11 @@ namespace {
         std::vector<std::string> plugins_;
         std::vector<std::string> embeddedR_;
         std::vector<FileInfo> sourceDependencies_;
+        static int s_nextUniqueToken;
     };
+
+    // initialize next unique token
+    int SourceCppDynlib::s_nextUniqueToken = 0;
 
     // Dynlib cache that allows lookup by either file path or code contents
     class SourceCppDynlibCache {
