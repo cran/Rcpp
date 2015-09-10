@@ -1,3 +1,148 @@
+2015-09-10  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION: Release 0.12.1
+        * inst/NEWS.Rd: Release 0.12.1
+	* vignettes/Rcpp.bib: Release 0.12.1
+        * inst/include/Rcpp/config.h: Release 0.12.1
+
+        * debian/*: Changes for Debian release of 0.12.1
+
+2015-09-09  Dirk Eddelbuettel  <edd@debian.org>
+
+        * vignettes/Rcpp-attributes.Rnw: Less harsh grey border around code
+        * vignettes/Rcpp-*.Rnw: Ditto
+
+        * inst/include/Rcpp/String.h: More comparison operators
+
+2015-09-08  Daniel C. Dillon  <dcdillon@gmail.com>
+
+        * inst/include/Rcpp/vector/string_proxy.h: More comparison operators
+        * inst/include/Rcpp/vector/const_string_proxy.h: More comparison operators
+
+2015-09-08  Florian Plaza Onate <florian.plaza@jouy.inra.fr>
+
+        * inst/include/Rcpp/Dimension.h: Correct creation and access of large
+        matrices
+        * inst/include/Rcpp/vector/Matrix.h: Ditto
+
+2015-09-07  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/include/Rcpp/Nullable.h: New class for objects which may be NULL
+        * inst/unitTests/cpp/Vector.cpp: Unit tests for Nullable
+        * inst/unitTests/runit.Vector.R: Ditto
+
+2015-09-06  Daniel C. Dillon  <dcdillon@gmail.com>
+
+        * inst/include/Rcpp/String.h: Make strings and string_proxies comparable
+        * inst/unitTests/cpp/String.cpp: Unit tests for above
+        * inst/unitTests/runit.String.R: Ditto
+
+2015-09-05  Daniel C. Dillon  <dcdillon@gmail.com>
+
+        * inst/include/Rcpp/vector/Matrix.h: Matrix now has appropriate operator<<
+        * inst/include/Rcpp/vector/Vector.h: Vector now has appropriate operator<<
+        * inst/unitTests/cpp/Vector.cpp: Unit tests for above
+
+2015-09-01  Florian Plaza Onate <florian.plaza@jouy.inra.fr>
+
+        * inst/include/Rcpp/vector/Subsetter.h: Allow logical subsets to be
+        assigned to a vector of size 1
+        (pull request #349, discussed in issue #345)
+        * inst/unitTests/cpp/Subset.cpp: Add unit test for above
+        * inst/unitTests/runit.subset.R: Ditto
+
+2015-08-31  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version, Date): Roll Version and Date
+
+2015-08-30  Dirk Eddelbuettel  <edd@debian.org>
+
+        * vignettes/Rcpp.bib: Updated RcppGSL entry
+
+2015-08-29  Dirk Eddelbuettel  <edd@debian.org>
+
+        * vignettes/Rcpp.bib: Add RcppZiggurat entry
+
+        * inst/include/Rcpp/utils/tinyformat.h: Updated to current upstream
+        version keeping our local modifications / adaptations (PR #357)
+
+2015-08-29  Qiang Kou <qkou@umail.iu.edu>
+
+        * inst/include/Rcpp/vector/Subsetter.h: Enable logical subsetting on
+        both LHS and RHS, eg 'a[b > 3] = b[b > 3]' (pull request #352 addressing
+        issue #345)
+        * inst/unitTests/cpp/Subset.cpp: Ditto
+        * inst/unitTests/runit.subset.R: Unit tests for above
+
+2015-08-26  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/unitTests/testRcppClass/src/rcpp_module.cpp: Renamed Module
+        'World' to 'RcppClassWorld' to avoid multiple modules with same name
+        (pull request #351, fixed issue #350)
+
+        * inst/unitTests/testRcppClass/man/Rcpp_class_examples.Rd: Ditto
+        * inst/unitTests/testRcppClass/R/load.R: Ditto
+        * inst/unitTests/testRcppClass/NAMESPACE: Ditto
+        * inst/unitTests/runit.Module.client.package.R: Re-enable test
+
+        * inst/unitTests/testRcppModule/src/rcpp_module.cpp: Renamed Module
+        'World' to 'RcppModuleWorld' to avoid multiple modules with same name
+
+        * inst/unitTests/cpp/modref.cpp: Rename 'World' to 'ModRefWorld'
+        * inst/unitTests/runit.modref.R (test.modRef): Ditto
+
+        * inst/unitTests/cpp/Module.cpp: Rename 'World' to 'ModuleWorld'
+        * inst/unitTests/runit.Module.R (test.Module): Ditto
+
+2015-08-25  Kurt Hornik  <Kurt.Hornik@wu.ac.at>
+
+        * R/loadModule.R: For now=TRUE, always set .botched to FALSE which
+        corresponds to the case of the methods package being in the search path
+        * inst/include/Rcpp/Reference.h: Call call with the internal Namespace
+
+2015-08-24  Dirk Eddelbuettel  <edd@debian.org>
+
+        * vignettes/Rcpp.bib: Updated R / R Core references
+
+2015-08-23  Romain Francois <romain@r-enthusiasts.com>
+
+        * inst/include/Rcpp/Benchmark/Timer.h: Silence 'g++ -pedantic' by
+        replaceing one R_xlen_t by size_t (pull request #348)
+
+2015-08-19  Florian Plaza Onate <florian.plaza@jouy.inra.fr>
+        * inst/include/Rcpp/vector/Vector.h: Add 'at' methods which implement
+        accessors with bounds cheking (pull request #342, fixes issue #341)
+        * inst/include/Rcpp/vector/Matrix.h: Ditto
+        * inst/unitTests/cpp/Vector.cpp: Add unit tests for at acessors
+        * inst/unitTests/cpp/Matrix.cpp: Ditto
+        * inst/unitTests/runit.Vector.R: Ditto
+        * inst/unitTests/runit.Matrix.R: Ditto
+
+2015-08-18  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/unitTests/runit.Module.client.package.R: Disabled for bad
+        interaction of Rcpp Modules and R 3.2.2
+
+2015-08-15  Florian Plaza Onate <florian.plaza@jouy.inra.fr>
+
+        * inst/include/Rcpp/vector/converter.h: Correct conversion from const
+        char argument (pull request #344, fixes issue #343)
+
+2015-08-14  Florian Plaza Onate <florian.plaza@jouy.inra.fr>
+
+        * inst/include/Rcpp/vector/DimNameProxy.h: Add assignment operator,
+        refactor code, update error message formatting (pull request #339)
+
+2015-08-05  Kevin Ushey  <kevinushey@gmail.com>
+
+        * src/api.cpp: use `_WIN32` instead of `WIN32`
+
+2015-08-02  Dirk Eddelbuettel  <edd@debian.org>
+
+        * R/Attributes.R (sourceCpp): In no-rebuild-needed case, also set a
+        default directory restoration via on.exit() (pull request #335,
+        addressing issue #309)
+
 2015-07-24  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION: Release 0.12.0
