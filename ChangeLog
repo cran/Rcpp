@@ -1,3 +1,98 @@
+2015-11-14  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION: Release 0.12.2
+        * inst/NEWS.Rd: Release 0.12.2
+	* vignettes/Rcpp.bib: Release 0.12.2
+        * inst/include/Rcpp/config.h: Release 0.12.2
+
+        * debian/*: Changes for Debian release of 0.12.2
+
+	* vignettes/Rcpp.bib: Updated all CRAN reference to current versions
+
+2015-11-13  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/include/Rcpp/complex.h: Define a header guard for dplyr to
+        prevent errorneous redefinition of operator<<() via dplyr
+
+2015-11-11  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/include/Rcpp/vector/Matrix.h: Further simplification
+
+2015-11-11  Qiang Kou <qkou@umail.iu.edu>
+
+        * include/Rcpp/complex.h: operator<< for Rcomplex
+
+2015-11-10  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/include/Rcpp/vector/Matrix.h: Added transpose for character
+        matrices as well
+
+        * inst/unitTests/runit.Matrix.R: New unit tests
+        * inst/unitTests/cpp/Matrix.cpp: Ditto
+
+2015-11-08  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/include/Rcpp/vector/Matrix.h: Matrix transpose is now a free
+        function for both INTSXP and REALSXP
+
+        * inst/unitTests/runit.Matrix.R: New unit tests
+        * inst/unitTests/cpp/Matrix.cpp: Ditto
+
+2015-11-08  Daniel C. Dillon  <dcdillon@gmail.com>
+
+        * inst/include/Rcpp/Nullable.h: No longer prevent assignment of
+        R_NilValue to Nullable<> in function signatures
+
+        * inst/include/Rcpp/vector/Matrix.h: Use showpoint in operator<<()
+
+2015-11-07  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/include/Rcpp/vector/Matrix.h: Beginnings of a Matrix transpose
+
+2015-11-06  Kevin Ushey <kevinushey@gmailcom>
+
+        * inst/include/Rcpp/vector/Subsetter.h: Add sugar math operators
+        * inst/unitTests/runit.subset.R: Unit tests
+        * inst/unitTests/cpp/Subset.cpp: Unit tests
+        * inst/NEWS.Rd: NEWS entry
+
+2015-11-01  Qiang Kou <qkou@umail.iu.edu>
+
+        * inst/include/Rcpp/vector/MatrixColumn.h: Fix overflow
+
+2015-11-01  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION: Roll Version: to 0.12.1.4
+
+2015-10-30  Nathan Russell <russell.nr2012@gmail.com>
+
+        * inst/include/Rcpp/sugar/functions/cummax.h: New sugar function
+        * inst/include/Rcpp/sugar/functions/cummin.h: New sugar function
+        * inst/include/Rcpp/sugar/functions/cumprod.h: New sugar function
+        * inst/unitTests/cpp/sugar.cpp: Unit test support for new functions
+        * inst/unitTests/runit.sugar.R: Ditto
+
+2015-10-08  Tianqi Chen <tianqi.tchen@gmail.com>
+
+        * inst/include/Rcpp/api/meat/is.h: Enhance the check for Rcpp Module
+        objects (PR #381 fixing #380)
+
+2015-10-01  JJ Allaire <jj@rstudio.org>
+
+        * src/attributes.cpp: Enable export of C++ interface for functions that
+        return void
+
+2015-09-28  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/NEWS.Rd: GitHub pull requests and issues are now linked
+
+        * src/barrier.cpp: Use SET_STRING_ELT() on LHS (with thanks to Luke)
+
+2015-09-21  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/include/Rcpp/String.h: Before assigning ensure we received
+        exactly one string argument
+
 2015-09-10  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION: Release 0.12.1
