@@ -1,3 +1,65 @@
+2016-01-10  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION: Release 0.12.3
+        * inst/NEWS.Rd: Release 0.12.3
+	* vignettes/Rcpp.bib: Release 0.12.3
+        * inst/include/Rcpp/config.h: Release 0.12.3
+
+        * debian/*: Changes for Debian release of 0.12.3
+
+	* vignettes/Rcpp.bib: Updated all CRAN reference to current versions
+
+2016-01-09  Dirk Eddelbuettel  <edd@debian.org>
+
+        * Contributing.md: Added to GitHub repo
+
+        * .Rbuildignore: Ensure Contributing.md is not in R package, also
+        removed two old entries
+
+2015-12-29  Joshua Pritikin <jpritikin@pobox.com>
+
+        * inst/include/Rcpp/Module.h: Initialize base class in copy ctor
+        * inst/include/Rcpp/macros/interface.h: Idem
+
+2015-12-12  Qiang Kou <qkou@umail.iu.edu>
+
+        * inst/include/Rcpp/String.h: std::hash<Rcpp::String>
+        * inst/unitTests/cpp/wrap.cpp: Unit tests
+        * inst/unitTests/runit.wrap.R: Unit tests
+
+2015-12-04  Qiang Kou <qkou@umail.iu.edu>
+
+        * inst/include/Rcpp/vector/Matrix.h: Add math operators between matrix
+        and scalar
+        * inst/unitTests/runit.Matrix.R: Unit tests
+        * inst/unitTests/cpp/Matrix.cpp: Unit tests
+
+2015-11-27  Daniel C. Dillon  <dcdillon@gmail.com>
+
+        * inst/include/Rcpp/vector/proxy.h: const_iterators for CharacterVector
+        now work analogously to iterators
+        * inst/include/Rcpp/vector/const_generic_proxy.h: Idem
+        * inst/include/Rcpp/vector/const_string_proxy.h: Idem
+        * inst/include/Rcpp/vector/traits.h: Idem
+
+        * inst/unitTests/cpp/Vector.cpp: Tests for above
+        * inst/unitTests/runit.Vector.R: Idem
+
+        [ All this was commited on Sep 5 but only merged Nov 27 ]
+
+2015-11-25  JJ Allaire <jj@rstudio.org>
+
+        * src/attributes.cpp: Avoid invalid function names when
+        generating C++ interfaces.
+
+2015-11-15  Kazuki Fukui  <kazunoko93@gmail.com>>
+
+        * src/attributes.cpp: Insert extra space around & in interface
+
+2015-11-14  Dirk Eddelbuettel  <edd@debian.org>
+
+        * .travis.yml: Add token for secure Slack & Travis integration
+
 2015-11-14  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION: Release 0.12.2
