@@ -432,6 +432,11 @@ compileAttributes <- function(pkgdir = ".", verbose = getOption("verbose")) {
     list(env = list(PKG_CXXFLAGS ="-std=c++0x"))
 }
 
+# built-in C++14 plugin for C++14 standard
+.plugins[["cpp14"]] <- function() {
+    list(env = list(PKG_CXXFLAGS ="-std=c++14"))
+}
+
 # built-in C++1y plugin for C++14 and C++17 standard under development
 .plugins[["cpp1y"]] <- function() {
     list(env = list(PKG_CXXFLAGS ="-std=c++1y"))
@@ -456,7 +461,7 @@ sourceCppFunction <- function(func, isVoid, dll, symbol) {
 
     body <- quote( CALL_PLACEHOLDER ( EXTERNALNAME, ARG ) )[ c(1:2, rep(3, length(args))) ]
 
-    for (i in seq(along = args))
+    for (i in seq(along.with = args))
         body[[i+2]] <- as.symbol(args[i])
 
     body[[1L]] <- .Call
