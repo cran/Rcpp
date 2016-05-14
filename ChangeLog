@@ -1,3 +1,120 @@
+2016-05-14  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION: Release 0.12.5
+        * inst/NEWS.Rd: Release 0.12.5
+	* vignettes/Rcpp.bib: Release 0.12.5
+        * inst/include/Rcpp/config.h: Release 0.12.5
+
+        * debian/*: Changes for Debian release of 0.12.5
+
+	* vignettes/Rcpp.bib: Updated references
+
+2016-05-13  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION: Rolled minor version
+
+        * R/compilerCheck.R: Minimal R function to check g++ version sufficiency
+        * man/compilerCheck.Rd: Documentation
+
+2016-05-11  Dirk Eddelbuettel  <edd@debian.org>
+
+        * R/Rcpp.package.skeleton.R: Modified to create a package without notes,
+        warnings, or error even pkgKitten is not available
+
+        * R/Rcpp.package.skeleton.R (.playWithPerPackageHelpPage): Added new
+        helper function to be used when pkgKitten is not available
+        * inst/skeleton/manual-page-stub.Rd: Stub for per-package help page used
+        when pkgKitten is not available
+
+2016-05-10  Dirk Eddelbuettel  <edd@debian.org>
+
+        * R/Rcpp.package.skeleton.R: Also correct Title: and Description: to
+        satisfy R CMD check in R-release and (current) R-devel
+
+2016-05-08  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/unitTests/cpp/Matrix.cpp: Made four scalar/matrix tests less
+        ambiguous for overloads by using double as scalar
+
+2016-05-06  Dirk Eddelbuettel  <edd@debian.org>
+
+        * R/loadRcppModules.R (loadRcppModules): Add call to .Deprecated
+        pointing out that loadModule is preferred
+        * man/Rcpp-deprecated.Rd: Added to list deprecated functions
+        * man/loadRcppModules-deprecated.Rd: Renamed to -deprecated, added link
+        to loadModule which is the preferred method
+
+        * vignettes/Rcpp-modules.Rnw: Updated with respect to loadRcppModules
+        deprecation and loadModule being preferred
+
+2016-04-15  Kevin Ushey <kevinushey@gmail.com>
+
+        * src/attributes.cpp: Add a missing 'winslash = "/"'
+
+2016-04-14  J.J. Allaire <jj@rstudio.org>
+
+        * src/attributes.cpp: Correct handling of dependent file paths on
+        Windows (use winslash = "/")
+
+2016-04-13  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version): Rolling minor version and Date
+
+2016-04-11  Ben Goodrich  <goodrich.ben@gmail.com>
+
+        * R/Module.R: Avoid calling as.character() on C++Object to prevent race
+
+2016-04-02  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION: Rolled to minor version 0.12.4.3
+        * inst/include/Rcpp/config.h: Ditto
+
+        * ChangeLog: Added entries for PRs 453 and 454
+        * inst/NEWS.Rd: Add two missing \item uses
+
+        * R/Module.R: Rename copy to copyObject to avoid function name collisions
+        * inst/unitTests/runit.Module.R: Ditto
+        * man/copyObject.Rd: Ditto
+        * inst/NEWS.Rd: Ditto
+        * NAMESPACE: Ditto
+
+        * inst/unitTests/runit.environments.R: Skip test.environment.child test
+
+2016-03-31  Romain Francois <romain@r-enthusiasts.com>
+
+        * R/Modules.R: New top-level functions copy, destruct and is_destructed
+        * NAMESPACE: New functions copy, destruct and is_destructed exported
+        * man/copy.Rd: New manual page
+        * man/destruct.Rd: Ditto
+
+        * inst/include/Rcpp/module/class.h: Add copy constructortor + destructor
+        * inst/include/Rcpp/module/class_Base.h: Ditto
+        * src/Module.cpp: Ditto
+        * src/Rcpp_init.cpp: Ditto
+        * src/internal.h: Ditto
+
+        * inst/include/Rcpp/traits/traits.h: New trait detecting copy contructor
+        * inst/include/Rcpp/traits/has_copy_constructor.h: Ditto
+
+        * inst/unitTests/runit.Module.R: Test new copy constructor and destructor
+        * inst/unitTests/cpp/Module.cpp: Ditto
+
+2016-03-29  Daniel C. Dillon  <dcdillon@gmail.com>
+
+        * inst/include/Rcpp/String.h: Correct Rcpp::String for Rcpp::Nullable
+
+2016-03-27  Qin Wenfeng  <mail@qinwenfeng.com>
+
+        * R/Attributes.R: Support new R 3.3.0 Windows toolchain
+
+2016-03-26  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION: Rolled Date and minor Version
+
+2016-03-23  Sergio Marques <sergio.rtmarques@gmail.com>
+
+        * src/api.cpp: Also check a flag __MUSL__ to accomodate Alpine
+
 2016-03-22  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION: Release 0.12.4
@@ -5,7 +122,7 @@
 	* vignettes/Rcpp.bib: Release 0.12.4
         * inst/include/Rcpp/config.h: Release 0.12.4
 
-        * debian/*: Changes for Debian release of 0.12.3
+        * debian/*: Changes for Debian release of 0.12.4
 
 2016-03-19  Dirk Eddelbuettel  <edd@debian.org>
 

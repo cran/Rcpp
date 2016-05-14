@@ -3,6 +3,39 @@
 \newcommand{\ghpr}{\href{https://github.com/RcppCore/Rcpp/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/RcppCore/Rcpp/issues/#1}{##1}}
 
+\section{Changes in Rcpp version 0.12.5 (2016-05-14)}{
+  \itemize{
+    \item Changes in Rcpp API:
+    \itemize{
+      \item The checks for different C library implementations now also check for Musl
+      used by Alpine Linux (Sergio Marques in PR \ghpr{449}).
+      \item \code{Rcpp::Nullable} works better with Rcpp::String (Dan Dillon in
+      PR \ghpr{453}).
+    }
+    \item Changes in Rcpp Attributes:
+    \itemize{
+      \item R 3.3.0 Windows with Rtools 3.3 is now supported (Qin Wenfeng in PR
+      \ghpr{451}). 
+      \item Correct handling of dependent file paths on Windows (use winslash = "/").
+    }
+    \item Changes in Rcpp Modules:
+    \itemize{
+      \item An apparent race condition in Module loading seen with R 3.3.0 was
+      fixed (Ben Goodrich in \ghpr{461} fixing \ghit{458}).
+      \item The (older) \code{loadRcppModules()} is now deprecated in favour of
+      \code{loadModule()} introduced around R 2.15.1 and Rcpp 0.9.11 (PR \ghpr{470}).
+    }
+    \item Changes in Rcpp support functions:
+    \itemize{
+      \item The \code{Rcpp.package.skeleton()} function was again updated in
+      order to create a \code{DESCRIPTION} file which passes \code{R CMD check}
+      without notes. warnings, or error under R-release and R-devel (PR \ghpr{471}).
+      \item A new function \code{compilerCheck} can test for minimal \code{g++}
+      versions (PR \ghpr{474}).
+    }
+  }
+}
+      
 \section{Changes in Rcpp version 0.12.4 (2016-03-22)}{
   \itemize{
     \item Changes in Rcpp API:

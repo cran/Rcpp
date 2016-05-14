@@ -851,7 +851,7 @@ namespace attributes {
                         // if it exists then normalize and add to our list
                         LogicalVector exists = fileExists(include);
                         if (exists[0]) {
-                            include = normalizePath(include);
+                            include = normalizePath(include, "/");
                             if (addUniqueDependency(include, pDependencies)) {
                                 newDependencies.push_back(
                                     FileInfo(Rcpp::as<std::string>(include)));
@@ -894,7 +894,7 @@ namespace attributes {
             // normalize source file
             Rcpp::Environment baseEnv = Rcpp::Environment::base_env();
             Rcpp::Function normalizePath = baseEnv["normalizePath"];
-            sourceFile = Rcpp::as<std::string>(normalizePath(sourceFile));
+            sourceFile = Rcpp::as<std::string>(normalizePath(sourceFile, "/"));
             
             // parse dependencies
             std::vector<FileInfo> dependencies;

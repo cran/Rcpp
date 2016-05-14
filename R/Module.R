@@ -16,15 +16,15 @@
 # along with Rcpp.  If not, see <http://www.gnu.org/licenses/>.
 
 internal_function <- function(pointer){
-	f <- function(xp){
-		force(xp)
-		function(...){
-			.External( InternalFunction_invoke, xp, ... )
-		}
-	}
-	o <- new( "C++Function", f(pointer) )
-	o@pointer <- pointer
-	o
+    f <- function(xp){
+        force(xp)
+        function(...){
+            .External( InternalFunction_invoke, xp, ... )
+        }
+    }
+    o <- new( "C++Function", f(pointer) )
+    o@pointer <- pointer
+    o
 }
 
 setMethod("$", "C++Class", function(x, name) {
@@ -42,8 +42,8 @@ setMethod("$", "C++Class", function(x, name) {
 .getModulePointer <- function(module, mustStart = TRUE) {
     pointer <- get("pointer", envir = as.environment(module))
     if(is.null(pointer) && mustStart) {
-## should be (except for bug noted in identical())
-##    if(identical(pointer, .badModulePointer) && mustStart) {
+        ## should be (except for bug noted in identical())
+        ##    if(identical(pointer, .badModulePointer) && mustStart) {
         Module(module, mustStart = TRUE) # will either initialize pointer or throw error
         pointer <- get("pointer", envir = as.environment(module))
     }
@@ -111,7 +111,7 @@ setMethod("initialize", "Module",
 
 .get_Module_Class <- function( x, name, pointer =  .getModulePointer(x) ){
     value <- .Call( Module__get_class, pointer, name )
-    value@generator <-  get("refClassGenerators",envir=x)[[as.character(value)]]
+    value@generator <- get("refClassGenerators", envir=x)[[value@.Data]]
     value
 }
 
@@ -216,7 +216,7 @@ Module <- function( module, PACKAGE = methods::getPackageName(where), where = to
     for( i in seq_along(classes) ){
         CLASS <- classes[[i]]
 
-        clname <- as.character(CLASS)
+        clname <- CLASS@.Data
 
         fields <- cpp_fields( CLASS, where )
         methods <- cpp_refMethods(CLASS, where)
@@ -277,7 +277,7 @@ Module <- function( module, PACKAGE = methods::getPackageName(where), where = to
 
     for( i in seq_along(classes) ){
         CLASS <- classes[[i]]
-        clname <- as.character(CLASS)
+        clname <- CLASS@.Data
         demangled_name <- sub( "^Rcpp_", "", clname )
         .classes_map[[ CLASS@typeid ]] <- storage[[ demangled_name ]] <- .get_Module_Class( module, demangled_name, xp )
 
@@ -436,5 +436,6 @@ cpp_fields <- function( CLASS, where){
      sapply( CLASS@fields, binding_maker, where = where )
 }
 
-.CppClassName <- function(name)
+.CppClassName <- function(name) {
     paste0("Rcpp_",name)
+}
