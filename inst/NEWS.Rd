@@ -3,6 +3,57 @@
 \newcommand{\ghpr}{\href{https://github.com/RcppCore/Rcpp/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/RcppCore/Rcpp/issues/#1}{##1}}
 
+\section{Changes in Rcpp version 0.12.6 (2016-07-18)}{
+  \itemize{
+    \item Changes in Rcpp API:
+    \itemize{
+      \item The \code{long long} data type is used only if it is available,
+      to avoid compiler warnings (Kirill Müller in \ghpr{488}).
+      \item The compiler is made aware that \code{stop()} never returns, to
+      improve code path analysis (Kirill Müller in \ghpr{487} addressing issue
+      \ghit{486}).
+      \item String replacement was corrected (Qiang in \ghpr{479} following
+      mailing list bug report by Masaki Tsuda)
+      \item Allow for UTF-8 encoding in error messages via
+      \code{RCPP_USING_UTF8_ERROR_STRING} macro (Qin Wenfeng in \ghpr{493}) 
+      \item The R function \code{Rf_warningcall} is now provided as well (as
+      usual without leading \code{Rf_}) (\ghpr{497} fixing \ghit{495}) 
+    }
+    \item Changes in Rcpp Sugar:
+    \itemize{
+      \item Const-ness of \code{min} and \code{max} functions has been corrected.
+      (Dan Dillon in PR \ghpr{478} fixing issue \ghit{477}).
+      \item Ambiguities for matrix/vector and scalar operations have been fixed
+      (Dan Dillon in PR \ghpr{476} fixing issue \ghit{475}).
+      \item New \code{algorithm} header using iterator-based approach for
+      vectorized functions (Dan in PR \ghpr{481} revisiting PR \ghpr{428} and
+      addressing issue \ghit{426}, with futher work by Kirill in PR \ghpr{488}
+      and Nathan in \ghpr{503} fixing issue \ghit{502}).
+      \item The \code{na_omit()} function is now faster for vectors without
+      \code{NA} values (Artem Klevtsov in PR \ghpr{492})
+    }
+    \item Changes in Rcpp Attributes:
+    \itemize{
+      \item Add \code{cacheDir} argument to \code{sourceCpp()} to enable caching of 
+        shared libraries across R sessions (JJ in \ghpr{504}).
+      \item Code generation now deals correctly which packages containing a dot
+      in their name (Qiang in \ghpr{501} fixing \ghit{500}).
+    }
+    \item Changes in Rcpp Documentation:
+    \itemize{
+      \item A section on default parameters was added to the Rcpp FAQ vignette
+      (James Balamuta in \ghpr{505} fixing \ghit{418}).
+      \item The Rcpp-attributes vignette is now mentioned more prominently in
+      question one of the Rcpp FAQ vignette.
+      \item The Rcpp Quick Reference vignette received a facelift with new
+      sections on Rcpp attributes and plugins begin added. (James Balamuta in
+      \ghpr{509} fixing \ghit{484}).
+      \item The bib file was updated with respect to the recent JSS publication
+      for RProtoBuf.
+    }
+  }
+}
+      
 \section{Changes in Rcpp version 0.12.5 (2016-05-14)}{
   \itemize{
     \item Changes in Rcpp API:
