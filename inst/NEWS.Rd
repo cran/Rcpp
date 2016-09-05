@@ -1,7 +1,50 @@
 \name{NEWS}
-\title{News for Package 'Rcpp'}
+\title{News for Package \pkg{Rcpp}}
 \newcommand{\ghpr}{\href{https://github.com/RcppCore/Rcpp/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/RcppCore/Rcpp/issues/#1}{##1}}
+
+\section{Changes in Rcpp version 0.12.7 (2016-09-04)}{
+  \itemize{
+    \item Changes in Rcpp API:
+    \itemize{
+      \item The \code{NORET} macro is now defined if it was not already defined
+      by R itself (Kevin fixing issue \ghit{512}). 
+      \item Environment functions get() & find() now accept a Symbol
+      (James Balamuta in \ghpr{513} addressing issue \ghit{326}).
+      \item Several uses of \code{Rf_eval} were replaced by the preferred
+      \code{Rcpp::Rcpp_eval} (Qiang in PR \ghpr{523} closing \ghit{498}).
+      \item Improved Autogeneration Warning for RcppExports
+      (James Balamuta in \ghpr{528} addressing issue \ghit{526}).
+      \item Fixed invalid C++ prefix identifiers in auto-generated code 
+      (James Balamuta in \ghpr{528} and \ghpr{531} addressing issue
+      \ghit{387}; Simon Dirmeier in \ghpr{548}). 
+      \item String constructors now set default UTF-8 encoding (Qiang Kou in
+      \ghpr{529} fixing \ghit{263}).
+      \item Add variadic variants of the \code{RCPP_RETURN_VECTOR} and
+      \code{RCPP_RETURN_MATRIX} macro when C++11 compiler used (Artem Klevtsov
+      in \ghpr{537} fixing \ghit{38}).
+    }
+    \item Changes in Rcpp build system
+    \itemize{
+      \item Travis CI is now driven via \code{run.sh} from our fork, and deploys
+      all packages as .deb binaries using our PPA where needed (Dirk in
+      \ghpr{540} addressing issue \ghit{517}).
+    }
+    \item Changes in Rcpp unit tests
+    \itemize{
+      \item New unit tests for random number generators the R namespace which 
+      call the standalone Rmath library. (James Balamuta in \ghpr{514} 
+      addressing issue \ghit{28}).
+    }
+    \item Changes in Rcpp Examples:
+    \itemize{
+      \item Examples that used cxxfunction() from the inline package have been
+      rewritten to use either sourceCpp() or cppFunction() 
+      (James Balamuta in \ghpr{541}, \ghpr{535}, \ghpr{534}, and \ghpr{532} 
+      addressing issue \ghit{56}).
+    }
+  }
+}
 
 \section{Changes in Rcpp version 0.12.6 (2016-07-18)}{
   \itemize{
