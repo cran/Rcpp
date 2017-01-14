@@ -1,4 +1,4 @@
-## Rcpp [![Build Status](https://travis-ci.org/RcppCore/Rcpp.svg)](https://travis-ci.org/RcppCore/Rcpp) [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) [![CRAN](http://www.r-pkg.org/badges/version/Rcpp)](https://cran.r-project.org/package=Rcpp) [![Downloads](http://cranlogs.r-pkg.org/badges/Rcpp?color=brightgreen)](http://www.r-pkg.org/pkg/Rcpp)
+## Rcpp [![Build Status](https://travis-ci.org/RcppCore/Rcpp.svg)](https://travis-ci.org/RcppCore/Rcpp) [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) [![CRAN](http://www.r-pkg.org/badges/version/Rcpp)](https://cran.r-project.org/package=Rcpp) [![Downloads](http://cranlogs.r-pkg.org/badges/Rcpp?color=brightgreen)](http://www.r-pkg.org/pkg/Rcpp) [![Coverage Status](https://img.shields.io/codecov/c/github/RcppCore/Rcpp/master.svg)](https://codecov.io/github/RcppCore/Rcpp?branch=master)
 
 ### Seamless R and C++ Integration
 
@@ -56,7 +56,7 @@ see 'citation("Rcpp")' for details.
 The [Rcpp Gallery](http://gallery.rcpp.org) showcases over one hundred fully
 documented and working examples.
 
-A number of examples are included as are over 1292 unit tests in over 573 unit
+A number of examples are included as are 1359 unit tests in 591 unit
 test functions provide additional usage examples.
 
 An earlier version of Rcpp, containing what we now call the 'classic Rcpp
@@ -88,8 +88,8 @@ questions 1.2 and 1.3 in the
 
 ### Authors
 
-Dirk Eddelbuettel, Romain Francois, JJ Allaire, Kevin Ushey, Qiang Kou, Doug
-Bates, and John Chambers 
+Dirk Eddelbuettel, Romain Francois, JJ Allaire, Kevin Ushey, Qiang Kou,
+Nathan Russell, Doug Bates, and John Chambers 
 
 ### License
 

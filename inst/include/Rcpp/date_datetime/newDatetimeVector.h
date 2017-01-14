@@ -29,9 +29,9 @@ namespace Rcpp {
     class newDatetimeVector : public NumericVector {
     public:
         template <int RTYPE, bool NA, typename VEC>
-        newDatetimeVector(const VectorBase<RTYPE,NA,VEC>& other) :
+        newDatetimeVector(const VectorBase<RTYPE,NA,VEC>& other, const char* tz = "") :
             NumericVector(other) {
-                setClass(other.attr("tzone"));
+            setClass(tz); 
         }
 
         newDatetimeVector(SEXP vec, const char* tz = "") :
@@ -51,15 +51,17 @@ namespace Rcpp {
                 v[i] = (*this)[i];
             return v;
         }
-        
+
         inline newDatetimeVector &operator=(const newDatetimeVector &rhs) {
             if (this != &rhs) {
                 NumericVector::operator=(rhs);
                 this->attr("tzone") = rhs.attr("tzone");
             }
-            
+
             return *this;
         }
+
+        friend inline std::ostream &operator<<(std::ostream & s, const newDatetimeVector d);
 
     private:
 
@@ -75,6 +77,16 @@ namespace Rcpp {
             }
         }
     };
+
+    inline std::ostream &operator<<(std::ostream & os, const newDatetimeVector d) {
+        int n = d.size();
+        for (int i=0; i<n; i++) {
+            os << Datetime(d[i]).format() << " ";
+            if ((i+1) % 4 == 0) os << "\n";
+        }
+        return os;
+    }
+
 }
 
 #endif

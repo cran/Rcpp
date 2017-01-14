@@ -38,15 +38,24 @@ using namespace Rcpp;
     #else
         #include <execinfo.h>
 
+        // Extract mangled name e.g. ./test(baz+0x14)[0x400962]
         static std::string demangler_one(const char* input) {
             static std::string buffer;
             buffer = input;
-            buffer.resize(buffer.find_last_of('+') - 1);
-            buffer.erase(
-                buffer.begin(),
-                buffer.begin() + buffer.find_last_of(' ') + 1
-            );
-            return demangle(buffer);
+            size_t last_open = buffer.find_last_of('(');
+            size_t last_close = buffer.find_last_of(')');
+            if (last_open == std::string::npos ||
+                last_close == std::string::npos) {
+              return input;     // #nocov
+            }
+            std::string function_name = buffer.substr(last_open + 1, last_close - last_open - 1);
+            // Strip the +0x14 (if it exists, which it does not in earlier versions of gcc)
+            size_t function_plus = function_name.find_last_of('+');
+            if (function_plus != std::string::npos) {
+              function_name.resize(function_plus);
+            }
+            buffer.replace(last_open + 1, function_name.size(), demangle(function_name));
+            return buffer;
         }
     #endif
 #endif
@@ -82,7 +91,7 @@ namespace Rcpp {
     }
 
     // [[Rcpp::register]]
-    const char * type2name(SEXP x) {
+    const char * type2name(SEXP x) { 			// #nocov start
         switch (TYPEOF(x)) {
         case NILSXP:	return "NILSXP";
         case SYMSXP:	return "SYMSXP";
@@ -111,7 +120,7 @@ namespace Rcpp {
         default:
         return "<unknown>";
         }
-    }
+    }							// #nocov end
 
 
 } // namespace Rcpp
@@ -136,21 +145,21 @@ std::string demangle(const std::string& name) {
 }
 
 // [[Rcpp::register]]
-const char* short_file_name(const char* file) {
+const char* short_file_name(const char* file) {		// #nocov start
     std::string f(file);
     size_t index = f.find("/include/");
     if (index != std::string::npos) {
         f = f.substr(index + 9);
     }
     return f.c_str();
-}
+}							// #nocov end
 
 // [[Rcpp::internal]]
-SEXP as_character_externalptr(SEXP xp) {
+SEXP as_character_externalptr(SEXP xp) {		// #nocov start
     char buffer[20];
     snprintf(buffer, 20, "%p", (void*)EXTPTR_PTR(xp));
     return Rcpp::wrap((const char*)buffer);
-}
+}							// #nocov end
 
 // [[Rcpp::internal]]
 SEXP rcpp_capabilities() {
@@ -241,23 +250,23 @@ SEXP rcpp_capabilities() {
 
 
 // [[Rcpp::internal]]
-SEXP rcpp_can_use_cxx0x() {
+SEXP rcpp_can_use_cxx0x() {				// #nocov start
     #if defined(HAS_VARIADIC_TEMPLATES) || defined(RCPP_USING_CXX11)
         return Rf_ScalarLogical(TRUE);
     #else
         return Rf_ScalarLogical(FALSE);
     #endif
-}
+}							// #nocov end
 
 
 // [[Rcpp::internal]]
-SEXP rcpp_can_use_cxx11() {
+SEXP rcpp_can_use_cxx11() {				// #nocov start
     #if defined(RCPP_USING_CXX11)
         return Rf_ScalarLogical(TRUE);
     #else
         return Rf_ScalarLogical(FALSE);
     #endif
-}
+}							// #nocov end
 
 
 // [[Rcpp::register]]

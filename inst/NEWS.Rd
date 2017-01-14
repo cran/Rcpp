@@ -3,6 +3,50 @@
 \newcommand{\ghpr}{\href{https://github.com/RcppCore/Rcpp/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/RcppCore/Rcpp/issues/#1}{##1}}
 
+\section{Changes in Rcpp version 0.12.9 (2017-01-14)}{
+  \itemize{
+    \item Changes in Rcpp API:
+    \itemize{
+      \item The exception stack message is now correctly demangled on all
+      compiler versions (Jim Hester in \ghpr{598})
+      \item Date and Datetime object and vector now have format methods and
+      \code{operator<<} support (\ghpr{599}).
+      \item The \code{size} operator in \code{Matrix} is explicitly referenced
+      avoiding a g++-6 issues (\ghpr{607} fixing \ghit{605}).
+      \item The underlying date calculation code was updated (\ghpr{621},
+      \ghpr{623}).
+      \item Addressed improper diagonal fill for non-symmetric matrices
+      (James Balamuta in \ghpr{622} addressing \ghit{619})
+    }
+    \item Changes in Rcpp Sugar:
+    \itemize{
+      \item Added new Sugar function \code{sample()} (Nathan Russell in 
+      \ghpr{610} and \ghpr{616}).
+      \item Added new Sugar function \code{Arg()} (James Balamuta in 
+      \ghpr{626} addressing \ghit{625}).
+    }
+    \item Changes in Rcpp unit tests
+    \itemize{
+      \item Added Environment::find unit tests and an Environment::get(Symbol)
+      test (James Balamuta in \ghpr{595} addressing issue \ghit{594}).
+      \item Added diagonal matrix fill tests
+      (James Balamuta in \ghpr{622} addressing \ghit{619})
+    }
+    \item Changes in Rcpp Documentation:
+    \itemize{
+      \item Exposed pointers macros were included in the Rcpp Extending vignette
+      (MathurinD; James Balamuta in \ghpr{592} addressing \ghit{418}).
+      \item The file \code{Rcpp.bib} move to directory \code{bib} which is
+      guaranteed to be present (\ghpr{631}).
+    }
+    \item Changes in Rcpp build system
+    \itemize{
+      \item Travis CI now also calls \CRANpkg{covr} for coverage analysis (Jim
+      Hester in PR \ghpr{591})
+    }
+  }
+}
+
 \section{Changes in Rcpp version 0.12.8 (2016-11-16)}{
   \itemize{
     \item Changes in Rcpp API:

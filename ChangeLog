@@ -1,3 +1,214 @@
+2017-01-14  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION: Release 0.12.9
+        * inst/NEWS.Rd: Release 0.12.9
+        * inst/bib/Rcpp.bib: Release 0.12.9
+        * inst/include/Rcpp/config.h: Release 0.12.9
+
+        * README.md: Updated counts for dependents and tests
+
+        * debian/*: Changes for Debian release of 0.12.9
+
+2017-01-13  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/include/Rcpp/exceptions.h: Added more #nocov tags
+        * inst/include/Rcpp/api/bones/wrap_extra_steps.h: Idem
+        * inst/include/Rcpp/iostream/Rstreambuf.h: Idem
+        * inst/include/Rcpp/traits/named_object.h: Idem
+        * inst/include/Rcpp/r_cast.h: Idem
+        * src/Module.cpp: Idem
+
+2017-01-12  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/bib/Rcpp.bib: Moved from vignettes/ directory
+        * R/bib.R (bib): Idem
+
+        * vignettes/Rcpp-FAQ.Rnw: Evaluate \Sexpr{Rcpp:::bib()}
+        * vignettes/Rcpp-attributes.Rnw: Idem
+        * vignettes/Rcpp-extending.Rnw: Idem
+        * vignettes/Rcpp-introduction.Rnw: Idem
+        * vignettes/Rcpp-modules.Rnw: Idem
+        * vignettes/Rcpp-packages.Rnw: Idem
+        * vignettes/Rcpp-sugar.Rnw: Idem
+
+        * inst/unitTests/runit.misc.R (test.bib): New test
+
+        * R/exceptions.R: Added #nocov
+
+2017-01-11  Dirk Eddelbuettel  <edd@debian.org>
+
+        * vignettes/Rcpp.bib: Updated references
+
+        * src/attributes.cpp (Rcpp): Correct typos in #nocov tags, added tags
+
+2017-01-07  James J Balamuta  <balamut2@illinois.edu>
+
+        * inst/include/Rcpp/sugar/functions/complex.h: Added Arg() function
+        * inst/unitTests/runit.sugar.R: Added Arg() unit test to complex list
+        * inst/unitTests/cpp/sugar.cpp: Idem
+
+2017-01-06  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version, Date): Mark new minor version
+
+        * src/attributes.cpp: Additional nocov tags
+
+2017-01-04  Dirk Eddelbuettel  <edd@debian.org>
+
+        * src/Date.cpp (Rcpp): Protect assignment to tm_gmtoff to not being
+        under MinGW; could potentially bite other too-limited systems
+
+        * inst/unitTests/runit.Date.R (test.Datetime.formating): Do not set TZ
+        when running test, only set digits option
+
+2017-01-01  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/unitTests/runit.Date.R (test.mktime, test.gmtime): New tests
+        * inst/unitTests/cpp/dates.cpp (test_mktime, test_gmtime): Idem
+
+2016-12-31  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/include/Rcpp/vector/Matrix.h: Minor simplification
+
+2016-12-31  James J Balamuta  <balamut2@illinois.edu>
+
+        * inst/include/Rcpp/vector/Matrix.h: Fixed non-symmetric case of matrix
+        fills by switching to a loop based solution from iterator.
+        * inst/unitTests/runit.Matrix.R: Added unit tests for diagonally
+        filling matrices.
+        * inst/unitTests/cpp/Matrix.cpp: Idem
+
+2016-12-30  Dirk Eddelbuettel  <edd@debian.org>
+
+        * src/Date.cpp: Synchronized internal code with R
+
+        * inst/unitTests/cpp/dates.cpp (gmtime_mktime): New test
+        * inst/unitTests/runit.Date.R (test.mktime_gmtime): Idem
+
+2016-12-26  Dirk Eddelbuettel  <edd@debian.org>
+
+        * R/Attributes.R: Added #nocov markers
+        * R/Module.R: Idem
+        * R/exposeClass.R: Idem, added copyright header
+
+2016-12-25  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Date, Version): Roll minor version
+
+        * src/api.cpp: Added #nocov markers
+        * src/Rcpp_init.cpp: Idem
+        * src/Date.cpp: Date
+
+2016-12-14  Nathan Russell  <russell.nr2012@gmail.com>
+
+        * inst/include/Rcpp/sugar/functions/sample.h: Use vector instead of
+        manual memory management.
+
+2016-12-13  Nathan Russell  <russell.nr2012@gmail.com>
+
+        * inst/include/Rcpp/sugar/functions/sample.h: Use malloc.h instead of
+        alloca.h when building on Windows
+        * inst/include/Rcpp/date_datetime/Date.h: Include time.h when building
+        on Windows
+        * inst/include/Rcpp/date_datetime/Datetime.h: Idem
+
+2016-12-12  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/include/Rcpp/sugar/functions/sample.h: In case sample.h from the
+        RcppArmadillo extensions was included, skip this file
+
+2016-12-10  Nathan Russell  <russell.nr2012@gmail.com>
+
+        * inst/include/Rcpp/sugar/functions/sample.h: New function
+        sample()
+        * inst/include/Rcpp/sugar/functions/functions.h: Idem
+        * inst/unitTests/cpp/sugar.cpp: Unit tests for sample()
+        * inst/unitTests/runit.sugar.R: Idem
+
+2016-12-10  Dirk Eddelbuettel  <edd@debian.org>
+
+        * R/loadRcppModules.R: Added #nocov tags
+        * R/loadModule.R: Ditto
+
+        * R/unit.tests.R (test): Adjusted one #nocov tag
+
+2016-12-09  Dirk Eddelbuettel  <edd@debian.org>
+
+        * R/00_classes.R: Added #nocov tags
+        * R/01_show.R: Ditto
+        * R/02_completion.R: Ditto
+        * R/03_prompt.R: Ditto
+
+2016-12-07  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/include/Rcpp/vector/Matrix.h: Add 'using ...' to disambiguate size()
+
+2016-12-04  Dirk Eddelbuettel  <edd@debian.org>
+
+        * .codecov.yml (comment): Enable more verbose codecov.io reports
+
+2016-12-03  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/unitTests/cpp/dates.cpp (Datetime_format): Additional ostream tests
+        * inst/unitTests/runit.Date.R (test.Date.formating): Ditto
+
+        * inst/unitTests/runit.system.R (test.RcppCxx): New tests
+
+        * R/RcppLdpath.R (canUseCXX0X): Simplified as we can now rely on more
+        modern compilers;  underlying C++ code has not been present for a while
+
+        * R/compilerCheck.R (compilerCheck): Added some #nocov tags
+        * R/unit.tests.R (test, gctortureRUnitTest): Ditto
+        * R/zzz.R (.onLoad): Ditto
+
+2016-11-29  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version, Date): Roll minor version to 0.12.8.2
+
+2016-11-28  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/unitTests/cpp/dates.cpp (Date_format, Datetime_format): New tests
+        * inst/unitTests/runit.Date.R (test.Date.formating): Ditto
+        (test.Datetime.formating): Ditto
+
+        * inst/unitTests/runit.sugar.R (test.intersect): Added sort() around
+        call to Sugar's intersect to ensure sorted output with g++-6.*
+
+2016-11-27  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/include/Rcpp/date_datetime/Date.h (format, operator<<): Added
+        * inst/include/Rcpp/date_datetime/Datetime.h (format, operator<<): Ditto
+        * inst/include/Rcpp/date_datetime/newDateVector.h (operator<<): Ditto
+        * inst/include/Rcpp/date_datetime/newDatetimeVector.h (operator<<): Ditto
+
+2016-11-23  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/include/Rcpp/config.h (RCPP_DEV_VERSION): Set minor version
+
+2016-11-22  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Date, Version): Roll minor version
+
+        * inst/include/Rcpp/date_datetime/newDatetimeVector.h (Rcpp): Small
+        correction concerning timezone attribute to ctor from RTYPE
+
+2016-11-22  Jim Hester  <james.f.hester@gmail.com>
+
+        * inst/src/api.cpp: Cleanup to stack message parseing
+        * inst/unitTests/cpp/exceptions.cpp: Unit tests for cleanup
+        * inst/unitTests/runit.exceptions.R: Ditto
+
+2016-11-19  James J Balamuta  <balamut2@illinois.edu>
+
+        * inst/unitTests/runit.environments.R: Added environment find unit tests
+        as well as a symbol access test for environment get.
+        * inst/unitTests/cpp/Environment.cpp: Idem
+
+2016-11-18  James J Balamuta  <balamut2@illinois.edu>
+
+        * vignettes/Rcpp-extending: Switched to attributes and
+          added external class pointer macro notes by MathurinD
+
 2016-11-16  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION: Release 0.12.8
