@@ -1,3 +1,89 @@
+2017-03-17  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION: Release 0.12.10
+        * inst/NEWS.Rd: Release 0.12.10
+        * inst/bib/Rcpp.bib: Release 0.12.10
+        * inst/include/Rcpp/config.h: Release 0.12.10
+
+        * README.md: Updated counts for dependents and tests
+
+        * debian/*: Changes for Debian release of 0.12.10
+
+2017-03-15  Jeroen Ooms  <jeroenooms@gmail.com>
+
+        * inst/include/Rcpp/XPtr.h: added finalizeOnExit parameter
+
+2017-02-28  Dirk Eddelbuettel  <edd@debian.org>
+
+        * src/Rcpp_init.cpp (R_init_Rcpp): Call R_useDynamicSymbols()
+
+        * DESCRIPTION (Version, Date): New minor version
+
+2017-02-25  Dirk Eddelbuettel  <edd@debian.org>
+
+        * vignettes/Rcpp-FAQ.Rnw: New subsection on C++11, C++14, C++17
+
+2017-02-17  Dirk Eddelbuettel  <edd@debian.org>
+
+        * R/tools.R: More #nocov
+        * inst/include/Rcpp/internal/r_vector.h: Idem
+
+2017-02-15  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version, Date): New minor version
+
+2017-02-14  Iñaki Ucar  <i.ucar86@gmail.com>
+
+        * inst/include/Rcpp/iostream/Rstreambuf.h: Fixed single-character handling
+        (pull request #649, fixes issue #647)
+
+2017-02-13  Dirk Eddelbuettel  <edd@debian.org>
+
+        * R/Attributes.R (.plugins[["cpp17"]]): New plugin
+        (.plugins[["cpp1z"]]): Idem
+
+2017-02-04  Daniel C. Dillon  <dcdillon@gmail.com>
+
+        * inst/include/Rcpp/algorithm.h: Improved setup for Intel's icc
+
+2017-01-31  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Date, Version): Roll minor version
+
+        * inst/include/Rcpp/algorithm.h: Allow algorithm.h to be compiler under
+        Intel's compiler, add copyright header and include guard
+
+2017-01-31  Nathan Russell  <russell.nr2012@gmail.com>
+
+        * inst/include/Rcpp/sugar/matrix/upper_tri.h: Inherit from MatrixBase
+        and use correct comparators in get() to fix segfault
+        * inst/include/Rcpp/sugar/matrix/lower_tri.h: Idem
+        * inst/unitTests/cpp/sugar.cpp: Added unit tests for upper_tri and
+        lower_tri
+        * inst/unitTests/runit.sugar.R: Idem
+
+2017-01-23  James J Balamuta  <balamut2@illinois.edu>
+
+        * inst/include/Rcpp/DataFrame.h: Corrected return type for column size.
+
+2017-01-22  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/include/Rcpp/DataFrame.h: Simplified and removed deprecation language.
+
+2017-01-21  James J Balamuta  <balamut2@illinois.edu>
+
+        * inst/include/Rcpp/DataFrame.h: Added alias for column and row size
+        * inst/unitTests/runit.DataFrame.R: Added unit tests for aliases
+        * inst/unitTests/cpp/DataFrame.cpp: Idem
+
+2017-01-17  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version, Date): Roll minor version and Date
+
+        * inst/include/Rcpp/config.h (RCPP_DEV_VERSION): Roll minor
+
+        * src/Date.cpp (Rcpp): Do not access tm_gmtoff on Solaris
+
 2017-01-14  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION: Release 0.12.9
@@ -517,7 +603,7 @@
 
 2016-07-10  Nathan Russell <russell.nr2012@gmail.com>
 
-        * inst/include/Rcpp/algorithm.h: Accomdate clang compiler
+        * inst/include/Rcpp/algorithm.h: Accomodate clang compiler
 
 2016-07-03  Dirk Eddelbuettel  <edd@debian.org>
 
