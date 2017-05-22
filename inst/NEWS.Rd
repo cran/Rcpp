@@ -3,6 +3,55 @@
 \newcommand{\ghpr}{\href{https://github.com/RcppCore/Rcpp/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/RcppCore/Rcpp/issues/#1}{##1}}
 
+\section{Changes in Rcpp version 0.12.11 (2017-05-20)}{
+  \itemize{
+    \item Changes in Rcpp API:
+    \itemize{
+      \item Rcpp::exceptions can now be constructed without a call stack (Jim
+      Hester in \ghpr{663} addressing \ghit{664}).
+      \item Somewhat spurious compiler messages under very verbose settings are
+      now suppressed (Kirill Mueller in \ghpr{670}, \ghpr{671}, \ghpr{672},
+      \ghpr{687}, \ghpr{688}, \ghpr{691}).
+      \item Refreshed the included \code{tinyformat} template library
+      (James Balamuta in \ghpr{674} addressing \ghit{673}).
+      \item Added \code{printf}-like syntax support for exception classes and
+      variadic templating for \code{Rcpp::stop} and \code{Rcpp::warning}
+      (James Balamuta in \ghpr{676}).
+      \item Exception messages have been rewritten to provide additional
+      information. (James Balamuta in \ghpr{676} and \ghpr{677} addressing
+      \ghit{184}).
+      \item One more instance of \code{Rf_mkString} is protected from garbage
+      collection (Dirk in \ghpr{686} addressing \ghit{685}).
+      \item Two exception specification that are no longer tolerated by
+      \code{g++-7.1} or later were removed (Dirk in \ghpr{690} addressing
+      \ghit{689})
+    }
+    \item Changes in Rcpp Documentation:
+    \itemize{
+      \item Added a Known Issues section to the Rcpp FAQ vignette
+      (James Balamuta in \ghpr{661} addressing \ghit{628}, \ghit{563},
+      \ghit{552}, \ghit{460}, \ghit{419}, and \ghit{251}).
+    }
+    \item Changes in Rcpp Sugar:
+    \itemize{
+      \item Added sugar function \code{trimws} (Nathan Russell in \ghpr{680}
+      addressing \ghit{679}).
+    }
+    \item Changes in Rcpp Attributes:
+    \itemize{
+      \item Automatically generate native routine registrations (JJ in \ghpr{694})
+      \item The plugins for C++11, C++14, C++17 now set the values R 3.4.0 or
+      later expects; a plugin for C++98 was added (Dirk in \ghpr{684} addressing
+      \ghit{683}).
+    }
+    \item Changes in Rcpp support functions:
+    \itemize{
+      \item The \code{Rcpp.package.skeleton()} function now creates a package
+      registration file provided R 3.4.0 or later is used (Dirk in \ghpr{692})
+    }
+  }
+}
+
 \section{Changes in Rcpp version 0.12.10 (2017-03-17)}{
   \itemize{
     \item Changes in Rcpp API:
@@ -21,7 +70,7 @@
       \item The \code{algorithm.h} file now accomodates the Intel compiler
       (Dirk in \ghpr{643} and Dan in \ghpr{645} addressing issue \ghit{640}).
     }
-    \item Changes in Rcpp Attributes
+    \item Changes in Rcpp Attributes:
     \itemize{
       \item The C++17 standard is supported with a new plugin (used eg for
       \code{g++-6.2}).
@@ -30,7 +79,7 @@
     \itemize{
       \item An overdue explanation of how C++11, C++14, and C++17 can be used
       was added to the Rcpp FAQ.
-    }      
+    }
   }
 }
 

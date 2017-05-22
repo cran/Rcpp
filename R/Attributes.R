@@ -1,5 +1,5 @@
 
-# Copyright (C) 2012 - 2016  JJ Allaire, Dirk Eddelbuettel and Romain Francois
+# Copyright (C) 2012 - 2017  JJ Allaire, Dirk Eddelbuettel and Romain Francois
 #
 # This file is part of Rcpp.
 #
@@ -404,6 +404,13 @@ compileAttributes <- function(pkgdir = ".", verbose = getOption("verbose")) {
     depends <- unique(.splitDepends(depends))
     depends <- depends[depends != "R"]
 
+    # check the NAMESPACE file to see if dynamic registration is enabled
+    namespaceFile <- file.path(pkgdir, "NAMESPACE")
+    if (!file.exists(namespaceFile))
+        stop("pkgdir must refer to the directory containing an R package")
+    pkgNamespace <- readLines(namespaceFile, warn = FALSE)
+    registration <- any(grepl("^\\s*useDynLib.*\\.registration\\s*=\\s*TRUE.*$", pkgNamespace))
+
     # determine source directory
     srcDir <- file.path(pkgdir, "src")
     if (!file.exists(srcDir))
@@ -415,7 +422,7 @@ compileAttributes <- function(pkgdir = ".", verbose = getOption("verbose")) {
         dir.create(rDir)
 
     # get a list of all source files
-    cppFiles <- list.files(srcDir, pattern = "\\.((c(c|pp))|(h(pp)?))$")
+    cppFiles <- list.files(srcDir, pattern = "\\.((c(c|pp)?)|(h(pp)?))$")
 
     # derive base names (will be used for modules)
     cppFileBasenames <- tools::file_path_sans_ext(cppFiles)
@@ -449,16 +456,25 @@ compileAttributes <- function(pkgdir = ".", verbose = getOption("verbose")) {
 
     # generate exports
     invisible(.Call("compileAttributes", PACKAGE="Rcpp",
-                    pkgdir, pkgname, depends, cppFiles, cppFileBasenames,
+                    pkgdir, pkgname, depends, registration, cppFiles, cppFileBasenames,
                     includes, verbose, .Platform))
 }
 
 # setup plugins environment
 .plugins <- new.env()
 
-# built-in C++11 plugin
+# built-in C++98 plugin 
+.plugins[["cpp98"]] <- function() {
+    if (getRversion() >= "3.4")         # with recent R versions, R can decide
+        list(env = list(USE_CXX98 = "yes"))
+    else
+        list(env = list(PKG_CXXFLAGS ="-std=c++98"))
+}
+                                        # built-in C++11 plugin
 .plugins[["cpp11"]] <- function() {
-    if (getRversion() >= "3.1")         # with recent R versions, R can decide
+    if (getRversion() >= "3.4")         # with recent R versions, R can decide
+        list(env = list(USE_CXX11 = "yes"))
+    else if (getRversion() >= "3.1")    # with recent R versions, R can decide
         list(env = list(USE_CXX1X = "yes"))
     else if (.Platform$OS.type == "windows")
         list(env = list(PKG_CXXFLAGS = "-std=c++0x"))
@@ -475,7 +491,10 @@ compileAttributes <- function(pkgdir = ".", verbose = getOption("verbose")) {
 ## this is the default in g++-6.1 and later
 ## per https://gcc.gnu.org/projects/cxx-status.html#cxx14
 .plugins[["cpp14"]] <- function() {
-    list(env = list(PKG_CXXFLAGS ="-std=c++14"))
+    if (getRversion() >= "3.4")         # with recent R versions, R can decide
+        list(env = list(USE_CXX14 = "yes"))
+    else
+        list(env = list(PKG_CXXFLAGS ="-std=c++14"))
 }
 
 # built-in C++1y plugin for C++14 and C++17 standard under development
@@ -485,7 +504,10 @@ compileAttributes <- function(pkgdir = ".", verbose = getOption("verbose")) {
 
 # built-in C++17 plugin for C++17 standard (g++-6 or later)
 .plugins[["cpp17"]] <- function() {
-    list(env = list(PKG_CXXFLAGS ="-std=c++17"))
+    if (getRversion() >= "3.4")         # with recent R versions, R can decide
+        list(env = list(USE_CXX17 = "yes"))
+    else
+        list(env = list(PKG_CXXFLAGS ="-std=c++17"))
 }
 
 ## built-in C++1z plugin for C++17 standard under development
@@ -495,7 +517,7 @@ compileAttributes <- function(pkgdir = ".", verbose = getOption("verbose")) {
     list(env = list(PKG_CXXFLAGS ="-std=c++1z"))
 }
 
-## built-in OpenMP++11 plugin
+## built-in OpenMP plugin
 .plugins[["openmp"]] <- function() {
     list(env = list(PKG_CXXFLAGS="-fopenmp",
                     PKG_LIBS="-fopenmp"))
@@ -1132,3 +1154,43 @@ sourceCppFunction <- function(func, isVoid, dll, symbol) {
     as.character(token)
 }
 
+.extraRoutineRegistrations <- function(routines) {
+
+    declarations = character()
+    call_entries = character()
+
+    # if we are running R 3.4 or higher we can use an internal utility function
+    # to automatically discover additional native routines that require registration
+    if (getRversion() >= "3.4") {
+
+        # get the generated code from R
+        con <- textConnection(object = NULL, open = "w")
+        on.exit(close(con), add = TRUE)
+        tools::package_native_routine_registration_skeleton(
+            dir = ".",
+            con = con,
+            character_only = FALSE
+        )
+        code <- textConnectionValue(con)
+
+        # look for lines containing call entries
+        matches <- regexec('^\\s+\\{"([^"]+)",.*$', code)
+        matches <- regmatches(code, matches)
+        matches <- Filter(x = matches, function(x) {
+            length(x) > 0
+        })
+        for (match in matches) {
+            routine <- match[[2]]
+            if (!routine %in% routines) {
+                declaration <- grep(sprintf("^extern .* %s\\(.*$", routine), code,
+                                    value = TRUE)
+                declarations <- c(declarations, sub("^extern", "RcppExport", declaration))
+                call_entries <- c(call_entries, match[[1]])
+            }
+        }
+    }
+
+    # return extra declaratiosn and call entries
+    list(declarations = declarations,
+         call_entries = call_entries)
+}
