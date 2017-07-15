@@ -3,6 +3,48 @@
 \newcommand{\ghpr}{\href{https://github.com/RcppCore/Rcpp/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/RcppCore/Rcpp/issues/#1}{##1}}
 
+\section{Changes in Rcpp version 0.12.12 (2017-07-13)}{
+  \itemize{
+    \item Changes in Rcpp API:
+    \itemize{
+      \item The \code{tinyformat.h} header now ends in a newline (\ghit{701}).
+      \item Fixed rare protection error that occurred when fetching stack traces
+      during the construction of an Rcpp exception (Kirill Müller in \ghpr{706}).
+      \item Compilation is now also possibly on Haiku-OS (Yo Gong in \ghpr{708}
+      addressing \ghit{707}).
+      \item Dimension attributes are explicitly cast to \code{int} (Kirill
+      Müller in \ghpr{715}).
+      \item Unused arguments are no longer declared (Kirill Müller in
+      \ghpr{716}).
+      \item Visibility of exported functions is now supported via the R macro
+      \code{atttribute_visible} (Jeroen Ooms in \ghpr{720}).
+      \item The \code{no_init()} constructor accepts \code{R_xlen_t} (Kirill
+      Müller in \ghpr{730}).
+      \item Loop unrolling used \code{R_xlen_t} (Kirill Müller in \ghpr{731}).
+      \item Two unused-variables warnings are now avoided (Jeff Pollock in
+      \ghpr{732}).
+    }
+    \item Changes in Rcpp Attributes:
+    \itemize{
+      \item Execute tools::package_native_routine_registration_skeleton
+      within package rather than current working directory (JJ in \ghpr{697}).
+      \item The R portion no longer uses \code{dir.exists} to no require R 3.2.0
+      or newer (Elias Pipping in \ghpr{698}).
+      \item Fix native registration for exports with name attribute (JJ in \ghpr{703}
+      addressing \ghit{702}).
+      \item Automatically register init functions for Rcpp Modules (JJ in \ghpr{705}
+      addressing \ghit{704}).
+      \item Add Shield around parameters in Rcpp::interfaces (JJ in \ghpr{713}
+      addressing \ghit{712}).
+      \item Replace dot (".") with underscore ("_") in package names when generating
+      native routine registrations (JJ in \ghpr{722} addressing \ghit{721}).
+      \item Generate C++ native routines with underscore ("_") prefix to avoid
+      exporting when standard exportPattern is used in NAMESPACE (JJ in
+      \ghpr{725} addressing \ghit{723}).
+    }
+  }
+}
+
 \section{Changes in Rcpp version 0.12.11 (2017-05-20)}{
   \itemize{
     \item Changes in Rcpp API:

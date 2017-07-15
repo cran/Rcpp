@@ -1,4 +1,4 @@
-## Rcpp [![Build Status](https://travis-ci.org/RcppCore/Rcpp.svg)](https://travis-ci.org/RcppCore/Rcpp) [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) [![CRAN](http://www.r-pkg.org/badges/version/Rcpp)](https://cran.r-project.org/package=Rcpp) [![Downloads](http://cranlogs.r-pkg.org/badges/Rcpp?color=brightgreen)](http://www.r-pkg.org/pkg/Rcpp) [![Coverage Status](https://img.shields.io/codecov/c/github/RcppCore/Rcpp/master.svg)](https://codecov.io/github/RcppCore/Rcpp?branch=master)
+## Rcpp [![Build Status](https://travis-ci.org/RcppCore/Rcpp.svg)](https://travis-ci.org/RcppCore/Rcpp) [![License](https://eddelbuettel.github.io/badges/GPL2+.svg)](http://www.gnu.org/licenses/gpl-2.0.html) [![CRAN](http://www.r-pkg.org/badges/version/Rcpp)](https://cran.r-project.org/package=Rcpp) [![Downloads](http://cranlogs.r-pkg.org/badges/Rcpp?color=brightgreen)](http://www.r-pkg.org/pkg/Rcpp) [![Coverage Status](https://codecov.io/gh/RcppCore/Rcpp/graph/badge.svg)](https://codecov.io/github/RcppCore/Rcpp?branch=master)
 
 ### Seamless R and C++ Integration
 
@@ -65,9 +65,9 @@ been factored out of Rcpp into the package RcppClassic, and it is still
 available for code relying on the older interface. New development should 
 always use this Rcpp package instead.
 
-Other usage examples are provided by packages using Rcpp. As of March 2017,
-there are 975 [CRAN](https://cran.r-project.org) packages using Rcpp, a further
-89 [BioConductor](http://www.bioconductor.org) packages in its current release
+Other usage examples are provided by packages using Rcpp. As of July 2017,
+there are 1092 [CRAN](https://cran.r-project.org) packages using Rcpp, a further
+91 [BioConductor](http://www.bioconductor.org) packages in its current release
 as well as an unknown number of GitHub, Bitbucket, R-Forge, ... repositories
 using Rcpp.  All these packages provide usage examples for Rcpp.
 
