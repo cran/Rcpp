@@ -1,3 +1,121 @@
+2017-09-23  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/bib/Rcpp.bib: Updated references
+        * viignettes/Rcpp.bib: Idem
+
+2017-09-21  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version, Date): Roll minor version
+
+        * vignettes/Rcpp-FAQ.Rmd (Rcpp): Add entry for 'symbols not found' error
+        requiring two runs of compileAttributes
+
+2017-09-20  James J Balamuta  <balamut2@illinois.edu>
+
+        * vignettes/rcpp-docs.cls: Removed
+
+2017-09-20  Dirk Eddelbuettel  <edd@debian.org>
+
+        * vignettes/Rcpp-FAQ.Rmd: Modified formatting and cleaned a bit more.
+        * vignettes/Rcpp-sugar.Rmd: Idem
+        * vignettes/Rcpp-introduction.Rmd: Added new PeerJ preprint
+
+2017-09-19  James J Balamuta  <balamut2@illinois.edu>
+
+        * vignettes/Rcpp-FAQ.Rmd: Formatted and cleaned up vignette.
+        * vignettes/Rcpp-sugar.Rmd: Idem
+
+2017-09-19  Dirk Eddelbuettel  <edd@debian.org>
+
+        * vignettes/Rcpp-attributes.Rmd: Formatted and cleaned up vignette.
+        * vignettes/Rcpp-extending.Rmd: Idem
+        * vignettes/Rcpp-modules.Rmd: Idem
+        * vignettes/Rcpp-package.Rmd: Idem
+        * vignettes/Rcpp-quickref.Rmd: Idem
+
+2017-09-18  James J Balamuta  <balamut2@illinois.edu>
+
+        * DESCRIPTION (Suggests): Added rmarkdown, knitr, and pinp dependencies
+        * .travis.yml: idem
+        * vignettes/Rcpp-quickref.Rmd: Translated vignette from highlight/sweave
+        to RMarkdown for use with the pinp template.
+        * vignettes/Rcpp-sugar.Rmd: Idem
+        * vignettes/Rcpp-package.Rmd: Idem
+        * vignettes/Rcpp-modules.Rmd: Idem
+        * vignettes/Rcpp-FAQ.Rmd: Idem
+        * vignettes/Rcpp-extending.Rmd: Idem
+        * vignettes/Rcpp-attributes.Rmd: Idem
+
+2017-09-03  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version, Date): Roll minor version
+
+2017-09-02  James J Balamuta  <balamut2@illinois.edu>
+
+        * inst/include/Rcpp/vector/VectorBase.h: Defined both iterator AND
+        const_iterator for future considerations.  Currently, as before, only
+        const_iterator is available (though it used to be called iterator).
+        Added cbegin() and cend() functions.  We should revisit whether there
+        should be a non-const iterator on VectorBase in the future.
+
+        * inst/include/Rcpp/vector/Matrix.h: Added cbegin() and cend()
+        functions.  Iterator defintions inherited from Vector are appropriate.
+
+        * inst/include/Rcpp/vector/MatrixColumn.h: Added cbegin() and cend()
+        functions.  Iterator definitions inherited from Vector are appropriate
+        because Matrix is column-major.
+
+        * inst/include/Rcpp/vector/Vector.h: Added cbegin() and cend()
+        functions.  Iterators are appropriate minus the problem with the const
+        proxy class of objects (which may or may not actually be const depending
+        on which one).
+
+        * inst/include/Rcpp/vector/traits.h: Removed (accidentally) some some
+        trailing whitespace on lines.
+
+2017-09-02  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version): Roll minor version
+
+        * vignettes/Rcpp-jss-2011.Rnw: Renamed again from Rcpp-introduction-2011,
+        added reference to new Rcpp-introduction
+
+        * inst/bib/Rcpp.bib: Merged bibliography from new vignette; also added
+        PeerJ Preprint with new Rcpp Introduction
+
+2017-09-01  Dirk Eddelbuettel  <edd@debian.org>
+
+        * vignettes/Rcpp-introduction.Rnw: New introductory vignette from PeerJ
+        preprints but typeset 'more nicely'
+
+        * vignettes/rcpp-docs.cls: New LaTeX style file derived from pnas-new
+        and its supporting files
+
+        * vignettes/figures/: Three support figures for new vignette
+        * vignettes/intro2Rcpp.bib: New bibliography
+
+        * vignettes/Rcpp-introduction-2011.Rnw: Renamed from from Rcpp-introduction
+
+2017-08-26  Dirk Eddelbuettel  <edd@debian.org>
+
+        * .travis.yml (before_install): Use https for curl fetch
+
+2017-08-14  James J Balamuta  <balamut2@illinois.edu>
+
+        * vignettes/Rcpp-FAQ.Rnw: Sunset macOS documentation dealing with
+        toolchains by redirecting to the R Installation and Administration manual
+        * vignettes/.gitignore: Added various LaTeX build artifacts to ignore.
+
+2017-08-05  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version, Date): Roll minor version and date
+
+        * inst/include/Rcpp/XPtr.h: Whitespace only-changes
+
+2017-08-04  Lei Yu  <leiyu_1981@qq.com>
+
+        * inst/include/Rcpp/Module.h: Correct one closing parenthesis
+
 2017-07-13  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION: Release 0.12.12
