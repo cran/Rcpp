@@ -3,6 +3,28 @@
 \newcommand{\ghpr}{\href{https://github.com/RcppCore/Rcpp/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/RcppCore/Rcpp/issues/#1}{##1}}
 
+\section{Changes in Rcpp version 0.12.14 (2017-11-17)}{
+  \itemize{
+    \item Changes in Rcpp API:
+    \itemize{
+      \item New const iterators functions \code{cbegin()} and \code{cend()}
+      added to \code{MatrixRow} as well (Dan Dillon in \ghpr{750}).
+      \item The \code{Rostream} object now contains a \code{Buffer} rather than
+      allocating one (Kirill Müller in \ghpr{763}).
+      \item New \code{DateVector} and \code{DatetimeVector} classes are now the
+      default fully deprecating the old classes as announced one year ago.
+    }
+    \item Changes in Rcpp Package:
+    \itemize{
+      \item DESCRIPTION file now list doi information per CRAN suggestion.
+    }
+    \item Changes in Rcpp Documentation:
+    \itemize{
+      \item Update CITATION file with doi information and PeerJ preprint.
+    }
+  }
+}
+
 \section{Changes in Rcpp version 0.12.13 (2017-09-24)}{
   \itemize{
     \item Changes in Rcpp API:
