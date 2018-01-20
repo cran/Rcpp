@@ -1,7 +1,7 @@
 Package: Rcpp
 Title: Seamless R and C++ Integration
-Version: 0.12.14
-Date: 2017-11-17
+Version: 0.12.15
+Date: 2018-01-16
 Author: Dirk Eddelbuettel, Romain Francois, JJ Allaire, Kevin Ushey, Qiang Kou,
  Nathan Russell, Douglas Bates and John Chambers
 Maintainer: Dirk Eddelbuettel <edd@debian.org>
@@ -27,6 +27,6 @@ MailingList: Please send questions and comments regarding Rcpp to
         rcpp-devel@lists.r-forge.r-project.org
 RoxygenNote: 6.0.1
 NeedsCompilation: yes
-Packaged: 2017-11-17 12:51:38.259396 UTC; edd
+Packaged: 2018-01-16 13:35:30.163816 UTC; edd
 Repository: CRAN
-Date/Publication: 2017-11-23 21:24:19 UTC
+Date/Publication: 2018-01-20 15:30:12 UTC

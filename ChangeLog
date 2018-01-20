@@ -1,3 +1,136 @@
+2018-01-16  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION: Release 0.12.15
+        * inst/NEWS.Rd: Release 0.12.15
+        * inst/bib/Rcpp.bib: Release 0.12.15
+        * vignettes/Rcpp.bib: Release 0.12.15
+        * inst/include/Rcpp/config.h: Release 0.12.15
+
+        * debian/*: Changes for Debian release of 0.12.15
+
+2018-01-15  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/include/RcppCommon.h: Check for new #define RCPP_USE_UNWIND_PROTECT
+        and unset if defined, this is being be used to "park" code from #789
+        * inst/include/Rcpp/Environment.h: Ifdef #789 via RCPP_USE_UNWIND_PROTECT
+        * inst/include/Rcpp/Language.h: Idem
+        * inst/include/Rcpp/api/meat/Rcpp_eval.h: Idem
+        * inst/include/Rcpp/exceptions.h: Idem
+        * inst/include/Rcpp/macros/macros.h: Idem
+
+        * inst/unitTests/runit.stack.R: Ensure test is not running
+
+2018-01-14  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version, Date): New minor version 0.12.14.8
+
+        * inst/include/Rcpp/traits/is_na.h (Rcpp): Also speed up
+        Rcpp::is_na<Rcomplex>
+
+2018-01-14  Lionel Henry  <lionel@rstudio.com>
+
+        * inst/unitTests/cpp/stack.cpp: Move stack unwinding tests from misc.cpp
+        * inst/unitTests/runit.stack.R: Move stack unwinding tests from misc.R;
+        disaggregate stack unwinding tests; also disable for now
+
+2018-01-11  Kirill Müller  <krlmlr@mailbox.org>
+
+        * inst/include/Rcpp/traits/is_na.h: Speed up Rcpp::is_na<double>()
+
+2018-01-09  Iñaki Ucar  <i.ucar86@gmail.com>
+
+        * inst/include/Rcpp/vector/proxy.h: Improve support for NVCC, the CUDA
+        compiler, by making three more methods const
+
+2018-01-06  Kendon Bell  <kmb56@berkeley.edu>
+
+        * src/api.cpp: Allow for compilation on ANDROID
+
+2017-12-21  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Date, Version): Updated minor version and date
+
+2017-12-21  Kirill Müller  <krlmlr@mailbox.org>
+
+        * inst/include/Rcpp/internal/wrap.h: Appease gcc-7 with fall-through
+        * inst/include/Rcpp/macros/unroll.h: Idem
+
+2017-12-20  Kirill Müller  <krlmlr@mailbox.org>
+
+        * inst/include/Rcpp/utils/tinyformat.h: Update to new upstream
+        c42f/tinyformat@8f60162, simplify future updates by separating
+        Rcpp-specific changes (issue #786).
+
+2017-12-19  Kevin Ushey  <kevinushey@gmail.com>
+
+        * inst/include/Rcpp/internal/na.h: Remove 'clever' NA / NaN checks
+
+2017-12-16  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Date, Version): Updated minor version and date
+
+2017-12-13  Lionel Henry  <lionel@rstudio.com>
+
+        * inst/include/Rcpp/api/meat/Rcpp_eval.h: Add Rcpp_fast_eval() for safe
+        and fast evaluation of R code using the new protect-unwind API in R 3.5.
+        [ This is however disabled for release 0.12.15. ]
+
+        * inst/include/Rcpp/exceptions.h: Add LongjumpException and
+        resumeJump() to support Rcpp_fast_eval().
+
+        * inst/include/Rcpp/macros/macros.h: Catch LongjumpException and call
+        resumeJump(). If resumeJump() doesn't jump (on old R versions), throw an
+        R error (this normally should not happen).
+
+        * inst/include/RcppCommon.h: Add Rcpp_fast_eval() to the public API and
+        internal::Rcpp_eval_impl() to the private API.
+
+        * inst/include/Rcpp/Environment.h: Use safe evaluation
+        * inst/include/Rcpp/Language.h: idem
+
+2017-12-05  Kevin Ushey  <kevinushey@gmail.com>
+
+        * inst/include/Rcpp/Environment.h: Use public R APIs
+        * inst/include/Rcpp/api/meat/Environment.h: Idem
+
+2017-12-04  Kevin Ushey  <kevinushey@gmail.com>
+
+        * inst/include/Rcpp/RObject.h: Protect temporary wrapped SEXPs
+        * inst/include/Rcpp/api/meat/DataFrame.h: Idem
+        * inst/include/Rcpp/api/meat/Environment.h: Idem
+        * inst/include/Rcpp/api/meat/proxy.h: Idem
+        * inst/include/Rcpp/proxy/ProtectedProxy.h: Idem
+        * inst/include/Rcpp/vector/generic_proxy.h: Idem
+
+2017-12-03  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version, Date): New minor version
+
+        * inst/include/Rcpp/sugar/functions/is_na.h: Correct test for NA to work
+        with new as well as old Date(time)Vectors
+
+        * inst/unitTests/cpp/dates.cpp (has_na): Added tests
+        * inst/unitTests/runit.Date.R (test.NA): Idem
+
+2017-11-30  James J Balamuta  <balamut2@illinois.edu>
+
+        * src/attributes.cpp: Fixed missing Rcpp namespace in export interface
+        generation
+
+2017-11-25  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version, Date): Roll minor version
+
+        * inst/include/Rcpp/exceptions/cpp11/exceptions.h: Ensure Rf_format gets
+        a format string
+        * inst/include/Rcpp/exceptions/cpp98/exceptions.h (Rcpp): Ditto
+
+2017-11-18  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version, Date): Roll minor version
+
+        * vignettes/Rcpp-FAQ.Rmd: Use Rcpp::Rcpp.plugin.maker(), not ':::'
+
 2017-11-17  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION: Release 0.12.14
