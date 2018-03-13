@@ -1,3 +1,66 @@
+2018-03-08  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION: Release 0.12.16
+        * inst/NEWS.Rd: Release 0.12.16
+        * inst/bib/Rcpp.bib: Release 0.12.16
+        * vignettes/Rcpp.bib: Release 0.12.16
+        * inst/include/Rcpp/config.h: Release 0.12.16
+
+        * debian/*: Changes for Debian release of 0.12.16
+
+2018-02-07  Kevin Ushey  <kevinushey@gmail.com>
+
+        * inst/include/Rcpp/longlong.h: Revised and more general logic for long
+        long on 64bit Windows etc via C++11 and as int64_t alias where possible
+
+2018-03-01  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/include/Rcpp/sugar/functions/complex.h (Rcpp): Remove RCPP_HYPOT
+        macro and use ::hypot() throught as it is provided with C99
+
+        * inst/include/Rcpp/sugar/undoRmath.h: Also uncomment pythag here
+
+2018-02-28  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/include/Rcpp/Rmath.h (R): Rf_pythag has been remove in R 2.14.0
+        so comment-out the R::pythag wrapper (per request of Brian Ripley)
+
+2018-02-26  Kevin Ushey  <kevinushey@gmail.com>
+
+        * src/api.cpp: Always set / put RNG state when calling Rcpp function
+
+2018-02-25  Dirk Eddelbuettel  <edd@debian.org>
+
+        * vignettes/Rcpp.bib: Updated
+        * inst/bib/Rcpp.bib: Idem
+
+        * vignettes/Rcpp-FAQ.Rmd (Note): Expand conda answer by adding link
+
+2018-02-14  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version, Date): New minor version
+
+2018-02-14  Kirill Müller  <krlmlr@mailbox.org>
+
+        * R/Attributes.R: Code compiled with cppFunction() uses .Call instead
+        of .Primitive(".Call"), #795
+
+2018-02-07  Kevin Ushey  <kevinushey@gmail.com>
+
+        * inst/include/Rcpp/longlong.h: Allow long long on 64bit Windows
+
+2018-01-21  Dirk Eddelbuettel  <edd@debian.org>
+
+        * README.md: Added new section 'Support'
+
+        * vignettes/Rcpp-FAQ.Rmd (vignette): Uppercase index to 'Rcpp-FAQ';
+        removed reference to Gmane which sadly is no more
+
+2018-01-19  Dirk Eddelbuettel  <edd@debian.org>
+
+        * vignettes/Rcpp-FAQ.Rmd (Note): Document the conda package
+        `gxx_linux-64` as helpful in that environment
+
 2018-01-16  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION: Release 0.12.15

@@ -76,7 +76,7 @@ header-includes: >
   \newcommand{\rdoc}[2]{\href{http://www.rdocumentation.org/packages/#1/functions/#2}{\code{#2}}}
 
 vignette: >
-  %\VignetteIndexEntry{Rcpp-faq}
+  %\VignetteIndexEntry{Rcpp-FAQ}
   %\VignetteKeywords{Rcpp, FAQ, R, Cpp}
   %\VignettePackage{Rcpp}
   %\VignetteEngine{knitr::rmarkdown}
@@ -1202,6 +1202,19 @@ support from `src/Makevars`:
   other means to set compiler options. R support may be available at a later
   date.
 
+## How do I use it within (Python's) Conda setup?
+
+In a comment to [issue ticket #770](https://github.com/RcppCore/Rcpp/issues/770#issuecomment-346716808) it is stated that running
+
+```sh
+conda install gxx_linux-64
+```
+
+helps within this environment as it installs the corresponding
+`x86_64-conda_cos6-linux-gnu-c++` compiler. Documentation for this and other
+systems is provided 
+[at this page](https://conda.io/docs/user-guide/tasks/build-packages/compiler-tools.html).
+
 # Support
 
 ## Is the API documented
@@ -1239,9 +1252,8 @@ mailing list hosting at R-forge contains an archive, which can be
 [searched via swish](http://lists.r-forge.r-project.org/mailman/swish.cgi?query=listname=rcpp-devel).
 
 Alternatively, one can also use
-[Gmane on Rcpp-devel](http://thread.gmane.org/gmane.comp.lang.r.rcpp/) as well as
 [Mail-Archive on Rcpp-devel](http://www.mail-archive.com/rcpp-devel@lists.r-forge.r-project.org/info.html)
-both of which offer web-based interfaces, including searching.
+which offers web-based interfaces, including searching.
 
 ## I like it. How can I help {#helping}
 
