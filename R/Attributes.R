@@ -196,7 +196,7 @@ sourceCpp <- function(file = "",
     if (embeddedR && (length(context$embeddedR) > 0)) {
         srcConn <- textConnection(context$embeddedR)
         setwd(rWorkingDir) # will be reset by previous on.exit handler
-        source(file=srcConn, echo=TRUE)
+        source(file = srcConn, local = env, echo = TRUE)
     }
 
     # cleanup the cache dir if requested
@@ -422,7 +422,7 @@ compileAttributes <- function(pkgdir = ".", verbose = getOption("verbose")) {
         dir.create(rDir)
 
     # get a list of all source files
-    cppFiles <- list.files(srcDir, pattern = "\\.((c(c|pp)?)|(h(pp)?))$")
+    cppFiles <- list.files(srcDir, pattern = "\\.((c(c|pp)?)|(h(pp)?))$", ignore.case = TRUE)
 
     # derive base names (will be used for modules)
     cppFileBasenames <- tools::file_path_sans_ext(cppFiles)
@@ -521,6 +521,10 @@ compileAttributes <- function(pkgdir = ".", verbose = getOption("verbose")) {
 .plugins[["openmp"]] <- function() {
     list(env = list(PKG_CXXFLAGS="-fopenmp",
                     PKG_LIBS="-fopenmp"))
+}
+
+.plugins[["unwindProtect"]] <- function() {
+    list(env = list(PKG_CPPFLAGS = "-DRCPP_USE_UNWIND_PROTECT"))
 }
 
 # register a plugin

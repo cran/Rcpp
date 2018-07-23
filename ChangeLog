@@ -1,3 +1,241 @@
+2018-07-21  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION: Release 0.12.18
+        * inst/NEWS.Rd: Idem
+        * inst/bib/Rcpp.bib: Idem
+        * vignettes/Rcpp.bib: Idem
+        * inst/include/Rcpp/config.h: Idem
+
+	* vignettes/Rcpp.bib: Updated other references
+	* inst/bib/Rcpp.bib: Idem
+
+	* inst/unitTests/runit.sugar.R: Additional unit tests
+	* inst/unitTests/cpp/sugar.cpp: Idem
+
+2018-07-20  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/sugar/functions/max.h (Rcpp): Also consider case
+	of an empty vector
+	* inst/include/Rcpp/sugar/functions/min.h (Rcpp): Idem
+
+2018-07-19  Jack Wasey  <jack@jackwasey.com>
+
+        * inst/include/Rcpp/r_cast.h: Error and abort if debugging for STRSXP
+
+2018-07-12  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version, Date): Roll minor version
+        * inst/include/Rcpp/config.h: Idem
+
+2018-07-12  Jack Wasey  <jack@jackwasey.com>
+
+	* R/Attributes.R: Use case-insensitive sort of filenames to make
+	RcppExports more deterministic
+
+2018-07-10  Lionel Henry  <lionel@rstudio.com>
+
+        * inst/include/Rcpp/exceptions.h: Move LongjumpException from the
+        Rcpp::internal namespace to the public Rcpp namespace. If you have a
+        catch-all statement like `catch (...)`, be sure to catch and rethrow
+        Rcpp::LongjumpException to prevent the R longjump from being ignored.
+        * inst/include/Rcpp/macros/macros.h (VOID_END_RCPP): idem
+        * src/attributes.cpp: idem
+
+2018-07-09  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/Date.cpp: Skip 'tm_gmtoff' on AIX as well (thanks to PR 876
+	by @ayappanec)
+
+2018-07-05  Lionel Henry  <lionel@rstudio.com>
+
+        * inst/include/Rcpp/api/meat/Rcpp_eval.h: Rename `RCPP_PROTECTED_EVAL`
+        to `RCPP_USE_UNWIND_PROTECT` because the new API is now more general
+        than just evaluation of R code.
+        * inst/NEWS.Rd: idem
+        * inst/unitTests/runit.interface.R: idem
+        * R/unit.tests.R (unitTestSetup): Pass extra arguments to sourceCpp()
+        for easier debugging.
+
+        * R/Attributes.R (.plugins[["unwindProtect"]]): You can now add
+        `[[Rcpp::plugins(unwindProtect)]]` in one of your source file to enable
+        the new unwind-protect mechanism easily. It appends
+        `-DRCPP_USE_UNWIND_PROTECT` to `PKG_CPPFLAGS`.
+
+        This is safer than using a `#define` because it ensures unwind-protect
+        is enabled in all compilation units, including RcppExports.cpp.
+
+        * inst/unitTests/cpp/stack.cpp: Use new plugin to enable unwind-protect.
+
+2018-06-22  Kevin Ushey  <kevinushey@gmail.com>
+
+        * inst/include/Rcpp/api/meat/Rcpp_eval.h: Ensure R_BaseEnv is used
+
+2018-06-21  Lionel Henry  <lionel@rstudio.com>
+
+        * inst/include/Rcpp/api/meat/unwind.h: Extract unwind protection from
+        Rcpp::Rcpp_fast_eval() into Rcpp::unwindProtect(). Use this function
+        whenever you need to call a C function that might longjump, for instance
+        a function from R's C API. Rcpp::unwindProtect() will protect your C++
+        stack and throw a Rcpp::internal::LongJump exception to ensure all
+        destructors are called. The R longjump is then resumed once it is safe
+        to do so. This function powers Rcpp_fast_eval().
+
+        You can use Rcpp::unwindProtect() in two ways. First with a C-like
+        callback interface that takes a `SEXP (*)(void* data)` function pointer
+        and a `void*` data argument that is passed to the function. Second, if
+        you have C++11 enabled, Rcpp::unwindProtect() implements an
+        `std::function<SEXP(void)>` overload. You can pass any function object
+        or lambda function with the right signature.
+        * inst/include/Rcpp/api/meat/Rcpp_eval.h: Idem
+
+2018-06-15  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version, Date): Roll minor version
+        * inst/include/Rcpp/config.h: Idem
+
+2018-06-13  Filip Schouwenaars  <filip@datacamp.com>
+
+        * inst/unitTests/runit.embeddedR.R: Evaluate in environment derived
+        of baseenv
+
+2018-06-11  Romain Francois  <romain@purrple.cat>
+
+        * inst/include/Rcpp/exceptions.h: Control call and stack display
+        after exception / stop
+        * inst/unitTests/cpp/Exceptions_nocall.cpp: new test
+        * inst/unitTests/runit.Exceptions_nocall.R: idem
+
+2018-06-09  Qiang Kou  <qkou@umail.iu.edu>
+
+        * inst/include/Rcpp/DataFrame.h: Use Rcpp_fast_eval, not Rcpp_eval
+        * inst/include/Rcpp/Environment.h: Idem
+        * inst/include/Rcpp/Function.h: Idem
+        * inst/include/Rcpp/Language.h: Idem
+        * inst/include/Rcpp/Module.h: Idem
+        * inst/include/Rcpp/Reference.h: Idem
+        * inst/include/Rcpp/exceptions.h: Idem
+        * inst/include/Rcpp/generated/Function__operator.h: Idem
+        * inst/include/Rcpp/proxy/FieldProxy.h: Idem
+        * inst/include/Rcpp/proxy/NamesProxy.h: Idem
+        * inst/include/Rcpp/r_cast.h: Idem
+        * inst/include/Rcpp/vector/Vector.h: Idem
+        * inst/examples/SugarPerformance/sugarBenchmarks.R: Idem
+        * inst/unitTests/cpp/language.c: Idem
+        * inst/unitTests/cpp/misc.c: Idem
+        * src/barrier.c: Idem
+
+2018-06-09  Dirk Eddelbuettel  <edd@debian.org>
+
+        * inst/unitTests/runit.embeddedR.R: Suspend test for now
+
+2018-06-08  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version, Date): Roll minor version
+        * inst/include/Rcpp/config.h: Idem
+
+        * Contributing.md: Minor update coding style
+
+2018-06-07  Kevin Ushey  <kevinushey@gmail.com>
+
+        * inst/include/Rcpp/config.h: bump dev version
+
+2018-06-06  Kevin Ushey  <kevinushey@gmail.com>
+
+        * inst/include/Rcpp/RNGScope.h: Allow suspension of RNG synchronization
+        * inst/include/Rcpp/routines.h: Idem
+        * src/Rcpp_init.cpp: Idem
+        * src/api.cpp: Idem
+
+        * inst/include/Rcpp/api/meat/Rcpp_eval.h: Evaluate in base env
+
+2018-06-05  Jack Wasey  <jack@jackwasey.com>
+
+        * inst/include/Rcpp/r_cast.h: Error and abort if debugging
+
+2018-06-02  Lionel Henry  <lionel@rstudio.com>
+
+        * inst/unitTests/runit.interface.R: New test for the case where
+        the client package was compiled without protected evaluation
+        enabled. On R 3.5, longjump exceptions thrown from imported
+        functions are still caught and dealt with properly by the client
+        package.
+
+        * inst/unitTests/runit.interface.R: Test both Rcpp_eval() and
+        Rcpp_fast_eval().
+
+2018-06-01  Lionel Henry  <lionel@rstudio.com>
+
+        * inst/unitTests/runit.interface.R: New tests for interfaces and unwind.
+        These tests build two packages, and that exports a function via
+        Rcpp::interfaces(cpp) and the other that calls it. The attributes are
+        regenerated and the packages rebuilt each time the tests are run. The
+        tests check in particular that the C++ stack is properly unwound when a
+        long jump occurs.
+
+2018-06-01  Romain Francois  <romain@purrple.cat>
+
+        * inst/include/Rcpp/Environment.h: Make Environment::new_child() const
+
+2018-05-31  Lionel Henry  <lionel@rstudio.com>
+
+        * inst/include/Rcpp/api/meat/Rcpp_eval.h: Fix protected evaluation.
+
+        Setting `RCPP_PROTECTED_EVAL` before including Rcpp.h enables a new R
+        3.5 API for safe evaluation of R code. R longjumps are now correctly
+        intercepted and rethrown. Thanks to this the C++ stack is now safely
+        unwound when a longjump is detected while calling into R code. This
+        includes the following cases: thrown errors, caught condition of any
+        class, long return, restart invokation, debugger exit. Note that this is
+        still experimental!
+
+        When `RCPP_PROTECTED_EVAL` is enabled, Rcpp_eval() uses the
+        protect-unwind API under the hood in order to gain safety. It is fully
+        backward-compatibile and still catches errors and interrupts to rethrow
+        them as typed C++ exceptions. If you don't need to catch those, consider
+        using Rcpp_fast_eval() instead to avoid the catching overhead.
+
+        Rcpp_fast_eval() is a wrapper around Rf_eval(). Unlike Rcpp_eval(), it
+        does not evaluate R code within tryCatch() and thus avoids the overhead
+        of wrapping and evaluating the expression in a tryCatch() call. When
+        Rcpp is compiled with a lower version than R 3.5, Rcpp_fast_eval() falls
+        back to Rf_eval() without any protection from long jumps, even when
+        `RCPP_PROTECTED_EVAL` is set. Either add R 3.5 to your `Depends` or make
+        sure the legacy Rcpp_eval() function is called instead of Rcpp_fast_eval()
+        when your package is compiled with an older version of R.
+
+        Note that Rcpp_fast_eval() behaves a bit differently to Rcpp_eval(). The
+        former has the semantics of the C function Rf_eval() whereas the latter
+        behaves like the R function base::eval(). This has subtle implications
+        for control flow. For instance evaluating a return() expression within a
+        frame environment returns from that frame rather than from the
+        Rcpp_eval() call.
+
+        * inst/include/Rcpp/macros/macros.h: Leave the try/catch scope before
+        resuming jump to ensure proper destruction of the exception reference.
+
+        * inst/include/Rcpp/exceptions.h: Functions to create and check a
+        longjump sentinel. This sentinel is used as return value in contexts
+        where it is not safe to resume a jump (i.e. in the glue code of cpp
+        interfaces).
+
+        * inst/include/Rcpp/macros/macros.h: Return a longjump sentinel in
+        END_RCPP_RETURN_ERROR.
+
+        * src/attributes.cpp: Detect longjump sentinels and resume jump.
+
+2018-05-27  Romain Francois  <romain@purrple.cat>
+
+        * inst/include/Rcpp/vector/string_proxy.h: Make
+        StringProxy::operator== const
+        * inst/unitTests/cpp/Vector.cpp: New test
+        * inst/unitTests/runit.Vector.R: Idem
+
+2018-05-09  Filip Schouwenaars  <filip@datacamp.com>
+
+        * R/Attributes.R: Set local environment in source()
+        * inst/unitTests/cpp/embeddedR.cpp: New test
+        * inst/unitTests/runit.embeddedR.R: Idem
+
 2018-05-09  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION: Release 0.12.17
@@ -10,24 +248,24 @@
 
 2018-05-05  Dirk Eddelbuettel  <edd@debian.org>
 
-	* vignettes/Rcpp-FAQ.Rmd: Also mention TAS paper
-	* vignettes/Rcpp-introduction.Rmd: Idem
-	* vignettes/Rcpp-jss-2011.Rnw: Idem
+        * vignettes/Rcpp-FAQ.Rmd: Also mention TAS paper
+        * vignettes/Rcpp-introduction.Rmd: Idem
+        * vignettes/Rcpp-jss-2011.Rnw: Idem
 
 2018-05-04  Romain Francois  <romain@purrple.cat>
 
-	* inst/include/Rcpp/String.h: Extend StoragePolicy support
-	* inst/include/Rcpp/vector/00_forward_proxy.h: Idem
-	* inst/include/Rcpp/vector/Vector.h: Idem
-	* inst/include/Rcpp/vector/const_generic_proxy.h: Idem
-	* inst/include/Rcpp/vector/const_string_proxy.h: Idem
-	* inst/include/Rcpp/vector/generic_proxy.h: Idem
-	* inst/include/Rcpp/vector/proxy.h: Idem
-	* inst/include/Rcpp/vector/string_proxy.h: Idem
-	* inst/include/Rcpp/vector/traits.h: Idem
+        * inst/include/Rcpp/String.h: Extend StoragePolicy support
+        * inst/include/Rcpp/vector/00_forward_proxy.h: Idem
+        * inst/include/Rcpp/vector/Vector.h: Idem
+        * inst/include/Rcpp/vector/const_generic_proxy.h: Idem
+        * inst/include/Rcpp/vector/const_string_proxy.h: Idem
+        * inst/include/Rcpp/vector/generic_proxy.h: Idem
+        * inst/include/Rcpp/vector/proxy.h: Idem
+        * inst/include/Rcpp/vector/string_proxy.h: Idem
+        * inst/include/Rcpp/vector/traits.h: Idem
 
-	* inst/unitTests/cpp/Vector.cpp: New test
-	* inst/unitTests/runit.Vector.R: Idem
+        * inst/unitTests/cpp/Vector.cpp: New test
+        * inst/unitTests/runit.Vector.R: Idem
 
 2018-04-25  Dirk Eddelbuettel  <edd@debian.org>
 
@@ -35,18 +273,18 @@
 
 2018-04-25  Romain Francois  <romain@purrple.cat>
 
-	* inst/include/Rcpp/Benchmark/Timer.h: If defined, undefine FALSE
+        * inst/include/Rcpp/Benchmark/Timer.h: If defined, undefine FALSE
 
 2018-04-17  Ralf Stubner  <ralf.stubner@daqana.com>
 
-	* vignettes/Rcpp-attributes.Rmd: Replace back-quote with straight quote
-	* vignettes/Rcpp-modules.Rmd: Idem
+        * vignettes/Rcpp-attributes.Rmd: Replace back-quote with straight quote
+        * vignettes/Rcpp-modules.Rmd: Idem
 
 2018-04-02  Dirk Eddelbuettel  <edd@debian.org>
 
-	* .editorconfig: Added support for editorconfig.org
-	* .clang_format: Removed
-	* .dir-locals.el: Removed
+        * .editorconfig: Added support for editorconfig.org
+        * .clang_format: Removed
+        * .dir-locals.el: Removed
 
 2018-03-31  Dirk Eddelbuettel  <edd@debian.org>
 
@@ -69,7 +307,7 @@
 
 2018-03-08  Peter Hickey  <peter.hickey@gmail.com>
 
-	* vignettes/Rcpp-attributes.Rmd: Correct stray backslash
+        * vignettes/Rcpp-attributes.Rmd: Correct stray backslash
 
 2018-03-08  Dirk Eddelbuettel  <edd@debian.org>
 
@@ -506,7 +744,7 @@
 
 2017-06-07  Dirk Eddelbuettel  <edd@debian.org>
 
-	* README.md: Use alternates for img.shields.io GPL-2+ badges
+        * README.md: Use alternates for img.shields.io GPL-2+ badges
 
 2017-06-06  Yu Gong  <armgong@yahoo.com>
 
@@ -660,8 +898,7 @@
         * inst/include/Rcpp/Rcpp/exceptions/cpp11/exceptions.h: Removed
         semicolons from RCPP_ADVANCED_EXCEPTION_CLASS to quiet 'extra ;'
         -Wpedantic
-
-        OB* inst/include/Rcpp/exceptions.h: Modified exceptions macros to support
+        * inst/include/Rcpp/exceptions.h: Modified exceptions macros to support
         a default string and removed generated stop, warning from file.
         * inst/include/Rcpp/Rcpp/exceptions/cpp98/exceptions.h: Contains
         generated RCPP_ADVANCED_EXCEPTION_CLASS macro, stop & warning.
@@ -1110,13 +1347,13 @@
 
 2016-10-24  Nathan Russell  <russell.nr2012@gmail.com>
 
-	* inst/include/Rcpp/vector/MatrixBase.h: Change sugar
-	functions eye(), ones(), and zeros() into static methods
-	in MatrixBase
-	* inst/include/Rcpp/traits/one_type.h: Idem
-	* inst/include/Rcpp/traits/traits.h: Idem
-	* inst/unitTests/cpp/Matrix.cpp: Idem
-	* inst/unitTests/runit.Matrix.R: Idem
+        * inst/include/Rcpp/vector/MatrixBase.h: Change sugar
+        functions eye(), ones(), and zeros() into static methods
+        in MatrixBase
+        * inst/include/Rcpp/traits/one_type.h: Idem
+        * inst/include/Rcpp/traits/traits.h: Idem
+        * inst/unitTests/cpp/Matrix.cpp: Idem
+        * inst/unitTests/runit.Matrix.R: Idem
 
 2016-10-24  Qiang Kou  <qkou@umail.iu.edu>
 
@@ -1211,7 +1448,7 @@
 
 2016-08-11  Dirk Eddelbuettel  <edd@debian.org>
 
-	* .travis.yml: Switch to using run.sh for Travis CI
+        * .travis.yml: Switch to using run.sh for Travis CI
 
 2016-08-09  Artem Klevtsov <a.a.klevtsov@gmail.com>
 
