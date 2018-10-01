@@ -3,6 +3,50 @@
 \newcommand{\ghpr}{\href{https://github.com/RcppCore/Rcpp/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/RcppCore/Rcpp/issues/#1}{##1}}
 
+\section{Changes in Rcpp version 0.12.19 (2018-09-20)}{
+  \itemize{
+    \item Changes in Rcpp API:
+    \itemize{
+      \item The \code{no_init()} accessor for vectors and matrices is
+      now wrapped in \code{Shield<>()} to not trigger \code{rchk}
+      warnings (Kirill Mueller in \ghpr{893} addressing \ghit{892}).
+      \item \code{STRICT_R_HEADERS} will be defined twelve months from
+      now; until then we protect it via \code{RCPP_NO_STRICT_HEADERS}
+      which can then be used to avoid the definition; downstream
+      maintainers are encouraged to update their packages as needed
+      (Dirk in \ghpr{900} beginning to address \ghit{898}).
+    }
+     \item Changes in Rcpp Attributes:
+    \itemize{
+      \item Added \code{[[Rcpp::init]]} attribute for registering C++
+      functions to run during package initialization (JJ in \ghpr{903}
+      addressing \ghit{902}).
+    }
+    \item Changes in Rcpp Modules:
+    \itemize{
+      \item Improved \code{exposeClass} functionality along with added
+      test (Martin Lysy in \ghpr{886} fixing \ghit{879}).
+    }
+    \item Changes in Rcpp Documentation:
+    \itemize{
+      \item Two typos were fixed in the Rcpp Sugar vignette (Patrick
+      Miller in \ghpr{895}).
+      \item Several vignettes now use the \code{collapse} argument to
+      show output in the corresponding code block.
+    }
+    \item Changes in Rcpp Deployment:
+    \itemize{
+      \item The old \code{LdFlags()} build helper was marked as
+      deprecated [but removed for release] (Dirk in \ghpr{887}).
+      \item Dockerfiles for continuous integration, standard deployment
+      and 'plus sized' deployment are provided along with builds
+      (Dirk in \ghpr{894}).
+      \item Travis CI now use the \code{rcpp/ci} container for tests
+      (Dirk in \ghpr{896}).
+    }
+  }
+}
+
 \section{Changes in Rcpp version 0.12.18 (2018-07-21)}{
   \itemize{
     \item Changes in Rcpp API:
@@ -14,14 +58,14 @@
       \item Next \code{eval} codes now properly unwind (Lionel in the large
       and careful \ghpr{859} fixing \ghit{807}).
       \item In debugging mode, more type information is shown on
-      \code{abort()} (Jack Waseyin \ghpr{860} and \ghpr{882} fixing
+      \code{abort()} (Jack Wasey in \ghpr{860} and \ghpr{882} fixing
       \ghit{857}).
       \item A new class was added which allow suspension of the RNG
       synchronisation to address an issue seen in \CRANpkg{RcppDE}
       (Kevin in \ghpr{862}).
       \item Evaluation calls now happen in the \code{base} environment
       (which may fix an issue seen between \CRANpkg{conflicted} and some
-      BioConductor packages) (Kevn \ghpr{863} fixing \ghit{861}).
+      BioConductor packages) (Kevin in \ghpr{863} fixing \ghit{861}).
       \item Call stack display on error can now be controlled more
       finely (Romain in \ghpr{868}).
       \item The new \code{Rcpp_fast_eval} is used instead of
