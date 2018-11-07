@@ -3,10 +3,10 @@
 
 \title{Rcpp : unit tests results}
 \description{
-Unit tests results for package Rcpp. 
+Unit tests results for package Rcpp.
 
 Unit tests are run automatically at build time and reports are included in the
-\samp{doc} directory as html or text. 
+\samp{doc} directory as html or text.
 }
 
 \seealso{
@@ -15,7 +15,7 @@ Unit tests are run automatically at build time and reports are included in the
 
 \examples{
 # unit tests are in the unitTests directory of the package
-list.files( system.file("unitTests", package = "Rcpp" ), 
+list.files( system.file("unitTests", package = "Rcpp" ),
 	pattern = "^runit", full = TRUE )
 
 # trigger the unit tests preparation, follow printed instructions

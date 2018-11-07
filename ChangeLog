@@ -1,3 +1,86 @@
+2018-11-05  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Date, Version): Version 1.0, and happy 10th birthday!
+	* inst/include/Rcpp/config.h (RCPP_DEV_VERSION): Idem
+        * inst/NEWS.Rd: Idem
+        * inst/bib/Rcpp.bib: Idem
+        * vignettes/Rcpp.bib: Idem
+
+2018-11-04  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Date, Version): Roll minor version
+	* inst/include/Rcpp/config.h (RCPP_DEV_VERSION): Idem
+
+	* README.md: Updated stated package and test numbers
+
+2018-10-25  Kevin Ushey  <kevinushey@gmail.com>
+
+	* inst/include/Rcpp/String.h: Use Rf_mkCharLenCE() as appropriate
+	* inst/unitTests/cpp/String.cpp: Add unit tests
+	* inst/unitTests/runit.String.R: Add unit tests
+
+2018-10-12  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Date, Version): Roll minor version
+	* inst/include/Rcpp/config.h (RCPP_DEV_VERSION): Idem
+
+	* tests/doRUnit.R: Simplified to something similar to what
+	RcppArmadillo (and other packages) had for a while now
+
+	* vignettes/Rcpp-unitTests.Rnw: Removed as less useful now
+
+2018-10-08  JJ Allaire  <jj@rstudio.com>
+
+	* R/Attributes.R: Sort the files scanned for attributes in the C locale
+	for stable output across systems.
+
+2018-10-07  Ralf Stubner  <ralf.stubner@daqana.com>
+
+        * vignettes/Rcpp-extending.Rmd: Correct EXPORT to EXPOSED in displays
+	of the corresponding macro, and remove two spurious semicolons
+
+2018-10-02  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Date, Version): Roll minor version
+	* inst/include/Rcpp/config.h (RCPP_DEV_VERSION): Idem
+
+2018-10-02  Romain Francois  <romain@rstudio.com>
+
+	* inst/include/Rcpp/vector/Matrix.h: Init nrow in Matrix(no_init) ctor
+	* inst/unitTests/runit.Matrix.R: New test
+	* inst/unitTests/cpp/Matrix.cpp: Idem
+
+2018-09-30  Dirk Eddelbuettel  <edd@debian.org>
+
+	* man/RcppUnitTests.Rd: Remove \details{} with conditional code which
+	R-devel (as of Sep 28) warns about as empty
+
+2018-09-28  Dirk Eddelbuettel  <edd@debian.org>
+
+	* .travis.yml (env): Set distinct build and check options to skip
+	tests of vignettes
+
+2018-09-27  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version, Date): Roll minor version
+
+	* inst/include/Rcpp/date_datetime/Date.h: Remove the empty destructor
+	to make g++-9 (prerelease) happy [CRAN request]
+
+	* inst/unitTests/runit.Matrix.R: Correct typo
+
+2018-09-27  Romain Francois  <romain@rstudio.com>
+
+	* inst/include/Rcpp/vector/Matrix.h: Fix Matrix(no_init(int,int))
+	constructor
+	* inst/unitTests/runit.Matrix.R: test for above
+	* inst/unitTests/cpp/Matrix.cpp: same
+
+2018-09-26  Dirk Eddelbuettel  <edd@debian.org>
+
+	* docker/ci/Dockerfile: Set env var RunAllRcppTests=yes
+	* .travis.yml: Do not set env var here as needed in Docker
+
 2018-09-21  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION: Release 0.12.19
