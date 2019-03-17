@@ -1,5 +1,5 @@
 
-# Copyright (C) 2012 - 2017  JJ Allaire, Dirk Eddelbuettel and Romain Francois
+# Copyright (C) 2012 - 2018  JJ Allaire, Dirk Eddelbuettel and Romain Francois
 #
 # This file is part of Rcpp.
 #
@@ -421,8 +421,14 @@ compileAttributes <- function(pkgdir = ".", verbose = getOption("verbose")) {
     if (!file.exists(rDir))
         dir.create(rDir)
 
+    # remove the old RcppExports.R file
+    unlink(file.path(rDir, "RcppExports.R"))
+
     # get a list of all source files
     cppFiles <- list.files(srcDir, pattern = "\\.((c(c|pp)?)|(h(pp)?))$", ignore.case = TRUE)
+
+    # don't include RcppExports.cpp
+    cppFiles <- setdiff(cppFiles, "RcppExports.cpp")
 
     # locale independent sort for stable output
     locale <- Sys.getlocale(category = "LC_COLLATE")
@@ -469,7 +475,7 @@ compileAttributes <- function(pkgdir = ".", verbose = getOption("verbose")) {
 # setup plugins environment
 .plugins <- new.env()
 
-# built-in C++98 plugin 
+# built-in C++98 plugin
 .plugins[["cpp98"]] <- function() {
     if (getRversion() >= "3.4")         # with recent R versions, R can decide
         list(env = list(USE_CXX98 = "yes"))
@@ -521,6 +527,12 @@ compileAttributes <- function(pkgdir = ".", verbose = getOption("verbose")) {
 ## see https://gcc.gnu.org/projects/cxx-status.html
 .plugins[["cpp1z"]] <- function() {
     list(env = list(PKG_CXXFLAGS ="-std=c++1z"))
+}
+
+## built-in C++2a plugin for g++ 8 and later
+## cf https://gcc.gnu.org/projects/cxx-status.html as of Dec 2018
+.plugins[["cpp2a"]] <- function() {
+    list(env = list(PKG_CXXFLAGS ="-std=c++2a"))
 }
 
 ## built-in OpenMP plugin

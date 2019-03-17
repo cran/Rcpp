@@ -1,7 +1,91 @@
+2019-03-17  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION: Release 1.0.1
+
+        * inst/include/Rcpp/config.h: Idem
+        * inst/NEWS.Rd: Idem
+        * inst/bib/Rcpp.bib: Idem
+        * vignettes/Rcpp.bib: Idem
+
+2019-03-16  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll minor version
+
+	* inst/unitTests/runit.sugar.R: Set the sample() behaviour to R 3.5.0
+	as R 3.6.0 has a breaking change (for the better)
+
+2019-03-13  Romain François <romain@purrple.cat>
+
+	* inst/include/Rcpp/macros/macros.h: Add UNPROTECT to please rchk
+
+2019-03-12  Romain François <romain@purrple.cat>
+
+	* inst/include/Rcpp/api/meat/proxy.h: AttributeProxy::set() with
+	Shield<> and a few related uses of Shield<> to please rchk
+	* inst/include/Rcpp/clone.h: Idem
+	* inst/include/Rcpp/proxy/AttributeProxy.h: Idem
+	* inst/include/Rcpp/proxy/NamesProxy.h: Idem
+	* inst/include/Rcpp/vector/Matrix.h: Idem
+	* inst/include/Rcpp/vector/Vector.h: Idem
+
+2019-02-25  Dirk Eddelbuettel  <edd@debian.org>
+
+	* .travis.yml (after_success): Setting CODECOV_TOKEN to reenable
+	codecov.io coverage as detailed by Ralf in GitHub issue #941
+
+2019-02-16  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/sugar/functions/cbind.h: Converted CRLF to CR
+
+2019-02-15  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/README: Moved stale file to local/
+	* inst/THANKS: Idem
+
+2019-02-13  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): New minor version
+
+2019-02-11  Kevin Ushey  <kevinushey@gmail.com>
+
+	* R/Attributes.R: better handle pre-existing RcppExports.cpp,
+	RcppExports.R when calling compileAttributes()
+
+2019-02-09  Ralf Stubner  <ralf.stubner@daqana.com>
+
+	* Rcpp-modules.Rmd: Added example for .factory
+
+2019-01-31  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/protection/Shelter.h (Rcpp): Only increase
+	nprotected count if object is not NULL (suggested by Stepan Sindelar)
+
+2018-12-26  Zhuoer Dong  <dongzhuoer@mail.nankai.edu.cn>
+
+	* vignettes/Rcpp-quickref.Rmd: Fix three bugs: use `Named()`, define
+	`glob`, `glob.ls(TRUE)`.
+
+2018-12-01  Dirk Eddelbuettel  <edd@debian.org>
+
+	* R/Attributes.R: Added new 'c++2a' plugin for '-std=c++2a'
+	compilation standard supported by g++ 8 or later
+
+2018-11-11  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/vector/Subsetter.h (check_indices): More
+	informative error message as suggested by KK
+
+2018-11-09  William Nolan  <will@landale.net>
+
+        * inst/include/Rcpp/vector/Subsetter.h: Fixed to use R_xlen_t instead
+	of int for indexing and added warning when indexing by IntegerVector
+	(only for large enough vectors)
+
 2018-11-05  Dirk Eddelbuettel  <edd@debian.org>
 
-	* DESCRIPTION (Date, Version): Version 1.0, and happy 10th birthday!
-	* inst/include/Rcpp/config.h (RCPP_DEV_VERSION): Idem
+        * DESCRIPTION (Date, Version): Version 1.0, and happy 10th birthday!
+
+        * inst/include/Rcpp/config.h: Idem
         * inst/NEWS.Rd: Idem
         * inst/bib/Rcpp.bib: Idem
         * vignettes/Rcpp.bib: Idem
