@@ -1,3 +1,91 @@
+2019-07-20  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION: Release 1.0.2
+
+        * inst/include/Rcpp/config.h: Idem
+        * inst/NEWS.Rd: Idem
+        * inst/bib/Rcpp.bib: Idem
+        * vignettes/Rcpp.bib: Idem
+
+2019-07-18  Pierrick Roger  <pk.roger@icloud.com>
+
+	* src/attributes.cpp: Correct parsing of default function values
+	* inst/unitTests/cpp/attributes.cpp: Added tests
+	* inst/unitTests/runit.attributes.R: Idem
+	
+2019-07-16  Dirk Eddelbuettel  <edd@debian.org>
+
+	* debian/: Removed, see https://salsa.debian.org/edd/r-base/ instead
+
+2019-07-04  Dirk Eddelbuettel  <edd@debian.org>
+
+	* vignettes/Rcpp.bib: Updated
+	* inst/bib/Rcpp.bib: Idem
+
+2019-05-05  Dirk Eddelbuettel  <edd@debian.org>
+
+	* .Rbuildignore: Small tweak
+	
+2019-04-27  Dirk Eddelbuettel  <edd@debian.org>
+
+	* R/Rcpp.package.skeleton.R (Rcpp.package.skeleton): Use getRcppVersion()
+
+2019-04-26  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll minor version
+
+	* R/tools.R (getRcppVersion): More idiomatic code
+
+2019-04-25  Dirk Eddelbuettel  <edd@debian.org>
+
+	* R/tools.R (getRcppVersion): Export R (and dev) package version
+	* man/getRcppVersion.Rd: Documentation for new function
+
+	* inst/include/Rcpp/config.h (RCPP_VERSION_STRING): New version
+	and development version string #define
+	* src/api.cpp (getRcppVersionStrings): Expose new versions strings
+	* src/internal.h: Register new version string exporter
+	* src/rcpp_init.cpp (callEntries[]): Idem
+
+	* inst/unitTests/runit.misc.R (test.getRcppVersion): test new function
+
+2019-03-23  Ralf Stubner  <ralf.stubner@daqana.com>
+
+	* vignettes/Rcpp-modules.Rmd: Describe RCPP_EXPOSED_* macros
+	* vignettes/Rcpp-extending.Rmd: Reference Modules extensions
+
+2019-03-23  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll minor version
+
+	* inst/NEWS.Rd: Updated
+
+2019-03-20  James J Balamuta  <balamut2@illinois.edu>
+
+	* inst/include/Rcpp/sugar/functions/unique.h: Added decreasing
+	parameter to control sort.
+	* inst/unitTests/runit.sugar.R: Added sort_unique() tests
+	* inst/unitTests/cpp/sugar.cpp: Ditto
+
+2019-03-20  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/date.cpp: Renamed from Date.cpp
+	* src/module.cpp: Renamed from Module.cpp
+	* src/rcpp_init.cpp: Renamed from Rcpp_init.cpp
+
+2019-03-19  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll minor version
+
+	* tests/doRUnit.R: On Travis always set RunAllRcppTests
+
+	* docker/ci/Dockerfile: Set environment variables container-wide
+
+2019-03-18  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/macros/macros.h (END_RCPP_RETURN_ERROR): Add
+	UNPROTECT to reference nprot, also check for stop_sym
+
 2019-03-17  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION: Release 1.0.1
