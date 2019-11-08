@@ -1,3 +1,140 @@
+2019-11-08  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Date, Version): Release 1.0.3
+
+        * inst/include/Rcpp/config.h: Idem
+        * inst/NEWS.Rd: Idem
+        * inst/bib/Rcpp.bib: Idem
+        * vignettes/Rcpp.bib: Idem
+
+2019-11-06  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll minor version
+	
+	* inst/include/Rcpp/XPtr.h: Provided fallback for old constructor
+	when C++11 is not available (follow-up to #1003)
+	* inst/unitTests/runit.XPTr.R (test.XPtr): On Windows (as a proxy for
+	old compilers) do not test new feature
+
+	* tests/doRUnit.R: Protect printing to /tmp from Windows use
+
+	* vignettes/rmd/Rcpp.bib: Updated
+	* inst/bib/Rcpp.bib: Idem
+
+2019-11-02  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll minor version
+
+	* inst/include/Rcpp/Reference.h: Shield Rf_mkstring inside Rf_lang2
+	* inst/include/Rcpp/Environment.h: Idem (inside Rf_lang4)
+	* inst/include/Rcpp/proxy/FieldProxy.h: Idem (inside Rf_lang3 and 4)
+
+2019-10-31  Romain Francois  <romain@rstudio.com>
+	
+	* inst/include/Rcpp/DataFrame.h: Protect temporaries from gc
+	* inst/include/Rcpp/Environment.h: Idem
+	* inst/include/Rcpp/r_cast.h: Idem
+
+2019-10-27  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll minor version
+
+	* inst/unitTests/runit.exposeClass.R: Updated to pass with r-devel
+
+	* vignettes/rmd/Rcpp-FAQ.Rmd: Two new short section on speedier
+	compilation and lack of exceptions / stop() across shared libraries
+
+2019-10-26  Dirk Eddelbuettel  <edd@debian.org>
+
+	* vignettes/Rcpp-package.Rnw: Another wrapper
+	* vignettes/Rcpp-jss-2011.Rnw: Idem
+
+	* vignettes/Makefile: Refinements 
+	* vignettes/rmd/Makefile: Idem
+
+	* cleanup: Removed bashism, added invocation of make clean
+
+2019-10-23  Dirk Eddelbuettel  <edd@debian.org>
+
+	* vignettes/Rcpp-*.Rnw: Wrappers around pdf/*pdf
+	* vignettes/Makefile: Added
+
+2019-10-21  Dirk Eddelbuettel  <edd@debian.org>
+	
+	* vignettes/rmd/*: Moved from parent directory
+	* vignettes/pdf/*: New target directory
+
+2019-10-20  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll minor version
+
+	* vignettes/Rcpp-FAQ.Rmd: Turn off knitr cache
+	* vignettes/Rcpp-introduction.Rmd: Idem
+
+	* vignettes/Makefile: Add simple Makefile
+	* .Rbuildignore: Exclude vignettes/Makefile
+
+2019-10-19  Stephen Wade  <stephematician@gmail.com>
+
+	* inst/include/Rcpp/XPtr.h: XPtr constructor split up, a single
+	argument does not modify tags and protected data of the external pointer
+	* inst/unitTests/cpp/Xptr.cpp: Added test
+	* inst/unitTests/runit.XPtr.R: Idem
+
+2019-10-14  Dirk Eddelbuettel  <edd@debian.org>
+
+	* README.md: Added CRAN + BioConductor badges for reverse depends,
+
+2019-10-11  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/exceptions.h: Condition use of typeid() on
+	absence of RCPP_NO_RTTI in two places
+	* inst/include/Rcpp/r/headers.h: RCPP_NO_RTTI implies RCPP_NO_MODULES
+
+2019-10-04  Dirk Eddelbuettel  <edd@debian.org>
+
+	* vignettes/Rcpp-attributes.Rmd: Correct two unevaluated knitr C++
+	chunks to mode 'Rcpp' rather than the (unregistered) C++ mode
+	* vignettes/Rcpp-extending.Rmd: Minor white-space tweak to avoid
+	paragraph-spacing warnings from latex and its mdframed style
+	* vignettes/Rcpp-modules.Rmd: Idem
+	* vignettes/Rcpp-sugar.Rmd: Idem
+
+2019-10-01  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll minor version
+	
+2019-09-30  Kevin Ushey  <kevinushey@gmail.com>
+
+	* inst/include/Rcpp.h: add RCPP_NO_MODULES
+	* inst/include/Rcpp/api/meat/is.h: Idem
+	* inst/include/Rcpp/api/meat/meat.h: Idem
+
+2019-09-28  Dirk Eddelbuettel  <edd@debian.org>
+
+	* README.md: Add a stackoverflow tag to indicate where to ask questions,
+	also updated package counts on CRAN and BioC for Rcpp users
+
+2019-08-06  Riccardo Porreca  <riccardo.porreca@mirai-solutions.com>
+
+	* vignettes/Rcpp-modules.Rmd: Extensive review and edit improving the
+	Modules vignette
+
+2019-08-04  Dirk Eddelbuettel  <edd@debian.org>
+
+	* README.md: Add thre doi badges
+
+	* inst/NEWS.Rd: Two minor edits
+
+2019-07-21  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll minor version
+
+2019-07-21  Riccardo Porreca  <riccardo.porreca@mirai-solutions.com>
+
+	* R/Module.R: Use an explicit Rcpp:: in the initalize method for C++
+	classes wrapped inside modules to ensure proper initialization
+
 2019-07-20  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION: Release 1.0.2
@@ -12,7 +149,7 @@
 	* src/attributes.cpp: Correct parsing of default function values
 	* inst/unitTests/cpp/attributes.cpp: Added tests
 	* inst/unitTests/runit.attributes.R: Idem
-	
+
 2019-07-16  Dirk Eddelbuettel  <edd@debian.org>
 
 	* debian/: Removed, see https://salsa.debian.org/edd/r-base/ instead
@@ -25,7 +162,7 @@
 2019-05-05  Dirk Eddelbuettel  <edd@debian.org>
 
 	* .Rbuildignore: Small tweak
-	
+
 2019-04-27  Dirk Eddelbuettel  <edd@debian.org>
 
 	* R/Rcpp.package.skeleton.R (Rcpp.package.skeleton): Use getRcppVersion()
