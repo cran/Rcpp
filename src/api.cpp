@@ -2,7 +2,7 @@
 //
 // api.cpp: Rcpp R/C++ interface class library -- Rcpp api
 //
-// Copyright (C) 2012 - 2016  Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2012 - 2020  Dirk Eddelbuettel and Romain Francois
 //
 // This file is part of Rcpp.
 //
@@ -32,35 +32,6 @@ using namespace Rcpp;
 #include <cxxabi.h>
 #endif
 
-#if defined(__GNUC__) || defined(__clang__)
-    #if defined(_WIN32) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__CYGWIN__) || defined(__sun) || defined(_AIX) || defined(__MUSL__) || defined(__HAIKU__) || defined(__ANDROID__)
-        // do nothing
-    #else
-        #include <execinfo.h>
-
-        // Extract mangled name e.g. ./test(baz+0x14)[0x400962]
-        static std::string demangler_one(const char* input) {
-            static std::string buffer;
-            buffer = input;
-            size_t last_open = buffer.find_last_of('(');
-            size_t last_close = buffer.find_last_of(')');
-            if (last_open == std::string::npos ||
-                last_close == std::string::npos) {
-              return input;     // #nocov
-            }
-            std::string function_name = buffer.substr(last_open + 1, last_close - last_open - 1);
-            // Strip the +0x14 (if it exists, which it does not in earlier versions of gcc)
-            size_t function_plus = function_name.find_last_of('+');
-            if (function_plus != std::string::npos) {
-              function_name.resize(function_plus);
-            }
-            buffer.replace(last_open + 1, function_name.size(), demangle(function_name));
-            return buffer;
-        }
-    #endif
-#endif
-
-
 namespace Rcpp {
 
     namespace internal {
@@ -82,7 +53,7 @@ namespace Rcpp {
         }
 
         // [[Rcpp::register]]
-        unsigned long beginSuspendRNGSynchronization() {
+        unsigned long beginSuspendRNGSynchronization() {        // #nocov start
             ++rngSynchronizationSuspended;
             return rngSynchronizationSuspended;
         }
@@ -91,7 +62,7 @@ namespace Rcpp {
         unsigned long endSuspendRNGSynchronization() {
             --rngSynchronizationSuspended;
             return rngSynchronizationSuspended;
-        }
+        }                                                       // #nocov end
 
         // [[Rcpp::register]]
         char* get_string_buffer() {
@@ -102,36 +73,36 @@ namespace Rcpp {
     }
 
     // [[Rcpp::register]]
-    const char * type2name(SEXP x) { 			// #nocov start
+    const char * type2name(SEXP x) {                            // #nocov start
         switch (TYPEOF(x)) {
-        case NILSXP:	return "NILSXP";
-        case SYMSXP:	return "SYMSXP";
-        case RAWSXP:	return "RAWSXP";
-        case LISTSXP:	return "LISTSXP";
-        case CLOSXP:	return "CLOSXP";
-        case ENVSXP:	return "ENVSXP";
-        case PROMSXP:	return "PROMSXP";
-        case LANGSXP:	return "LANGSXP";
-        case SPECIALSXP:	return "SPECIALSXP";
-        case BUILTINSXP:	return "BUILTINSXP";
-        case CHARSXP:	return "CHARSXP";
-        case LGLSXP:	return "LGLSXP";
-        case INTSXP:	return "INTSXP";
-        case REALSXP:	return "REALSXP";
-        case CPLXSXP:	return "CPLXSXP";
-        case STRSXP:	return "STRSXP";
-        case DOTSXP:	return "DOTSXP";
-        case ANYSXP:	return "ANYSXP";
-        case VECSXP:	return "VECSXP";
-        case EXPRSXP:	return "EXPRSXP";
-        case BCODESXP:	return "BCODESXP";
-        case EXTPTRSXP:	return "EXTPTRSXP";
-        case WEAKREFSXP:	return "WEAKREFSXP";
-        case S4SXP:		return "S4SXP";
+        case NILSXP:    return "NILSXP";
+        case SYMSXP:    return "SYMSXP";
+        case RAWSXP:    return "RAWSXP";
+        case LISTSXP:   return "LISTSXP";
+        case CLOSXP:    return "CLOSXP";
+        case ENVSXP:    return "ENVSXP";
+        case PROMSXP:   return "PROMSXP";
+        case LANGSXP:   return "LANGSXP";
+        case SPECIALSXP:    return "SPECIALSXP";
+        case BUILTINSXP:    return "BUILTINSXP";
+        case CHARSXP:   return "CHARSXP";
+        case LGLSXP:    return "LGLSXP";
+        case INTSXP:    return "INTSXP";
+        case REALSXP:   return "REALSXP";
+        case CPLXSXP:   return "CPLXSXP";
+        case STRSXP:    return "STRSXP";
+        case DOTSXP:    return "DOTSXP";
+        case ANYSXP:    return "ANYSXP";
+        case VECSXP:    return "VECSXP";
+        case EXPRSXP:   return "EXPRSXP";
+        case BCODESXP:  return "BCODESXP";
+        case EXTPTRSXP: return "EXTPTRSXP";
+        case WEAKREFSXP:    return "WEAKREFSXP";
+        case S4SXP:     return "S4SXP";
         default:
         return "<unknown>";
         }
-    }							// #nocov end
+    }                                                           // #nocov end
 
 
 } // namespace Rcpp
@@ -156,21 +127,21 @@ std::string demangle(const std::string& name) {
 }
 
 // [[Rcpp::register]]
-const char* short_file_name(const char* file) {		// #nocov start
+const char* short_file_name(const char* file) {                 // #nocov start
     std::string f(file);
     size_t index = f.find("/include/");
     if (index != std::string::npos) {
         f = f.substr(index + 9);
     }
     return f.c_str();
-}							// #nocov end
+}
 
 // [[Rcpp::internal]]
-SEXP as_character_externalptr(SEXP xp) {		// #nocov start
+SEXP as_character_externalptr(SEXP xp) {
     char buffer[20];
     snprintf(buffer, 20, "%p", (void*)EXTPTR_PTR(xp));
     return Rcpp::wrap((const char*)buffer);
-}							// #nocov end
+}                                                               // #nocov end
 
 // [[Rcpp::internal]]
 SEXP rcpp_capabilities() {
@@ -261,62 +232,30 @@ SEXP rcpp_capabilities() {
 
 
 // [[Rcpp::internal]]
-SEXP rcpp_can_use_cxx0x() {				// #nocov start
+SEXP rcpp_can_use_cxx0x() {                                     // #nocov start
     #if defined(HAS_VARIADIC_TEMPLATES) || defined(RCPP_USING_CXX11)
         return Rf_ScalarLogical(TRUE);
     #else
         return Rf_ScalarLogical(FALSE);
     #endif
-}							// #nocov end
+}
 
 
 // [[Rcpp::internal]]
-SEXP rcpp_can_use_cxx11() {				// #nocov start
+SEXP rcpp_can_use_cxx11() {
     #if defined(RCPP_USING_CXX11)
         return Rf_ScalarLogical(TRUE);
     #else
         return Rf_ScalarLogical(FALSE);
     #endif
-}							// #nocov end
+}
 
 
 // [[Rcpp::register]]
 SEXP stack_trace(const char* file, int line) {
-    #if defined(__GNUC__) || defined(__clang__)
-        #if defined(_WIN32) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__CYGWIN__) || defined(__sun) || defined(_AIX) || defined(__MUSL__) || defined(__HAIKU__) || defined(__ANDROID__)
-            // Simpler version for Windows and *BSD
-            List trace = List::create(_["file"] = file,
-                                      _[ "line"  ] = line,
-                                      _[ "stack" ] = "C++ stack not available on this system");
-            trace.attr("class") = "Rcpp_stack_trace";
-            return trace;
-        #else // ! (defined(_WIN32) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__CYGWIN__) || defined(__sun) || defined(_AIX) || defined(__ANDROID__)
+    return R_NilValue;
+}                                                               // #nocov end
 
-            /* inspired from http://tombarta.wordpress.com/2008/08/01/c-stack-traces-with-gcc/  */
-            const size_t max_depth = 100;
-            int stack_depth;
-            void *stack_addrs[max_depth];
-            char **stack_strings;
-
-            stack_depth = backtrace(stack_addrs, max_depth);
-            stack_strings = backtrace_symbols(stack_addrs, stack_depth);
-
-            std::string current_line;
-
-            CharacterVector res(stack_depth - 1);
-            std::transform(stack_strings + 1, stack_strings + stack_depth, res.begin(), demangler_one);
-            free(stack_strings); // malloc()ed by backtrace_symbols
-
-            List trace = List::create(_["file" ] = file,
-                                      _["line" ] = line,
-                                      _["stack"] = res);
-            trace.attr("class") = "Rcpp_stack_trace";
-            return trace;
-        #endif
-    #else /* !defined( __GNUC__ ) */
-        return R_NilValue;
-    #endif
-}
 
 // // [ [ Rcpp::register ] ]
 // void print(SEXP s) {

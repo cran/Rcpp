@@ -153,6 +153,7 @@ namespace attributes {
     const char * const kExportAttribute = "export";
     const char * const kExportName = "name";
     const char * const kExportRng = "rng";
+    const char * const kExportInvisible = "invisible";
     const char * const kInitAttribute = "init";
     const char * const kDependsAttribute = "depends";
     const char * const kPluginsAttribute = "plugins";
@@ -379,6 +380,15 @@ namespace attributes {
                        rngParam.value() == kParamValueTRUE;  	// #nocov
             else
                 return true;
+        }
+
+        bool invisible() const {
+            Param invisibleParam = paramNamed(kExportInvisible);
+            if (!invisibleParam.empty())
+                return invisibleParam.value() == kParamValueTrue ||	// #nocov
+                       invisibleParam.value() == kParamValueTRUE;  	// #nocov
+            else
+                return false;
         }
 
         const std::vector<std::string>& roxygen() const { return roxygen_; }
@@ -947,7 +957,7 @@ namespace attributes {
             parseSourceDependencies(sourceFile, &dependencies);
 
             // remove main source file
-            dependencies.erase(std::remove(dependencies.begin(),
+            dependencies.erase(std::remove(dependencies.begin(),	// #nocov
                                            dependencies.end(),
                                            FileInfo(sourceFile)),
                                dependencies.end());
@@ -1253,9 +1263,9 @@ namespace attributes {
                 // check for a match
                 Rcpp::CharacterVector match = initMatches[i];
                 if (match.size() > 0) {
-                    hasPackageInit_ = true;
+                    hasPackageInit_ = true;		// #nocov start
                     break;
-                }
+                }					// #nocov end
             }
 
             // Parse embedded R
@@ -1275,9 +1285,9 @@ namespace attributes {
                     SourceFileAttributesParser parser(dependency, packageName, false);
 
                     // copy to base attributes (if it's a new attribute)
-                    for (SourceFileAttributesParser::const_iterator
+                    for (SourceFileAttributesParser::const_iterator	// #nocov start
                             it = parser.begin(); it != parser.end(); ++it) {
-                        if (std::find(attributes_.begin(),		// #nocov start
+                        if (std::find(attributes_.begin(),
                                       attributes_.end(),
                                       *it) == attributes_.end()) {
                             attributes_.push_back(*it);			// #nocov end
@@ -1352,7 +1362,8 @@ namespace attributes {
                 // parameter that isn't name or rng
                 else if (!value.empty() &&
                          (name != kExportName) &&
-                         (name != kExportRng)) {
+                         (name != kExportRng) &&
+                         (name != kExportInvisible)) {
                     rcppExportWarning("Unrecognized parameter '" + name + "'",
                                       lineNumber);
                 }
@@ -1363,6 +1374,16 @@ namespace attributes {
                         value != kParamValueFALSE &&
                         value != kParamValueTRUE) {
                         rcppExportWarning("rng value must be true or false",
+                                          lineNumber);
+                    }
+                }
+                // invisible that isn't true of false
+                else if (name == kExportInvisible) {
+                    if (value != kParamValueFalse &&
+                        value != kParamValueTrue &&
+                        value != kParamValueFALSE &&
+                        value != kParamValueTRUE) {
+                        rcppExportWarning("invisible value must be true or false",
                                           lineNumber);			// #nocov end
                     }
                 }
@@ -1433,8 +1454,8 @@ namespace attributes {
             beginParenLoc == std::string::npos ||
             endParenLoc < beginParenLoc) {
 
-            rcppExportNoFunctionFoundWarning(lineNumber);
-            return Function();
+            rcppExportNoFunctionFoundWarning(lineNumber);		// #nocov
+            return Function();						// #nocov
         }
 
         // Find the type and name by scanning backwards for the whitespace that
@@ -1489,7 +1510,7 @@ namespace attributes {
             trimWhitespace(&arg);
             if (arg.empty()) {
                 // we don't warn here because the compilation will fail anyway
-                continue;
+                continue;					// #nocov
             }
 
             // If the argument has an = within it then it has a default value
@@ -1635,12 +1656,12 @@ namespace attributes {
                     case '>':
                         templateCount--;
                         break;
-                    case '(':
-                        parenCount++;			// #nocov
-                        break;				// #nocov
+                    case '(':				// #nocov start
+                        parenCount++;
+                        break;
                     case ')':
-                        parenCount--;			// #nocov
-                        break;				// #nocov
+                        parenCount--;
+                        break;				// #nocov end
                 }
             }
         }
@@ -2413,20 +2434,23 @@ namespace attributes {
                 // determine the function name
                 std::string name = attribute.exportedName();
 
+                // determine if return invisible
+                bool  isInvisibleOrVoid = function.type().isVoid() || attribute.invisible();
+
                 // write the function
                 ostr() << name << " <- function(" << args << ") {"
                        << std::endl;
                 ostr() << "    ";
-                if (function.type().isVoid())
+                if (isInvisibleOrVoid)
                     ostr() << "invisible(";			// #nocov
                 ostr() << ".Call(";
                 if (!registration_)
-                    ostr() << "'";
+                    ostr() << "'";				// #nocov
                 else
                     ostr() << "`";
                 ostr() << packageCppPrefix() << "_" << function.name();
                 if (!registration_)
-                    ostr() << "', " << "PACKAGE = '" << package() << "'";
+                    ostr() << "', " << "PACKAGE = '" << package() << "'";  // #nocov
                 else
                     ostr() << "`";
 
@@ -2435,7 +2459,7 @@ namespace attributes {
                 for (size_t i = 0; i<arguments.size(); i++)
                     ostr() << ", " << arguments[i].name();	// #nocov
                 ostr() << ")";
-                if (function.type().isVoid())
+                if (isInvisibleOrVoid)
                     ostr() << ")";				// #nocov
                 ostr() << std::endl;
 
@@ -2948,7 +2972,7 @@ namespace attributes {
 
         // skip empty case
         if (pStr->empty())
-            return;
+            return;							// #nocov
 
         // trim right
         std::string::size_type pos = pStr->find_last_not_of(kWhitespaceChars);
@@ -3548,14 +3572,14 @@ BEGIN_RCPP
         // don't process RcppExports.cpp
         std::string cppFile = cppFiles[i];
         if (endsWith(cppFile, "RcppExports.cpp"))
-            continue;
+            continue;						// #nocov
 
         // parse file
         SourceFileAttributesParser attributes(cppFile, packageName, false);
 
         // note if we found a package init function
         if (!hasPackageInit && attributes.hasPackageInit())
-            hasPackageInit = true;
+            hasPackageInit = true;				// #nocov
 
         // continue if no generator output
         if (!attributes.hasGeneratorOutput())
@@ -3594,7 +3618,7 @@ BEGIN_RCPP
                         depends.begin(), depends.end(),
                         std::back_inserter(diff));
     if (!diff.empty()) {
-        std::string msg =
+        std::string msg =						// #nocov start
            "The following packages are referenced using Rcpp::depends "
            "attributes however are not listed in the Depends, Imports or "
            "LinkingTo fields of the package DESCRIPTION file: ";
@@ -3609,11 +3633,10 @@ BEGIN_RCPP
     // verbose output
     if (verbose) {
         for (size_t i=0; i<updated.size(); i++)
-            Rcpp::Rcout << updated[i] << " updated." << std::endl;
+            Rcpp::Rcout << updated[i] << " updated." << std::endl;	// #nocov end
     }
 
     // return files updated
     return Rcpp::wrap<std::vector<std::string> >(updated);
 END_RCPP
 }
-
