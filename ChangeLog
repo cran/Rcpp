@@ -1,3 +1,79 @@
+2020-04-02  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/NEWS.rd: Mark as patch release 1.0.4.6
+
+2020-04-01  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll minor version
+        * inst/include/Rcpp/config.h: Idem
+
+2020-03-31  Dirk Eddelbuettel  <edd@debian.org>
+
+	* docker/ci-dev/Dockerfile: Also install the 'codetools' package
+
+2020-03-31 Kevin Ushey  <kevin@rstudio.com>
+
+	* R/Attributes.R: Fix for sourceCpp() on Windows w/R-devel
+
+2020-03-28  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/examples/RcppGibbs/RcppGibbs_Updated.R: Updated example
+
+2020-03-24  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll minor version
+        * inst/include/Rcpp/config.h: Idem
+
+	* inst/include/Rcpp/Environment.h: Added two Shield<SEXP> wrappers
+	around Rf_langX calls
+
+2020-03-23  Dirk Eddelbuettel  <edd@debian.org>
+
+	* .travis.yml (script): Run coverage as parallel step
+
+2020-03-22  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll minor version
+        * inst/include/Rcpp/config.h: Idem
+
+	* docker/ci-3.4/Dockerfile: Added
+	* docker/ci-3.5/Dockerfile: Idem
+	* docker/ci-dev/Dockerfile: Idem
+
+	* .travis.yml (jobs): Expand to matrix
+
+2020-03-22  Mattias Ellert  <mattias.ellert@physics.uu.se>
+
+	* inst/include/Rcpp/exceptions_impl.h: Add include guard,
+	Make sure RCPP_DEMANGLER_ENABLED is always defined,
+	Add missing inline qualifier
+
+2020-03-18  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll minor version
+        * inst/include/Rcpp/config.h: Idem
+
+	* inst/include/Rcpp/lang.h: Define Rcpp_list{2,3,4,5} in the Rcpp
+	namespace
+
+	* DESCRIPTION: Remove versioned depends on R (>= 3.0.0) from 2013
+
+2020-03-17  Davis Vaughan  <davis@rstudio.com>
+
+	* inst/include/Rcpp/lang.h: Inline Rcpp_list6() to support R 3.3.
+
+2020-03-17  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll minor version (twice)
+        * inst/include/Rcpp/config.h: Idem
+
+        * inst/NEWS.Rd: Updated
+
+2020-03-15  Kevin Ushey  <kevinushey@gmail.com>
+
+	* inst/include/Rcpp/exceptions_impl.h: Ensure <execinfo.h> is included
+	into global namespace; refactor detection of demangler support
+
 2020-03-13  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (Date, Version): Release 1.0.4

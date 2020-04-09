@@ -15,10 +15,10 @@ if (requireNamespace("tinytest", quietly=TRUE) &&
             message("Setting \"RunAllRcppTests\"=\"yes\" for development release\n")
             Sys.setenv("RunAllRcppTests"="yes")
         }
-        if (Sys.getenv("RunVerboseRcppTests") != "no") { 		# if env.var not yet set
-            message("Setting \"RunVerboseRcppTests\"=\"yes\" for development release\n")
-            Sys.setenv("RunVerboseRcppTests"="yes")
-        }
+        #if (Sys.getenv("RunVerboseRcppTests") != "no") { 		# if env.var not yet set
+        #    message("Setting \"RunVerboseRcppTests\"=\"yes\" for development release\n")
+        #    Sys.setenv("RunVerboseRcppTests"="yes")
+        #}
     }
 
     ## On Travis also always set tests; see
