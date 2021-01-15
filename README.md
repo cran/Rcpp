@@ -1,6 +1,7 @@
 ## Rcpp: Seamless R and C++ Integration
 
 [![Build Status](https://travis-ci.org/RcppCore/Rcpp.svg)](https://travis-ci.org/RcppCore/Rcpp)
+[![CI](https://github.com/RcppCore/Rcpp/workflows/ci/badge.svg)](https://github.com/RcppCore/Rcpp/actions?query=workflow%3Aci)
 [![License](https://eddelbuettel.github.io/badges/GPL2+.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
 [![CRAN](https://www.r-pkg.org/badges/version/Rcpp)](https://cran.r-project.org/package=Rcpp)
 [![Dependencies](https://tinyverse.netlify.com/badge/Rcpp)](https://cran.r-project.org/package=Rcpp)
@@ -77,7 +78,7 @@ Among the other vignettes are the [Rcpp
 FAQ](https://cran.r-project.org/package=Rcpp/vignettes/Rcpp-FAQ.pdf) and the
 introduction to [Rcpp
 Attributes](https://cran.r-project.org/package=Rcpp/vignettes/Rcpp-attributes.pdf).
-Additional documentation is available via the [Rcpp book](http://www.rcpp.org/book)
+Additional documentation is available via the [Rcpp book](http://www.rcpp.org/book/)
 by Eddelbuettel (2013, Springer); see 'citation("Rcpp")' for details.
 
 ### Examples
@@ -96,9 +97,9 @@ been factored out of Rcpp into the package RcppClassic, and it is still
 available for code relying on the older interface. New development should
 always use this Rcpp package instead.
 
-Other usage examples are provided by packages using Rcpp. As of June 2020,
-there are 1990 [CRAN](https://cran.r-project.org) packages using Rcpp, a further
-203 [BioConductor](https://www.bioconductor.org) packages in its current release
+Other usage examples are provided by packages using Rcpp. As of January 2021,
+there are 2169 [CRAN](https://cran.r-project.org) packages using Rcpp, a further
+207 [BioConductor](https://www.bioconductor.org) packages in its current release
 as well as an unknown number of GitHub, Bitbucket, R-Forge, ... repositories
 using Rcpp.  All these packages provide usage examples for Rcpp.
 
