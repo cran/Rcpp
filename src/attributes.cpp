@@ -1,8 +1,8 @@
-// -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; indent-tabs-mode: nil; -*-
 //
 // attributes.cpp: Rcpp R/C++ interface class library -- Rcpp attributes
 //
-// Copyright (C) 2012 - 2017  JJ Allaire, Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2012 - 2020  JJ Allaire, Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2021         JJ Allaire, Dirk Eddelbuettel, Romain Francois and Iñaki Ucar
 //
 // This file is part of Rcpp.
 //
@@ -634,6 +634,9 @@ namespace attributes {
         // if it wasn't (throws exception on io error)
         bool commit(const std::string& preamble = std::string());
 
+        // Convert a dot in package name to underscore for use in header file name
+        std::string dotNameHelper(const std::string & name) const;
+
     private:
 
         // Private virtual for doWriteFunctions so the base class
@@ -718,7 +721,7 @@ namespace attributes {
         std::string includeDir_;
     };
 
-    // Class which manages generating PackageName_RcppExports.h header file
+    // Class which manages generating PackageName.h header file
     class CppPackageIncludeGenerator : public ExportsGenerator {
     public:
         CppPackageIncludeGenerator(const std::string& packageDir,
@@ -792,6 +795,8 @@ namespace attributes {
     // Standalone generation helpers (used by sourceCpp)
 
     std::string generateRArgList(const Function& function);
+
+    void initializeGlobals(std::ostream& ostr);
 
     void generateCpp(std::ostream& ostr,
                      const SourceFileAttributes& attributes,
@@ -919,7 +924,7 @@ namespace attributes {
                             for (size_t i = 0; i<exts.size(); ++i) {
 
                                 // look for corresponding cpp file and add it
-                                std::string file = Rcpp::as<std::string>(
+                                std::string file = Rcpp::as<std::string>(		// #nocov
                                     filePathSansExt(include)) + exts[i];
 
                                 exists = fileExists(file);
@@ -1895,6 +1900,13 @@ namespace attributes {
         return removeFile(targetFile_);
     }
 
+    // Convert a possible dot in package name to underscore as needed for header file
+    std::string ExportsGenerator::dotNameHelper(const std::string & name) const {
+        std::string newname(name);
+        std::replace(newname.begin(), newname.end(), '.', '_');
+        return newname;
+    }
+
     CppExportsGenerator::CppExportsGenerator(const std::string& packageDir,
                                              const std::string& package,
                                              const std::string& fileSep)
@@ -2118,6 +2130,8 @@ namespace attributes {
 
         // always bring in Rcpp
         ostr << "using namespace Rcpp;" << std::endl << std::endl;
+        // initialize references to global Rostreams
+        initializeGlobals(ostr);
 
         // commit with preamble
         return ExportsGenerator::commit(ostr.str());
@@ -2129,7 +2143,7 @@ namespace attributes {
                                             const std::string& fileSep)
         : ExportsGenerator(
             packageDir +  fileSep + "inst" +  fileSep + "include" +
-            fileSep + package + kRcppExportsSuffix,
+            fileSep + dotNameHelper(package) + kRcppExportsSuffix,
             package,
             "//")
     {
@@ -2347,7 +2361,7 @@ namespace attributes {
                                             const std::string& fileSep)
         : ExportsGenerator(
             packageDir +  fileSep + "inst" +  fileSep + "include" +
-            fileSep + package + ".h",
+            fileSep + dotNameHelper(package) + ".h",
             package,
             "//")
     {
@@ -2360,7 +2374,6 @@ namespace attributes {
             std::string guard = getHeaderGuard();			// #nocov start
             ostr() << "#ifndef " << guard << std::endl;
             ostr() << "#define " << guard << std::endl << std::endl;
-
             ostr() << "#include \"" << packageCpp() << kRcppExportsSuffix
                    << "\"" << std::endl;
 
@@ -2732,6 +2745,16 @@ namespace attributes {
                 argsOstr << ", ";
         }
         return argsOstr.str();
+    }
+
+    // Generate the C++ code required to initialize global objects
+    void initializeGlobals(std::ostream& ostr) {
+        ostr << "#ifdef RCPP_USE_GLOBAL_ROSTREAM" << std::endl;
+        ostr << "Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();";
+        ostr << std::endl;
+        ostr << "Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();";
+        ostr << std::endl;
+        ostr << "#endif" << std::endl << std::endl;
     }
 
     // Generate the C++ code required to make [[Rcpp::export]] functions
@@ -3180,6 +3203,8 @@ namespace {
             // always include Rcpp.h in case the user didn't
             ostr << std::endl << std::endl;
             ostr << "#include <Rcpp.h>" << std::endl;
+            // initialize references to global Rostreams
+            initializeGlobals(ostr);
             generateCpp(ostr, sourceAttributes, true, false, contextId_);
             generatedCpp_ = ostr.str();
             std::ofstream cppOfs(generatedCppSourcePath().c_str(),

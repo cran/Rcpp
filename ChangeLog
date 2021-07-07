@@ -1,4 +1,156 @@
-2021-01-13  Dirk Eddelbuettel  <edd@debian.org>
+2021-07-06  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Date, Version): Release 1.0.7
+
+        * inst/include/Rcpp/config.h: Idem
+        * inst/NEWS.Rd: Idem
+        * vignettes/rmd/Rcpp.bib: Idem
+        * inst/bib/Rcpp.bib: Idem
+	* vignettes/pdf/*: Rebuilt
+
+2021-07-05  Iñaki Ucar  <iucar@fedoraproject.org>
+
+	* src/barrier.cpp (Rcpp_precious_remove): Protect from call with
+	wrong token when unloading modules compiled under earlier version
+
+2021-07-02  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/r/headers.h: Update notice as January 2022
+	release will remove protection for STRICT_R_HEADERS making it default
+
+2021-05-27  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/tinytest/cpp/rcppversion.cpp (checkVersion): Allow for more
+	than four components of a development version number
+	* inst/tinytest/test_packageversion.R: Idem
+	* inst/include/Rcpp/config.h (RCPP_DEV_VERSION): Clarify in comment
+
+2021-05-13  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version, Date): Roll minor version
+        * inst/include/Rcpp/config.h: Idem
+
+2021-05-09  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/RcppCommon.h: Add cfloat header
+
+2021-04-09  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/hash/IndexHash.h: Silence one comparison, update
+	use of unsigned int to uint32_t throughout
+
+2021-03-22  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version, Date): Roll minor version
+        * inst/include/Rcpp/config.h: Idem
+
+2021-03-21  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/api/meat/message.h: Add wrapper for base::message
+	* inst/include/Rcpp/api/meat/meat.h: Include new file
+	* inst/tinytest/test_misc.R: Simple test
+	* inst/tinytest/cpp/misc.cpp (messageWrapper): Test support
+
+2021-02-23  Dirk Eddelbuettel  <edd@debian.org>
+
+	* Contributing.md: Update unit test link to tinytest
+
+2021-02-08  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Author): Add Inaki to the team
+
+2021-02-01  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version, Date): Roll minor version
+        * inst/include/Rcpp/config.h: Idem
+
+	* README.md: Mention the Rcpp drap repo and its release candidates in
+	installation section
+
+2021-01-30  Iñaki Ucar  <iucar@fedoraproject.org>
+
+	* inst/include/test_global_rostream.R: Added test new (optionally)
+	global Rcout and Rcerr objects
+
+2021-01-28  Iñaki Ucar  <iucar@fedoraproject.org>
+
+	* inst/include/Rcpp/iostream/Rstreambuf.h: Support for global
+	Rcout/Rcerr by defining `-DRCPP_USE_GLOBAL_ROSTREAM`; this mimics
+	std::cout/cerr; initialization code is automatically generated.
+	* inst/include/Rcpp/routines.h: Ditto
+	* src/api.cpp: Ditto
+	* src/attributes.cpp: Ditto
+	* src/rcpp_init.cpp: Ditto
+
+2021-01-21  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version, Date): Roll minor version
+        * inst/include/Rcpp/config.h: Idem
+
+	* inst/include/Rcpp/DataFrame.h: Remove unused variable
+
+	* R/Attributes.R (sourceCpp): Support argument echo to be passed to
+	source() to silence optional R evaluation
+
+2021-01-19  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version, Date): Roll minor version
+        * inst/include/Rcpp/config.h: Idem
+
+	* inst/include/RcppCommon.h: Preverse existing API and offer new
+	token-based API alongside via Rcpp_Precious{Preserve,Release}
+	* inst/include/Rcpp/String.h: Use Rcpp_Precious{Preserve,Release}
+	* inst/include/Rcpp/storage/PreserveStorage.h: Ditto
+
+2021-01-17  Iñaki Ucar  <iucar@fedoraproject.org>
+
+	* inst/include/Rcpp/String.h: Use Rcpp_{Preserve,Release}Object
+	throughout which connects to Rcpp_precious_* routines
+	* inst/include/Rcpp/exceptions.h: Use Rcpp_ReleaseObject
+	* inst/include/Rcpp/routines.h: Several corrections and refinements
+	* inst/include/Rcpp/storage/PreserveStorage.h: Ditto
+	* inst/include/Rcpp/traits/named_object.h: Ditto
+	* inst/include/Rcpp/unwuindProtect.h: Ditto
+	* inst/include/RcppCommon.h: Ditto
+	* src/barrier.cpp: Ditto
+
+2021-01-17  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version, Date): Roll minor version
+        * inst/include/Rcpp/config.h: Idem
+
+	[ these were originally committed 17 May 2020 and have been rebased ]
+	* src/barrier.cpp: Implement Rcpp_precious_{init,teardown,preserve,remove}
+	* src/rcpp_init.c: Register cpp_precious_{init,teardown,preserve,remove}
+	and call from R_{init,unload}_Rcpp
+	* inst/include/Rcpp/routines.h: Declare Rcpp_precious_{init,teardown,
+	preserve,remove}
+	* inst/include/Rcpp/exceptions.h: Use Rcpp_precious_remove
+	* inst/include/Rcpp/traits/named_object.h: Use
+	Rcpp_precious_{preserve,remove}
+	* inst/include/Rcpp/unwuindProtect.h: Use Rcpp_precious_preserve
+	* inst/include/RcppCommon.h: Use Rcpp_precious_{preserve,remove}
+
+2021-01-16  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version, Date): Roll minor version
+        * inst/include/Rcpp/config.h: Idem
+
+	* tests/tinytest.R: Test for CODECOV when deciding to run extensive
+	tests or just a subset, and set CI=true to enable run full set
+
+	* .github/workflows/stale.yaml: Run weekly instead of daily
+
+	* src/attributes.cpp: Additional #nocov tag(s)
+	* R/Attributes.R: Idem
+	* R/Module.R: Idem
+	* R/Rcpp.package.skeleton.R: Idem
+	* R/RcppClass.R: Idem
+	* R/RcppLdpath.R: Idem
+
+	* src/attributes.cpp: Support include files with dots in package name
+
+2021-01-14  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION (Date, Version): Release 1.0.6
 
