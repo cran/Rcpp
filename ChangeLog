@@ -1,3 +1,153 @@
+2022-01-11  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Date, Version): Release 1.0.8
+
+        * inst/include/Rcpp/config.h: Idem
+        * inst/NEWS.Rd: Idem
+        * vignettes/rmd/Rcpp.bib: Idem
+        * inst/bib/Rcpp.bib: Idem
+	* vignettes/pdf/*: Rebuilt
+
+	* inst/include/Rcpp/r/headers.h: STRICT_R_HEADERS set by default
+	unless override RCPP_NO_STRICT_HEADERS is set (cf issue #1158)
+
+2022-01-10  Dirk Eddelbuettel  <edd@debian.org>
+
+        * vignettes/rmd/Rcpp.bib: Updated CRAN and R references
+        * inst/bib/Rcpp.bib: Idem
+        * vignettes/rmd/getCurrentVersionsOfCitedPackages.R: Updated
+
+2022-01-01  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll minor version
+
+	* inst/NEWS.Rd: Added entries for a few PRs since last release
+
+	* vignettes/rmd/Rcpp.bib: Provide both url and doi entries
+	* inst/bib/Rcpp.bib: Idem
+
+2021-12-28  Dirk Eddelbuettel  <edd@debian.org>
+
+	* README.md: Add section on performance
+
+2021-12-24  Dirk Eddelbuettel  <edd@debian.org>
+
+	* README.md: Update usage counts
+
+2021-12-16  Dirk Eddelbuettel  <edd@debian.org>
+
+	* vignettes/rmd/Rcpp.bib: Update JSS references to new doi scheme,
+	update http URL links to https
+	* inst/bib/Rcpp.bib: Idem
+
+2021-12-10  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version, Date): Roll minor version
+	* inst/include/Rcpp/config.h: Idem
+
+2021-12-08  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/Rcpp: Added as new entry point
+	* inst/include/Rcpp/Light: Added as lighter-weight entry point
+	* inst/include/Rcpp/Lighter: Idem
+	* inst/include/Rcpp/Lightest: Idem
+
+2021-11-30  Dirk Eddelbuettel  <edd@debian.org>
+
+	* README.md: Remove Travis badge
+	* .travis.yml: Removed
+
+2021-11-15  Dirk Eddelbuettel  <edd@debian.org>
+
+	* docker/ci/Dockerfile: Minor cleanup
+
+2021-11-14  Dirk Eddelbuettel  <edd@debian.org>
+
+	* R/RcppLdpath.R: Simplified as we no longer need to worry about CXX0X
+
+2021-11-11  Kevin Ushey  <kevinushey@gmail.com>
+
+	* R/RcppLdpath.R: CxxFlags() now quotes its include path
+
+2021-10-15  Travers Ching  <traversc@gmail.com>
+
+	* inst/tinytest/testRcppAttributePackage: Tests `signature` attribute
+	* inst/tinytest/test_attribute_package.R: Tests `signature` attribute
+
+2021-10-13  Dirk Eddelbuettel  <edd@debian.org>
+
+	* README.md: Switch JSS url to doi form per JSS request
+	* man/Rcpp-package.Rd: Idem
+	* man/RcppLdFlags.Rd: Idem
+	* inst/CITATION: Only use doi entries in three citEntry blocks
+
+2021-10-11  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version, Date): Roll minor version
+	* inst/include/Rcpp/config.h: Idem
+
+	* .codecov.yml (comment): Disable codecov comments on PRs
+
+2021-10-10  Travers Ching  <traversc@gmail.com>
+
+	* src/attributes.cpp: Add `signature` attribute and syntax checks
+
+2021-10-02  Dirk Eddelbuettel  <edd@debian.org>
+
+	* .github/workflows/docker.yaml (jobs): Add container builder action
+
+2021-10-01  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version, Date): Roll minor version
+        * inst/include/Rcpp/config.h: Idem
+
+	* inst/NEWS.Rd: Updated
+
+2021-09-29  Iñaki Ucar  <iucar@fedoraproject.org>
+
+	* inst/include/Rcpp/XPtr.h: Check for new define
+        `RCPP_USE_FINALIZE_ON_EXIT` to flip the value of XPtr's `finalizeOnExit`
+        parameter from false (default) to true.
+	* inst/tinytest/test_xptr.R: Added test for this functionality.
+
+2021-09-27  Dirk Eddelbuettel  <edd@debian.org>
+
+	* README.md: Added total downloads badge
+
+2021-09-06  Dirk Eddelbuettel  <edd@debian.org>
+
+	* docker/ci-4.0/Dockerfile: Using R 4.0.5 to build ci-4.0
+	* .github/workflows/ci.yaml (jobs): Also run against R 4.0.*
+
+2021-09-05  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/examples/Misc/piSugar.cpp (piSugar): Remove spurious call to
+	RNGScope we do not need with Rcpp Attributes
+	* inst/examples/RcppGibbs/RcppGibbs.R (Rgibbs): Comment on two uses
+	of RNGScope as historical in pre-Attributes code
+	* inst/examples/RcppGibbs/timeRNGs.R: Idem for one more
+
+2021-08-05  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/bib/Rcpp.bib: Use https for CRAN URLs
+	* vignettes/rmd/Rcpp.bib: Idem
+
+2021-07-25  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version, Date): Roll minor version
+        * inst/include/Rcpp/config.h: Idem
+
+2021-07-24  Dirk Eddelbuettel  <edd@debian.org>
+
+	* vignettes/rmd/Rcpp-FAQ.Rmd: New entry on growing vectors
+
+2021-07-08  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Version, Date): Roll minor version
+        * inst/include/Rcpp/config.h: Idem
+
+	* cleanup: Check for optional vignettes/rmd before trying to access it
+
 2021-07-06  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION (Date, Version): Release 1.0.7

@@ -3,6 +3,44 @@
 \newcommand{\ghpr}{\href{https://github.com/RcppCore/Rcpp/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/RcppCore/Rcpp/issues/#1}{##1}}
 
+\section{Changes in Rcpp release version 1.0.8 (2022-01-11)}{
+  \itemize{
+    \item Changes in Rcpp API:
+    \itemize{
+      \item \code{STRICT_R_HEADERS} is now enabled by default, see
+      extensive discussion in \ghit{1158} closing \ghit{898}.
+      \item A new \code{#define} allows default setting of finalizer
+      calls for external pointers (Iñaki in \ghpr{1180} closing \ghit{1108}).
+      \item \code{Rcpp:::CxxFlags()} now quotes the include path generated,
+      (Kevin in \ghpr{1189} closing \ghit{1188}).
+      \item New header files \code{Rcpp/Light}, \code{Rcpp/Lighter},
+      \code{Rcpp/Lightest} and default \code{Rcpp/Rcpp} for fine-grained
+      access to features (and compilation time) (Dirk \ghpr{1191}
+      addressing \ghpr{1168}).
+    }
+    \item Changes in Rcpp Attributes:
+    \itemize{
+      \item A new option \code{signature} allows customization of
+      function signatures (Travers Ching in \ghpr{1184} and \ghpr{1187} fixing
+      \ghit{1182})
+    }
+    \item Changes in Rcpp Documentation:
+    \itemize{
+      \item The Rcpp FAQ has a new entry on how \emph{not} to grow a vector
+      (Dirk in \ghpr{1167}).
+      \item Some long-spurious calls to \code{RNGSope} have been removed
+      from examples (Dirk in \ghpr{1173} closing \ghit{1172}).
+      \item DOI reference in the bibtex files have been updated per JSS
+      request (Dirk in \ghpr{1186}).
+    }
+    \item Changes in Rcpp Deployment:
+    \itemize{
+      \item Some continuous integration components have been updated
+      (Dirk in \ghpr{1174}, \ghpr{1181}, and \ghpr{1190}).
+    }
+  }
+}
+
 \section{Changes in Rcpp release version 1.0.7 (2021-07-06)}{
   \itemize{
     \item Changes in Rcpp API:
