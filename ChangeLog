@@ -1,3 +1,65 @@
+2022-07-02  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Date, Version): Release 1.0.9
+
+        * inst/include/Rcpp/config.h: Idem
+        * inst/NEWS.Rd: Idem
+        * vignettes/rmd/Rcpp.bib: Idem
+        * inst/bib/Rcpp.bib: Idem
+	* vignettes/pdf/*: Rebuilt
+
+2022-07-01  Dirk Eddelbuettel  <edd@debian.org>
+
+	* man/dependsAttribute.Rd: Use https in URL
+	* man/exportAttribute.Rd: Idem
+	* man/interfacesAttribute.Rd: Idem
+	* DESCRIPTION (URL): Idem
+	* README.md: Idem, use Amazon page for Rcpp book
+
+2022-05-26  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll minor version
+	* inst/include/Rcpp/config.h: Idem
+
+2022-05-25  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/tinytest/test_string.R: Add C++11 conditioning for new unit tests
+
+2022-05-23  Dean Scarff  <dos@scarff.id.au>
+
+	* inst/include/Rcpp/String.h: Make less copies of strings via move
+	semantics and preserving the buffer/SEXP representation when copying
+	* inst/include/RcppCommon.h: include <utility> for std::move
+	* inst/tinytest/cpp/String.cpp: Add unit tests
+	* inst/tinytest/test_string.R: Add unit tests
+
+2022-05-12  Dirk Eddelbuettel  <edd@debian.org>
+
+	* docker/ci/Dockerfile: Added xml2, also use more r-cran-* binaries
+
+2022-05-12  Marco Colombo <mar.colombo13@gmail.com>
+
+	* vignettes/rmd/Rcpp-FAQ.Rmd: Fixed typo
+
+2022-04-03  Dirk Eddelbuettel  <edd@debian.org>
+
+	* vignettes/rmd/Rcpp-FAQ.Rmd: Add paragraph about Date(time) not
+	being aimed at parsing large quantities at once
+	* vignettes/pdf/Rcpp-FAQ.pdf: Idem
+
+	* vignettes/rmd/Rcpp.bib: Add four entries
+        * inst/bib/Rcpp.bib: Idem
+
+2022-03-14  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll minor version
+	* inst/include/Rcpp/config.h: Idem
+
+2022-03-13  Iñaki Ucar  <iucar@fedoraproject.org>
+
+	* src/barrier.cpp: Untag tokens upon removal from the precious list,
+	so that the internal reference counter can be safely decremented by R
+
 2022-03-13  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (Version, Date): Roll minor version
