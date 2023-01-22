@@ -1,5 +1,5 @@
 
-# Copyright (C) 2012 - 2021  JJ Allaire, Dirk Eddelbuettel and Romain Francois
+# Copyright (C) 2012 - 2022  JJ Allaire, Dirk Eddelbuettel and Romain Francois
 #
 # This file is part of Rcpp.
 #
@@ -129,7 +129,8 @@ sourceCpp <- function(file = "",
         }                                                       # #nocov end
 
         # grab components we need to build command
-        r <- paste(R.home("bin"), "R", sep = .Platform$file.sep)
+        r <- file.path(R.home("bin"), "R")
+        if (.Platform$OS.type == "windows") r <- shQuote(r)
         lib  <- context$dynlibFilename
         deps <- context$cppDependencySourcePaths
         src  <- context$cppSourceFilename
@@ -543,6 +544,23 @@ compileAttributes <- function(pkgdir = ".", verbose = getOption("verbose")) {
         list(env = list(PKG_CXXFLAGS ="-std=c++17"))
 }
 
+# built-in C++20 plugin for C++20
+.plugins[["cpp20"]] <- function() {
+    if (getRversion() >= "4.2")         # with recent R versions, R can decide
+        list(env = list(USE_CXX20 = "yes"))
+    else
+        list(env = list(PKG_CXXFLAGS ="-std=c++20"))
+}
+
+# built-in C++23 plugin for C++23
+.plugins[["cpp23"]] <- function() {
+    if (getRversion() >= "4.3")         # with recent R versions, R can decide
+        list(env = list(USE_CXX23 = "yes"))
+    else
+        list(env = list(PKG_CXXFLAGS ="-std=c++23"))
+}
+
+
 ## built-in C++1z plugin for C++17 standard under development
 ## note that as of Feb 2017 this is taken to be a moving target
 ## see https://gcc.gnu.org/projects/cxx-status.html
@@ -556,15 +574,22 @@ compileAttributes <- function(pkgdir = ".", verbose = getOption("verbose")) {
     list(env = list(PKG_CXXFLAGS ="-std=c++2a"))
 }
 
+## built-in C++2b plugin for compilers without C++23 support
+.plugins[["cpp2b"]] <- function() {
+    list(env = list(PKG_CXXFLAGS ="-std=c++2b"))
+}
+
 ## built-in OpenMP plugin
 .plugins[["openmp"]] <- function() {
     list(env = list(PKG_CXXFLAGS="-fopenmp",
                     PKG_LIBS="-fopenmp"))
 }
 
-.plugins[["unwindProtect"]] <- function() {
-    list(env = list(PKG_CPPFLAGS = "-DRCPP_USE_UNWIND_PROTECT"))
-}
+.plugins[["unwindProtect"]] <- function() { # nocov start
+    warning("unwindProtect is enabled by default and this plugin is deprecated.",
+            " It will be removed in a future version of Rcpp.")
+    list()
+} # nocov end
 
 # register a plugin
 registerPlugin <- function(name, plugin) {
