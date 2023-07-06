@@ -1,5 +1,6 @@
 
 # Copyright (C) 2012 - 2022  JJ Allaire, Dirk Eddelbuettel and Romain Francois
+# Copyright (C) 2023         JJ Allaire, Dirk Eddelbuettel, Romain Francois and Iñaki Ucar
 #
 # This file is part of Rcpp.
 #
@@ -130,14 +131,13 @@ sourceCpp <- function(file = "",
 
         # grab components we need to build command
         r <- file.path(R.home("bin"), "R")
-        if (.Platform$OS.type == "windows") r <- shQuote(r)
         lib  <- context$dynlibFilename
         deps <- context$cppDependencySourcePaths
         src  <- context$cppSourceFilename
 
         # prepare the command (output if we are in showOutput mode)
         args <- c(
-            r, "CMD", "SHLIB",
+            "CMD", "SHLIB",
             if (windowsDebugDLL) "-d",
             if (rebuild) "--preclean",
             if (dryRun) "--dry-run",
@@ -147,13 +147,13 @@ sourceCpp <- function(file = "",
             shQuote(src)
         )
 
-        cmd <- paste(args, collapse = " ")
         if (showOutput)
-            cat(cmd, "\n")										# #nocov
+            cat(paste(c(r, args), collapse = " "), "\n")		# #nocov
 
         # execute the build -- suppressWarnings b/c when showOutput = FALSE
         # we are going to explicitly check for an error and print the output
-        result <- suppressWarnings(system(cmd, intern = !showOutput))
+        so <- if (showOutput) "" else TRUE
+        result <- suppressWarnings(system2(r, args, stdout = so, stderr = so))
 
         # check build results
         if(!showOutput) {

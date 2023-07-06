@@ -4,7 +4,7 @@
 [![License](https://eddelbuettel.github.io/badges/GPL2+.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
 [![CRAN](https://www.r-pkg.org/badges/version/Rcpp)](https://cran.r-project.org/package=Rcpp)
 [![Dependencies](https://tinyverse.netlify.com/badge/Rcpp)](https://cran.r-project.org/package=Rcpp)
-[![Coverage Status](https://codecov.io/gh/RcppCore/Rcpp/graph/badge.svg)](https://codecov.io/github/RcppCore/Rcpp?branch=master)
+[![Coverage Status](https://codecov.io/gh/RcppCore/Rcpp/graph/badge.svg)](https://app.codecov.io/github/RcppCore/Rcpp?branch=master)
 [![Debian package](https://img.shields.io/debian/v/r-cran-rcpp/sid?color=brightgreen)](https://packages.debian.org/sid/r-cran-rcpp)
 [![Last Commit](https://img.shields.io/github/last-commit/RcppCore/Rcpp)](https://github.com/RcppCore/Rcpp)
 [![Downloads (monthly)](https://cranlogs.r-pkg.org/badges/Rcpp?color=brightgreen)](https://www.r-pkg.org/pkg/Rcpp)
@@ -30,7 +30,7 @@ represented as instances of `Rcpp::Environment`, functions are represented as
 `Rcpp::Function`, etc ...  The
 [Rcpp-introduction](https://cran.r-project.org/package=Rcpp/vignettes/Rcpp-introduction.pdf)
 vignette (now published as a
-[TAS paper](https://amstat.tandfonline.com/doi/abs/10.1080/00031305.2017.1375990); an
+[TAS paper](https://doi.org/10.1080/00031305.2017.1375990); an
 [earlier introduction](https://cran.r-project.org/package=Rcpp/vignettes/Rcpp-jss-2011.pdf)
 was also published as a [JSS paper](https://doi.org/10.18637/jss.v040.i08)
 provides a good entry point to Rcpp as do the [Rcpp
@@ -68,7 +68,7 @@ See the [Rcpp-atttributes](https://cran.r-project.org/package=Rcpp/vignettes/Rcp
 The package ships with ten pdf vignettes, including a [recent introduction to
 Rcpp](https://cran.r-project.org/package=Rcpp/vignettes/Rcpp-introduction.pdf) now
 published as a [paper in
-TAS](https://amstat.tandfonline.com/doi/abs/10.1080/00031305.2017.1375990) (and as a
+TAS](https://doi.org/10.1080/00031305.2017.1375990) (and as a
 [preprint in PeerJ](https://peerj.com/preprints/3188/)). Also available is an
 [earlier
 introduction](https://cran.r-project.org/package=Rcpp/vignettes/Rcpp-jss-2011.pdf)
@@ -109,13 +109,15 @@ been factored out of Rcpp into the package RcppClassic, and it is still
 available for code relying on the older interface. New development should
 always use this Rcpp package instead.
 
-Other usage examples are provided by packages using Rcpp. As of early July 2022,
-there are 2560 [CRAN](https://cran.r-project.org) packages using Rcpp, a further
-252 [BioConductor](https://www.bioconductor.org) packages in its current release
-as well as an unknown number of GitHub, Bitbucket, R-Forge, ... repositories
-using Rcpp.  All these packages provide usage examples for Rcpp. The package
-is in widespread use and has been downloaded over 61 million times (per the
-partial logs from the cloud mirrors of CRAN).
+Other usage examples are provided by packages using Rcpp. As of early July
+2023, there are 2712 [CRAN](https://cran.r-project.org) packages using Rcpp
+(corresponding to 13.7% of all packages, and 59.5% of packages containing
+compiled code), a further 250 [BioConductor](https://www.bioconductor.org)
+packages in its current release as well as an unknown number of GitHub,
+Bitbucket, R-Forge, ... repositories using Rcpp.  All these packages provide
+usage examples for Rcpp. The package is in widespread use and has been
+downloaded over 72.3 million times (per the partial logs from the cloud mirrors
+of CRAN).
 
 ### Installation
 

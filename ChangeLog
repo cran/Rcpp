@@ -1,3 +1,117 @@
+2023-07-03  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Date, Version): Release 1.0.11
+
+        * inst/include/Rcpp/config.h: Idem
+        * inst/NEWS.Rd: Idem
+        * vignettes/rmd/Rcpp.bib: Idem
+        * inst/bib/Rcpp.bib: Idem
+	* vignettes/pdf/*: Rebuilt
+
+2023-07-02  Dirk Eddelbuettel  <edd@debian.org>
+
+	* README.md: Update usage numbers in Examples section
+
+2023-07-01  Dirk Eddelbuettel  <edd@debian.org>
+
+	* docker/ci-dev/Dockerfile: Make 'rm' more robust as 'rm -f'
+	* docker/ci-4.2/Dockerfile: Add new container for R 4.2.3
+	* .github/workflows/ci.yaml (jobs): Add entry for R 4.2.3
+
+2023-06-12  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version
+	* inst/include/Rcpp/config.h (RCPP_DEV_VERSION): Idem
+
+	* README.md: Two URL updates for appease R CMD check
+
+	* DESCRIPTION (Encoding): Somewhat belated addition
+
+2023-04-18  Dirk Eddelbuettel  <edd@debian.org>
+
+	* README.md: Use app.codecov.io as base for codecov link
+
+2023-04-12  Dirk Eddelbuettel  <edd@debian.org>
+
+	* .github/workflows/ci.yaml: Simplified container use
+
+2023-03-27  Dirk Eddelbuettel  <edd@debian.org>
+
+	* .github/workflows/stale.yaml: Roll to v8
+
+2023-03-27  Iñaki Ucar  <iucar@fedoraproject.org>
+
+	* R/Attributes.R: Remove command quoting, not needed anymore for system2()
+	* inst/tinytest/test_xptr.R: Update copyright
+
+2023-03-26  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll minor version
+	* inst/include/Rcpp/config.h (RCPP_DEV_VERSION): Idem
+
+	* inst/tinytest/test_stats.R: Revisit change from PR #1252; we now
+	use a slightly smaller tolerance to accomodate old and new value
+
+	* inst/tinytest/test_sugar.R: Protect a small number of tests on NA
+	propagation from running on arm64/Darwin which requires special care
+
+2023-03-25  Iñaki Ucar  <iucar@fedoraproject.org>
+
+	* R/Attributes.R: Switch to system2 to be able to capture stderr on error
+
+2023-03-24  Dirk Eddelbuettel  <edd@debian.org>
+
+	* docker/ci-dev/Dockerfile: During Debian freeze experimental repo is
+	renamed which leads to a hickup here so temporarily remove list file
+
+2023-03-24  Iñaki Ucar  <iucar@fedoraproject.org>
+
+	* inst/tinytest/test_xptr.R: Skip some tests on Windows
+
+2023-03-19  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll minor version
+	* inst/include/Rcpp/config.h (RCPP_DEV_VERSION): Idem
+
+	* src/attributes.cpp (RExportsGenerator::writeEnd): Replace a pair of
+	apostrophes with backticks in generated .Call() statemente
+
+2023-02-07  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/tinytest/test_stats.R: Use more accurate value in R 4.3.0
+
+2023-02-06  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/CITATION: Update to new format preferred by r-devel
+
+2023-02-02  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll minor version
+	* inst/include/Rcpp/config.h (RCPP_DEV_VERSION): Idem
+
+	* inst/include/Rcpp/sugar/functions/sapply.h: Enable compilation
+	under C++20 (using clang++ and its C++ library) via invoke_result
+
+2023-01-29  Iñaki Ucar  <iucar@fedoraproject.org>
+
+	* inst/tinytest/test_xptr.R: Fix a couple of tests writing to stdout
+
+2023-01-24  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll minor version
+	* inst/include/Rcpp/config.h (RCPP_DEV_VERSION): Idem
+
+2023-01-24  Lukasz Laniewski-Wollk  <llaniewski@meil.pw.edu.pl>
+
+	* R/RcppLdpath.R: CxxFlags() now quotes only non-standard paths on linux
+
+2023-01-22  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Date, Version): Release 1.0.10
+
+        * inst/include/Rcpp/config.h: Idem
+        * inst/NEWS.Rd: Idem
+
 2023-01-08  Dirk Eddelbuettel  <edd@debian.org>
 
 	* inst/include/Rcpp/String.h: Address clang++-14 conversion warning

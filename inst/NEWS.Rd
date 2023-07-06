@@ -3,6 +3,39 @@
 \newcommand{\ghpr}{\href{https://github.com/RcppCore/Rcpp/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/RcppCore/Rcpp/issues/#1}{##1}}
 
+\section{Changes in Rcpp rc version 1.0.11 (2023-07-03)}{
+  \itemize{
+    \item Changes in Rcpp API:
+    \itemize{
+      \item \code{Rcpp:::CxxFlags()} now quotes only non-standard include path
+      on linux (Lukasz in \ghpr{1243} closing \ghit{1242}).
+      \item Two unit tests no longer accidentally bark on stdout (Dirk and
+      Iñaki in \ghpr{1245}).
+      \item Compilation under C++ using \pkg{clang++} and its standard
+      library is enabled (Dirk in \ghpr{1248} closing \ghit{1244}).
+      \item Use backticks in a generated \code{.Call()} statement in
+      `RcppExports.R` (Dirk \ghpr{1256} closing \ghit{1255}).
+      \item Switch to \code{system2()} to capture standard error messages in
+      error cases (Iñaki in \ghpr{1259} and \ghpr{1261} fixing \ghit{1257}).
+    }
+    \item Changes in Rcpp Documentation:
+    \itemize{
+      \item The CITATION file format has been updated (Dirk in \ghpr{1250}
+      fixing \ghit{1249}).
+    }
+    \item Changes in Rcpp Deployment:
+    \itemize{
+      \item A test for \code{qnorm} now uses the more accurate value from R
+      4.3.0 (Dirk in \ghpr{1252} and \ghpr{1260} fixing \ghit{1251}).
+      \item Skip tests with path issues on Windows (Iñaki in \ghpr{1258}).
+      \item Container deployment in continuous integrations was
+      improved. (Iñaki and Dirk in \ghpr{1264}, Dirk in \ghpr{1269}).
+      \item Several files receives minor edits to please \code{R CMD check}
+      from r-devel (Dirk in \ghpr{1267}).
+    }
+  }
+}
+
 \section{Changes in Rcpp release version 1.0.10 (2023-01-12)}{
   \itemize{
     \item Changes in Rcpp API:
@@ -36,7 +69,7 @@
   }
 }
 
-\section{Changes in Rcpp hotfix release version 1.0.9 (2022-07-02)}{
+\section{Changes in Rcpp release version 1.0.9 (2022-07-02)}{
   \itemize{
     \item Changes in Rcpp API:
     \itemize{
