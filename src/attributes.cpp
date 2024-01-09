@@ -31,6 +31,7 @@
 #include <map>
 #include <set>
 #include <algorithm>
+#include <ostream> // for std::endl
 #include <fstream>
 #include <sstream>
 
@@ -2960,7 +2961,7 @@ namespace attributes {
                      << "    if (rcpp_isError_gen) {" << std::endl
                      << "        SEXP rcpp_msgSEXP_gen = Rf_asChar(rcpp_result_gen);" << std::endl
                      << "        UNPROTECT(1);" << std::endl
-                     << "        Rf_error(CHAR(rcpp_msgSEXP_gen));" << std::endl
+                     << "        Rf_error(\"%s\", CHAR(rcpp_msgSEXP_gen));" << std::endl
                      << "    }" << std::endl
                      << "    UNPROTECT(1);" << std::endl
                      << "    return rcpp_result_gen;" << std::endl

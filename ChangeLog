@@ -1,3 +1,102 @@
+2024-01-08  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Date, Version): Release 1.0.12
+
+        * inst/include/Rcpp/config.h: Idem
+        * inst/NEWS.Rd: Idem
+        * vignettes/rmd/Rcpp.bib: Idem
+        * inst/bib/Rcpp.bib: Idem
+	* vignettes/pdf/*: Rebuilt
+
+2024-01-01  Dirk Eddelbuettel  <edd@debian.org>
+
+	* vignettes/rmd/Rcpp.bib: Updated to current versions of cited packages
+        * inst/bib/Rcpp.bib: Idem
+
+2023-12-27  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/api.cpp (type2name): Refine OBJSXP return
+
+2023-12-21  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/api.cpp (type2name): Recognise OBJSXP added in R 4.4.0
+
+2023-11-28  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/tinytest/testRcppInterfaceExporter/R/RcppExports.R: Regenerated
+	* inst/tinytest/testRcppInterfaceExporter/src/RcppExports.cpp: Idem
+
+2023-11-26  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version
+	* inst/include/Rcpp/config.h (RCPP_DEV_VERSION): Idem
+
+	* src/attributes.cpp (generateCpp): Add a format string for Rf_error
+	call to not run afoul of -Wformat-security
+
+2023-11-24  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version
+	* inst/include/Rcpp/config.h (RCPP_DEV_VERSION): Idem
+
+	* inst/include/Rcpp/iostream/Rstreambuf.h: Cast streamsize to int in
+	two spots
+	* inst/include/Rcpp/print.h (warningcall): Add missing '%s' format
+
+2023-11-11  Dirk Eddelbuettel  <edd@debian.org>
+
+	* vignettes/rmd/Rcpp-FAQ.Rmd: Updated and edited
+	* vignettes/pdf/Rcpp-FAQ.pdf: Updated
+	* vignettes/rmd/Rcpp.bib: Updated
+
+2023-10-28  Dirk Eddelbuettel  <edd@debian.org>
+
+	* vignettes/rmd/Rcpp-FAQ.Rmd: Updated and edited
+	* vignettes/pdf/Rcpp-FAQ.pdf: Updated
+	* vignettes/rmd/Rcpp.bib: Updated
+
+2023-10-27  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version
+	* inst/include/Rcpp/config.h (RCPP_DEV_VERSION): Idem
+
+	* R/tools.R: Correct missing Rd macros (spotted by R-devel CMD check)
+
+2023-10-22 Aaron Lun <infinite.monkeys.with.keyboards@gmail.com>
+
+	* inst/include/Rcpp/vector/MatrixColumn.h: Cast integer index
+	to R_xlen_t to avoid integer overflow with large matrices.
+	* inst/include/Rcpp/vector/MatrixRow.h: Ditto.
+	* inst/include/Rcpp/vector/Vector.h: Remove stray cast to int
+	that causes overflow when returning the end iterator.
+
+2023-09-30  Dirk Eddelbuettel  <edd@debian.org>
+
+	* vignettes/rmd/Rcpp-introduction.Rmd (Rcpp): Correct caption of
+	third figure (cf GitHub issue #1276)
+	* vignettes/pdf/Rcpp-introduction.pdf: Rebuilt
+
+2023-08-31  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version
+	* inst/include/Rcpp/config.h (RCPP_DEV_VERSION): Idem
+
+2023-08-29  Iñaki Ucar  <iucar@fedoraproject.org>
+
+	* R/Attributes.R: Ad-hoc fix for testthat's C entrypoint in
+	RcppExports.cpp
+
+2023-08-03  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version
+	* inst/include/Rcpp/config.h (RCPP_DEV_VERSION): Idem
+
+2023-08-03  Michael Chirico  <chiricom@google.com>
+
+        * src/attributes.cpp: Directly `#include <ostream>` for `std::endl`
+        * src/date.cpp: Directly `#include <R_ext/Booelan.h>` for `TRUE` and
+	`FALSE`
+
 2023-07-03  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION (Date, Version): Release 1.0.11
