@@ -3,16 +3,16 @@
 [![CI](https://github.com/RcppCore/Rcpp/workflows/ci/badge.svg)](https://github.com/RcppCore/Rcpp/actions?query=workflow%3Aci)
 [![License](https://eddelbuettel.github.io/badges/GPL2+.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
 [![CRAN](https://www.r-pkg.org/badges/version/Rcpp)](https://cran.r-project.org/package=Rcpp)
-[![Dependencies](https://tinyverse.netlify.com/badge/Rcpp)](https://cran.r-project.org/package=Rcpp)
+[![Dependencies](https://tinyverse.netlify.app/badge/Rcpp)](https://cran.r-project.org/package=Rcpp)
 [![Coverage Status](https://codecov.io/gh/RcppCore/Rcpp/graph/badge.svg)](https://app.codecov.io/github/RcppCore/Rcpp?branch=master)
 [![Debian package](https://img.shields.io/debian/v/r-cran-rcpp/sid?color=brightgreen)](https://packages.debian.org/sid/r-cran-rcpp)
+[![r-universe](https://rcppcore.r-universe.dev/badges/Rcpp)](https://rcppcore.r-universe.dev/rcpp)
 [![Last Commit](https://img.shields.io/github/last-commit/RcppCore/Rcpp)](https://github.com/RcppCore/Rcpp)
 [![Downloads (monthly)](https://cranlogs.r-pkg.org/badges/Rcpp?color=brightgreen)](https://www.r-pkg.org/pkg/Rcpp)
 [![Downloads (total)](https://cranlogs.r-pkg.org/badges/grand-total/Rcpp?color=brightgreen)](https://www.r-pkg.org/pkg/Rcpp)
 [![CRAN use](https://jangorecki.gitlab.io/rdeps/Rcpp/CRAN_usage.svg?sanitize=true)](https://cran.r-project.org/package=Rcpp)
 [![CRAN indirect](https://jangorecki.gitlab.io/rdeps/Rcpp/indirect_usage.svg?sanitize=true)](https://cran.r-project.org/package=Rcpp)
 [![BioConductor use](https://jangorecki.gitlab.io/rdeps/Rcpp/BioC_usage.svg?sanitize=true)](https://cran.r-project.org/package=Rcpp)
-[![StackOverflow](https://img.shields.io/badge/stackoverflow-rcpp-orange.svg)](https://stackoverflow.com/questions/tagged/rcpp)
 [![JSS](https://img.shields.io/badge/JSS-10.18637%2Fjss.v040.i08-brightgreen)](https://dx.doi.org/10.18637/jss.v040.i08)
 [![Springer useR!](https://img.shields.io/badge/Springer%20useR!-10.1007%2F978--1--4614--6868--4-brightgreen)](https://www.amazon.com/gp/product/1461468671/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=1461468671&linkCode=as2&tag=rcpp-20&linkId=3P5LNUWOAQ2YMEJ6)
 [![TAS](https://img.shields.io/badge/TAS-10.1080%2F00031305.2017.1375990-brightgreen)](https://dx.doi.org/10.1080/00031305.2017.1375990)
@@ -109,14 +109,14 @@ been factored out of Rcpp into the package RcppClassic, and it is still
 available for code relying on the older interface. New development should
 always use this Rcpp package instead.
 
-Other usage examples are provided by packages using Rcpp. As of early July
-2023, there are 2712 [CRAN](https://cran.r-project.org) packages using Rcpp
-(corresponding to 13.7% of all packages, and 59.5% of packages containing
-compiled code), a further 250 [BioConductor](https://www.bioconductor.org)
+Other usage examples are provided by packages using Rcpp. As of early January
+2024, there are 2791 [CRAN](https://cran.r-project.org) packages using Rcpp
+(corresponding to 13.8% of all packages, and 59.9% of packages containing
+compiled code), a further 254 [BioConductor](https://www.bioconductor.org)
 packages in its current release as well as an unknown number of GitHub,
 Bitbucket, R-Forge, ... repositories using Rcpp.  All these packages provide
 usage examples for Rcpp. The package is in widespread use and has been
-downloaded over 72.3 million times (per the partial logs from the cloud mirrors
+downloaded over 78.1 million times (per the partial logs from the cloud mirrors
 of CRAN).
 
 ### Installation
@@ -171,13 +171,6 @@ The best place for questions is the
 mailing list hosted at R-forge.  Note that in order to keep spam down, you must
 be a subscriber in order to post.  One can also consult the list archives to see
 if your question has been asked before.
-
-Another option is to use
-[StackOverflow and its 'rcpp' tag](https://stackoverflow.com/questions/tagged/rcpp).
-Search functionality (use `rcpp` in squared brackets as in
-[[rcpp] my question terms](https://stackoverflow.com/search?q=[rcpp]%20my%20question%20terms)
-to tag the query) is very valuable as many questions have indeed been asked, and
-answered, before.
 
 The [issue tickets at the GitHub repo](https://github.com/RcppCore/Rcpp/issues)
 are the primary bug reporting interface.  As with the other web resources,

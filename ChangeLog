@@ -1,3 +1,107 @@
+2024-07-11  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Date, Version): Release 1.0.13
+
+        * inst/include/Rcpp/config.h: Idem
+        * inst/NEWS.Rd: Idem
+        * vignettes/rmd/Rcpp.bib: Idem
+        * inst/bib/Rcpp.bib: Idem
+	* vignettes/pdf/*: Rebuilt
+
+2024-07-07  Kevin Ushey  <kevinushey@gmail.com>
+
+	* inst/include/Rcpp/internal/SEXP_Iterator.h: Avoid using VECTOR_PTR
+	* inst/include/Rcpp/vector/Subsetter.h: Avoid using STRING_PTR
+	* inst/include/RcppCommon.h: Include compatibility defines
+	* src/barrier.cpp: Avoid using {STRING/VECTOR}_PTR
+	* inst/include/Rcpp/r/compat.h: Include compatibility defines
+
+2024-06-22  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version
+	* inst/include/Rcpp/config.h (RCPP_DEV_VERSION): Idem
+
+2024-06-11  Kevin Ushey  <kevinushey@gmail.com>
+
+	* inst/include/Rcpp/internal/r_vector.h: Use template specializations to
+	avoid DATAPTR usage
+	* inst/include/Rcpp/vector/traits.h: Implement bounds checks in
+	r_vector_cache access
+	* inst/tinytest/cpp/Vector.cpp: Add unit tests
+	* inst/tinytest/test_vector.R: Add unit tests
+	* tests/tinytest.R: Test in serial by default
+
+2024-06-02  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/internal/export.h: More R_xlen_t switching
+	* inst/include/Rcpp/vector/SubMatrix.h: Idem
+	* inst/include/Rcpp/vector/Vector.h: Idem
+
+2024-06-01  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/internal/Proxy_Iterator.h (Proxy_Iterator):
+	Switch to R_xlen_t ('clang++-17 -Wconversion -Wno-sign-conversion')
+	* inst/include/Rcpp/DataFrame.h: Idem
+	* inst/include/Rcpp/Vector.h: Idem
+
+2024-05-28  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version
+	* inst/include/Rcpp/config.h (RCPP_DEV_VERSION): Idem
+
+2024-05-27  Dirk Eddelbuettel  <edd@debian.org>
+
+	* README.md: Remove link references to StackOverflow
+	* inst/NEWS.Rd: Idem
+	* inst/include/Rcpp/Module.h (S4_CppOverloadedMethods): Add cast to int
+	to avoid warnings under 'clang++-17 -Wconversion -Wno-sign-conversion'
+	* inst/include/Rcpp/vector/Vector.h (Vector): Idem
+	* inst/include/Rcpp/module/class.h: Switch variable to size_t to avoid
+	to avoid warnings under 'clang++-17 -Wconversion -Wno-sign-conversion'
+	* inst/tinytest/testRcppClass/src/init.c: Add void to signature
+
+2024-05-26  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version
+	* inst/include/Rcpp/config.h (RCPP_DEV_VERSION): Idem
+
+2024-05-23  Andrew Johnson  <andrew.johnson@arjohnsonau.com>
+
+        * inst/include/Rcpp/: Added variadic templates to be used instead of
+	the generated code in `Rcpp/generated` and `Rcpp/module` when
+	compiling with C++11 or later.
+
+2024-05-18  Dirk Eddelbuettel  <edd@debian.org>
+
+	* docker/ci-4.3/Dockerfile: Add rcpp/ci-4.3 container for R 4.3.*
+	* .github/workflows/ci.yaml (jobs): Add rcpp/ci-4.3 to matrix
+
+2024-05-16  Dirk Eddelbuettel  <edd@debian.org>
+
+	* README.md: Use tinyverse.netlify.app for dependency badge
+
+2024-03-05  Dirk Eddelbuettel  <edd@debian.org>
+
+	* docker/ci/Dockerfile: Switch the base container to r2u
+	* docker/plus/Dockerfile: Given r2u, install more binaries
+
+	* README.md: Add r-universe badge
+
+2024-02-21  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version
+	* inst/include/Rcpp/config.h (RCPP_DEV_VERSION): Idem
+
+	* inst/include/Rcpp/r/headers.h: Set R_NO_REMAP (and MAXELTSIZE)
+	only if not already defined (as will be needed with R 4.4.0)
+
+2024-01-09  Dirk Eddelbuettel  <edd@debian.org>
+
+	* README.md: Update usage numbers
+
+	* README.md: Remove StackOverflow badge which only works for
+	logged-in users and is unsuitable for the README
+
 2024-01-08  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION (Date, Version): Release 1.0.12
