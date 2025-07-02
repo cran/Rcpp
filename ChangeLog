@@ -1,3 +1,274 @@
+2025-07-01  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Date, Version): Release 1.1.0
+
+        * inst/include/Rcpp/config.h: Idem
+        * inst/NEWS.Rd: Idem
+        * vignettes/rmd/Rcpp.bib: Idem
+        * inst/bib/Rcpp.bib: Idem
+	* vignettes/pdf/*: Rebuilt
+
+2025-06-25  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+2025-06-18  Dirk Eddelbuettel  <edd@debian.org>
+
+	* vignettes/rmd/Rcpp.bib: Use doi references for CRAN packages,
+	update versions, update some package titles
+	* inst/bib/Rcpp.bib: Idem
+	* vignettes/pdf/*: Re-rendered
+
+2025-06-05  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+2025-06-02  Kevin Ushey  <kevinushey@gmail.com>
+
+	* inst/include/Rcpp.h: Avoid copy when creating Language objects
+	* inst/include/Rcpp/Language.h: Idem
+	* inst/include/Rcpp/lgrow.h: Idem
+	* inst/tinytest/cpp/language.cpp: Idem
+	* inst/tinytest/test_language.R: Idem
+
+2025-05-27  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+2025-05-23  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/date_datetime/newDateVector.h: Add default
+	constructor
+	* inst/include/Rcpp/date_datetime/newDatetimeVector.h: Idem
+
+	* inst/tinytest/test_date.R: Add tests
+	* inst/tinytest/cpp/dates.cpp: Idem
+
+2025-05-06  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+	* R/Attributes.R: Support C++26 via plugin
+
+2025-05-05  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/tinytest/test_sugar.R: Condition four NA-related tests away on
+	arm64 on Linux too
+
+	* .github/workflows/linuxarm.yaml (jobs): Add ubuntu-24.04-arm as
+	optional workflow_dispatch run
+
+2025-04-15  Dirk Eddelbuettel  <edd@debian.org>
+
+	* docker/ci-4.4/Dockerfile: Added based on r-base:4.4.3
+	* .github/workflows/ci.yaml (jobs): Add rcpp/ci-4.4 to matrix
+
+2025-03-31  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+2025-03-29 Iñaki Ucar <iucar@fedoraproject.org>
+
+	* inst/include/Rcpp/traits/result_of.h: Reimplement traits::result_of using
+	std::result_of (up to C++14) or std::invoke_result (C++17 or later), which
+	supports previous use cases and enables lambdas
+	* inst/include/Rcpp/sugar/functions/sapply.h: Use new result_of interface
+	* inst/include/Rcpp/sugar/functions/lapply.h: Idem
+	* inst/include/Rcpp/sugar/functions/mapply/mapply_2.h: Idem
+	* inst/include/Rcpp/sugar/functions/mapply/mapply_3.h: Idem
+	* inst/include/Rcpp/sugar/matrix/outer.h: Idem
+	* inst/tinytest/cpp/sugar.cpp: New tests for previous sugar functions
+	* inst/tinytest/test_sugar.R: Idem
+
+2025-03-26  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+2025-03-26 Iñaki Ucar <iucar@fedoraproject.org>
+
+	* inst/include/Rcpp/platform/compiler.h: Remove definitions of
+	RCPP_USING_UNORDERED_MAP and RCPP_USING_UNORDERED_SET
+	* inst/include/Rcpp/sugar/sets.h: Remove redefinition of macros
+	* inst/include/Rcpp/sugar/functions/self_match.h: Replace macros with
+	std::unordered_map and std::unordered_set respectively
+	* inst/include/Rcpp/sugar/functions/setdiff.h: Idem
+	* inst/include/Rcpp/sugar/functions/table.h: Idem
+	* inst/tinytest/cpp/wrap.cpp: Idem
+
+2025-03-24  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+2025-03-24  Iñaki Ucar  <iucar@fedoraproject.org>
+
+	* inst/include/Rcpp/exceptions.h: Include C+11 variadic template definitions
+	unconditionally
+	* inst/include/Rcpp/exceptions/cpp11/exceptions.h: Removed
+	* inst/include/Rcpp/exceptions/cpp98/exceptions.h: Idem
+
+	* src/attributes.cpp: Remove obsolete pre-C+11 paths based on __cplusplus
+	define checks
+	* inst/tinytest/cpp/sugar.cpp: Idem
+	* inst/include/Rcpp/Language.h: Idem
+	* inst/include/Rcpp/StringTransformer.h: Idem
+	* inst/include/Rcpp/algorithm.h: Idem
+	* inst/include/Rcpp/utils/tinyformat.h: Idem
+	* inst/include/Rcpp/longlong.h: Idem, unconditional RCPP_HAS_LONG_LONG_TYPES
+
+	* src/api.cpp: Remove explicit RCPP_HAS_LONG_LONG_TYPES as availability is
+	both implicit and ensured
+	* inst/include/Rcpp/algorithm.h: Idem
+	* inst/include/Rcpp/traits/is_arithmetic.h: Idem
+	* inst/include/Rcpp/traits/longlong.h: Idem
+
+2025-03-21  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+	* inst/include/Rcpp/String.h: Remove explicit RCPP_USING_CXX11 as
+	use of C++11 (or newer) is both implicit and ensured
+	* inst/include/Rcpp/macros/dispatch.h: Idem
+	* inst/include/Rcpp/platform/compiler.h: Idem
+	* inst/include/Rcpp/unwindProtect.h: Idem
+	* inst/tinytest/cpp/wrap.cpp: Idem
+	* src/api.cpp: Idem
+
+2025-03-18  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+	* inst/include/Rcpp/module/class.h: Use variadic templates unconditionally
+	* inst/include/Rcpp/grow.h: Idem
+	* inst/include/Rcpp/DottedPair.h: Idem
+	* inst/include/Rcpp/Vector.h: Idem
+	* inst/include/Rcpp/Function.h: Idem
+	* inst/include/Rcpp/internal/call.h: Idem
+	* inst/include/Rcpp/InternalFunctionWithStdFunction.h: Idem
+	* inst/include/Rcpp/Module.h: Idem
+	* inst/include/Rcpp/traits/index_sequence.h: Idem
+	* inst/include/Rcpp/traits/named_object.h: Idem
+	* inst/include/Rcpp/Language.h: Idem
+	* inst/include/Rcpp/DataFrame.h: Idem
+	* inst/include/Rcpp/PairList.h: Idem
+	* inst/include/Rcpp/InternalFunction.h: Idem
+
+        * inst/include/Rcpp/module/Module_generated_class_constructor.h: Removed
+        * inst/include/Rcpp/module/Module_generated_class_factory.h: Idem
+        * inst/include/Rcpp/module/Module_generated_method.h: Idem
+        * inst/include/Rcpp/module/Module_generated_Pointer_method.h: Idem
+	* inst/include/Rcpp/generated/grow__pairlist.h: Idem
+	* inst/include/Rcpp/generated/DottedPair__ctors.h: Idem
+	* inst/include/Rcpp/generated/Vector__create.h: Idem
+	* inst/include/Rcpp/generated/Function__operator.h: Idem
+	* inst/include/Rcpp/generated/InternalFunctionWithStdFunction_call.h: Idem
+        * inst/include/Rcpp/module/Module_generated_Constructor.h: Idem
+        * inst/include/Rcpp/module/Module_generated_CppFunction.h: Idem
+        * inst/include/Rcpp/module/Module_generated_CppMethod.h: Idem
+        * inst/include/Rcpp/module/Module_generated_Factory.h: Idem
+        * inst/include/Rcpp/module/Module_generated_Pointer_CppMethod.h: Idem
+        * inst/include/Rcpp/module/Module_generated_class_signature.h: Idem
+        * inst/include/Rcpp/module/Module_generated_ctor_signature.h: Idem
+        * inst/include/Rcpp/module/Module_generated_function.h: Idem
+        * inst/include/Rcpp/module/Module_generated_get_signature.h: Idem
+	* inst/include/Rcpp/generated/Language__ctors.h: Idem
+	* inst/include/Rcpp/generated/DataFrame_generated.h: Idem
+	* inst/include/Rcpp/generated/Pairlist__ctors.h: Idem
+	* inst/include/Rcpp/generated/InternalFunction__ctors.h: Idem
+
+	* inst/include/Rcpp/platform/compiler.h: No longer define HAS_VARIADIC_TEMPLATES
+	* src/api.cpp (rcpp_can_use_cxx0x): Return true unconditionally
+
+2025-03-15  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+	* inst/include/Rcpp/platform/compiler.h: Simplified and shortened
+	establishing C++11 as baseline; further PRs to complete this
+	* inst/include/Rcpp/String.h: Unconditionally use std::hash with C++11
+	* inst/include/Rcpp/wrap.h: Unconditionally use static_assert
+	* inst/include/Rcpp/sugar/functions/sapply.h: Use std::result_of
+	(with C++11 or C++14) or std::invoke_result (C++17 or later)
+	* inst/include/Rcpp/sugar/functions/table.h: Use std::map
+	* inst/include/Rcpp/sugar/sets.h: Use std::unordered_{set,map}
+	* man/evalCpp.Rd: Update example
+	* src/api.cpp: Simplify rcpp_capabilities assignment
+
+2025-03-13  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+	* inst/include/Rcpp/Environment.h: Switch from R_lsInternal to
+	R_lsInternal3 as the former is now outlawed
+
+2025-03-10  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+2025-03-08  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/Function.h: Use R_ClosureEnv instead of
+	deprecated CLOENV if under R >= 4.5.0
+
+2025-03-07  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+	* src/barrier.cpp (dataptr): Replace remaining DATAPTR with
+	DATAPTR_RO for suitable R greater than 3.5.0
+
+2025-02-11  Dirk Eddelbuettel  <edd@debian.org>
+
+	* R/Rcpp.package.skeleton.R (Rcpp.package.skeleton): Support optional
+	argument 'github_user' to populate URL and BugReports if given
+	* man/Rcpp.package.skeleton.Rd: Document new optional argument
+
+	* R/Rcpp.package.skeleton.R (Rcpp.package.skeleton): Default version
+	is now '0.0.1' and not '1.0'
+	* inst/tinytest/test_rcpp_package_skeleton.R: Adjust test accordingly
+	* inst/tinytest/test_expose_class.R: Idem
+
+2025-02-05  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+2025-01-31  Lev Kandel  <lmakhlis@google.com>
+
+	* inst/include/Rcpp/internal/wrap.h: Add support for std::string_view
+	* inst/include/Rcpp/traits/r_type_traits.h: Idem
+	* inst/include/Rcpp/traits/wrap_type_traits.h: Idem
+	* inst/include/RcppCommon.h: Include <string_view>
+	* inst/tinytest/cpp/wrap.cpp: Add unit test for wrap(std::string_view)
+	* inst/tinytest/test_wrap.R: Idem
+
+2025-01-26  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+2025-01-25  Dirk Eddelbuettel  <edd@debian.org>
+
+	* vignettes/rmd/Rcpp-libraries.Rdm: Add mention of PACKAGE_types.h
+	* vignettes/rmd/Rcpp.bib: Add AsioHeaders
+	* inst/bib/Rcpp.bib: Idem
+
+2025-01-18  Ben Bolker  <bolker@mcmaster.ca>
+
+	* inst/NEWS.Rd: fix trivial typos in NEWS file
+
 2025-01-11  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION (Date, Version): Release 1.0.14
