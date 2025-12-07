@@ -708,6 +708,8 @@ expect_equal(sort(unique(x)), sort(runit_unique_dbl(x)), info = "unique / numeri
 x <- c(x, NA, NA)
 expect_equal(sort(unique(x), na.last = TRUE), sort(runit_unique_dbl(x), na.last = TRUE), info = "unique / numeric / with NA")
 
+x <- c(x, -0.0, +0.0)
+expect_equal(sort(unique(x)), sort(runit_unique_dbl(x)), info = "unique / numeric / with signed 0s")
 
 #    test.sort_unique <- function() {
 set.seed(123)
@@ -1270,10 +1272,11 @@ expect_equal(cx_col_sums(x, TRUE), colSums(x, TRUE), info = "complex / colSums /
 
 expect_equal(cx_row_means(x), rowMeans(x), info = "complex / rowMeans / keep NA / mixed input")
 expect_equal(cx_row_means(x, TRUE), rowMeans(x, TRUE), info = "complex / rowMeans / rm NA / mixed input")
+expect_equal(cx_row_means(x, TRUE), apply(x, 1, mean, na.rm=TRUE), info = "complex / rowMeans / rm NA / mixed input")
 
 expect_equal(cx_col_means(x), colMeans(x), info = "complex / colMeans / keep NA / mixed input")
 expect_equal(cx_col_means(x, TRUE), colMeans(x, TRUE), info = "complex / colMeans / rm NA / mixed input")
-
+expect_equal(cx_col_means(x, TRUE), apply(x, 2, mean, na.rm=TRUE), info = "complex / colMeans / rm NA / mixed input")
 
 x[] <- NA_complex_
 

@@ -1,3 +1,119 @@
+2025-12-06  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+2025-12-04  Iñaki Ucar <iucar@fedoraproject.org>
+
+	* inst/include/Rcpp/r/headers.h: Include <R_ext/Visibility.h>
+	* inst/include/RcppCommon.h: Drop <R_ext/Callbacks.h>, not used anymore
+	and dropped from the API; drop <R_ext/Visibility.h>, included above
+	* src/api.cpp: Drop <R_ext/PrtUtil.h>, dropped from the API
+
+2025-12-03  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+2025-12-02  Dirk Eddelbuettel  <edd@debian.org>
+
+	* R/loadRcppModules.R: Remove file with function deprecated years ago
+	* man/loadRcppModules-deprecated.Rd: Idem
+	* NAMESPACE: Remove reference to loadRcppModules()
+	* man/loadModule.Rd: Idem
+	* man/Rcpp-deprecated.Rd: Idem
+	* vignettes/rmd/Rcpp-modules.Rmd: Idem
+
+2025-12-01  Kevin Ushey <kevinushey@gmail.com>
+
+	* R/Attributes.R: Update OpenMP plugin for macOS
+
+2025-11-29  Dirk Eddelbuettel  <edd@debian.org>
+
+	* R/RcppLdpath.R: Revisit deprecation warnings via 'message()' to be
+	turned into warning or deprecation in 12 or more months 'when suitable'
+
+2025-11-24  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/r/check_r_headers.h: Add RCPP_NO_R_HEADERS_CHECK
+	override to skip new check
+
+2025-11-23  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/r/check_r_headers.h: New header to check if R.h
+	or related R headers were installed first
+	* inst/include/RcppCommon.h: Call new header as first thing
+
+2025-11-04  Dirk Eddelbuettel  <edd@debian.org>
+
+	* .github/workflows/macos.yaml (jobs): Roll macos-13 to macos-14
+
+2025-11-01 Iñaki Ucar <iucar@fedoraproject.org>
+
+	* inst/include/Rcpp/hash/IndexHash.h: Normalize values for all comparisons
+	* inst/include/Rcpp/hash/SelfHash.h: Idem
+	* inst/tinytest/test_sugar.R: Add test for signed zeroes
+
+2025-10-21 Iñaki Ucar <iucar@fedoraproject.org>
+
+	* inst/include/Rcpp/exceptions_impl.h: use __has_include to simplify checks
+	to enable demangling, making them robust for more platforms
+
+2025-10-13  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+	* inst/tinytest/test_sugar.R: Simplify and generalize the August fix
+	as we no longer need to control for R-devel which has been corrected
+
+2025-09-04  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+	* inst/include/Rcpp/internal/wrap.h (make_charsexp__impl__cstring):
+	Avoid a narrowing warning by casting explicitly
+
+2025-08-26  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/tinytest/test_sugar.R: For r-devel, use apply(x, DIM, mean,
+	na.rm=TRUE) instead of (row|col)Means for complex NA valued matrices
+
+2025-08-24  Dirk Eddelbuettel  <edd@debian.org>
+
+	* .github/workflows/ci.yaml (jobs): Re-enable coverage, roll checkout
+	action to v5
+
+	* inst/tinytest/test_sugar.R: For now, park two tests of complex
+	matrix row and col means under R-devel, this could be a R-devel issue
+
+2025-07-20  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+	* R/compilerCheck.R: Remove unused function
+	* man/compilerCheck.Rd: Remove its documentation
+
+2025-07-19  Dirk Eddelbuettel  <edd@debian.org>
+
+        * vignettes/rmd/Rcpp.bib: Use DOI for R citation
+        * inst/bib/Rcpp.bib: Idem
+
+2025-07-18  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+	* R/asis.R (asisWeave, asisTangle): Borrowed with thanks from R.rsp
+	and shortened / simplified to provide 'asis' vignette processor
+	* R/zzz.R (.onLoad): Register new vignette processor
+	* vignettes/*.asis: New files with vignette info from .Rnw files
+	* vignettes/pdf/*.pdf: Moved to directory vignettes/
+	* vignettes/*.Rnw: Removed
+	* man/asisWeave.Rd: Documentation
+
 2025-07-01  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION (Date, Version): Release 1.1.0

@@ -3,6 +3,44 @@
 \newcommand{\ghpr}{\href{https://github.com/RcppCore/Rcpp/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/RcppCore/Rcpp/issues/#1}{##1}}
 
+\section{Changes in Rcpp release version 1.1.1 (2026-01-xx)}{
+  \itemize{
+    \item Changes in Rcpp API:
+    \itemize{
+      \item An unused old R function for a compiler version check has been
+      removed after checking no known package uses it (Dirk in \ghpr{1395})
+      \item A narrowing warning is avoided via a cast (Dirk in \ghpr{1398})
+      \item Demangling checks have been simplified (Iñaki in \ghpr{1401}
+      addressing \ghit{1400})
+      \item The treatment of signed zeros is now improved in the Sugar code
+      (Iñaki in \ghpr{1404})
+      \item A message is shown if \code{R.h} is included before Rcpp headers
+      as this can lead to errors (Dirk in \ghpr{1411} closing \ghit{1410})
+      \item The long-deprecated function \code{loadRcppModules()} has been
+      removed (Dirk in \ghpr{1416} closing \ghit{1415})
+    }
+    \item Changes in Rcpp Attributes:
+    \itemize{
+      \item The OpenMP plugin has been generalized for different macOS
+      compiler installations (Kevin in \ghpr{1414})
+    }
+    \item Changes in Rcpp Documentation:
+    \itemize{
+      \item Vignettes are now processed via a new "asis" processor adopted
+      from \pkg{R.rsp} (Dirk in \ghpr{1394} fixing \ghit{1393})
+      \item R is now cited via its DOI (Dirk)
+    }
+    \item Changes in Rcpp Deployment:
+    \itemize{
+      \item A temporary change in R-devel concerning NA part in complex variables
+      was accommodated, and then reverted (Dirk in \ghpr{1399} fixing \ghit{1397})
+      \item The macOS CI runners now use macos-14 (Dirk in \ghpr{1405})
+      \item Old helper functions use \code{message()} to signal they are not used,
+      deprecation and removal to follow (Dirk in \ghpr{1413} closing \ghit{1412})
+    }
+  }
+}
+
 \section{Changes in Rcpp release version 1.1.0 (2025-07-01)}{
   \itemize{
     \item Changes in Rcpp API:
