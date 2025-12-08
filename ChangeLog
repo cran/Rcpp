@@ -2,6 +2,7 @@
 
 	* DESCRIPTION (Version, Date): Roll micro version and date
 	* inst/include/Rcpp/config.h: Idem
+	* inst/NEWS.Rd: Updated
 
 2025-12-04  Iñaki Ucar <iucar@fedoraproject.org>
 

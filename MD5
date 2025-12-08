@@ -1,5 +1,5 @@
-d3965d271db8d57df9df4da085b84538 *ChangeLog
-77d5373214357330a006887c8d561121 *DESCRIPTION
+f0b9e67c76964311ef3756b5338d72c9 *ChangeLog
+7dc2214d259c1b0a2bf1877a9146bc8a *DESCRIPTION
 f5ef3825b44e121e64fae1d52cd37960 *NAMESPACE
 ad57518c2d1d3d66fc26b6c214ed13e1 *R/00_classes.R
 f9a4ffb4d0fcec3eec6ef6c229ff1bba *R/01_show.R
@@ -25,7 +25,7 @@ dcfe968628d24168fc5bb54a66631158 *TODO
 c83d8049d910b43001bc85c2d3a9d992 *build/vignette.rds
 d8edc63de3343fcf14ee46cb692249db *cleanup
 7599bada89d38a2474389682f552755e *inst/CITATION
-e4129733095965efb27f691eccbc8fda *inst/NEWS.Rd
+7ae70f880448fac2462a33069879c79a *inst/NEWS.Rd
 7a9967333ad85931cc6d2051f4dff76e *inst/announce/ANNOUNCE-0.10.0.txt
 734d037a2ac31af4659fb3b2e1a778ad *inst/announce/ANNOUNCE-0.11.0.txt
 7d85af8d096e473821a3f001d3128b01 *inst/announce/ANNOUNCE-0.6.0.txt
@@ -40,7 +40,7 @@ c633371e5d82fb25d82acbc10a610ba3 *inst/doc/Rcpp-FAQ.pdf
 24c4fcaeb37c15721e72e3dd6bc7dc9d *inst/doc/Rcpp-attributes.pdf.asis
 5a4324a50ee8a2ab30fe93a75d584b0d *inst/doc/Rcpp-extending.pdf
 c515df15a755d66c1379ddf796af9752 *inst/doc/Rcpp-extending.pdf.asis
-f2208e9b68392f0244b7e9d4c823c86c *inst/doc/Rcpp-introduction.pdf
+75b024b7ab9381c4549162715c8fe400 *inst/doc/Rcpp-introduction.pdf
 679d43b484ca77aa763998c23cf3dd0c *inst/doc/Rcpp-introduction.pdf.asis
 4400de72176df827637acd1e4315871b *inst/doc/Rcpp-jss-2011.pdf
 a270710de3e1d34603ddb2a8a08cacac *inst/doc/Rcpp-jss-2011.pdf.asis
@@ -679,7 +679,7 @@ e1b4925c31f6eb694f0e64374f98ecaa *src/api.cpp
 eef4c2f0e1abd787b8fd62d289ed5961 *src/internal.h
 4eeaedc1e555103025f1feeaee299538 *src/module.cpp
 545982e58b067742919490cc23d62905 *src/rcpp_init.cpp
-37a2a0606ac4ed8ce8fbc9e71287e715 *tests/tinytest.R
+df4896660a6f95506f070555098d293f *tests/tinytest.R
 2c2689d950eb3637391d5e5194839450 *vignettes/Rcpp-FAQ.pdf.asis
 24c4fcaeb37c15721e72e3dd6bc7dc9d *vignettes/Rcpp-attributes.pdf.asis
 c515df15a755d66c1379ddf796af9752 *vignettes/Rcpp-extending.pdf.asis
