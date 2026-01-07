@@ -60,27 +60,8 @@ namespace Rcpp{
             return *this ;
         }
 
-        // By definition, the number of rows in a data.frame is contained
-        // in its row.names attribute. If it has row names of the form 1:n,
-        // they will be stored as {NA_INTEGER, -<nrow>}. Unfortunately,
-        // getAttrib(df, R_RowNamesSymbol) will force an expansion of that
-        // compact form thereby allocating a huge vector when we just want
-        // the row.names. Hence this workaround.
         inline int nrow() const {
-            SEXP rn = R_NilValue ;
-            SEXP att = ATTRIB( Parent::get__() )  ;
-            while( att != R_NilValue ){
-                if( TAG(att) == R_RowNamesSymbol ) {
-                    rn = CAR(att) ;
-                    break ;
-                }
-                att = CDR(att) ;
-            }
-            if (Rf_isNull(rn))
-                return 0;
-            if (TYPEOF(rn) == INTSXP && LENGTH(rn) == 2 && INTEGER(rn)[0] == NA_INTEGER)
-                return std::abs(INTEGER(rn)[1]);
-            return LENGTH(rn);
+	    return R_nrow( Parent::get__() );
         }
 
 	template <typename T>

@@ -1,5 +1,5 @@
 f0b9e67c76964311ef3756b5338d72c9 *ChangeLog
-7dc2214d259c1b0a2bf1877a9146bc8a *DESCRIPTION
+fc41122798d0b883648891ab93247e0c *DESCRIPTION
 f5ef3825b44e121e64fae1d52cd37960 *NAMESPACE
 ad57518c2d1d3d66fc26b6c214ed13e1 *R/00_classes.R
 f9a4ffb4d0fcec3eec6ef6c229ff1bba *R/01_show.R
@@ -21,8 +21,8 @@ c1f6e22d805062693ca441a313a798c7 *R/loadModule.R
 2944e270961ab2bac4aea5ea0eb2a67e *R/zzz.R
 ca3834ec7bf955e94f30cf1546bb65bc *README.md
 dcfe968628d24168fc5bb54a66631158 *TODO
-76e123f5dcc8dee07678412adc0a2a84 *build/partial.rdb
-c83d8049d910b43001bc85c2d3a9d992 *build/vignette.rds
+533839446f70bde34a1050627ce80586 *build/partial.rdb
+88d37b5e451614ac606051e4881fd590 *build/vignette.rds
 d8edc63de3343fcf14ee46cb692249db *cleanup
 7599bada89d38a2474389682f552755e *inst/CITATION
 7ae70f880448fac2462a33069879c79a *inst/NEWS.Rd
@@ -112,7 +112,7 @@ f55a0d78225fef3970fc5f54fddb5801 *inst/examples/functionCallback/newApiExample.r
 33c7adefe3137cae65b189490c958c6a *inst/examples/performance/performance.R
 c43702432a8138a32aaee079bbf6e0cd *inst/include/Rcpp.h
 36e44ff21273d50c3eaff4a46bb572ac *inst/include/Rcpp/Benchmark/Timer.h
-d6797b8b8bdae9ff766e228c3483fd0c *inst/include/Rcpp/DataFrame.h
+64a8b1a378c10f75b6969dd069c42b35 *inst/include/Rcpp/DataFrame.h
 e4195b2fee650b67d709d7bd529f3de6 *inst/include/Rcpp/Dimension.h
 c09874c5a20d27730a542566017a70a0 *inst/include/Rcpp/DottedPair.h
 8ae8df6f92f7d17625b543348c9c035c *inst/include/Rcpp/DottedPairImpl.h
@@ -237,7 +237,7 @@ abd6c01295a88b73432a77f6a79aca3a *inst/include/Rcpp/protection/Armor.h
 fa63d47f044e1012a5431319108f01f9 *inst/include/Rcpp/protection/Shelter.h
 6357a773233c2c9f5415c6445fe103f9 *inst/include/Rcpp/protection/Shield.h
 2fb2464623e39ad6040f4457b6ef382c *inst/include/Rcpp/protection/protection.h
-9b71f44a9870eaee5c63de664e5db4f1 *inst/include/Rcpp/proxy/AttributeProxy.h
+e0ce48812608d4b8a06f5114e6454c07 *inst/include/Rcpp/proxy/AttributeProxy.h
 d1800f7df6f83a017e0501af64551239 *inst/include/Rcpp/proxy/Binding.h
 2767ffc2e7c0e7832e7223cd8da38be1 *inst/include/Rcpp/proxy/DottedPairProxy.h
 59d09bb7d953413d5452a45616fca92f *inst/include/Rcpp/proxy/FieldProxy.h
