@@ -3,7 +3,7 @@
 \newcommand{\ghpr}{\href{https://github.com/RcppCore/Rcpp/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/RcppCore/Rcpp/issues/#1}{##1}}
 
-\section{Changes in Rcpp release version 1.1.1 (2026-01-xx)}{
+\section{Changes in Rcpp release version 1.1.1 (2026-01-08)}{
   \itemize{
     \item Changes in Rcpp API:
     \itemize{
@@ -14,12 +14,22 @@
       addressing \ghit{1400})
       \item The treatment of signed zeros is now improved in the Sugar code
       (Iñaki in \ghpr{1404})
-      \item A message is shown if \code{R.h} is included before Rcpp headers
-      as this can lead to errors (Dirk in \ghpr{1411} closing \ghit{1410})
+      \item Preparations for phasing out use of \code{Rf_error} have been
+      made (Iñaki in \ghpr{1407})
       \item The long-deprecated function \code{loadRcppModules()} has been
       removed (Dirk in \ghpr{1416} closing \ghit{1415})
-      \item Some includes from R were refactored to accommodate R-devel
-      changes (Iñaki in \ghpr{1418} addressing \ghit{1417})
+      \item Some non-API includes from R were refactored to accommodate
+      R-devel changes (Iñaki in \ghpr{1418} addressing \ghit{1417})
+      \item An accessor to \code{Rf_rnbeta} has been removed (Dirk in
+      \ghpr{1419} also addressing \ghit{1420})
+      \item Code accessing non-API \code{Rf_findVarInFrame} now uses
+      \code{R_getVarEx} (Dirk in \ghpr{1423} fixing \ghit{1421})
+      \item Code conditional on the R version now expects at least R 3.5.0;
+      older code has been removed (Dirk in \ghpr{1426} fixing \ghit{1425})
+      \item The non-API \code{ATTRIB} entry point to the R API is no longer
+      used (Dirk in \ghpr{1430} addressing \ghit{1429})
+      \item The unwind-protect mechanism is now used unconditionally (Dirk
+      in \ghpr{1437} closing \ghit{1436})
     }
     \item Changes in Rcpp Attributes:
     \itemize{
@@ -31,14 +41,32 @@
       \item Vignettes are now processed via a new "asis" processor adopted
       from \pkg{R.rsp} (Dirk in \ghpr{1394} fixing \ghit{1393})
       \item R is now cited via its DOI (Dirk)
+      \item A (very) stale help page has been removed (Dirk in \ghpr{1428}
+      fixing \ghit{1427})
+      \item The main README.md was updated emphasizing r-universe in favor of
+      the local drat repos (Dirk in \ghpr{1431})
     }
     \item Changes in Rcpp Deployment:
     \itemize{
       \item A temporary change in R-devel concerning NA part in complex variables
       was accommodated, and then reverted (Dirk in \ghpr{1399} fixing \ghit{1397})
       \item The macOS CI runners now use macos-14 (Dirk in \ghpr{1405})
+      \item A message is shown if \code{R.h} is included before Rcpp headers
+      as this can lead to errors (Dirk in \ghpr{1411} closing \ghit{1410})
       \item Old helper functions use \code{message()} to signal they are not used,
-      deprecation and removal to follow (Dirk in \ghpr{1413} closing \ghit{1412})
+      deprecation and removal to follow (Dirk in \ghpr{1413} closing
+      \ghit{1412})
+      \item Three tests were being silenced following \ghpr{1413} (Dirk in
+      \ghpr{1422})
+      \item The heuristic whether to run all available tests was refined
+      (Dirk in \ghpr{1434} addressing \ghit{1433})
+      \item Coverage has been tweaked via additional \code{#nocov} tags (Dirk
+      in \ghpr{1435})
+    }
+    \item Non-release Changes:
+    \itemize{
+      \item Two interim non-releases 1.1.0.8.1 and .2 were made in order to
+      unblock CRAN due to changes in R-devel rather than Rcpp
     }
   }
 }

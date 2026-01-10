@@ -1,7 +1,7 @@
 // attributes.cpp: Rcpp R/C++ interface class library -- Rcpp attributes
 //
 // Copyright (C) 2012 - 2020  JJ Allaire, Dirk Eddelbuettel and Romain Francois
-// Copyright (C) 2021 - 2025  JJ Allaire, Dirk Eddelbuettel, Romain Francois, Iñaki Ucar and Travers Ching
+// Copyright (C) 2021 - 2026  JJ Allaire, Dirk Eddelbuettel, Romain Francois, Iñaki Ucar and Travers Ching
 //
 // This file is part of Rcpp.
 //
@@ -2485,8 +2485,8 @@ namespace attributes {
                 if(attribute.hasParameter(kExportSignature)) {
                     args = attribute.customRSignature();
                     if(!checkRSignature(function, args)) {
-                        std::string rsig_err_msg = "Missing args in " + args;
-                        throw Rcpp::exception(rsig_err_msg.c_str());
+                        std::string rsig_err_msg = "Missing args in " + args; // #nocov
+                        throw Rcpp::exception(rsig_err_msg.c_str());          // #nocov
                     }
                 }
                 // determine the function name
@@ -2953,7 +2953,8 @@ namespace attributes {
                      << "    if (rcpp_isError_gen) {" << std::endl
                      << "        SEXP rcpp_msgSEXP_gen = Rf_asChar(rcpp_result_gen);" << std::endl
                      << "        UNPROTECT(1);" << std::endl
-                     << "        Rf_error(\"%s\", CHAR(rcpp_msgSEXP_gen));" << std::endl
+                                 // Parentheses to prevent masking
+                     << "        (Rf_error)(\"%s\", CHAR(rcpp_msgSEXP_gen));" << std::endl
                      << "    }" << std::endl
                      << "    UNPROTECT(1);" << std::endl
                      << "    return rcpp_result_gen;" << std::endl

@@ -1,3 +1,128 @@
+2026-01-08  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Date, Version): Release 1.1.1
+
+        * inst/include/Rcpp/config.h: Idem
+        * inst/NEWS.Rd: Idem
+
+2026-01-07  Dirk Eddelbuettel  <edd@debian.org>
+
+	* vignettes/pdf/*: Rebuilt
+
+	* vignettes/rmd/Rcpp.bib: Update to several URLs
+	* inst/bib/Rcpp.bib: Idem
+	* vignettes/rmd/*: Idem
+	* README.md: Idem
+
+2026-01-06  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+	* vignettes/rmd/Rcpp.bib: Update package versions dates
+	* inst/bib/Rcpp.bib: Idem
+
+2026-01-04  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/RcppCommon.h: No longer require RCPP_USING_UNWIND_PROTECT
+	* inst/include/Rcpp/r/headers.h: Idem
+	* inst/include/Rcpp/api/meat/Rcpp_eval.h: Idem
+	* inst/tinytest/cpp/stack.cpp: No longer test with RCPP_USING_UNWIND_PROTECT
+	* inst/tinytest/test_interface.R: Idem
+
+2026-01-01  Dirk Eddelbuettel  <edd@debian.org>
+
+	* R/Attributes.R: Additional or adjusted #nocov tags
+	* R/Rcpp.package.skeleton.R: Idem
+	* R/RcppLdpath.R: Idem
+	* R/asis.R: Idem
+	* R/inline.R: Idem
+	* inst/include/Rcpp/api/meat/Rcpp_eval.h: Idem
+	* inst/include/Rcpp/internal/caster.h: Idem
+	* inst/include/Rcpp/internal/export.h: Idem
+	* inst/include/Rcpp/proxy/NamesProxy.h: Idem
+	* inst/include/Rcpp/proxy/SlotProxy.h: Idem
+	* inst/include/Rcpp/vector/Vector.h: Idem
+	* inst/include/Rcpp/vector/proxy.h: Idem
+	* inst/include/Rcpp/vector/traits.h: Idem
+	* inst/include/Rcpp/Environment.h: Idem
+	* inst/include/Rcpp/Function.h: Idem
+	* inst/include/Rcpp/Module.h: Idem
+	* inst/include/Rcpp/S4.h: Idem
+	* inst/include/Rcpp/as.h: Idem
+	* inst/include/Rcpp/exceptions.h: Idem
+	* inst/include/Rcpp/r_cast.h: Idem
+	* src/attributes.cpp: Idem
+	* src/barrier.cpp: Idem
+
+2025-12-30  Dirk Eddelbuettel  <edd@debian.org>
+
+	* tests/tinytest.R: Refine decision of when not to run all tests even
+	when development version number is seen
+
+2025-12-28  Dirk Eddelbuettel  <edd@debian.org>
+
+	* README.md: Replace installation from drat section with r-universe
+
+2025-12-22  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+	* inst/include/Rcpp/DataFrame.h (nrow): Simplified per #1430 discussion
+	relying on compact sequence representation removing use of ATTRIB
+	* inst/include/Rcpp/proxy/AttributeProxy.h (hasAttribute): For R
+	4.6.0, rewritten using R_mapAttrib() avoiding to-be-removed ATTRIB()
+
+2025-12-21  Dirk Eddelbuettel  <edd@debian.org>
+
+	* .github/workflows/docker.yaml: Add workflow_dispatch, update
+	checkout action
+
+2025-12-19  Dirk Eddelbuettel  <edd@debian.org>
+
+	* man/RcppUnitTests.Rd: Removed outdated help page
+
+2025-12-17  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+	* DESCRIPTION (Depends): Add 'R (>= 3.5.0)'
+
+2025-12-16  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+	* src/barrier.cpp (dataptr): Remove check for 'R (>= 3.5.0)'
+	* inst/include/Rcpp/Rmath.h: Remove check for 'R (>= 3.1.2)'
+	* inst/include/Rcpp/Symbol.h: Remove check for 'R (>= 3.2.0)'
+	* inst/include/Rcpp/exceptions.h: Remove check for 'R (>= 3.5.0)'
+	* inst/include/Rcpp/r/headers.h: Idem
+
+	* R/Attributes.R: Remove multiple checks for R version < 3.5.0
+	* R/Rcpp.package.skeleton.R: Idem
+	* inst/tinytest/testRcppInterfaceUser/tests/tests.R: Remove one check
+
+2025-12-12  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/tinytest/test_system.R: Wrap suppressMessages() around three
+	tests for long-obsolete linker and compiler flags
+
+	* inst/include/Rcpp/Environment.h: Replace use of Rf_findVarInFrame
+	with R_getVarEx (or R_getVar) if R 4.5.0 or later is used
+	* inst/include/Rcpp/Function.h: Idem
+	* src/barrier.cpp: Idem
+
+2025-12-10  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+	* inst/include/Rcpp/Rmath.h: Do not access Rf_rnbeta
+	* inst/include/Rcpp/sugar/undoRmath.h: Remove #undef
+
 2025-12-06  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (Version, Date): Roll micro version and date
@@ -45,6 +170,15 @@
 	or related R headers were installed first
 	* inst/include/RcppCommon.h: Call new header as first thing
 
+2025-11-12 Iñaki Ucar <iucar@fedoraproject.org>
+
+	* inst/include/Rcpp/macros/mask.h: Lay the ground for Rf_error masking
+	with a warning at compilation time unless RCPP_NO_MASK_RF_ERROR is defined
+	* inst/include/RcppCommon.h: Include the previous file in the last place
+	* src/attributes.cpp: Use parentheses to protect call to Rf_error
+	* inst/tinytest/cpp/stack.cpp: Idem
+	* inst/tinytest/testRcppInterfaceExporter/src/RcppExports.cpp: Idem
+
 2025-11-04  Dirk Eddelbuettel  <edd@debian.org>
 
 	* .github/workflows/macos.yaml (jobs): Roll macos-13 to macos-14
@@ -57,7 +191,7 @@
 
 2025-10-21 Iñaki Ucar <iucar@fedoraproject.org>
 
-	* inst/include/Rcpp/exceptions_impl.h: use __has_include to simplify checks
+	* inst/include/Rcpp/exceptions_impl.h: Use __has_include to simplify checks
 	to enable demangling, making them robust for more platforms
 
 2025-10-13  Dirk Eddelbuettel  <edd@debian.org>

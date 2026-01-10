@@ -2,7 +2,7 @@
 // barrier.cpp: Rcpp R/C++ interface class library -- write barrier
 //
 // Copyright (C) 2010 - 2020  Dirk Eddelbuettel and Romain Francois
-// Copyright (C) 2021 - 2022  Dirk Eddelbuettel, Romain Francois and Iñaki Ucar
+// Copyright (C) 2021 - 2026  Dirk Eddelbuettel, Romain Francois and Iñaki Ucar
 //
 // This file is part of Rcpp.
 //
@@ -76,13 +76,8 @@ SEXP* get_vector_ptr(SEXP x) {
 
 // [[Rcpp::register]]
 void* dataptr(SEXP x) {
-#if R_VERSION >= R_Version(3,5,0)
     // DATAPTR_RO was introduced with R 3.5.0
     return const_cast<void*>(DATAPTR_RO(x));
-#else
-    // this will get your wrists slapped under recent R CMD check ...
-    return DATAPTR(x);
-#endif
 }
 
 // [[Rcpp::register]]
@@ -108,13 +103,13 @@ void Rcpp_precious_init() {
 	R_PreserveObject(Rcpp_precious); 			    // and protect
 }
 // [[Rcpp::register]]
-void Rcpp_precious_teardown() {
+void Rcpp_precious_teardown() {						// #nocov start
     R_ReleaseObject(Rcpp_precious);                 // release resource
-}
+}													// #nocov end
 // [[Rcpp::register]]
 SEXP Rcpp_precious_preserve(SEXP object) {
     if (object == R_NilValue) {
-        return R_NilValue;
+        return R_NilValue;							// #nocov
     }
     PROTECT(object);
     SEXP cell = PROTECT(CONS(Rcpp_precious, CDR(Rcpp_precious)));
@@ -150,7 +145,11 @@ SEXP get_rcpp_cache() {
         Rcpp::Shield<SEXP> call(Rf_lang2(getNamespaceSym, RcppString));
         Rcpp::Shield<SEXP> RCPP(Rf_eval(call, R_GlobalEnv));
 
+#if R_VERSION < R_Version(4,5,0)
         Rcpp_cache = Rf_findVarInFrame(RCPP, Rf_install(".rcpp_cache"));
+#else
+        Rcpp_cache = R_getVar(Rf_install(".rcpp_cache"), RCPP, TRUE);
+#endif
         Rcpp_cache_know = true;
     }
     return Rcpp_cache;

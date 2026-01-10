@@ -14,7 +14,7 @@
 [![CRAN indirect](https://jangorecki.gitlab.io/rdeps/Rcpp/indirect_usage.svg?sanitize=true)](https://cran.r-project.org/package=Rcpp)
 [![BioConductor use](https://jangorecki.gitlab.io/rdeps/Rcpp/BioC_usage.svg?sanitize=true)](https://cran.r-project.org/package=Rcpp)
 [![JSS](https://img.shields.io/badge/JSS-10.18637%2Fjss.v040.i08-brightgreen)](https://doi.org/10.18637/jss.v040.i08)
-[![Springer useR!](https://img.shields.io/badge/Springer%20useR!-10.1007%2F978--1--4614--6868--4-brightgreen)](https://www.amazon.com/gp/product/1461468671/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=1461468671&linkCode=as2&tag=rcpp-20&linkId=3P5LNUWOAQ2YMEJ6)
+[![Springer useR!](https://img.shields.io/badge/Springer%20useR!-10.1007%2F978--1--4614--6868--4-brightgreen)](https://link.springer.com/book/10.1007/978-1-4614-6868-4)
 [![TAS](https://img.shields.io/badge/TAS-10.1080%2F00031305.2017.1375990-brightgreen)](https://doi.org/10.1080/00031305.2017.1375990)
 
 ### Synopsis
@@ -37,7 +37,7 @@ provides a good entry point to Rcpp as do the [Rcpp
 website](https://www.rcpp.org), the [Rcpp
 page](https://dirk.eddelbuettel.com/code/rcpp.html) and the [Rcpp
 Gallery](https://gallery.rcpp.org). Full documentation is provided by the
-[Rcpp book](https://www.amazon.com/gp/product/1461468671/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=1461468671&linkCode=as2&tag=rcpp-20&linkId=3P5LNUWOAQ2YMEJ6).
+[Rcpp book](https://link.springer.com/book/10.1007/978-1-4614-6868-4).
 
 Other highlights:
 
@@ -78,7 +78,7 @@ Among the other vignettes are the [Rcpp
 FAQ](https://cran.r-project.org/package=Rcpp/vignettes/Rcpp-FAQ.pdf) and the
 introduction to [Rcpp
 Attributes](https://cran.r-project.org/package=Rcpp/vignettes/Rcpp-attributes.pdf).
-Additional documentation is available via the [Rcpp book](https://www.amazon.com/gp/product/1461468671/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=1461468671&linkCode=as2&tag=rcpp-20&linkId=3P5LNUWOAQ2YMEJ6)
+Additional documentation is available via the [Rcpp book](https://link.springer.com/book/10.1007/978-1-4614-6868-4)
 by Eddelbuettel (2013, Springer); see 'citation("Rcpp")' for details.
 
 ### Performance
@@ -134,20 +134,20 @@ install.packages("Rcpp")
 
 #### Release Candidates
 
-For the last several releases, we also made interim _candidate_ releases available
-on the [Rcpp Drat Repo](https://RcppCore.github.io/drat/).  Versions from a
-[drat](https://github.com/eddelbuettel/drat) repo can be installed either by
-just temporarily setting the [drat](https://github.com/eddelbuettel/drat) repo as in
+We generally make interim _candidate_ releases available via the [r-universe
+page](https://rcppcore.r-universe.dev/Rcpp).  It provides a standard R repository which
+corresponds to the current main branch in the source repository. Both binary and source
+versions can be installed via
 
 ```R
-install.packages("Rcpp", repos="https://RcppCore.github.io/drat")
+install.packages("Rcpp", repos = c("https://rcppcore.r-universe.dev",
+                                   "https://cloud.r-project.org"))
 ```
 
-or by setting a [drat](https://github.com/eddelbuettel/drat) repo more permanently
-(as described in the documentation of the [drat](https://github.com/eddelbuettel/drat)
-package).
+where other repos can be set as needed.
 
-Testing the release candidates prior to actual release help. Please run this if you can.
+Testing the release candidates prior to the actual release helps. Please run
+this if you can.
 
 #### Source
 
