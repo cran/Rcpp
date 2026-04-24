@@ -1,3 +1,15 @@
+2026-04-19  Dirk Eddelbuettel  <edd@debian.org>
+
+        * DESCRIPTION (Date, Version): Hotfix non-release 1.1.1-1.1 first
+	provided as a testing courtesy now being forced to release
+
+	* Rcpp/inst/include/Rcpp/api/meat/Rcpp_eval.h: Changes from PR 1466
+	that address the sudden disappearance of R_UnboundValue
+	* Rcpp/inst/include/Rcpp/Environment.h: Idem, also carried over one
+	change from PR 1460 regarding parent environment lookup
+	* Rcpp/inst/include/Rcpp/Function.h: Idem, from PR 1469 for switch to
+	R_getRegisteredNamespace, a very last-minute R change
+
 2026-01-08  Dirk Eddelbuettel  <edd@debian.org>
 
         * DESCRIPTION (Date, Version): Release 1.1.1

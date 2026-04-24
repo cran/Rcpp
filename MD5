@@ -1,5 +1,5 @@
-f78cc2f0e2e03e422eef8622dacc0bd3 *ChangeLog
-73723f375e8e68e4b2ba06acd19919da *DESCRIPTION
+527230f7115439a5644776160fa2ab0b *ChangeLog
+658d72e9accc49133882501b21fb6171 *DESCRIPTION
 f5ef3825b44e121e64fae1d52cd37960 *NAMESPACE
 ad57518c2d1d3d66fc26b6c214ed13e1 *R/00_classes.R
 f9a4ffb4d0fcec3eec6ef6c229ff1bba *R/01_show.R
@@ -21,11 +21,11 @@ c93a9fd21b34322477a2c5bbdebea7dc *R/asis.R
 2944e270961ab2bac4aea5ea0eb2a67e *R/zzz.R
 8e1eb90577f4baf3701d6f1c58d86b44 *README.md
 dcfe968628d24168fc5bb54a66631158 *TODO
-76e123f5dcc8dee07678412adc0a2a84 *build/partial.rdb
-c83d8049d910b43001bc85c2d3a9d992 *build/vignette.rds
+38ab1962eec6eab5c520a4502634d7b6 *build/partial.rdb
+bc34a3c6e48393a0e80d38c28f9e7c8b *build/vignette.rds
 5f5ee7e3fd8749aaef75bba7b8382326 *cleanup
 7599bada89d38a2474389682f552755e *inst/CITATION
-a2db4f0600daead03c5baf9f01eca898 *inst/NEWS.Rd
+dae23fb3910bc71f83795c4f51882ce6 *inst/NEWS.Rd
 7a9967333ad85931cc6d2051f4dff76e *inst/announce/ANNOUNCE-0.10.0.txt
 734d037a2ac31af4659fb3b2e1a778ad *inst/announce/ANNOUNCE-0.11.0.txt
 7d85af8d096e473821a3f001d3128b01 *inst/announce/ANNOUNCE-0.6.0.txt
@@ -116,11 +116,11 @@ c43702432a8138a32aaee079bbf6e0cd *inst/include/Rcpp.h
 e4195b2fee650b67d709d7bd529f3de6 *inst/include/Rcpp/Dimension.h
 c09874c5a20d27730a542566017a70a0 *inst/include/Rcpp/DottedPair.h
 8ae8df6f92f7d17625b543348c9c035c *inst/include/Rcpp/DottedPairImpl.h
-83104802463347135d3d78f9b87c6328 *inst/include/Rcpp/Environment.h
+69b9a349032b8300191d02fa85c2f804 *inst/include/Rcpp/Environment.h
 719d99509ff3398d24d31a4964dc6beb *inst/include/Rcpp/Extractor.h
 0e673291cac4bf839157946880772c1d *inst/include/Rcpp/Fast.h
 1836fe44282438109267ce447debae1a *inst/include/Rcpp/Formula.h
-06aa54bae2ddd4733cd4bebb940e17ba *inst/include/Rcpp/Function.h
+aa834e60de307f05828a4c8a039bee29 *inst/include/Rcpp/Function.h
 6ad1b0148d43fd84f39d8e030e39a871 *inst/include/Rcpp/InputParameter.h
 a33639e3b142e20c4c5f87b8c252c860 *inst/include/Rcpp/InternalFunction.h
 c1a30ee157262261c65ec27ef0435ce7 *inst/include/Rcpp/InternalFunctionWithStdFunction.h
@@ -134,7 +134,7 @@ e54ff3fb24c5fb5c00e35804b4043177 *inst/include/Rcpp/Na_Proxy.h
 30a357c1b1bf0a4b7b3c06aec6ac6891 *inst/include/Rcpp/Named.h
 09c3d2e030266a2716c465005fddb8ad *inst/include/Rcpp/Nullable.h
 355e849d93981b9ab17b965b1d79dab6 *inst/include/Rcpp/Pairlist.h
-c299955262d228fc372294633ecb10a9 *inst/include/Rcpp/Promise.h
+9a23d02a2ff2e6d0bc6467e74167919e *inst/include/Rcpp/Promise.h
 c7c202116cb2d8f9993f2d2879a48339 *inst/include/Rcpp/RNGScope.h
 19d73d0c48066eab27b7e21f016aca39 *inst/include/Rcpp/RObject.h
 7eaef3d46101154d1492c710f3cad3bf *inst/include/Rcpp/Rcpp
@@ -160,7 +160,7 @@ c84d37569cc5094df6e4c8600530d110 *inst/include/Rcpp/XPtr.h
 13355fb54111f51930877bcddb41d50c *inst/include/Rcpp/api/meat/Dimension.h
 26477794f8170b533113dcf620d64d1c *inst/include/Rcpp/api/meat/DottedPairImpl.h
 006fb9ab61399d07b7f7bbd8ae6cf92f *inst/include/Rcpp/api/meat/Environment.h
-963d8e4d71e666b2688f716a1f0697a3 *inst/include/Rcpp/api/meat/Rcpp_eval.h
+f39f1494990860d01f361ed0765e95dd *inst/include/Rcpp/api/meat/Rcpp_eval.h
 a8b20b3c2b1e123172ab3a1eb78e04b0 *inst/include/Rcpp/api/meat/S4.h
 9fd69c4ef0c1780784322f902305d1c7 *inst/include/Rcpp/api/meat/StretchyList.h
 eded8a0a95dd5ecdcae8aa70aceb795c *inst/include/Rcpp/api/meat/Vector.h
@@ -177,7 +177,7 @@ d6791dc3dda9eda2cd2afc16363e100b *inst/include/Rcpp/as.h
 90c153091bc3fb1e123fef9dc40394e6 *inst/include/Rcpp/barrier.h
 fa7b26bbe19f908b9c00ead2fe2717ac *inst/include/Rcpp/clone.h
 1b3b2bee1fc9bd3f231c2a33ca572281 *inst/include/Rcpp/complex.h
-31b71edd059c5fceaecde6634725613b *inst/include/Rcpp/config.h
+e4e669cb49b11b8f9b6368a37c4ef41d *inst/include/Rcpp/config.h
 b90e19134c5d4a4c0652f956c022d1e4 *inst/include/Rcpp/date_datetime/Date.h
 e75130fc77dac6243e5c88639c940dea *inst/include/Rcpp/date_datetime/Datetime.h
 0d754f1a9266c3e1bbc6946ba1304ab5 *inst/include/Rcpp/date_datetime/date_datetime.h
@@ -679,7 +679,7 @@ c4fa33325f6d78290c2f168ff2c8846e *src/attributes.cpp
 eef4c2f0e1abd787b8fd62d289ed5961 *src/internal.h
 4eeaedc1e555103025f1feeaee299538 *src/module.cpp
 545982e58b067742919490cc23d62905 *src/rcpp_init.cpp
-e0c96fa9915f03a3178856d05b94e54a *tests/tinytest.R
+0310da8b696418ea0517b4b7423a0255 *tests/tinytest.R
 2c2689d950eb3637391d5e5194839450 *vignettes/Rcpp-FAQ.pdf.asis
 24c4fcaeb37c15721e72e3dd6bc7dc9d *vignettes/Rcpp-attributes.pdf.asis
 c515df15a755d66c1379ddf796af9752 *vignettes/Rcpp-extending.pdf.asis
