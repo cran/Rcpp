@@ -1,14 +1,235 @@
-2026-04-19  Dirk Eddelbuettel  <edd@debian.org>
+2026-07-01  Dirk Eddelbuettel  <edd@debian.org>
 
-        * DESCRIPTION (Date, Version): Hotfix non-release 1.1.1-1.1 first
-	provided as a testing courtesy now being forced to release
+	* inst/bib/Rcpp.bib: Small correction and reference update
+	* vignettes/rmd/Rcpp.bib: Idem
+	* vignettes/rmd/Rcpp-FAQ.Rmd: Quote rbenchmark package once
 
-	* Rcpp/inst/include/Rcpp/api/meat/Rcpp_eval.h: Changes from PR 1466
-	that address the sudden disappearance of R_UnboundValue
-	* Rcpp/inst/include/Rcpp/Environment.h: Idem, also carried over one
-	change from PR 1460 regarding parent environment lookup
-	* Rcpp/inst/include/Rcpp/Function.h: Idem, from PR 1469 for switch to
-	R_getRegisteredNamespace, a very last-minute R change
+2026-06-29  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+2026-06-26  Kevin Ushey <kevinushey@gmail.com>
+
+	* inst/include/Rcpp/proxy/AttributeProxy.h: Do not rely on get__()
+	in attribute accessors so that classes such as ListOf compile
+	* inst/tinytest/cpp/ListOf.cpp: Added tests
+	* inst/tinytest/test_listof.R: Idem
+
+2026-06-23  Jeroen Ooms  <jeroenooms@gmail.com>
+
+	* Add templated integer-index overload on platforms without
+	LONG_VECTOR_SUPPORT such as wasm32 (PR #1482)
+
+2026-06-18  Dirk Eddelbuettel  <edd@debian.org>
+
+	* vignettes/rmd/Rcpp.bib: Updated references
+	* inst/bib/Rcpp.bib: Idem
+
+2026-06-09  Dirk Eddelbuettel  <edd@debian.org>
+
+	* .github/workflows/ci.yaml: Update actions to current versions
+	* .github/workflows/docker.yaml: Idem
+	* .github/workflows/macos.yaml: Idem
+	* .github/workflows/stale.yaml: Idem
+	* .github/workflows/linuxarm.yaml: Idem
+
+2026-06-08  Dirk Eddelbuettel  <edd@debian.org>
+
+	* R/RcppLdpath.R: Prefix three messages with 'Rcpp:::' to make it
+	more obvious where they originate from
+
+2026-05-05  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+	* inst/include/Rcpp/Nullable.h (Nullable): Switch operatorT() from
+	opt-in to opt-out as six downstream packages have updated at CRAN
+
+	* docker/ci-4.5/Dockerfile: Added based on r-base:4.5.3
+	* .github/workflows/ci.yaml (jobs): Add rcpp/ci-4.5 to matrix
+
+2026-05-01  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+2026-04-29  Kevin Ushey <kevinushey@gmail.com>
+
+	* inst/include/Rcpp/exceptions.h: Use stack buffer for warning
+	message to avoid string memory leakage in case of longjump
+	* inst/tinytest/test_dataframe.R: New test
+
+2026-04-23  Dirk Eddelbuettel  <edd@debian.org>
+
+	* vignettes/rmd/Rcpp.bib: Update one arXiv URL
+	* inst/bib/Rcpp.bib: Idem
+	* vignettes/Rcpp-libraries.pdf: Regenerated
+
+2026-04-13  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+2026-04-12  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/Nullable.h (Nullable): 'operator T()' is now
+	behind an opt-in #define
+
+2026-04-09  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/Nullable.h (T): Also add 'operator T()'
+	(conditional on R (>= 4.3.0) as older versions croak)
+
+2026-04-08  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/Nullable.h (as): Enhance by adding an explicit
+	Rcpp::as<T>() aiding cases where implicit as<> does not suffice
+
+2026-04-07  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date (twice)
+	* inst/include/Rcpp/config.h: Idem
+	* inst/NEWS.Rd: Stress interim status
+
+2026-04-06  Iñaki Ucar <iucar@fedoraproject.org>
+
+	* inst/tinytest/test_vector.R: Complete test cases for setting NamesProxy
+	* inst/tinytest/cpp/Vector.cpp: Idem
+
+2026-04-02  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/Function.h: Further refinement for 4.6.0 to not
+	require R_NamespaceRegistry, using R_getRegisteredNamespace() instead
+
+2026-04-03  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/proxy/NamesProxy.h (set): Only set non-null values
+
+2026-04-01  Mattias Ellert  <mattias.ellert@physics.uu.se>
+
+	* inst/discovery/cxx0x.R: Set execute permissions for script
+	with shebang
+	* inst/examples/ConvolveBenchmarks/overhead.r: Idem
+	* inst/examples/ConvolveBenchmarks/overhead.sh: Idem
+	* inst/examples/Misc/ifelseLooped.r: Idem
+	* inst/examples/Misc/newFib.r: Idem
+	* inst/examples/OpenMP/OpenMPandInline.r: Idem
+	* inst/tinytest/test_dispatch.R: Idem
+
+2026-03-29  Iñaki Ucar <iucar@fedoraproject.org>
+
+	* inst/include/Rcpp/api/meat/Rcpp_eval.h: Remove check for non-API
+	R_UnboundValue, which is never returned anyway from Rf_findFun
+	* inst/include/Rcpp/Function.h: Use alternative to R_UnboundValue
+	* inst/include/Rcpp/Promise.h: Idem
+	* inst/include/Rcpp/Environment.h: Idem + some refactoring
+
+2026-03-26  Iñaki Ucar <iucar@fedoraproject.org>
+
+	* inst/include/Rcpp/internal/r_vector.h: Use dataptr() again to avoid an
+	invalid pointer for empty vectors, which causes UB in e.g. std::copy
+	* inst/tinytest/test_vector.R: Add tests for std::copy
+	* inst/tinytest/cpp/Vector.cpp: Idem
+2026-03-27  Iñaki Ucar <iucar@fedoraproject.org>
+
+	* inst/include/Rcpp/vector/ListOf.h: Fix inheritance
+	* inst/include/Rcpp/proxy/NamesProxy.h: Fix compatibility
+
+2026-03-26  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/bib/Rcpp.bib: Refreshed a few more references
+
+2026-03-06  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date (twice)
+	* inst/include/Rcpp/config.h: Idem
+	* inst/NEWS.Rd: Updated
+
+	* inst/include/Rcpp/Environment.h: For R 4.5.0 or later, use
+	R_ParentEnv instead of ENCLOS to reach parent environment
+
+2026-02-27  Iñaki Ucar <iucar@fedoraproject.org>
+
+	* inst/include/Rcpp/sugar/functions/max.h: Fix UB for empty integer
+	* inst/include/Rcpp/sugar/functions/min.h: Idem
+	* inst/tinytest/test_sugar.R: Adapt tests
+
+2026-02-26  Iñaki Ucar <iucar@fedoraproject.org>
+
+	* inst/include/Rcpp/sugar/tools/safe_math.h: New header implementing safe
+	versions of add/sub/mul operations for integral types
+	* inst/include/Rcpp/sugar/sugar.h: Includes the previous header
+
+	* inst/include/Rcpp/sugar/functions/cumprod.h: Use the previous operations
+	* inst/include/Rcpp/sugar/functions/cumsum.h: Idem
+	* inst/include/Rcpp/sugar/functions/diff.h: Idem, also fixed a bug where
+	the diff was recomputed instead of returning the calculated value
+	* inst/include/Rcpp/sugar/functions/rowSums.h: Idem
+	* inst/include/Rcpp/sugar/functions/sum.h: Idem
+	* inst/include/Rcpp/sugar/operators/minus.h: Idem, also fixed a bug for
+	an incorrect Extractor specialization in Minus_Primitive_Vector
+	* inst/include/Rcpp/sugar/operators/plus.h: Idem
+	* inst/include/Rcpp/sugar/operators/times.h: Idem
+
+	* inst/tinytest/test_sugar.R: New tests covering the new operations
+	* inst/tinytest/cpp/sugar.cpp: Idem
+	* inst/tinytest/cpp/sugar_safe_math.cpp: Idem
+	* inst/tinytest/cpp/sugar_safe_math_fallback.cpp: Idem
+
+2026-02-17  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+	* inst/NEWS.Rd: Updated
+
+2026-02-17  Iñaki Ucar <iucar@fedoraproject.org>
+
+	* inst/include/Rcpp/sugar/operators/Comparator_With_One_Value.h: Fix UB
+	for non-integer RTYPEs in comparator
+
+2026-01-23  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/DataFrame.h (nrow): Use R_nrow() with R >= 4.6.0
+	* inst/include/Rcpp/proxy/AttributeProxy.h (attributeNames): Use
+	R_getAttribNames() with R >= 4.6.0;
+	* inst/include/Rcpp/proxy/AttributeProxy.h (hasAttribute): Use
+	R_hasAttrib with R >= 4.6.0
+
+2026-01-22  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+2026-01-21  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/date_datetime/Datetime.h: Fractional seconds type
+	switched to 'int' for consistency, print format string re-adjusted
+
+2026-01-20  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/Rcpp/date_datetime/Datetime.h (format): Correct a
+	format string reflecting 'unsigned int' rather than 'int'
+
+2026-01-13  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/tinytest/cpp/attributes_extended.cpp: New unit tests
+	* inst/tinytest/test_attributes_extended.R: Idem
+	* inst/tinytest/test_compile_attributes_errors.R: Idem
+	* inst/tinytest/test_cppfunction_errors.R: Idem
+	* inst/tinytest/test_sourcecpp_errors.R: Idem
+	* R/Attributes.R: Remove #nocov tags
+	* src/attributes.cpp: Idem
+
+2026-01-12  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+	* inst/include/Rcpp/config.h: Idem
+
+	* inst/include/Rcpp/exceptions_impl.h: Combine previous and current
+	methods enabling when 'execinfo.h' is found on selected platforms
 
 2026-01-08  Dirk Eddelbuettel  <edd@debian.org>
 
@@ -21,7 +242,7 @@
 
 	* vignettes/pdf/*: Rebuilt
 
-	* vignettes/rmd/Rcpp.bib: Update to several URLs
+	* vignettes/rmd/Rcpp.bib: Updates to several URLs
 	* inst/bib/Rcpp.bib: Idem
 	* vignettes/rmd/*: Idem
 	* README.md: Idem
@@ -162,7 +383,7 @@
 	* man/Rcpp-deprecated.Rd: Idem
 	* vignettes/rmd/Rcpp-modules.Rmd: Idem
 
-2025-12-01  Kevin Ushey <kevinushey@gmail.com>
+2025-12-01  Kevin Ushey  <kevinushey@gmail.com>
 
 	* R/Attributes.R: Update OpenMP plugin for macOS
 

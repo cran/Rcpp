@@ -3,14 +3,64 @@
 \newcommand{\ghpr}{\href{https://github.com/RcppCore/Rcpp/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/RcppCore/Rcpp/issues/#1}{##1}}
 
-\section{Changes in Rcpp non-release version 1.1.1-1.1 (2026-04-19)}{
+\section{Changes in Rcpp release version 1.1.2 (2026-07-01)}{
   \itemize{
-    \item Please see pr \ghpr{1466} addressing \ghit{1465} for context (plus
-    change from \ghpr{1460}, and R_getRegisteredNamespace from \ghpr{1469})
-    \item This is an unplanned, unscheduled and uncalled for non-release
-    made solely to unplug CRAN from late-breaking changes in R 4.6.0
-    \item Version 1.1.1-1.1 is identical to 1.1.1-1 apart from DESCRIPTION,
-    ChangeLog and NEWS and exist solely to increment the version counter.
+    \item Changes in Rcpp API:
+    \itemize{
+      \item Use of \code{execinfo.h} is again conditional to avoid build
+      complexity (Dirk in \ghpr{1445} addressing \ghit{1442})
+      \item An internal state component for \code{Datetime} is now \code{int}
+      (Dirk in \ghpr{1448} and \ghpr{1449} fixing \ghpr{1447})
+      \item Three new (in R 4.6.0) attribute accessors are used conditionally
+      (Dirk in \ghpr{1450} closing \ghit{1432})
+      \item An UBSAN error in the Sugar-based NA comparison has been
+      corrected (Iñaki in \ghpr{1453} fixing \ghit{1452})
+      \item Treatment of Inf outside of integer range in Sugar function has
+      been corrected (Iñaki in \ghpr{1458} fixing \ghit{1455})
+      \item Integer overflow protection has been added for sugar functions
+      (Iñaki in \ghpr{1457} fixing \ghpr{1454})
+      \item The parent environment is now accessed via \code{R_ParentEnv}
+      (Dirk in \ghpr{1460} fixing \ghit{1459})
+      \item Change to returning \code{dataptr} again for better handling of
+      empty vectors (Iñaki in \ghpr{1462} fixing \ghit{1461})
+      \item Undefined behavior errors in use of \code{ListOf} proxies have
+      been addressed (Iñaki in \ghpr{1464} fixing \ghit{1463})
+      \item Under newer R version, \code{R_UnboundValue} is no longer used
+      (Iñaki in \ghpr{1466} fixing \ghit{1465})
+      \item New R API access point \code{R_getRegisteredNamespace()} is used
+      with current R versions (Dirk in \ghpr{1469} fixing \ghit{1468})
+      \item The \code{Nullable::as()} exporter now uses an explicit cast to
+      the templated type (Dirk in \ghpr{1471} fixing \ghit{1470})
+      \item A memory leak in the variadic \code{Rcpp::warning()} template
+      has been fixed (Kevin in \ghpr{1475} fixing \ghit{1474})
+      \item The \code{Nullable::operatorT()} has been added as a 'opt-out'
+      (Dirk in \ghpr{1477} with coordination in \ghit{1472})
+      \item Add templated integer-index overload for \code{operator[]} on
+      small systems such as WASM (Jeroen Ooms in \ghpr{1482})
+      \item The attribute accessors in \code{AttributeProxyPolicy} no longer
+      rely on \code{get__()} (Kevin in \ghpr{1484} fixing \ghit{1483})
+    }
+    \item Changes in Rcpp Documentation:
+    \itemize{
+      \item Reference in the bibliography used by the package vignettes have
+      been updated.
+    }
+    \item Changes in Rcpp Deployment:
+    \itemize{
+      \item Excute permissions are set consistently on scripts with shebangs
+      (Mattias Ellert in \ghpr{1467})
+      \item R 4.5.* has been added to the CI matrix (Dirk in \ghpr{1476})
+      \item Three nag messages issued when obsolete build flag accessors are
+      used now show \code{Rcpp:::} (Dirk in \ghpr{1480} fixing \ghit{1456})
+      \item Reference GitHub Actions have been updated to their current
+      versions (Dirk in \ghpr{1481})
+    }
+    \item Non-release Changes:
+    \itemize{
+      \item A non-release hotfix 1.1.1-1 used by CRAN accommodates breaking
+      changes to the API in R 4.6.0. It would be nice to have the same level
+      of release management in R itself that CRAN expects from us.
+    }
   }
 }
 
